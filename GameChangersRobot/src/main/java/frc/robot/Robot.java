@@ -5,6 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.teleop.DriveCommand;
+import frc.robot.subsystems.Drivetrain;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -12,6 +18,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static Drivetrain drivetrain;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -19,7 +26,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
+    drivetrain = new Drivetrain();
+    SmartDashboard.putNumber("Drive Straight Heading P", 0.19);
+    SmartDashboard.putNumber("Turn P", 0.05);
+    CommandScheduler.getInstance().setDefaultCommand(drivetrain, new DriveCommand());
   }
 
   /**
@@ -44,7 +54,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
+    new SequentialCommandGroup(
+    ).schedule();
   }
 
   /** This function is called periodically during autonomous. */
