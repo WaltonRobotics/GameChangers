@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.auton.DriveStraight;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.subsystems.Drivetrain;
 /**
@@ -55,6 +56,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     new SequentialCommandGroup(
+            new DriveStraight(6.6),
+            new WaitCommand(2),
+            new DriveStraight(6.5)
     ).schedule();
   }
 
