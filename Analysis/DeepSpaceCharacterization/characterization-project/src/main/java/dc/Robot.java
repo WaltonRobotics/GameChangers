@@ -21,6 +21,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.I2C;
@@ -46,7 +47,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
   static private double WHEEL_DIAMETER = 0.127;
-  static private double ENCODER_EDGES_PER_REV = 0;
 
   Joystick leftStick;
   Joystick rightStick;
@@ -66,6 +66,8 @@ public class Robot extends TimedRobot {
 
   CANSparkMax leftWheelsMaster = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax leftWheelsSlave = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+  private final AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   double priorAutospeed = 0;
   Number[] numberArray = new Number[10];
@@ -95,10 +97,10 @@ public class Robot extends TimedRobot {
     //
     // Configure gyro
     //
-
+    ahrs.zeroYaw();
     // Note that the angle from the NavX and all implementors of wpilib Gyro
     // must be negated because getAngle returns a clockwise positive angle
-    gyroAngleRadians = () -> 0.0;
+    gyroAngleRadians = () -> Rotation2d.fromDegrees(-ahrs.getAngle()).getRadians();
 
     //
     // Configure drivetrain movement
@@ -110,8 +112,7 @@ public class Robot extends TimedRobot {
     // units and units/s
     //
 
-    double encoderConstant = 1/38.025;
-    //(1 / ENCODER_EDGES_PER_REV) * WHEEL_DIAMETER * Math.PI;
+    double encoderConstant = 1/38.025; // (1 / 42) * WHEEL_DIAMETER * Math.PI;
 
     //Encoder leftEncoder = new Encoder(0, 1);
     //leftEncoder.setDistancePerPulse(encoderConstant);
@@ -128,6 +129,11 @@ public class Robot extends TimedRobot {
     // Set the update rate instead of using flush because of a ntcore bug
     // -> probably don't want to do this on a robot in competition
     NetworkTableInstance.getDefault().setUpdateRate(0.010);
+  }
+
+  private void setDutyCycles(double leftDutyCycle, double rightDutyCycle) {
+    leftWheelsMaster.set(leftDutyCycle);
+    rightWheelsMaster.set(rightDutyCycle);
   }
 
   @Override
@@ -155,8 +161,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    leftWheelsMaster.set(-leftStick.getY());
-    rightWheelsMaster.set(-rightStick.getY());
+    setDutyCycles(-leftStick.getY(), -rightStick.getY());
   }
 
   @Override
@@ -195,8 +200,7 @@ public class Robot extends TimedRobot {
     priorAutospeed = autospeed;
 
     // command motors to do things
-    leftWheelsMaster.set((rotateEntry.getBoolean(false) ? -1 : 1) * autospeed);
-    rightWheelsMaster.set(autospeed);
+    setDutyCycles((rotateEntry.getBoolean(false) ? -1 : 1) * autospeed, autospeed);
 
     // send telemetry data array back to NT
     numberArray[0] = now;
