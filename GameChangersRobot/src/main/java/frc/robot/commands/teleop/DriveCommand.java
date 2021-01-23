@@ -23,7 +23,7 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        driveTrain.setDutyCycles(getLeftJoystickY(), getRightJoystickY());
+
     }
 
     @Override
