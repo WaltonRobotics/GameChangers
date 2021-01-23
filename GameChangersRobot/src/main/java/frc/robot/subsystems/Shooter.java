@@ -1,10 +1,28 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Shooter extends SubsystemBase{
-    private TalonFX mFlyWheelMaster = new TalonFX(9);
-    private TalonFX mFlyWheelSlave = new TalonFX(10);
 
+import static frc.robot.OI.mFlyWheelMaster;
+
+public class Shooter extends SubsystemBase {
+
+    public Shooter(double targetVelocity) {
+
+
+        SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(10, 20, 10);
+
+    }
+    private void setOpenLoopDutyCycles(double targetDutyCycles) {
+
+    }
+
+    private void setClosedLoopVelocity (double targetVelocity) {
+        mFlyWheelMaster.set(ControlMode.Velocity, targetVelocity);
+    }
+
+    private double getVelocity(){
+    }
 }
