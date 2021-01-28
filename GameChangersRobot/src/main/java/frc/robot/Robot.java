@@ -55,11 +55,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    new SequentialCommandGroup(
-            new DriveStraight(6.6),
-            new WaitCommand(2),
-            new DriveStraight(6.5)
-    ).schedule();
+//    new SequentialCommandGroup(
+//            new DriveStraight(6.6),
+//            new WaitCommand(2),
+//            new DriveStraight(6.5)
+//    ).schedule();
   }
 
   /** This function is called periodically during autonomous. */

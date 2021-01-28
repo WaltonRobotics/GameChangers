@@ -13,7 +13,14 @@ public class Constants {
 
     }
 
-    public class SmartDashboardKeys{
+    public static class DrivetrainPIDSlots {
+
+        public static final int VOLTAGE_PID_SLOT = 0;
+        public static final int VELOCITY_PID_SLOT = 1;
+
+    }
+
+    public class SmartDashboardKeys {
 
         public static final String kdriveStraightheadingPkey = "Drive Straight Heading P";
         public static final String kturnPkey = "Turn P";

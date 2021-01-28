@@ -33,8 +33,10 @@ public class DriveStraight extends CommandBase {
 
         SmartDashboard.putNumber("Error", drivetrain.getmDriveStraightHeadingPIDController().getPositionError());
 
+        /*
         SmartDashboard.putNumber("Turn rate", turnRate);
         drivetrain.getmDriveStraightPowerController().get
         drivetrain.setArcadeSpeeds(, turnRate);
+         */
     }
 }
