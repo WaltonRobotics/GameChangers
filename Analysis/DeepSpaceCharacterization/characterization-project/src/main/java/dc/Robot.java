@@ -46,7 +46,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
 
-  static private double WHEEL_DIAMETER = 0.127;
+  static private double WHEEL_DIAMETER = 0.1524;
 
   Joystick leftStick;
   Joystick rightStick;
@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
     // units and units/s
     //
 
-    double encoderConstant = 1/38.025; // (1 / 42) * WHEEL_DIAMETER * Math.PI;
+    double encoderConstant = 1/16.773784; // (1 / 42) * WHEEL_DIAMETER * Math.PI;
 
     //Encoder leftEncoder = new Encoder(0, 1);
     //leftEncoder.setDistancePerPulse(encoderConstant);
