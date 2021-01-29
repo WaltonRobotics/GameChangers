@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -11,7 +12,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auton.DriveStraight;
 import frc.robot.commands.teleop.DriveCommand;
+import frc.robot.robots.RobotIdentification;
+import frc.robot.robots.WaltRobot;
 import frc.robot.subsystems.Drivetrain;
+
+import static frc.robot.Constants.Hardware.kRobotId1;
+import static frc.robot.Constants.Hardware.kRobotId2;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -20,6 +27,7 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
+  public static RobotIdentification currentRobot;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -27,6 +35,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    currentRobot = RobotIdentification.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
+    System.out.println("Current robot is" + currentRobot.name());
+
     drivetrain = new Drivetrain();
     SmartDashboard.putNumber("Drive Straight Heading P", 0.19);
     SmartDashboard.putNumber("Turn P", 0.05);

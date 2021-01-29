@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+
 public class Constants {
 
     public class Hardware {
@@ -10,7 +12,8 @@ public class Constants {
         public static final int kRightMaster = 1;
         public static final int kRightSlave = 2;
 
-
+        public static final int kRobotId1 = 8;
+        public static final int kRobotId2 = 9;
     }
 
     public static class DrivetrainPIDSlots {

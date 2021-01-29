@@ -8,7 +8,11 @@ import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.robots.RobotIdentification;
+import frc.robot.robots.WaltRobot;
 
+import static frc.robot.Constants.DrivetrainPIDSlots.VELOCITY_PID_SLOT;
+import static frc.robot.Constants.DrivetrainPIDSlots.VOLTAGE_PID_SLOT;
 import static frc.robot.Constants.Hardware.*;
 import static frc.robot.Robot.currentRobot;
 
@@ -51,31 +55,31 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.setSmartCurrentLimit(80);
         mRightWheelSlave.setSmartCurrentLimit(80);
 
-        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getPositionFactor());
-        mLeftWheelsSlave.getEncoder().setPositionConversionFactor(currentRobot.getPositionFactor());
-        mRightWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getPositionFactor());
-        mRightWheelSlave.getEncoder().setPositionConversionFactor(currentRobot.getPositionFactor());
+        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+        mLeftWheelsSlave.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+        mRightWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+        mRightWheelSlave.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
 
-        mLeftWheelsMaster.getEncoder().setVelocityConversionFactor(currentRobot.getVelocityFactor());
-        mLeftWheelsSlave.getEncoder().setVelocityConversionFactor(currentRobot.getVelocityFactor());
-        mRightWheelsMaster.getEncoder().setVelocityConversionFactor(currentRobot.getVelocityFactor());
-        mRightWheelSlave.getEncoder().setVelocityConversionFactor(currentRobot.getVelocityFactor());
+        mLeftWheelsMaster.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+        mLeftWheelsSlave.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+        mRightWheelsMaster.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+        mRightWheelSlave.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
 
-        mLeftWheelsMaster.getPIDController().setP(currentRobot.getLeftVoltagePIDController().getP(), VOLTAGE_PID_SLOT);
-        mLeftWheelsMaster.getPIDController().setI(currentRobot.getLeftVoltagePIDController().getI(), VOLTAGE_PID_SLOT);
-        mLeftWheelsMaster.getPIDController().setD(currentRobot.getLeftVoltagePIDController().getD(), VOLTAGE_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainVoltagePID().getP(), VOLTAGE_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainVoltagePID().getI(), VOLTAGE_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainVoltagePID().getD(), VOLTAGE_PID_SLOT);
 
-        mRightWheelsMaster.getPIDController().setP(currentRobot.getRightVoltagePIDController().getP(), VOLTAGE_PID_SLOT);
-        mRightWheelsMaster.getPIDController().setI(currentRobot.getRightVoltagePIDController().getI(), VOLTAGE_PID_SLOT);
-        mRightWheelsMaster.getPIDController().setD(currentRobot.getRightVoltagePIDController().getD(), VOLTAGE_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainVoltagePID().getP(), VOLTAGE_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainVoltagePID().getI(), VOLTAGE_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainVoltagePID().getD(), VOLTAGE_PID_SLOT);
 
-        mLeftWheelsMaster.getPIDController().setP(currentRobot.getLeftVelocityPIDController().getP(), VELOCITY_PID_SLOT);
-        mLeftWheelsMaster.getPIDController().setI(currentRobot.getLeftVelocityPIDController().getI(), VELOCITY_PID_SLOT);
-        mLeftWheelsMaster.getPIDController().setD(currentRobot.getLeftVelocityPIDController().getD(), VELOCITY_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainVelocityPID().getP(), VELOCITY_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainVelocityPID().getI(), VELOCITY_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainVelocityPID().getD(), VELOCITY_PID_SLOT);
 
-        mRightWheelsMaster.getPIDController().setP(currentRobot.getRightVelocityPIDController().getP(), VELOCITY_PID_SLOT);
-        mRightWheelsMaster.getPIDController().setI(currentRobot.getRightVelocityPIDController().getI(), VELOCITY_PID_SLOT);
-        mRightWheelsMaster.getPIDController().setD(currentRobot.getRightVelocityPIDController().getD(), VELOCITY_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainVelocityPID().getP(), VELOCITY_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainVelocityPID().getI(), VELOCITY_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainVelocityPID().getD(), VELOCITY_PID_SLOT);
 
 //        leftWheelsMaster.burnFlash();
 //        leftWheelsSlave.burnFlash();
