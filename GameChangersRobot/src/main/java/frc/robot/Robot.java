@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     SmartDashboard.putNumber("Drive Straight Heading P", 0.19);
     SmartDashboard.putNumber("Turn P", 0.05);
+    SmartDashboard.putNumber("Forward P", 0.2);
     CommandScheduler.getInstance().setDefaultCommand(drivetrain, new DriveCommand());
   }
 
@@ -41,7 +42,13 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+    // commands, running already-scheduled commands, removing finished or interrupted commands,
+    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().run();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -58,7 +65,7 @@ public class Robot extends TimedRobot {
     new SequentialCommandGroup(
             new DriveStraight(6.6),
             new WaitCommand(2),
-            new DriveStraight(6.5)
+            new DriveStraight(-6.5)
     ).schedule();
   }
 
