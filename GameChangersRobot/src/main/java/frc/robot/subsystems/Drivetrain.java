@@ -18,6 +18,14 @@ public class Drivetrain extends SubsystemBase {
     public static CANSparkMax rightWheelSlave = new CANSparkMax(kRightSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
+    public double leftMetersTravelled(){
+        return leftWheelMaster.getEncoder().getPosition();
+    }
+
+    public double rightMetersTravelled(){
+        return rightWheelMaster.getEncoder().getPosition();
+    }
+
     public Rotation2d getHeading() {
         return Rotation2d.fromDegrees(-ahrs.getAngle());
     }
