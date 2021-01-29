@@ -30,4 +30,9 @@ public class CompDeepSpace implements WaltRobot {
     public double getDrivetrainVelocityFactor() {
         return 0;
     }
+
+    @Override
+    public double getTrackWidth() {
+        return 0;
+    }
 }

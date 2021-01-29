@@ -12,4 +12,6 @@ public interface WaltRobot {
     double getDrivetrainPositionFactor();
     double getDrivetrainVelocityFactor();
 
+    double getTrackWidth();
+
 }

@@ -29,4 +29,9 @@ public class CompPowerUp implements WaltRobot {
         return 0;
     }
 
+    @Override
+    public double getTrackWidth() {
+        return 0;
+    }
+
 }
