@@ -8,13 +8,11 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.auton.DriveStraight;
+import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentification;
-import frc.robot.robots.WaltRobot;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.LiveDashboardHelper;
 
 import static frc.robot.Constants.Hardware.kRobotId1;
 import static frc.robot.Constants.Hardware.kRobotId2;
@@ -36,12 +34,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     currentRobot = RobotIdentification.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
-    System.out.println("Current robot is" + currentRobot.name());
+
 
     drivetrain = new Drivetrain();
     SmartDashboard.putNumber("Drive Straight Heading P", 0.19);
     SmartDashboard.putNumber("Turn P", 0.05);
-    CommandScheduler.getInstance().setDefaultCommand(drivetrain, new DriveCommand());
+    // CommandScheduler.getInstance().setDefaultCommand(drivetrain, new DriveCommand());
   }
 
   /**
@@ -52,7 +50,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -71,6 +71,9 @@ public class Robot extends TimedRobot {
 //            new WaitCommand(2),
 //            new DriveStraight(6.5)
 //    ).schedule();
+    drivetrain.resetOdometry(Paths.generateGalacticSearchRedA().getInitialPose());
+
+    new RamseteTrackingCommand(Paths.generateGalacticSearchRedA(), true).schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -85,7 +88,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    LiveDashboardHelper.putRobotData(drivetrain.getCurrentPose());
+    System.out.println("Current robot is" + currentRobot.name());
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override

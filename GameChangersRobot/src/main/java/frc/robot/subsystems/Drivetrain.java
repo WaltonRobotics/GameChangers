@@ -215,6 +215,10 @@ public class Drivetrain extends SubsystemBase {
         ahrs.zeroYaw();
     }
 
+    public void resetOdometry(Pose2d startingPose) {
+        mDriveOdometry.resetPosition(startingPose, getHeading());
+    }
+
     public DifferentialDriveWheelSpeeds getSpeeds() {
         return new DifferentialDriveWheelSpeeds(
                 getLeftVelocity(),
