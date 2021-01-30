@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.auton.RamseteTrackingCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.auton.DriveStraight;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentification;
+import frc.robot.robots.WaltRobot;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.utils.LiveDashboardHelper;
 
 import static frc.robot.Constants.Hardware.kRobotId1;
 import static frc.robot.Constants.Hardware.kRobotId2;
@@ -34,7 +36,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     currentRobot = RobotIdentification.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
-
+    System.out.println("Current robot is" + currentRobot.name());
 
     drivetrain = new Drivetrain();
     SmartDashboard.putNumber("Drive Straight Heading P", 0.19);
@@ -58,6 +60,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
   }
+  public void robotPeriodic() {}
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -98,10 +101,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    LiveDashboardHelper.putRobotData(drivetrain.getCurrentPose());
-    System.out.println("Current robot is" + currentRobot.name());
-  }
+  public void teleopPeriodic() {}
 
   /** This function is called once when the robot is disabled. */
   @Override

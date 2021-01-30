@@ -24,6 +24,8 @@ public class DriveStraight extends CommandBase {
 
     private double distanceAverage() {
         return (drivetrain.leftMetersTravelled() + drivetrain.rightMetersTravelled()) / 2;
+        leftWheelMaster.set(drivetrain.getmDriveStraightPowerController().calculate(leftWheelMaster.getEncoder().getPosition(), new TrapezoidProfile.State(desiredDistance, 0)));
+        rightWheelMaster.set(drivetrain.getmDriveStraightPowerController().calculate(rightWheelMaster.getEncoder().getPosition(), new TrapezoidProfile.State(desiredDistance, 0)));
     }
 
     @Override
@@ -37,5 +39,14 @@ public class DriveStraight extends CommandBase {
 
         SmartDashboard.putNumber("Turn rate", turnRate);
         drivetrain.setArcadeSpeeds(forward, turnRate);
+        double turnRate = -drivetrain.getmDriveStraightHeadingPIDController().calculate(drivetrain.getHeading().getDegrees(), 0);
+
+        SmartDashboard.putNumber("Error", drivetrain.getmDriveStraightHeadingPIDController().getPositionError());
+
+        /*
+        SmartDashboard.putNumber("Turn rate", turnRate);
+        drivetrain.getmDriveStraightPowerController().get
+        drivetrain.setArcadeSpeeds(, turnRate);
+         */
     }
 }
