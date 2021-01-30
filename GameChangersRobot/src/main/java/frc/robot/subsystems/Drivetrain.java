@@ -43,6 +43,9 @@ public class Drivetrain extends SubsystemBase {
 
     public DifferentialDriveKinematics getDriveKinematics() {
         return mDriveKinematics;
+
+    public Rotation2d getHeading() {
+        return Rotation2d.fromDegrees(-ahrs.getAngle());
     }
 
     public DifferentialDriveOdometry getDriveOdometry() {
@@ -255,7 +258,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(0.2, 0, 0,
-            new TrapezoidProfile.Constraints(5, 10));
+            new TrapezoidProfile.Constraints(5, 1));
 
     public ProfiledPIDController getmDriveStraightPowerController() {
         return mDriveStraightPowerController;
@@ -266,6 +269,6 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private ProfiledPIDController mDriveStraightHeadingPIDController = new ProfiledPIDController(0.2, 0, 0,
-            new TrapezoidProfile.Constraints(360, 80));
+            new TrapezoidProfile.Constraints(360, 1));
 }
 
