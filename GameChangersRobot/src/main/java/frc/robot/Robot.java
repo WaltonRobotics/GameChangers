@@ -78,9 +78,10 @@ public class Robot extends TimedRobot {
 //            new WaitCommand(2),
 //            new DriveStraight(6.5)
 //    ).schedule();
-    drivetrain.resetOdometry(Paths.generateGalacticSearchRedA().getInitialPose());
+    drivetrain.reset();
+    drivetrain.resetOdometry(Paths.generateBarrelRacingPath().getInitialPose());
 
-    new RamseteTrackingCommand(Paths.generateGalacticSearchRedA(), true).schedule();
+    new RamseteTrackingCommand(Paths.generateBarrelRacingPath(), true).schedule();
 
   }
 
@@ -98,7 +99,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     LiveDashboardHelper.putRobotData(drivetrain.getCurrentPose());
-
   }
 
   /** This function is called once when the robot is disabled. */

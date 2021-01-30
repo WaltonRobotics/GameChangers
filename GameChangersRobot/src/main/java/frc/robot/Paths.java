@@ -6,33 +6,33 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 
 import java.util.Arrays;
 
+import static frc.robot.Robot.currentRobot;
 import static frc.robot.Robot.drivetrain;
 
 public class Paths {
 
     public static Trajectory generateGalacticSearchRedA() {
         TrajectoryConfig config = new TrajectoryConfig(
-                Units.feetToMeters(10.0), Units.feetToMeters(4.0));
+                Units.feetToMeters(4.0), Units.feetToMeters(3.0));
 
         config.setKinematics(drivetrain.getDriveKinematics());
-        config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
+        config.addConstraint(
+                new DifferentialDriveVoltageConstraint(currentRobot.getCurrentRobot().getDrivetrainFeedforward(),
+                        drivetrain.getDriveKinematics(), 10.0));
+        // config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
         return TrajectoryGenerator.generateTrajectory(
-                Arrays.asList(new Pose2d(Units.feetToMeters(2.659), Units.feetToMeters(7.438), Rotation2d.fromDegrees(0)),
-                        new Pose2d(Units.feetToMeters(7.52), Units.feetToMeters(7.458), Rotation2d.fromDegrees(-0.063)),
-                        new Pose2d(Units.feetToMeters(9.084), Units.feetToMeters(6.801), Rotation2d.fromDegrees(-11.616)),
-                        new Pose2d(Units.feetToMeters(10.612), Units.feetToMeters(5.865), Rotation2d.fromDegrees(-35.011)),
-                        new Pose2d(Units.feetToMeters(12.456), Units.feetToMeters(4.908), Rotation2d.fromDegrees(-2.497)),
-                        new Pose2d(Units.feetToMeters(13.706), Units.feetToMeters(5.74), Rotation2d.fromDegrees(46.665)),
-                        new Pose2d(Units.feetToMeters(14.102), Units.feetToMeters(7.549), Rotation2d.fromDegrees(86.205)),
-                        new Pose2d(Units.feetToMeters(13.329), Units.feetToMeters(9.608), Rotation2d.fromDegrees(75.206)),
-                        new Pose2d(Units.feetToMeters(12.992), Units.feetToMeters(11.584), Rotation2d.fromDegrees(46.546)),
-                        new Pose2d(Units.feetToMeters(15.074), Units.feetToMeters(12.478), Rotation2d.fromDegrees(0)),
-                        new Pose2d(Units.feetToMeters(25.646), Units.feetToMeters(12.478), Rotation2d.fromDegrees(0))),
+                Arrays.asList(
+                        new Pose2d(Units.feetToMeters(2.659), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+                        new Pose2d(Units.feetToMeters(8.016), Units.feetToMeters(7.327), Rotation2d.fromDegrees(-35.148)),
+                        new Pose2d(Units.feetToMeters(12.512), Units.feetToMeters(5.061), Rotation2d.fromDegrees(20.55)),
+                        new Pose2d(Units.feetToMeters(15.223), Units.feetToMeters(12.669), Rotation2d.fromDegrees(0)),
+                        new Pose2d(Units.feetToMeters(24.959), Units.feetToMeters(12.461), Rotation2d.fromDegrees(0))),
                 config
         );
     }
@@ -46,7 +46,8 @@ public class Paths {
         config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
         return TrajectoryGenerator.generateTrajectory(
-                Arrays.asList(new Pose2d(Units.feetToMeters(2.54), Units.feetToMeters(2.529), Rotation2d.fromDegrees(0)),
+                Arrays.asList(
+                        new Pose2d(Units.feetToMeters(2.54), Units.feetToMeters(2.529), Rotation2d.fromDegrees(0)),
                         new Pose2d(Units.feetToMeters(15.017), Units.feetToMeters(2.55), Rotation2d.fromDegrees(0)),
                         new Pose2d(Units.feetToMeters(17.911), Units.feetToMeters(3.182), Rotation2d.fromDegrees(30.639)),
                         new Pose2d(Units.feetToMeters(18.486), Units.feetToMeters(4.596), Rotation2d.fromDegrees(61.051)),
@@ -74,7 +75,8 @@ public class Paths {
         config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
         return TrajectoryGenerator.generateTrajectory(
-                Arrays.asList(new Pose2d(Units.feetToMeters(2.54), Units.feetToMeters(10.016), Rotation2d.fromDegrees(0)),
+                Arrays.asList(
+                        new Pose2d(Units.feetToMeters(2.54), Units.feetToMeters(10.016), Rotation2d.fromDegrees(0)),
                         new Pose2d(Units.feetToMeters(7.48), Units.feetToMeters(10.016), Rotation2d.fromDegrees(0)),
                         new Pose2d(Units.feetToMeters(9.54), Units.feetToMeters(9.692), Rotation2d.fromDegrees(-15.24)),
                         new Pose2d(Units.feetToMeters(10.77), Units.feetToMeters(8.964), Rotation2d.fromDegrees(-36.395)),
@@ -106,7 +108,8 @@ public class Paths {
         config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
         return TrajectoryGenerator.generateTrajectory(
-                Arrays.asList(new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(5.046), Rotation2d.fromDegrees(0)),
+                Arrays.asList(
+                        new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(5.046), Rotation2d.fromDegrees(0)),
                         new Pose2d(Units.feetToMeters(15.077), Units.feetToMeters(5.004), Rotation2d.fromDegrees(0)),
                         new Pose2d(Units.feetToMeters(17.455), Units.feetToMeters(5.095), Rotation2d.fromDegrees(22.43)),
                         new Pose2d(Units.feetToMeters(19.101), Units.feetToMeters(6.364), Rotation2d.fromDegrees(57.822)),
@@ -125,7 +128,28 @@ public class Paths {
         );
     }
 
+    public static Trajectory generateBarrelRacingPath() {
+        TrajectoryConfig config = new TrajectoryConfig(
+                Units.feetToMeters(4.0), Units.feetToMeters(3.0));
 
+        config.setKinematics(drivetrain.getDriveKinematics());
+        config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(3.0)));
+
+        return TrajectoryGenerator.generateTrajectory(
+                Arrays.asList(
+                        new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0.069)),
+                        new Pose2d(Units.feetToMeters(13.895), Units.feetToMeters(6.116), Rotation2d.fromDegrees(-94.485)),
+                        new Pose2d(Units.feetToMeters(12.186), Units.feetToMeters(2.624), Rotation2d.fromDegrees(111.26)),
+                        new Pose2d(Units.feetToMeters(11.692), Units.feetToMeters(6.34), Rotation2d.fromDegrees(39.031)),
+                        new Pose2d(Units.feetToMeters(21.574), Units.feetToMeters(8.846), Rotation2d.fromDegrees(59.526)),
+                        new Pose2d(Units.feetToMeters(19.21), Units.feetToMeters(11.928), Rotation2d.fromDegrees(-136.805)),
+                        new Pose2d(Units.feetToMeters(19.336), Units.feetToMeters(7.259), Rotation2d.fromDegrees(-28.706)),
+                        new Pose2d(Units.feetToMeters(25.978), Units.feetToMeters(3.025), Rotation2d.fromDegrees(27.306)),
+                        new Pose2d(Units.feetToMeters(25.458), Units.feetToMeters(7.656), Rotation2d.fromDegrees(178.519)),
+                        new Pose2d(Units.feetToMeters(2.46), Units.feetToMeters(8.28), Rotation2d.fromDegrees(-179.633))),
+                config
+        );
+    }
 
 
 

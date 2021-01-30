@@ -62,8 +62,8 @@ public class RamseteTrackingCommand extends CommandBase {
 
         m_feedforward = currentRobot.getCurrentRobot().getDrivetrainFeedforward();
         m_speeds = drivetrain::getSpeeds;
-        m_leftController = currentRobot.getCurrentRobot().getDrivetrainVelocityPID();
-        m_rightController = currentRobot.getCurrentRobot().getDrivetrainVelocityPID();
+        m_leftController = currentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID();
+        m_rightController = currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID();
 
         m_useSparkPID = useSparkPID;
 

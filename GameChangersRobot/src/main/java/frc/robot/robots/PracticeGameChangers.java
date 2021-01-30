@@ -5,23 +5,35 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
 public class PracticeGameChangers implements WaltRobot {
 
-    SimpleMotorFeedforward drivetrainFeedforward = new SimpleMotorFeedforward(0.147, 2.1, 0.561);
-    PIDController drivetrainVoltagePID = new PIDController(1, 0, 0);
-    PIDController drivetrainVelocityPID= new PIDController(2.37, 0, 0);
+    private SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.147, 2.1, 0.561);
+    private PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
+    private PIDController mDrivetrainRightVoltagePID = new PIDController(1, 0, 0);
+    private PIDController mDrivetrainLeftVelocityPID = new PIDController(0.25, 0, 0);
+    private PIDController mDrivetrainRightVelocityPID = new PIDController(0.25, 0, 0);
 
     @Override
     public SimpleMotorFeedforward getDrivetrainFeedforward() {
-        return drivetrainFeedforward;
+        return mDrivetrainFeedforward;
     }
 
     @Override
-    public PIDController getDrivetrainVoltagePID() {
-        return drivetrainVoltagePID;
+    public PIDController getDrivetrainLeftVoltagePID() {
+        return mDrivetrainLeftVoltagePID;
     }
 
     @Override
-    public PIDController getDrivetrainVelocityPID() {
-        return drivetrainVelocityPID;
+    public PIDController getDrivetrainRightVoltagePID() {
+        return mDrivetrainRightVoltagePID;
+    }
+
+    @Override
+    public PIDController getDrivetrainLeftVelocityPID() {
+        return mDrivetrainLeftVelocityPID;
+    }
+
+    @Override
+    public PIDController getDrivetrainRightVelocityPID() {
+        return mDrivetrainRightVelocityPID;
     }
 
     @Override

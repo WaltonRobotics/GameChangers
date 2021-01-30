@@ -10,12 +10,22 @@ public class PracticePowerUp implements WaltRobot {
     }
 
     @Override
-    public PIDController getDrivetrainVoltagePID() {
+    public PIDController getDrivetrainLeftVoltagePID() {
         return null;
     }
 
     @Override
-    public PIDController getDrivetrainVelocityPID() {
+    public PIDController getDrivetrainRightVoltagePID() {
+        return null;
+    }
+
+    @Override
+    public PIDController getDrivetrainLeftVelocityPID() {
+        return null;
+    }
+
+    @Override
+    public PIDController getDrivetrainRightVelocityPID() {
         return null;
     }
 

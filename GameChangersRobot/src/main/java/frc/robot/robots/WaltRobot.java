@@ -7,8 +7,10 @@ public interface WaltRobot {
 
     /* Drivetrain methods */
     SimpleMotorFeedforward getDrivetrainFeedforward();
-    PIDController getDrivetrainVoltagePID();
-    PIDController getDrivetrainVelocityPID();
+    PIDController getDrivetrainLeftVoltagePID();
+    PIDController getDrivetrainRightVoltagePID();
+    PIDController getDrivetrainLeftVelocityPID();
+    PIDController getDrivetrainRightVelocityPID();
     double getDrivetrainPositionFactor();
     double getDrivetrainVelocityFactor();
 
