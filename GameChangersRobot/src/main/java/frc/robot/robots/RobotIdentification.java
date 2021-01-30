@@ -22,12 +22,12 @@ public enum RobotIdentification {
     }
 
     public static RobotIdentification findByInputs(boolean input1, boolean input2) {
-        for (RobotIdentification i : values()) {
+       /* for (RobotIdentification i : values()) {
             if (i.input1 == input1 && i.input2 == input2) {
                 return i;
             }
-        }
-        return COMP_GAME_CHANGERS;
+        }*/
+        return PRACTICE_GAME_CHANGERS;
     }
 
     public WaltRobot getCurrentRobot() {

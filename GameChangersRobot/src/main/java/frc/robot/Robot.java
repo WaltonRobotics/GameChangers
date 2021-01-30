@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.auton.DriveStraight;
+import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentification;
-import frc.robot.robots.WaltRobot;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.LiveDashboardHelper;
 
 import static frc.robot.Constants.Hardware.kRobotId1;
 import static frc.robot.Constants.Hardware.kRobotId2;
@@ -60,7 +60,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
   }
-  public void robotPeriodic() {}
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -82,11 +81,7 @@ public class Robot extends TimedRobot {
     drivetrain.resetOdometry(Paths.generateGalacticSearchRedA().getInitialPose());
 
     new RamseteTrackingCommand(Paths.generateGalacticSearchRedA(), true).schedule();
-    new SequentialCommandGroup(
-            new DriveStraight(6.6),
-            new WaitCommand(2),
-            new DriveStraight(-6.5)
-    ).schedule();
+
   }
 
   /** This function is called periodically during autonomous. */
@@ -101,7 +96,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    LiveDashboardHelper.putRobotData(drivetrain.getCurrentPose());
+
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
