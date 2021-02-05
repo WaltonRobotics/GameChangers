@@ -9,6 +9,7 @@ import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_1;
 import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_2;
 import static frc.robot.Constants.Turret.TURRET_ROTATIONS_PER_TICK;
+import static frc.robot.OI.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -20,9 +21,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.StateMachine.IState;
-
-import static frc.robot.OI.mFlyWheelMaster;
 
 public class ShooterTurret extends SubsystemBase {
     private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
@@ -63,7 +63,9 @@ public class ShooterTurret extends SubsystemBase {
         @Override
         public void initialize() {
             setOpenLoopDutyCycles(0);
+            if(shootButton.get()){
 
+            }
         }
 
         @Override
@@ -76,4 +78,5 @@ public class ShooterTurret extends SubsystemBase {
 
         }
     }
+
 }
