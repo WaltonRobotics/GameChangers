@@ -12,18 +12,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.Hardware.*;
 
 public class Drivetrain extends SubsystemBase {
-    public static CANSparkMax leftWheelMaster = new CANSparkMax(kLeftMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public static CANSparkMax rightWheelMaster = new CANSparkMax(kRightMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public static CANSparkMax leftWheelSlave = new CANSparkMax(kLeftSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public static CANSparkMax rightWheelSlave = new CANSparkMax(kRightSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public static CANSparkMax mLeftWheelsMaster = new CANSparkMax(kLeftMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public static CANSparkMax mRightWheelsMaster = new CANSparkMax(kRightMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public static CANSparkMax mLeftWheelsSlave = new CANSparkMax(kLeftSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public static CANSparkMax mRightWheelsSlave = new CANSparkMax(kRightSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
+    public Drivetrain(){
+        setupMotors();
+        reset();
+    }
+
     public double leftMetersTravelled(){
-        return leftWheelMaster.getEncoder().getPosition();
+        return mLeftWheelsMaster.getEncoder().getPosition();
     }
 
     public double rightMetersTravelled(){
-        return rightWheelMaster.getEncoder().getPosition();
+        return mRightWheelsMaster.getEncoder().getPosition();
     }
 
     public Rotation2d getHeading() {
@@ -36,8 +41,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private void resetEncoders() {
-        leftWheelMaster.getEncoder().setPosition(0);
-        rightWheelMaster.getEncoder().setPosition(0);
+        mLeftWheelsMaster.getEncoder().setPosition(0);
+        mRightWheelsMaster.getEncoder().setPosition(0);
     }
 
     public void resetHeading() {
@@ -62,12 +67,69 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setDutyCycles(double leftDutyCycle, double rightDutyCycle) {
-        leftWheelMaster.set(leftDutyCycle);
-        rightWheelMaster.set(rightDutyCycle);
+        mLeftWheelsMaster.set(leftDutyCycle);
+        mRightWheelsMaster.set(rightDutyCycle);
+    }
+
+    public void setupMotors() {
+        //        leftWheelsMaster.restoreFactoryDefaults();
+        //        leftWheelsSlave.restoreFactoryDefaults();
+        //        rightWheelsMaster.restoreFactoryDefaults();
+        //        rightWheelsSlave.restoreFactoryDefaults();
+        mLeftWheelsMaster.setInverted(true);
+
+        mLeftWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        mLeftWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        mRightWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        mRightWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+
+        mLeftWheelsSlave.follow(mLeftWheelsMaster);
+        mRightWheelsSlave.follow(mRightWheelsMaster);
+
+        mLeftWheelsMaster.setOpenLoopRampRate(0);
+        mLeftWheelsSlave.setOpenLoopRampRate(0);
+        mRightWheelsMaster.setOpenLoopRampRate(0);
+        mRightWheelsSlave.setOpenLoopRampRate(0);
+
+        mLeftWheelsMaster.setSmartCurrentLimit(80);
+        mLeftWheelsSlave.setSmartCurrentLimit(80);
+        mRightWheelsMaster.setSmartCurrentLimit(80);
+        mRightWheelsSlave.setSmartCurrentLimit(80);
+
+//        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+//        mLeftWheelsSlave.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+//        mRightWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+//        mRightWheelsSlave.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+//
+//        mLeftWheelsMaster.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+//        mLeftWheelsSlave.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+//        mRightWheelsMaster.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+//        mRightWheelsSlave.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+//
+//        mLeftWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getP(), VOLTAGE_PID_SLOT);
+//        mLeftWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getI(), VOLTAGE_PID_SLOT);
+//        mLeftWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getD(), VOLTAGE_PID_SLOT);
+//
+//        mRightWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getP(), VOLTAGE_PID_SLOT);
+//        mRightWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getI(), VOLTAGE_PID_SLOT);
+//        mRightWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getD(), VOLTAGE_PID_SLOT);
+//
+//        mLeftWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP(), VELOCITY_PID_SLOT);
+//        mLeftWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getI(), VELOCITY_PID_SLOT);
+//        mLeftWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getD(), VELOCITY_PID_SLOT);
+//
+//        mRightWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP(), VELOCITY_PID_SLOT);
+//        mRightWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getI(), VELOCITY_PID_SLOT);
+//        mRightWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getD(), VELOCITY_PID_SLOT);
+//
+//        mLeftWheelsMaster.burnFlash();
+//        mLeftWheelsSlave.burnFlash();
+//        mRightWheelsSlave.burnFlash();
+//        mRightWheelsMaster.burnFlash();
     }
 
     private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(0.2, 0, 0,
-            new TrapezoidProfile.Constraints(5, 1));
+            new TrapezoidProfile.Constraints(5, 4));
 
     public ProfiledPIDController getmDriveStraightPowerController() {
         return mDriveStraightPowerController;
@@ -78,6 +140,6 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private ProfiledPIDController mDriveStraightHeadingPIDController = new ProfiledPIDController(0.2, 0, 0,
-            new TrapezoidProfile.Constraints(360, 1));
+            new TrapezoidProfile.Constraints(5, 4));
 }
 
