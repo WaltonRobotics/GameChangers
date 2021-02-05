@@ -19,5 +19,8 @@ public class StateMachine {
             currentState.initialize();
         }
     }
+    public enum States() {
+        
+    }
 }
 

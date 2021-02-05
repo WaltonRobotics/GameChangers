@@ -63,14 +63,13 @@ public class ShooterTurret extends SubsystemBase {
         @Override
         public void initialize() {
             setOpenLoopDutyCycles(0);
-            if(shootButton.get()){
-
+            shootButton.whenPressed(return)
             }
         }
 
         @Override
         public IState execute() {
-            return null;
+            shootButton.get();
         }
 
         @Override
