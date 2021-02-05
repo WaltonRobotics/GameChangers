@@ -42,6 +42,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Drive Straight Heading P", 0.19);
     SmartDashboard.putNumber("Turn P", 0.05);
     SmartDashboard.putNumber("Forward P", 0.2);
+    SmartDashboard.putNumber("Left Velocity P", 1.25);
+    SmartDashboard.putNumber("Right Velocity P", 1.25);
     CommandScheduler.getInstance().setDefaultCommand(drivetrain, new DriveCommand());
   }
 
@@ -79,9 +81,9 @@ public class Robot extends TimedRobot {
 //            new DriveStraight(6.5)
 //    ).schedule();
     drivetrain.reset();
-    drivetrain.resetOdometry(Paths.TestTrajectory.testTrajectory.getInitialPose());
+    drivetrain.resetOdometry(Paths.GalacticSearchPaths.redA.getInitialPose());
 
-    new RamseteTrackingCommand(Paths.TestTrajectory.testTrajectory, true).schedule();
+    new RamseteTrackingCommand(Paths.GalacticSearchPaths.redA, true).schedule();
 
   }
 

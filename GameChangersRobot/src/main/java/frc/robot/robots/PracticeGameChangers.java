@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
 public class PracticeGameChangers implements WaltRobot {
 
-    private SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.147, 2.1, 0.561);
+    private SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.147, 2.1, 0);
     private PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
     private PIDController mDrivetrainRightVoltagePID = new PIDController(1, 0, 0);
-    private PIDController mDrivetrainLeftVelocityPID = new PIDController(0.25, 0, 0);
-    private PIDController mDrivetrainRightVelocityPID = new PIDController(0.25, 0, 0);
+    private PIDController mDrivetrainLeftVelocityPID = new PIDController(1.5, 0, 0);
+    private PIDController mDrivetrainRightVelocityPID = new PIDController(1.5, 0, 0);
 
     @Override
     public SimpleMotorFeedforward getDrivetrainFeedforward() {

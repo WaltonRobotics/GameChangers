@@ -157,6 +157,9 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        mLeftWheelsMaster.getPIDController().setP(SmartDashboard.getNumber("Left Velocity P", 1.25), VELOCITY_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setP(SmartDashboard.getNumber("Right Velocity P", 1.25), VELOCITY_PID_SLOT);
+
         updateRobotPose();
         SmartDashboard.putNumber("Angular Rate", getAngularVelocity());
         SmartDashboard.putNumber("Angle", getHeading().getDegrees());

@@ -17,7 +17,6 @@ import static frc.robot.Robot.drivetrain;
 public class Paths {
 
     public static class TestTrajectory {
-
         public static Trajectory testTrajectory = generateTestTrajectory();
 
         public static Trajectory generateTestTrajectory() {
@@ -29,18 +28,14 @@ public class Paths {
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                            new Pose2d(Units.feetToMeters(4.042), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(7.3225), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0))),
+                            new Pose2d(Units.feetToMeters(0), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(3.28084), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0))),
                     config
             );
         }
-
-
-
     }
 
     public static class GalacticSearchPaths {
-
         public static Trajectory redA = generateGalacticSearchRedA();
         public static Trajectory redB = generateGalacticSearchRedB();
         public static Trajectory blueA = generateGalacticSearchBlueA();
@@ -177,7 +172,5 @@ public class Paths {
                 config
         );
     }
-
-
 
 }
