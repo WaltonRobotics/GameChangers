@@ -37,6 +37,7 @@ public class Drivetrain extends SubsystemBase {
     public static CANSparkMax mLeftWheelsSlave = new CANSparkMax(kLeftSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
     public static CANSparkMax mRightWheelsSlave = new CANSparkMax(kRightSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
     private final LinearSystem<N2, N2, N2> driveModel = LinearSystemId.identifyDrivetrainSystem(
             currentRobot.getCurrentRobot().getDrivetrainFeedforward().kv,
             0.5,
@@ -61,14 +62,17 @@ public class Drivetrain extends SubsystemBase {
             driveObserver,
             12.0, 0.02
     );
+
     private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(currentRobot.getCurrentRobot().getTrackWidth());
     private final DifferentialDriveOdometry mDriveOdometry = new DifferentialDriveOdometry(getHeading());
     private final RamseteController mRamseteController = new RamseteController();
     private Pose2d mCurrentPose = new Pose2d();
+
     private final ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(0.2, 0, 0,
             new TrapezoidProfile.Constraints(5, 10));
     private final ProfiledPIDController mDriveStraightHeadingPIDController = new ProfiledPIDController(0.2, 0, 0,
             new TrapezoidProfile.Constraints(360, 80));
+
     public Drivetrain() {
         setupMotors();
         reset();

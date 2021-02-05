@@ -4,6 +4,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Constants {
 
+    public class InputDevices {
+
+        public static final int kLeftJoystickPort = 0;
+        public static final int kRightJoystickPort = 1;
+        public static final int kGamepadPort = 2;
+
+    }
+
     public class Hardware {
 
         public static final int kLeftMaster = 3;
