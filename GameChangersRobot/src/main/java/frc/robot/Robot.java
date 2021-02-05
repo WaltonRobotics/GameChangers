@@ -79,9 +79,9 @@ public class Robot extends TimedRobot {
 //            new DriveStraight(6.5)
 //    ).schedule();
     drivetrain.reset();
-    drivetrain.resetOdometry(Paths.generateBarrelRacingPath().getInitialPose());
+    drivetrain.resetOdometry(Paths.TestTrajectory.testTrajectory.getInitialPose());
 
-    new RamseteTrackingCommand(Paths.generateBarrelRacingPath(), true).schedule();
+    new RamseteTrackingCommand(Paths.TestTrajectory.testTrajectory, true).schedule();
 
   }
 
