@@ -10,7 +10,11 @@ public class OI {
 
     public static Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
     public static Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
+    public static 
 
-    public static TalonFX mFlyWheelMaster = new TalonFX(9);
+    public static TalonFX mFlyWheelMaster = new TalonFX(kFlyWheelMaster);
     public static TalonFX mFlyWheelSlave = new TalonFX(10);
+
+    public static JoystickButton shootButton = new JoystickButton()
+
 }

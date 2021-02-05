@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.Shooter.defaultShooterRPM;
+import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_1;
 import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_2;
 import static frc.robot.Constants.Turret.TURRET_ROTATIONS_PER_TICK;
@@ -20,12 +20,13 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.StateMachine.IState;
 
 import static frc.robot.OI.mFlyWheelMaster;
 
-public class Shooter extends SubsystemBase {
-    private final TalonFX flywheelMaster = new TalonFX(9);
-    private final TalonFX flywheelSlave = new TalonFX(10);
+public class ShooterTurret extends SubsystemBase {
+    private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
+    private final TalonFX flywheelSlave = new TalonFX(kFlySlave);
 
     private double minShootingDistance = 9;
     private double maxShootingDistance = 25;
@@ -35,7 +36,7 @@ public class Shooter extends SubsystemBase {
 
     public boolean isReadyToShoot = false;
 
-    public Shooter(double targetVelocity) {
+    public ShooterTurret(double targetVelocity) {
 
 
         //SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(10, 20, 10);
@@ -58,4 +59,21 @@ public class Shooter extends SubsystemBase {
         return mFlyWheelMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
 
+    IState off = new IState() {
+        @Override
+        public void initialize() {
+            setOpenLoopDutyCycles(0);
+
+        }
+
+        @Override
+        public IState execute() {
+            return null;
+        }
+
+        @Override
+        public void finish() {
+
+        }
+    }
 }
