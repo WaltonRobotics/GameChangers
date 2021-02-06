@@ -20,7 +20,7 @@ public class StateMachine {
         }
     }
     public enum States() {
-        
+
     }
 }
 
