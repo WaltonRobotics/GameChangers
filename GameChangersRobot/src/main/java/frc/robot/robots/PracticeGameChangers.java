@@ -38,7 +38,7 @@ public class PracticeGameChangers implements WaltRobot {
 
     @Override
     public double getDrivetrainPositionFactor() {
-        return 1/16.773784;
+        return 0.05984734;
     }
 
     @Override
