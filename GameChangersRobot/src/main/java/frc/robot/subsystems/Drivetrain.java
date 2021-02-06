@@ -6,8 +6,10 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.Constants.SmartDashboardKeys.*;
 
 import static frc.robot.Constants.Hardware.*;
 
@@ -17,6 +19,12 @@ public class Drivetrain extends SubsystemBase {
     public static CANSparkMax mLeftWheelsSlave = new CANSparkMax(kLeftSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
     public static CANSparkMax mRightWheelsSlave = new CANSparkMax(kRightSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber(kleftEncodervalue, leftMetersTravelled());
+        SmartDashboard.putNumber(krightEncoderValue, rightMetersTravelled());
+    }
 
     public Drivetrain(){
         setupMotors();
@@ -96,6 +104,9 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.setSmartCurrentLimit(80);
         mRightWheelsSlave.setSmartCurrentLimit(80);
 
+        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(1 / 64.125);
+        mRightWheelsMaster.getEncoder().setPositionConversionFactor(1 / 64.125);
+
 //        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
 //        mLeftWheelsSlave.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
 //        mRightWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
@@ -128,8 +139,8 @@ public class Drivetrain extends SubsystemBase {
 //        mRightWheelsMaster.burnFlash();
     }
 
-    private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(2, 0, 0,
-            new TrapezoidProfile.Constraints(5, 4));
+    private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(20, 0, 0,
+            new TrapezoidProfile.Constraints(60,30));
 
     public ProfiledPIDController getmDriveStraightPowerController() {
         return mDriveStraightPowerController;
@@ -139,7 +150,6 @@ public class Drivetrain extends SubsystemBase {
         return mDriveStraightHeadingPIDController;
     }
 
-    private ProfiledPIDController mDriveStraightHeadingPIDController = new ProfiledPIDController(0.2, 0, 0,
-            new TrapezoidProfile.Constraints(5, 4));
+    private ProfiledPIDController mDriveStraightHeadingPIDController = new ProfiledPIDController(20, 0, 0,
+            new TrapezoidProfile.Constraints(60, 30));
 }
-

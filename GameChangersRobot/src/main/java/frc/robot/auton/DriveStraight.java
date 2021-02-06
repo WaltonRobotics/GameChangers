@@ -29,7 +29,7 @@ public class DriveStraight extends CommandBase {
     @Override
     public void execute() {
         drivetrain.getmDriveStraightHeadingPIDController().setP(SmartDashboard.getNumber("Drive Straight Heading P", 0.19));
-        drivetrain.getmDriveStraightPowerController().setP(SmartDashboard.getNumber("Forward P", 0.2));
+        drivetrain.getmDriveStraightPowerController().setP(SmartDashboard.getNumber("Forward P", 0.1));
         double turnRate = -drivetrain.getmDriveStraightHeadingPIDController().calculate(drivetrain.getHeading().getDegrees(), 0);
         double forward = drivetrain.getmDriveStraightPowerController().calculate(distanceAverage(), desiredDistance);
 
@@ -38,5 +38,14 @@ public class DriveStraight extends CommandBase {
         SmartDashboard.putNumber("Turn rate", turnRate);
         SmartDashboard.putNumber("Forward rate", forward);
         drivetrain.setArcadeSpeeds(forward, turnRate);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return Math.abs((drivetrain.leftMetersTravelled() + drivetrain.rightMetersTravelled()) / 2) >= desiredDistance;
+    }
+    @Override
+    public void end(boolean interrupted) {
+        drivetrain.setDutyCycles(0, 0);
     }
 }

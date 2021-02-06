@@ -63,9 +63,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     new SequentialCommandGroup(
-            new DriveStraight(6.6),
+            new DriveStraight(3),
             new WaitCommand(2),
-            new DriveStraight(-6.5)
+            new DriveStraight(-3)
     ).schedule();
   }
 
