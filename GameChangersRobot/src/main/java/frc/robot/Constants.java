@@ -10,6 +10,7 @@ public class Constants {
         public static final int kRightJoystickPort = 1;
         public static final int kGamepadPort = 2;
 
+        public static final double kDeadband = 0.1;
     }
 
     public class Hardware {

@@ -5,6 +5,8 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.controller.LinearQuadraticRegulator;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.estimator.KalmanFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
@@ -66,6 +69,7 @@ public class Drivetrain extends SubsystemBase {
     private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(currentRobot.getCurrentRobot().getTrackWidth());
     private final DifferentialDriveOdometry mDriveOdometry = new DifferentialDriveOdometry(getHeading());
     private final RamseteController mRamseteController = new RamseteController();
+
     private Pose2d mCurrentPose = new Pose2d();
 
     private final ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(0.2, 0, 0,
@@ -98,6 +102,58 @@ public class Drivetrain extends SubsystemBase {
         return driveControlLoop;
     }
 
+    public void setupMotorsAuton() {
+        mLeftWheelsMaster.setInverted(true);
+
+        mLeftWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        mLeftWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        mRightWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        mRightWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+
+        mLeftWheelsSlave.follow(mLeftWheelsMaster);
+        mRightWheelsSlave.follow(mRightWheelsMaster);
+
+        mLeftWheelsMaster.setOpenLoopRampRate(0);
+        mLeftWheelsSlave.setOpenLoopRampRate(0);
+        mRightWheelsMaster.setOpenLoopRampRate(0);
+        mRightWheelsSlave.setOpenLoopRampRate(0);
+
+        mLeftWheelsMaster.setSmartCurrentLimit(80);
+        mLeftWheelsSlave.setSmartCurrentLimit(80);
+        mRightWheelsMaster.setSmartCurrentLimit(80);
+        mRightWheelsSlave.setSmartCurrentLimit(80);
+
+        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+        mLeftWheelsSlave.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+        mRightWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+        mRightWheelsSlave.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+
+        mLeftWheelsMaster.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+        mLeftWheelsSlave.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+        mRightWheelsMaster.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+        mRightWheelsSlave.getEncoder().setVelocityConversionFactor(currentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+
+        mLeftWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getP(), VOLTAGE_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getI(), VOLTAGE_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getD(), VOLTAGE_PID_SLOT);
+
+        mRightWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getP(), VOLTAGE_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getI(), VOLTAGE_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getD(), VOLTAGE_PID_SLOT);
+
+        mLeftWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP(), VELOCITY_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getI(), VELOCITY_PID_SLOT);
+        mLeftWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getD(), VELOCITY_PID_SLOT);
+
+        mRightWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP(), VELOCITY_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getI(), VELOCITY_PID_SLOT);
+        mRightWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getD(), VELOCITY_PID_SLOT);
+
+        mLeftWheelsMaster.burnFlash();
+        mLeftWheelsSlave.burnFlash();
+        mRightWheelsSlave.burnFlash();
+        mRightWheelsMaster.burnFlash();
+    }
     public void setupMotors() {
         //        leftWheelsMaster.restoreFactoryDefaults();
         //        leftWheelsSlave.restoreFactoryDefaults();
@@ -157,8 +213,8 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        mLeftWheelsMaster.getPIDController().setP(SmartDashboard.getNumber("Left Velocity P", 1.25), VELOCITY_PID_SLOT);
-        mRightWheelsMaster.getPIDController().setP(SmartDashboard.getNumber("Right Velocity P", 1.25), VELOCITY_PID_SLOT);
+        //mLeftWheelsMaster.getPIDController().setP(SmartDashboard.getNumber("Left Velocity P", 1.25), VELOCITY_PID_SLOT);
+        //mRightWheelsMaster.getPIDController().setP(SmartDashboard.getNumber("Right Velocity P", 1.25), VELOCITY_PID_SLOT);
 
         updateRobotPose();
         SmartDashboard.putNumber("Angular Rate", getAngularVelocity());
@@ -167,6 +223,10 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("right neo encoder velocity", getRightVelocity());
         SmartDashboard.putNumber("Left neo encoder distance", getLeftMetersDisplacement());
         SmartDashboard.putNumber("right neo encoder distance", getRightMetersDisplacement());
+
+        var translation = mDriveOdometry.getPoseMeters().getTranslation();
+        m_xEntry.setNumber(translation.getX());
+        m_yEntry.setNumber(translation.getY());
     }
 
     public void setArcadeSpeeds(double xSpeed, double zRotation) {
@@ -194,7 +254,9 @@ public class Drivetrain extends SubsystemBase {
 
     public void setVelocities(double leftVelocity, double leftFeedForward, double rightVelocity, double rightFeedForward) {
         mLeftWheelsMaster.getPIDController().setReference(leftVelocity, ControlType.kVelocity, VELOCITY_PID_SLOT, leftFeedForward, CANPIDController.ArbFFUnits.kVoltage);
+        //mLeftWheelsMaster.getPIDController().setP(0, VELOCITY_PID_SLOT);
         mRightWheelsMaster.getPIDController().setReference(rightVelocity, ControlType.kVelocity, VELOCITY_PID_SLOT, rightFeedForward, CANPIDController.ArbFFUnits.kVoltage);
+        //mRightWheelsMaster.getPIDController().setP(0, VELOCITY_PID_SLOT);
     }
 
     public void reset() {
@@ -211,7 +273,11 @@ public class Drivetrain extends SubsystemBase {
         ahrs.zeroYaw();
     }
 
+    NetworkTableEntry m_xEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("X");
+    NetworkTableEntry m_yEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("Y");
+
     public void resetOdometry(Pose2d startingPose) {
+        resetEncoders();
         mDriveOdometry.resetPosition(startingPose, getHeading());
     }
 

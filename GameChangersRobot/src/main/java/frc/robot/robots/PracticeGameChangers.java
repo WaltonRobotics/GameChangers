@@ -8,8 +8,8 @@ public class PracticeGameChangers implements WaltRobot {
     private SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
     private PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
     private PIDController mDrivetrainRightVoltagePID = new PIDController(1, 0, 0);
-    private PIDController mDrivetrainLeftVelocityPID = new PIDController(1.5, 0, 0);
-    private PIDController mDrivetrainRightVelocityPID = new PIDController(1.5, 0, 0);
+    private PIDController mDrivetrainLeftVelocityPID = new PIDController(0.05, 0, 0);
+    private PIDController mDrivetrainRightVelocityPID = new PIDController(0.05, 0, 0);
 
     @Override
     public SimpleMotorFeedforward getDrivetrainFeedforward() {
@@ -48,6 +48,6 @@ public class PracticeGameChangers implements WaltRobot {
 
     @Override
     public double getTrackWidth() {
-        return 0.6636711328082447;
+        return 0.61;
     }
 }

@@ -1,5 +1,8 @@
 package frc.robot.commands.auton;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -46,6 +49,7 @@ public class RamseteTrackingCommand extends CommandBase {
     private final PIDController m_rightController;
     private DifferentialDriveWheelSpeeds m_prevSpeeds;
     private double m_prevTime;
+    private boolean debugMode;
 
     /**
      * Constructs a new RamseteCommand that, when executed, will follow the provided trajectory.
@@ -54,10 +58,22 @@ public class RamseteTrackingCommand extends CommandBase {
      *
      * @param trajectory The trajectory to follow.
      */
-    public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID) {
+    public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean debugMode) {
         m_trajectory = requireNonNullParam(trajectory, "trajectory", "RamseteCommand");
         m_pose = drivetrain::getCurrentPose;
-        m_follower = drivetrain.getRamseteController();
+
+        if(debugMode) {
+            m_follower = new RamseteController() {
+                @Override
+                public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
+                                               double angularVelocityRefRadiansPerSecond) {
+                    return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+                }
+            };
+        } else {
+            m_follower = drivetrain.getRamseteController();
+        }
+
         m_kinematics = drivetrain.getDriveKinematics();
 
         m_feedforward = currentRobot.getCurrentRobot().getDrivetrainFeedforward();
@@ -92,8 +108,15 @@ public class RamseteTrackingCommand extends CommandBase {
         LiveDashboardHelper.putTrajectoryData(m_trajectory.getInitialPose());
     }
 
+    private NetworkTable table = NetworkTableInstance.getDefault().getTable("troubleshooting");
+    private NetworkTableEntry leftReference = table.getEntry("left_reference");
+    private NetworkTableEntry leftMeasurement = table.getEntry("left_measurement");
+    private NetworkTableEntry rightReference = table.getEntry("right_reference");
+    private NetworkTableEntry rightMeasurement = table.getEntry("right_measurement");
+
     @Override
     public void execute() {
+
         double curTime = m_timer.get();
         double dt = curTime - m_prevTime;
 
@@ -146,6 +169,12 @@ public class RamseteTrackingCommand extends CommandBase {
             double rightFeedforward =
                     m_feedforward.calculate(rightSpeedSetpoint,
                             (rightSpeedSetpoint - m_prevSpeeds.rightMetersPerSecond) / dt);
+
+            leftMeasurement.setNumber(m_speeds.get().leftMetersPerSecond);
+            leftReference.setNumber(leftSpeedSetpoint);
+
+            rightMeasurement.setNumber(m_speeds.get().rightMetersPerSecond);
+            rightReference.setNumber(rightSpeedSetpoint);
 
             drivetrain.setVelocities(leftSpeedSetpoint, leftFeedforward, rightSpeedSetpoint, rightFeedforward);
         }

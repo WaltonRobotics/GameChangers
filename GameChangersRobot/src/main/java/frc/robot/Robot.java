@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -18,6 +22,7 @@ import frc.robot.utils.LiveDashboardHelper;
 
 import static frc.robot.Constants.Hardware.kRobotId1;
 import static frc.robot.Constants.Hardware.kRobotId2;
+import static frc.robot.subsystems.Drivetrain.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -54,6 +59,7 @@ public class Robot extends TimedRobot {
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
    */
+
   @Override
   public void robotPeriodic() {
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -80,10 +86,11 @@ public class Robot extends TimedRobot {
 //            new WaitCommand(2),
 //            new DriveStraight(6.5)
 //    ).schedule();
+    drivetrain.setupMotorsAuton();
     drivetrain.reset();
-    drivetrain.resetOdometry(Paths.GalacticSearchPaths.redA.getInitialPose());
+    drivetrain.resetOdometry(new Pose2d());
 
-    new RamseteTrackingCommand(Paths.GalacticSearchPaths.redA, true).schedule();
+    //new RamseteTrackingCommand(Paths.GalacticSearchPaths.redA, true, false).schedule();
 
   }
 
