@@ -12,6 +12,7 @@ public class StateMachine {
     public void run() {
 
         IState nextState = currentState.execute();
+
         if(nextState != currentState){
 
             currentState.finish();
@@ -19,7 +20,7 @@ public class StateMachine {
             currentState.initialize();
         }
     }
-    public enum States implements IState {
+    public enum States {
         off,
         spinningUp,
         shooting

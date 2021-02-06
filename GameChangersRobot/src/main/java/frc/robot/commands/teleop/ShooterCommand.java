@@ -2,27 +2,29 @@ package frc.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.StateMachine.IState;
-import frc.robot.StateMachine.StateMachine;
 
 import static frc.robot.OI.shootButton;
-import static frc.robot.Robot.shooterTurret;
+import static frc.robot.Robot.shooter;
 import static frc.robot.StateMachine.StateMachine.States.spinningUp;
 
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter;
+import frc.robot.utils.MovingAverage;
 
 public class ShooterCommand extends CommandBase {
 
     IState off = new IState() {
         @Override
-        public StateMachine.States initialize() {
-            shooterTurret.setOpenLoopDutyCycles(0);
-            shootButton.whenPressed(StateMachine.States spinningUp);
-            return spinningUp;
+        public void initialize() {
+            shooter.setOpenLoopDutyCycles(0);
         }
 
 
         @Override
-        public StateMachine.States execute() {
-            shootButton.get();
+        public IState execute() {
+            if(shootButton.get()){
+                if(new MovingAverage(5) - setClosedLoopVelocity() <= )
+            }
         }
 
         @Override

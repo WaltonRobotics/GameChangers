@@ -48,16 +48,16 @@ public class Shooter extends SubsystemBase {
         mFlyWheelMaster.set(ControlMode.Velocity, targetDutyCycles);
     }
 
-    private void setClosedLoopVelocity(double targetVelocity) {
+    public static void setClosedLoopVelocity(double targetVelocity) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetVelocity);
     }
 
-    private double getVelocity() {
+    public static double getVelocity() {
         return mFlyWheelMaster.getSelectedSensorVelocity();
     }
 
 
-    private double getFlyWheelSpeed() {
+    public double getFlyWheelSpeed() {
         return mFlyWheelMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
 }
