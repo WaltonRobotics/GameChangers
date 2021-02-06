@@ -6,9 +6,6 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.Shooter.*;
-import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_1;
-import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_2;
-import static frc.robot.Constants.Turret.TURRET_ROTATIONS_PER_TICK;
 import static frc.robot.OI.*;
 import static frc.robot.StateMachine.StateMachine.States.spinningUp;
 
@@ -25,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.StateMachine.IState;
 
-public class ShooterTurret extends SubsystemBase {
+public class Shooter extends SubsystemBase {
     private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
     private final TalonFX flywheelSlave = new TalonFX(kFlySlave);
 
@@ -37,26 +34,27 @@ public class ShooterTurret extends SubsystemBase {
 
     public boolean isReadyToShoot = false;
 
-    public ShooterTurret() {
+    public Shooter() {
 
 
         //SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(10, 20, 10);
 
     }
+
     public void setOpenLoopDutyCycles(double targetDutyCycles) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetDutyCycles);
     }
 
-    private void setClosedLoopVelocity (double targetVelocity) {
+    private void setClosedLoopVelocity(double targetVelocity) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetVelocity);
     }
 
-    private double getVelocity(){
+    private double getVelocity() {
         return mFlyWheelMaster.getSelectedSensorVelocity();
     }
 
 
-    private double getFlyWheelSpeed(){
+    private double getFlyWheelSpeed() {
         return mFlyWheelMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
-
+}

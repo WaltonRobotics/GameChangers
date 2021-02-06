@@ -5,17 +5,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.StateMachine.IState;
 
 import static frc.robot.OI.shootButton;
-import static frc.robot.Robot.shooterTurret;
+import static frc.robot.Robot.shooter;
 import static frc.robot.StateMachine.StateMachine.States.spinningUp;
 
 
-public class ShooterTurretCommand
+public class ShooterCommand
 extends CommandBase {
 
     IState off = new IState() {
         @Override
         public void initialize() {
-            shooterTurret.setOpenLoopDutyCycles(0);
+            shooter.setOpenLoopDutyCycles(0);
             shootButton.whenPressed(return spinningUp)
         }
     }
@@ -30,8 +30,3 @@ extends CommandBase {
 
     }
 }
-
-}
-
-
-        }
