@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.StateMachine.IState;
 
-public class ShooterTurret extends SubsystemBase {
+public class Shooter extends SubsystemBase {
     private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
     private final TalonFX flywheelSlave = new TalonFX(kFlySlave);
 
@@ -37,7 +37,7 @@ public class ShooterTurret extends SubsystemBase {
 
     public boolean isReadyToShoot = false;
 
-    public ShooterTurret() {
+    public Shooter() {
 
 
         //SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(10, 20, 10);
