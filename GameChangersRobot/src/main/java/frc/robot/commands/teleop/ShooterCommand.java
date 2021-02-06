@@ -9,7 +9,7 @@ import static frc.robot.Robot.shooterTurret;
 import static frc.robot.StateMachine.StateMachine.States.spinningUp;
 
 
-public class ShooterTurretCommand extends CommandBase {
+public class ShooterCommand extends CommandBase {
 
     IState off = new IState() {
         @Override
