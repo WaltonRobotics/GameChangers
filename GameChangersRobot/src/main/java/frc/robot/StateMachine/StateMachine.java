@@ -3,13 +3,13 @@ package frc.robot.StateMachine;
 
 public class StateMachine {
 
-    private IState currentState;
+    private static IState currentState;
 
     public StateMachine(IState initialState) {
         currentState = initialState;
     }
 
-    public void run() {
+    public static void run() {
 
         IState nextState = currentState.execute();
 

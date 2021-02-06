@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.StateMachine.IState;
+import frc.robot.utils.MovingAverage;
 
 public class Shooter extends SubsystemBase {
     private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
@@ -44,7 +45,7 @@ public class Shooter extends SubsystemBase {
 
     }
 
-    public void setOpenLoopDutyCycles(double targetDutyCycles) {
+    public static void setOpenLoopDutyCycles(double targetDutyCycles) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetDutyCycles);
     }
 
@@ -60,5 +61,17 @@ public class Shooter extends SubsystemBase {
     public double getFlyWheelSpeed() {
         return mFlyWheelMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
+
+    private MovingAverage movingAverage = new MovingAverage(5);
+
+    @Override
+    public void periodic() {
+        MovingAverage.addData(5);
+    }
+    public double getAverageClosedLoopVelocity(){
+        return MovingAverage.getMean();
+    }
+
 }
+
 
