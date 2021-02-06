@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.ShooterTurret;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public static Drivetrain driveTrain;
+  public static ShooterTurret shooterTurret;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -32,6 +34,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveTrain = new Drivetrain();
+    shooterTurret = new ShooterTurret();
 
     CommandScheduler.getInstance().setDefaultCommand(driveTrain, new DriveCommand());
 

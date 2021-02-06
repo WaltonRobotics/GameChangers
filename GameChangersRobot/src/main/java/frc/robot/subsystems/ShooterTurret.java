@@ -10,6 +10,7 @@ import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_1;
 import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_2;
 import static frc.robot.Constants.Turret.TURRET_ROTATIONS_PER_TICK;
 import static frc.robot.OI.*;
+import static frc.robot.StateMachine.StateMachine.States.spinningUp;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -36,13 +37,13 @@ public class ShooterTurret extends SubsystemBase {
 
     public boolean isReadyToShoot = false;
 
-    public ShooterTurret(double targetVelocity) {
+    public ShooterTurret() {
 
 
         //SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(10, 20, 10);
 
     }
-    private void setOpenLoopDutyCycles(double targetDutyCycles) {
+    public void setOpenLoopDutyCycles(double targetDutyCycles) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetDutyCycles);
     }
 
@@ -59,23 +60,3 @@ public class ShooterTurret extends SubsystemBase {
         return mFlyWheelMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
 
-    IState off = new IState() {
-        @Override
-        public void initialize() {
-            setOpenLoopDutyCycles(0);
-            shootButton.whenPressed(return)
-            }
-        }
-
-        @Override
-        public IState execute() {
-            shootButton.get();
-        }
-
-        @Override
-        public void finish() {
-
-        }
-    }
-
-}

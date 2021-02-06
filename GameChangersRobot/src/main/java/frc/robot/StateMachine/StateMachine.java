@@ -19,8 +19,10 @@ public class StateMachine {
             currentState.initialize();
         }
     }
-    public enum States() {
-
+    public enum States {
+        off,
+        spinningUp,
+        shooting
     }
 }
 
