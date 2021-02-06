@@ -2,7 +2,7 @@ package frc.robot.StateMachine;
 
 public interface IState {
 
-    public void initialize();
-    public IState execute();
+    public StateMachine.States initialize();
+    public StateMachine.States execute();
     public void finish();
 }

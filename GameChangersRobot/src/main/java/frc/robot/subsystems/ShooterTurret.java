@@ -43,20 +43,22 @@ public class ShooterTurret extends SubsystemBase {
         //SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(10, 20, 10);
 
     }
+
     public void setOpenLoopDutyCycles(double targetDutyCycles) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetDutyCycles);
     }
 
-    private void setClosedLoopVelocity (double targetVelocity) {
+    private void setClosedLoopVelocity(double targetVelocity) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetVelocity);
     }
 
-    private double getVelocity(){
+    private double getVelocity() {
         return mFlyWheelMaster.getSelectedSensorVelocity();
     }
 
 
-    private double getFlyWheelSpeed(){
+    private double getFlyWheelSpeed() {
         return mFlyWheelMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
+}
 
