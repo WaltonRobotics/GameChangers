@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
     // units and units/s
     //
 
-    double encoderConstant = 1/16.773784; // (1 / 42) * WHEEL_DIAMETER * Math.PI;
+    double encoderConstant = 0.05984734; // (1 / 42) * WHEEL_DIAMETER * Math.PI;
 
     //Encoder leftEncoder = new Encoder(0, 1);
     //leftEncoder.setDistancePerPulse(encoderConstant);
