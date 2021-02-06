@@ -32,11 +32,13 @@ public class ShooterCommand extends CommandBase {
 
 
             }
-        }
+        }0.
 
         @Override
         public void finish() {
 
         }
+    }
+    Istate spinningUp = newIState(){
     }
 }
