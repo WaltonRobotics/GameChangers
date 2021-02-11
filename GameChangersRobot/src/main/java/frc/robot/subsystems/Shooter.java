@@ -1,29 +1,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.Shooter.*;
-import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_1;
-import static frc.robot.Constants.Turret.TURRET_ENCODER_PORT_2;
-import static frc.robot.Constants.Turret.TURRET_ROTATIONS_PER_TICK;
 import static frc.robot.OI.*;
-import static frc.robot.StateMachine.StateMachine.States.spinningUp;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.StateMachine.IState;
 import frc.robot.utils.MovingAverage;
 
 public class Shooter extends SubsystemBase {
@@ -38,38 +22,55 @@ public class Shooter extends SubsystemBase {
 
     public boolean isReadyToShoot = false;
 
+    private MovingAverage movingAverage = new MovingAverage(5);
+
     public Shooter() {
-
-
-        //SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(10, 20, 10);
-
+        setupFlywheelControllers();
     }
 
-    public static void setOpenLoopDutyCycles(double targetDutyCycles) {
+    private void setupFlywheelControllers() {
+        flywheelMaster.selectProfileSlot(0, 0);
+
+        flywheelMaster.setNeutralMode(NeutralMode.Coast);
+        flywheelSlave.setNeutralMode(NeutralMode.Coast);
+
+        flywheelMaster.setInverted(true);
+        flywheelSlave.setInverted(false);
+
+        flywheelMaster.config_kF(0, 0.056);
+        flywheelMaster.config_kP(0, 0.013);
+        flywheelMaster.config_kD(0, 0);
+
+        // Voltage compensation
+        flywheelMaster.configVoltageCompSaturation(10);
+        flywheelMaster.enableVoltageCompensation(true);
+        flywheelSlave.configVoltageCompSaturation(10);
+        flywheelSlave.enableVoltageCompensation(false);
+    }
+
+    public void setProfileSlot(int profileSlot) {
+        flywheelMaster.selectProfileSlot(profileSlot, 0);
+    }
+
+    public void setOpenLoopDutyCycles(double targetDutyCycles) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetDutyCycles);
     }
 
-    public static void setClosedLoopVelocity(double targetVelocity) {
+    public void setClosedLoopVelocity(double targetVelocity) {
         mFlyWheelMaster.set(ControlMode.Velocity, targetVelocity);
     }
 
-    public static double getVelocity() {
-        return mFlyWheelMaster.getSelectedSensorVelocity();
-    }
-
-
-    public double getFlyWheelSpeed() {
+    public double getVelocity() {
         return mFlyWheelMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
 
-    private MovingAverage movingAverage = new MovingAverage(5);
-
     @Override
     public void periodic() {
-        MovingAverage.addData(5);
+        movingAverage.addData(getVelocity());
     }
+
     public double getAverageClosedLoopVelocity(){
-        return MovingAverage.getMean();
+        return movingAverage.getMean();
     }
 
 }

@@ -5,9 +5,9 @@ import java.util.*;
 public class MovingAverage {
 
     // queue used to store list so that we get the average
-    private static final Queue<Double> Dataset = new LinkedList<Double>();
-    private static int period;
-    private static double sum;
+    private final Queue<Double> Dataset = new LinkedList<Double>();
+    private int period;
+    private double sum;
 
     // constructor to initialize period
     public MovingAverage(int period)
@@ -18,7 +18,7 @@ public class MovingAverage {
     // function to add new data in the
     // list and update the sum so that
     // we get the new mean
-    public static void addData(double num)
+    public void addData(double num)
     {
         sum += num;
         Dataset.add(num);
@@ -33,7 +33,7 @@ public class MovingAverage {
     }
 
     // function to calculate mean
-    public static double getMean()
+    public double getMean()
     {
         return sum / period;
     }

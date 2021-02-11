@@ -1,4 +1,4 @@
-package frc.robot.StateMachine;
+package frc.robot.stateMachine;
 
 public interface IState {
 
