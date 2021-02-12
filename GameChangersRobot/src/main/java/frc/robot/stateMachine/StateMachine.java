@@ -3,7 +3,7 @@ package frc.robot.stateMachine;
 
 public class StateMachine {
 
-    private static IState currentState;
+    private IState currentState;
 
     public StateMachine(IState initialState) {
         if (initialState != null) {
@@ -13,7 +13,7 @@ public class StateMachine {
         }
     }
 
-    public static void run() {
+    public void run() {
         IState nextState = currentState.execute();
 
         if(nextState != null) {
