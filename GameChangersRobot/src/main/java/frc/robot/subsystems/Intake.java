@@ -12,6 +12,11 @@ import static frc.robot.Constants.Intake.kIntakeToggle;
 public class Intake extends SubsystemBase {
     private VictorSPX mIntakeMotor = new VictorSPX(kIntakeMotor);
     private Solenoid mIntakeToggle = new Solenoid(kIntakeToggle);
-    private VictorSPX mFrontConveyorMotor = new VictorSPX(kFrontConveyorMotor);
-    private VictorSPX mBackConveyorMotor = new VictorSPX(kBackConveyorMotor);
+
+
+    public Intake() {
+//open loop for the intake motor
+        //ability to deploy/retract the intake using solenoid
+
+    }
 }
