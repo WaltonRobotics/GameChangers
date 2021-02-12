@@ -139,8 +139,8 @@ public class Drivetrain extends SubsystemBase {
 //        mRightWheelsMaster.burnFlash();
     }
 
-    private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(20, 0, 0,
-            new TrapezoidProfile.Constraints(60,30));
+    private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(80, 0, 0,
+            new TrapezoidProfile.Constraints(0.5,0.25));
 
     public ProfiledPIDController getmDriveStraightPowerController() {
         return mDriveStraightPowerController;

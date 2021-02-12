@@ -14,6 +14,9 @@ public class DriveStraight extends CommandBase {
         addRequirements(drivetrain);
 
         this.desiredDistance = desiredDistance;
+
+        drivetrain.getmDriveStraightHeadingPIDController().setTolerance(1);
+        drivetrain.getmDriveStraightPowerController().setTolerance(0.06);
     }
 
     @Override
@@ -23,13 +26,13 @@ public class DriveStraight extends CommandBase {
     }
 
     private double distanceAverage() {
-        return (drivetrain.leftMetersTravelled() + drivetrain.rightMetersTravelled()) / 2;
+        return Math.abs(drivetrain.leftMetersTravelled() + drivetrain.rightMetersTravelled()) / 2;
     }
 
     @Override
     public void execute() {
         drivetrain.getmDriveStraightHeadingPIDController().setP(SmartDashboard.getNumber("Drive Straight Heading P", 0.19));
-        drivetrain.getmDriveStraightPowerController().setP(SmartDashboard.getNumber("Forward P", 0.1));
+        drivetrain.getmDriveStraightPowerController().setP(SmartDashboard.getNumber("Forward P", 0.8));
         double turnRate = -drivetrain.getmDriveStraightHeadingPIDController().calculate(drivetrain.getHeading().getDegrees(), 0);
         double forward = drivetrain.getmDriveStraightPowerController().calculate(distanceAverage(), desiredDistance);
 
@@ -42,7 +45,8 @@ public class DriveStraight extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs((drivetrain.leftMetersTravelled() + drivetrain.rightMetersTravelled()) / 2) >= desiredDistance;
+        return drivetrain.getmDriveStraightPowerController().atGoal() && drivetrain.getmDriveStraightHeadingPIDController().atGoal();
+        //return Math.abs((drivetrain.leftMetersTravelled() + drivetrain.rightMetersTravelled()) / 2) >= desiredDistance;
     }
     @Override
     public void end(boolean interrupted) {
