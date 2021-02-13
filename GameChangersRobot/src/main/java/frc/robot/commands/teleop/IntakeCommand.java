@@ -1,6 +1,10 @@
 package frc.robot.commands.teleop;
 
 import frc.robot.stateMachine.IState;
+import static frc.robot.OI.retractButton;
+import static frc.robot.OI.deployButton;
+import static frc.robot.OI.intakingButton;
+import static frc.robot.Robot.intake;
 
 public class IntakeCommand {
 
@@ -12,7 +16,14 @@ public class IntakeCommand {
 
         @Override
         public IState execute() {
-            return null;
+            if (retractButton.isRisingEdge()) {
+                return mRetract;
+            } else if (deployButton.isRisingEdge()) {
+                return mDeploy;
+            } else if (intake.isDeployed() && intakingButton.isRisingEdge()) {
+                return mIntaking;
+            }
+            return mIdle;
         }
 
         @Override
@@ -41,6 +52,7 @@ public class IntakeCommand {
     private IState mDeploy = new IState() {
         @Override
         public void initialize() {
+            System.out.println("Hello World!");
 
         }
 
