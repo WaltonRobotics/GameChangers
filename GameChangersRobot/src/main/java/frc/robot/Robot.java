@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auton.DriveStraight;
+import frc.robot.auton.TurnToAngle;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.subsystems.Drivetrain;
 /**
@@ -65,7 +66,9 @@ public class Robot extends TimedRobot {
     new SequentialCommandGroup(
             new DriveStraight(2),
             new WaitCommand(2),
-            new DriveStraight(2)
+            new TurnToAngle(90),
+            new WaitCommand(2),
+            new DriveStraight(1)
     ).schedule();
   }
 
