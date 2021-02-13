@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.OI.*;
 
-import frc.robot.utils.MovingAverage;
+import frc.robot.utils.SimpleMovingAverage;
 
 public class Shooter extends SubsystemBase {
     private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
 
     public boolean isReadyToShoot = false;
 
-    private MovingAverage movingAverage = new MovingAverage(5);
+    private SimpleMovingAverage movingAverage = new SimpleMovingAverage(5);
 
     public Shooter() {
         setupFlywheelControllers();

@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.utils.EnhancedJoystickButton;
 import frc.robot.utils.Gamepad;
 
 import static frc.robot.Constants.Inputs.*;
@@ -19,6 +20,6 @@ public class OI {
     public static TalonFX mFlyWheelMaster = new TalonFX(kFlyMaster);
     public static TalonFX mFlyWheelSlave = new TalonFX(kFlySlave);
 
-    public static JoystickButton shootButton = new JoystickButton(mGamePad,1);
+    public static EnhancedJoystickButton shootButton = new EnhancedJoystickButton(mGamePad,1);
 
 }

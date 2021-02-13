@@ -2,7 +2,7 @@ package frc.robot.utils;
 
 import java.util.*;
 
-public class MovingAverage {
+public class SimpleMovingAverage {
 
     // queue used to store list so that we get the average
     private final Queue<Double> Dataset = new LinkedList<Double>();
@@ -10,7 +10,7 @@ public class MovingAverage {
     private double sum;
 
     // constructor to initialize period
-    public MovingAverage(int period)
+    public SimpleMovingAverage(int period)
     {
         this.period = period;
     }
