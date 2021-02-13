@@ -19,7 +19,7 @@ public class TurnToAngle extends CommandBase {
     public void initialize() {
         System.out.println("turning to " + targetAngle);
 
-        drivetrain.getTurnPIDController().reset(new TrapezoidProfile.State(0, 0));
+        drivetrain.getTurnPIDController().reset(new TrapezoidProfile.State(drivetrain.getHeading().getDegrees(), 0));
         drivetrain.getTurnPIDController().setTolerance(6.0);
 
         SmartDashboard.putNumber("Turn Setpoint", targetAngle);
