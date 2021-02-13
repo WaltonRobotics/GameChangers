@@ -21,5 +21,8 @@ public class OI {
     public static TalonFX mFlyWheelSlave = new TalonFX(kFlySlave);
 
     public static EnhancedJoystickButton shootButton = new EnhancedJoystickButton(mGamePad,1);
+    public static EnhancedJoystickButton retractButton = new EnhancedJoystickButton(mGamePad, 2);
+    public static EnhancedJoystickButton deployButton = new EnhancedJoystickButton(mGamePad, 3);
+    public static EnhancedJoystickButton intakingButton = new EnhancedJoystickButton(mGamePad, 4);
 
 }
