@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.OI;
 
 import static frc.robot.Constants.Conveyor.kBackConveyorMotor;
 import static frc.robot.Constants.Conveyor.kFrontConveyorMotor;
@@ -15,8 +17,20 @@ public class Intake extends SubsystemBase {
 
 
     public Intake() {
-//open loop for the intake motor
-        //ability to deploy/retract the intake using solenoid
 
     }
+
+    public void setIntakeDeployed(boolean isDeployed) {
+        mIntakeToggle.set(isDeployed);
+    }
+
+    public boolean isDeployed() {
+        return mIntakeToggle.get();
+    }
+
+    public void setRollerDutyCycles(double targetDutyCycles) {
+        mIntakeMotor.set(ControlMode.PercentOutput, targetDutyCycles);
+    }
+
+
 }
