@@ -4,25 +4,19 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentification;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.utils.LiveDashboardHelper;
 
-import static frc.robot.Constants.Hardware.kRobotId1;
-import static frc.robot.Constants.Hardware.kRobotId2;
-import static frc.robot.subsystems.Drivetrain.*;
+import static frc.robot.Constants.DioIDs.kRobotId1;
+import static frc.robot.Constants.DioIDs.kRobotId2;
+import static frc.robot.Constants.SmartDashboardKeys.kLeftVelocityPKey;
+import static frc.robot.Constants.SmartDashboardKeys.kRightVelocityPKey;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -31,8 +25,8 @@ import static frc.robot.subsystems.Drivetrain.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static Drivetrain drivetrain;
-  public static RobotIdentification currentRobot;
+  public static Drivetrain sDrivetrain;
+  public static RobotIdentification sCurrentRobot;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,16 +34,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    currentRobot = RobotIdentification.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
-    System.out.println("Current robot is" + currentRobot.name());
+    sCurrentRobot = RobotIdentification.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
+    System.out.println("Current robot is " + sCurrentRobot.name());
 
-    drivetrain = new Drivetrain();
-    SmartDashboard.putNumber("Drive Straight Heading P", 0.19);
-    SmartDashboard.putNumber("Turn P", 0.05);
-    SmartDashboard.putNumber("Forward P", 0.2);
-    SmartDashboard.putNumber("Left Velocity P", 1.25);
-    SmartDashboard.putNumber("Right Velocity P", 1.25);
-    CommandScheduler.getInstance().setDefaultCommand(drivetrain, new DriveCommand());
+    populateShuffleboard();
+
+    sDrivetrain = new Drivetrain();
+
+    CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
+  }
+
+  private void populateShuffleboard() {
+    SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
+    SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
   }
 
   /**
@@ -86,11 +83,11 @@ public class Robot extends TimedRobot {
 //            new WaitCommand(2),
 //            new DriveStraight(6.5)
 //    ).schedule();
-    drivetrain.setupMotorsAuton();
-    drivetrain.reset();
-    drivetrain.resetOdometry(new Pose2d());
+    sDrivetrain.setupMotorsAuton();
+    sDrivetrain.reset();
+    sDrivetrain.resetPose(Paths.GalacticSearchPaths.redA.getInitialPose());
 
-    //new RamseteTrackingCommand(Paths.GalacticSearchPaths.redA, true, false).schedule();
+    new RamseteTrackingCommand(Paths.GalacticSearchPaths.redA, true, true).schedule();
 
   }
 
@@ -107,7 +104,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    LiveDashboardHelper.putRobotData(drivetrain.getCurrentPose());
+
   }
 
   /** This function is called once when the robot is disabled. */

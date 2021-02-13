@@ -1,8 +1,5 @@
 package frc.robot.commands.auton;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -14,13 +11,15 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpiutil.math.VecBuilder;
-import frc.robot.utils.LiveDashboardHelper;
+import frc.robot.auton.LiveDashboardTable;
+import frc.robot.auton.LiveDashboardHelper;
+import frc.robot.auton.RamseteDebuggingTable;
 
 import java.util.function.Supplier;
 
 import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
-import static frc.robot.Robot.currentRobot;
-import static frc.robot.Robot.drivetrain;
+import static frc.robot.Robot.sCurrentRobot;
+import static frc.robot.Robot.sDrivetrain;
 
 /**
  * A command that uses a RAMSETE controller ({@link RamseteController}) to follow a trajectory
@@ -37,19 +36,18 @@ import static frc.robot.Robot.drivetrain;
  */
 @SuppressWarnings("PMD.TooManyFields")
 public class RamseteTrackingCommand extends CommandBase {
-    private final Timer m_timer = new Timer();
-    private final boolean m_useSparkPID;
-    private final Trajectory m_trajectory;
-    private final Supplier<Pose2d> m_pose;
-    private final RamseteController m_follower;
-    private final SimpleMotorFeedforward m_feedforward;
-    private final DifferentialDriveKinematics m_kinematics;
-    private final Supplier<DifferentialDriveWheelSpeeds> m_speeds;
-    private final PIDController m_leftController;
-    private final PIDController m_rightController;
-    private DifferentialDriveWheelSpeeds m_prevSpeeds;
-    private double m_prevTime;
-    private boolean debugMode;
+    private final Timer mTimer = new Timer();
+    private final boolean mUseSparkPID;
+    private final Trajectory mTrajectory;
+    private final Supplier<Pose2d> mPose;
+    private final RamseteController mFollower;
+    private final SimpleMotorFeedforward mFeedforward;
+    private final DifferentialDriveKinematics mKinematics;
+    private final Supplier<DifferentialDriveWheelSpeeds> mSpeeds;
+    private final PIDController mLeftController;
+    private final PIDController mRightController;
+    private DifferentialDriveWheelSpeeds mPrevSpeeds;
+    private double mPrevTime;
 
     /**
      * Constructs a new RamseteCommand that, when executed, will follow the provided trajectory.
@@ -59,11 +57,11 @@ public class RamseteTrackingCommand extends CommandBase {
      * @param trajectory The trajectory to follow.
      */
     public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean debugMode) {
-        m_trajectory = requireNonNullParam(trajectory, "trajectory", "RamseteCommand");
-        m_pose = drivetrain::getCurrentPose;
+        mTrajectory = requireNonNullParam(trajectory, "trajectory", "RamseteCommand");
+        mPose = sDrivetrain::getCurrentPose;
 
         if(debugMode) {
-            m_follower = new RamseteController() {
+            mFollower = new RamseteController() {
                 @Override
                 public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
                                                double angularVelocityRefRadiansPerSecond) {
@@ -71,57 +69,56 @@ public class RamseteTrackingCommand extends CommandBase {
                 }
             };
         } else {
-            m_follower = drivetrain.getRamseteController();
+            mFollower = sDrivetrain.getRamseteController();
         }
 
-        m_kinematics = drivetrain.getDriveKinematics();
+        mKinematics = sDrivetrain.getDriveKinematics();
 
-        m_feedforward = currentRobot.getCurrentRobot().getDrivetrainFeedforward();
-        m_speeds = drivetrain::getSpeeds;
-        m_leftController = currentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID();
-        m_rightController = currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID();
+        mFeedforward = sCurrentRobot.getCurrentRobot().getDrivetrainFeedforward();
+        mSpeeds = sDrivetrain::getSpeeds;
+        mLeftController = sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID();
+        mRightController = sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID();
 
-        m_useSparkPID = useSparkPID;
+        mUseSparkPID = useSparkPID;
 
-        addRequirements(drivetrain);
+        addRequirements(sDrivetrain);
     }
 
     @Override
     public void initialize() {
-        m_prevTime = 0;
-        var initialState = m_trajectory.sample(0);
-        m_prevSpeeds = m_kinematics.toWheelSpeeds(
+        mPrevTime = 0;
+        var initialState = mTrajectory.sample(0);
+        mPrevSpeeds = mKinematics.toWheelSpeeds(
                 new ChassisSpeeds(initialState.velocityMetersPerSecond,
                         0,
                         initialState.curvatureRadPerMeter
                                 * initialState.velocityMetersPerSecond));
-        m_timer.reset();
-        m_timer.start();
-        if (!m_useSparkPID) {
-            m_leftController.reset();
-            m_rightController.reset();
+        mTimer.reset();
+        mTimer.start();
+        if (!mUseSparkPID) {
+            mLeftController.reset();
+            mRightController.reset();
         }
 
-        LiveDashboard.getInstance().setFollowingPath(true);
+        LiveDashboardTable.getInstance().setFollowingPath(true);
 
-        LiveDashboardHelper.putRobotData(drivetrain.getCurrentPose());
-        LiveDashboardHelper.putTrajectoryData(m_trajectory.getInitialPose());
+        LiveDashboardHelper.putRobotData(sDrivetrain.getCurrentPose());
+        LiveDashboardHelper.putTrajectoryData(mTrajectory.getInitialPose());
     }
-
-    private NetworkTable table = NetworkTableInstance.getDefault().getTable("troubleshooting");
-    private NetworkTableEntry leftReference = table.getEntry("left_reference");
-    private NetworkTableEntry leftMeasurement = table.getEntry("left_measurement");
-    private NetworkTableEntry rightReference = table.getEntry("right_reference");
-    private NetworkTableEntry rightMeasurement = table.getEntry("right_measurement");
 
     @Override
     public void execute() {
+        double curTime = mTimer.get();
+        double dt = curTime - mPrevTime;
 
-        double curTime = m_timer.get();
-        double dt = curTime - m_prevTime;
+        if (mPrevTime < 0) {
+            sDrivetrain.setVelocities(0,0, 0, 0);
+            mPrevTime = curTime;
+            return;
+        }
 
-        var targetWheelSpeeds = m_kinematics.toWheelSpeeds(
-                m_follower.calculate(m_pose.get(), m_trajectory.sample(curTime)));
+        var targetWheelSpeeds = mKinematics.toWheelSpeeds(
+                mFollower.calculate(mPose.get(), mTrajectory.sample(curTime)));
 
         var leftSpeedSetpoint = targetWheelSpeeds.leftMetersPerSecond;
         var rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
@@ -129,71 +126,66 @@ public class RamseteTrackingCommand extends CommandBase {
         double leftOutput;
         double rightOutput;
 
-        if (!m_useSparkPID) {
-            /*
-            double leftFeedforward =
-                    m_feedforward.calculate(leftSpeedSetpoint,
-                            (leftSpeedSetpoint - m_prevSpeeds.leftMetersPerSecond) / dt);
+        if (!mUseSparkPID) {
+//            double leftFeedforward =
+//                    mFeedforward.calculate(leftSpeedSetpoint,
+//                            (leftSpeedSetpoint - mPrevSpeeds.leftMetersPerSecond) / dt);
+//
+//            double rightFeedforward =
+//                    mFeedforward.calculate(rightSpeedSetpoint,
+//                            (rightSpeedSetpoint - mPrevSpeeds.rightMetersPerSecond) / dt);
+//
+//            leftOutput = leftFeedforward
+//                    + mLeftController.calculate(mSpeeds.get().leftMetersPerSecond,
+//                    leftSpeedSetpoint);
+//
+//            rightOutput = rightFeedforward
+//                    + mRightController.calculate(mSpeeds.get().rightMetersPerSecond,
+//                    rightSpeedSetpoint);
+//
+//            sDrivetrain.setVoltages(leftOutput, rightOutput);
 
-            double rightFeedforward =
-                    m_feedforward.calculate(rightSpeedSetpoint,
-                            (rightSpeedSetpoint - m_prevSpeeds.rightMetersPerSecond) / dt);
+            sDrivetrain.getDriveControlLoop().setNextR(VecBuilder.fill(leftSpeedSetpoint, rightSpeedSetpoint));
+            sDrivetrain.getDriveControlLoop().correct(VecBuilder.fill(mSpeeds.get().leftMetersPerSecond, mSpeeds.get().rightMetersPerSecond));
+            sDrivetrain.getDriveControlLoop().predict(dt);
 
-            leftOutput = leftFeedforward
-                    + m_leftController.calculate(m_speeds.get().leftMetersPerSecond,
-                    leftSpeedSetpoint);
+            leftOutput = sDrivetrain.getDriveControlLoop().getU(0);
+            rightOutput = sDrivetrain.getDriveControlLoop().getU(1);
 
-            rightOutput = rightFeedforward
-                    + m_rightController.calculate(m_speeds.get().rightMetersPerSecond,
-                    rightSpeedSetpoint);
-
-            drivetrain.setVoltages(leftOutput, rightOutput);
-            */
-
-            drivetrain.getDriveControlLoop().setNextR(VecBuilder.fill(leftSpeedSetpoint, rightSpeedSetpoint));
-            drivetrain.getDriveControlLoop().correct(VecBuilder.fill(m_speeds.get().leftMetersPerSecond, m_speeds.get().rightMetersPerSecond));
-            drivetrain.getDriveControlLoop().predict(dt);
-
-            leftOutput = drivetrain.getDriveControlLoop().getU(0);
-            rightOutput = drivetrain.getDriveControlLoop().getU(1);
-
-            drivetrain.setVoltages(leftOutput, rightOutput);
+            sDrivetrain.setVoltages(leftOutput, rightOutput);
         } else {
             double leftFeedforward =
-                    m_feedforward.calculate(leftSpeedSetpoint,
-                            (leftSpeedSetpoint - m_prevSpeeds.leftMetersPerSecond) / dt);
-
-//          System.out.printf("%f, %f\n", (leftSpeedSetpoint - m_prevSpeeds.leftMetersPerSecond), dt);
-
+                    mFeedforward.calculate(leftSpeedSetpoint,
+                            (leftSpeedSetpoint - mPrevSpeeds.leftMetersPerSecond) / dt);
 
             double rightFeedforward =
-                    m_feedforward.calculate(rightSpeedSetpoint,
-                            (rightSpeedSetpoint - m_prevSpeeds.rightMetersPerSecond) / dt);
+                    mFeedforward.calculate(rightSpeedSetpoint,
+                            (rightSpeedSetpoint - mPrevSpeeds.rightMetersPerSecond) / dt);
 
-            leftMeasurement.setNumber(m_speeds.get().leftMetersPerSecond);
-            leftReference.setNumber(leftSpeedSetpoint);
+            RamseteDebuggingTable.getInstance().setLeftMeasurement(mSpeeds.get().leftMetersPerSecond);
+            RamseteDebuggingTable.getInstance().setLeftReference(leftSpeedSetpoint);
 
-            rightMeasurement.setNumber(m_speeds.get().rightMetersPerSecond);
-            rightReference.setNumber(rightSpeedSetpoint);
+            RamseteDebuggingTable.getInstance().setRightMeasurement(mSpeeds.get().rightMetersPerSecond);
+            RamseteDebuggingTable.getInstance().setRightReference(rightSpeedSetpoint);
 
-            drivetrain.setVelocities(leftSpeedSetpoint, leftFeedforward, rightSpeedSetpoint, rightFeedforward);
+            sDrivetrain.setVelocities(leftSpeedSetpoint, leftFeedforward, rightSpeedSetpoint, rightFeedforward);
         }
 
-        m_prevTime = curTime;
-        m_prevSpeeds = targetWheelSpeeds;
+        mPrevTime = curTime;
+        mPrevSpeeds = targetWheelSpeeds;
 
-        LiveDashboardHelper.putRobotData(drivetrain.getCurrentPose());
-        LiveDashboardHelper.putTrajectoryData(m_trajectory.sample(curTime).poseMeters);
+        LiveDashboardHelper.putRobotData(sDrivetrain.getCurrentPose());
+        LiveDashboardHelper.putTrajectoryData(mTrajectory.sample(curTime).poseMeters);
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_timer.stop();
-        LiveDashboard.getInstance().setFollowingPath(false);
+        mTimer.stop();
+        LiveDashboardTable.getInstance().setFollowingPath(false);
     }
 
     @Override
     public boolean isFinished() {
-        return m_timer.hasPeriodPassed(m_trajectory.getTotalTimeSeconds());
+        return mTimer.hasPeriodPassed(mTrajectory.getTotalTimeSeconds());
     }
 }

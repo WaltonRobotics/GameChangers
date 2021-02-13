@@ -6,13 +6,11 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 
 import java.util.Arrays;
 
-import static frc.robot.Robot.currentRobot;
-import static frc.robot.Robot.drivetrain;
+import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
 
@@ -23,7 +21,7 @@ public class Paths {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
-            config.setKinematics(drivetrain.getDriveKinematics());
+            config.setKinematics(sDrivetrain.getDriveKinematics());
             config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
             return TrajectoryGenerator.generateTrajectory(
@@ -45,7 +43,7 @@ public class Paths {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
-            config.setKinematics(drivetrain.getDriveKinematics());
+            config.setKinematics(sDrivetrain.getDriveKinematics());
             config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
             return TrajectoryGenerator.generateTrajectory(
@@ -63,7 +61,7 @@ public class Paths {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
-            config.setKinematics(drivetrain.getDriveKinematics());
+            config.setKinematics(sDrivetrain.getDriveKinematics());
             config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
             return TrajectoryGenerator.generateTrajectory(
@@ -92,7 +90,7 @@ public class Paths {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
-            config.setKinematics(drivetrain.getDriveKinematics());
+            config.setKinematics(sDrivetrain.getDriveKinematics());
             config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
             return TrajectoryGenerator.generateTrajectory(
@@ -125,7 +123,7 @@ public class Paths {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
-            config.setKinematics(drivetrain.getDriveKinematics());
+            config.setKinematics(sDrivetrain.getDriveKinematics());
             config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
             return TrajectoryGenerator.generateTrajectory(
@@ -154,7 +152,7 @@ public class Paths {
         TrajectoryConfig config = new TrajectoryConfig(
                 Units.feetToMeters(4.0), Units.feetToMeters(3.0));
 
-        config.setKinematics(drivetrain.getDriveKinematics());
+        config.setKinematics(sDrivetrain.getDriveKinematics());
         config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(3.0)));
 
         return TrajectoryGenerator.generateTrajectory(

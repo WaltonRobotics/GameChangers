@@ -2,6 +2,7 @@ package frc.robot.robots;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.util.Units;
 
 public class PracticeGameChangers implements WaltRobot {
 
@@ -48,6 +49,6 @@ public class PracticeGameChangers implements WaltRobot {
 
     @Override
     public double getTrackWidth() {
-        return 0.61;
+        return 0.8;
     }
 }
