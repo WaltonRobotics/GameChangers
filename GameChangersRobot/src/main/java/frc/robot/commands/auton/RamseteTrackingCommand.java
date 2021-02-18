@@ -18,7 +18,6 @@ import frc.robot.auton.RamseteDebuggingTable;
 import java.util.function.Supplier;
 
 import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
-import static frc.robot.Robot.sCurrentRobot;
 import static frc.robot.Robot.sDrivetrain;
 
 /**
@@ -74,10 +73,10 @@ public class RamseteTrackingCommand extends CommandBase {
 
         mKinematics = sDrivetrain.getDriveKinematics();
 
-        mFeedforward = sCurrentRobot.getCurrentRobot().getDrivetrainFeedforward();
+        mFeedforward = sDrivetrain.getFeedforward();
         mSpeeds = sDrivetrain::getSpeeds;
-        mLeftController = sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID();
-        mRightController = sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID();
+        mLeftController = sDrivetrain.getLeftVelocityPID();
+        mRightController = sDrivetrain.getRightVelocityPID();
 
         mUseSparkPID = useSparkPID;
 

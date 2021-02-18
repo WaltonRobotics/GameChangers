@@ -2,16 +2,14 @@ package frc.robot.robots;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Units;
 
 public class PracticeGameChangers implements WaltRobot {
 
-    private SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
-    private PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
-    private PIDController mDrivetrainRightVoltagePID = new PIDController(1, 0, 0);
-    private PIDController mDrivetrainLeftVelocityPID = new PIDController(0.25, 0, 0);
-    private PIDController mDrivetrainRightVelocityPID = new PIDController(0.25, 0, 0);
+    private final SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
+    private final PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
+    private final PIDController mDrivetrainRightVoltagePID = new PIDController(1, 0, 0);
+    private final PIDController mDrivetrainLeftVelocityPID = new PIDController(0.25, 0, 0);
+    private final PIDController mDrivetrainRightVelocityPID = new PIDController(0.25, 0, 0);
 
     @Override
     public SimpleMotorFeedforward getDrivetrainFeedforward() {

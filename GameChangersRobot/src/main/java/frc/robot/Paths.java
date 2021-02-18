@@ -6,45 +6,50 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 
 import java.util.Arrays;
 
-import static frc.robot.Robot.sDrivetrain;
+import static frc.robot.Robot.*;
 
 public class Paths {
 
     public static class TestTrajectory {
-        public static Trajectory testTrajectory = generateTestTrajectory();
+        public static Trajectory sTestTrajectory = generateTestTrajectory();
 
         public static Trajectory generateTestTrajectory() {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
+            config.addConstraint(
+                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+                            sDrivetrain.getDriveKinematics(), 10.0));
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                             new Pose2d(Units.feetToMeters(0), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(3.28084), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0))),
+                            new Pose2d(1.0, Units.feetToMeters(7.5), Rotation2d.fromDegrees(0))),
                     config
             );
         }
     }
 
     public static class GalacticSearchPaths {
-        public static Trajectory redA = generateGalacticSearchRedA();
-        public static Trajectory redB = generateGalacticSearchRedB();
-        public static Trajectory blueA = generateGalacticSearchBlueA();
-        public static Trajectory blueB = generateGalacticSearchBlueB();
+        public static Trajectory sRedA = generateGalacticSearchRedA();
+        public static Trajectory sRedB = generateGalacticSearchRedB();
+        public static Trajectory sBlueA = generateGalacticSearchBlueA();
+        public static Trajectory sBlueB = generateGalacticSearchBlueB();
 
         public static Trajectory generateGalacticSearchRedA() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(4.0));
+                    Units.feetToMeters(10.0), Units.feetToMeters(6.0));
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
+            config.addConstraint(
+                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+                            sDrivetrain.getDriveKinematics(), 10.0));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -59,10 +64,12 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchBlueA() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(4.0));
+                    Units.feetToMeters(10.0), Units.feetToMeters(6.0));
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
+            config.addConstraint(
+                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+                            sDrivetrain.getDriveKinematics(), 10.0));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -80,10 +87,12 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchRedB() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(4.0));
+                    Units.feetToMeters(10.0), Units.feetToMeters(6.0));
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
+            config.addConstraint(
+                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+                            sDrivetrain.getDriveKinematics(), 10.0));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -98,10 +107,12 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchBlueB() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(4.0));
+                    Units.feetToMeters(10.0), Units.feetToMeters(6.0));
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
+            config.addConstraint(
+                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+                            sDrivetrain.getDriveKinematics(), 10.0));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -117,10 +128,12 @@ public class Paths {
 
     public static Trajectory generateBarrelRacingPath() {
         TrajectoryConfig config = new TrajectoryConfig(
-                Units.feetToMeters(4.0), Units.feetToMeters(3.0));
+                Units.feetToMeters(10.0), Units.feetToMeters(6.0));
 
         config.setKinematics(sDrivetrain.getDriveKinematics());
-        config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(3.0)));
+        config.addConstraint(
+                new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+                        sDrivetrain.getDriveKinematics(), 10.0));
 
         return TrajectoryGenerator.generateTrajectory(
                 Arrays.asList(

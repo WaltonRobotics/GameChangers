@@ -47,7 +47,6 @@ public class Robot extends TimedRobot {
   private void populateShuffleboard() {
     SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
     SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
-    SmartDashboard.putNumber("Track width", 0.619);
   }
 
   /**
@@ -86,10 +85,9 @@ public class Robot extends TimedRobot {
 //    ).schedule();
     sDrivetrain.setupMotorsAuton();
     sDrivetrain.reset();
-    sDrivetrain.resetPose(Paths.GalacticSearchPaths.redA.getInitialPose());
+    sDrivetrain.resetPose(Paths.GalacticSearchPaths.sRedA.getInitialPose());
 
-    new RamseteTrackingCommand(Paths.GalacticSearchPaths.redA, true, false).schedule();
-
+    new RamseteTrackingCommand(Paths.GalacticSearchPaths.sRedA, true, false).schedule();
   }
 
   /** This function is called periodically during autonomous. */

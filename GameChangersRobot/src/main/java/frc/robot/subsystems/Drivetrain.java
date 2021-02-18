@@ -7,7 +7,9 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.controller.LinearQuadraticRegulator;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.estimator.KalmanFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -32,66 +34,52 @@ import static frc.robot.Robot.sDrivetrain;
 
 public class Drivetrain extends SubsystemBase {
 
-    public static CANSparkMax mLeftWheelsMaster = new CANSparkMax(kLeftMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public static CANSparkMax mRightWheelsMaster = new CANSparkMax(kRightMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public static CANSparkMax mLeftWheelsSlave = new CANSparkMax(kLeftSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public static CANSparkMax mRightWheelsSlave = new CANSparkMax(kRightSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+    private final CANSparkMax mLeftWheelsMaster = new CANSparkMax(kLeftMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax mRightWheelsMaster = new CANSparkMax(kRightMaster, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax mLeftWheelsSlave = new CANSparkMax(kLeftSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax mRightWheelsSlave = new CANSparkMax(kRightSlave, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final AHRS mAhrs = new AHRS(SPI.Port.kMXP);
 
-    private final LinearSystem<N2, N2, N2> driveModel = LinearSystemId.identifyDrivetrainSystem(
-            sCurrentRobot.getCurrentRobot().getDrivetrainFeedforward().kv,
+    private final SimpleMotorFeedforward mFeedforward = sCurrentRobot.getCurrentRobot().getDrivetrainFeedforward();
+    private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(sCurrentRobot.getCurrentRobot().getTrackWidth());
+    private final DifferentialDriveOdometry mDriveOdometry = new DifferentialDriveOdometry(getHeading());
+    private final RamseteController mRamseteController = new RamseteController();
+
+    private final LinearSystem<N2, N2, N2> mDriveModel = LinearSystemId.identifyDrivetrainSystem(
+            mFeedforward.kv,
             0.5,
             1.0, 1.0
     );
-    private final KalmanFilter<N2, N2, N2> driveObserver = new KalmanFilter<>(
+    private final KalmanFilter<N2, N2, N2> mDriveObserver = new KalmanFilter<>(
             Nat.N2(), Nat.N2(),
-            driveModel,
+            mDriveModel,
             VecBuilder.fill(3.0, 3.0), // Standard deviations of drivetrain model
             VecBuilder.fill(0.01, 0.01), // Standard deviations of encoder velocities
             0.02
     );
-    private final LinearQuadraticRegulator<N2, N2, N2> driveLQRController = new LinearQuadraticRegulator<>(
-            driveModel,
+    private final LinearQuadraticRegulator<N2, N2, N2> mDriveLQRController = new LinearQuadraticRegulator<>(
+            mDriveModel,
             VecBuilder.fill(8.0, 8.0), // qelms. Velocity error tolerance, in radians per second
             VecBuilder.fill(12.0, 12.0), // relms. Control effort (voltage) tolerance
             0.02
     );
-    private final LinearSystemLoop<N2, N2, N2> driveControlLoop = new LinearSystemLoop<>(
-            driveModel,
-            driveLQRController,
-            driveObserver,
+    private final LinearSystemLoop<N2, N2, N2> mDriveControlLoop = new LinearSystemLoop<>(
+            mDriveModel,
+            mDriveLQRController,
+            mDriveObserver,
             12.0, 0.02
     );
 
-    private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(sCurrentRobot.getCurrentRobot().getTrackWidth());
-    private final DifferentialDriveOdometry mDriveOdometry = new DifferentialDriveOdometry(getHeading());
-    private final RamseteController mRamseteController = new RamseteController();
+    private final PIDController mLeftVoltagePID = sCurrentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID();
+    private final PIDController mRightVoltagePID = sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID();
+    private final PIDController mLeftVelocityPID = sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID();
+    private final PIDController mRightVelocityPID = sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID();
 
     private Pose2d mCurrentPose = new Pose2d();
 
     public Drivetrain() {
         setupMotorsTeleop();
         reset();
-    }
-
-    public DifferentialDriveKinematics getDriveKinematics() {
-        return mDriveKinematics;
-    }
-
-    public DifferentialDriveOdometry getDriveOdometry() {
-        return mDriveOdometry;
-    }
-
-    public RamseteController getRamseteController() {
-        return mRamseteController;
-    }
-
-    public Pose2d getCurrentPose() {
-        return mCurrentPose;
-    }
-
-    public LinearSystemLoop<N2, N2, N2> getDriveControlLoop() {
-        return driveControlLoop;
     }
 
     public void setupMotorsTeleop() {
@@ -129,21 +117,21 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.getEncoder().setVelocityConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
         mRightWheelsSlave.getEncoder().setVelocityConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
 
-        mLeftWheelsMaster.getPIDController().setP(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getP(), kDrivetrainVoltageSlot);
-        mLeftWheelsMaster.getPIDController().setI(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getI(), kDrivetrainVoltageSlot);
-        mLeftWheelsMaster.getPIDController().setD(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getD(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setP(mLeftVoltagePID.getP(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setI(mLeftVoltagePID.getI(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setD(mLeftVoltagePID.getD(), kDrivetrainVoltageSlot);
 
-        mRightWheelsMaster.getPIDController().setP(sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getP(), kDrivetrainVoltageSlot);
-        mRightWheelsMaster.getPIDController().setI(sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getI(), kDrivetrainVoltageSlot);
-        mRightWheelsMaster.getPIDController().setD(sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getD(), kDrivetrainVoltageSlot);
+        mRightWheelsMaster.getPIDController().setP(mRightVoltagePID.getP(), kDrivetrainVoltageSlot);
+        mRightWheelsMaster.getPIDController().setI(mRightVoltagePID.getI(), kDrivetrainVoltageSlot);
+        mRightWheelsMaster.getPIDController().setD(mRightVoltagePID.getD(), kDrivetrainVoltageSlot);
 
-        mLeftWheelsMaster.getPIDController().setP(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP(), kDrivetrainVelocitySlot);
-        mLeftWheelsMaster.getPIDController().setI(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getI(), kDrivetrainVelocitySlot);
-        mLeftWheelsMaster.getPIDController().setD(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getD(), kDrivetrainVelocitySlot);
+        mLeftWheelsMaster.getPIDController().setP(mLeftVelocityPID.getP(), kDrivetrainVelocitySlot);
+        mLeftWheelsMaster.getPIDController().setI(mLeftVelocityPID.getI(), kDrivetrainVelocitySlot);
+        mLeftWheelsMaster.getPIDController().setD(mLeftVelocityPID.getD(), kDrivetrainVelocitySlot);
 
-        mRightWheelsMaster.getPIDController().setP(sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP(), kDrivetrainVelocitySlot);
-        mRightWheelsMaster.getPIDController().setI(sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getI(), kDrivetrainVelocitySlot);
-        mRightWheelsMaster.getPIDController().setD(sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getD(), kDrivetrainVelocitySlot);
+        mRightWheelsMaster.getPIDController().setP(mRightVelocityPID.getP(), kDrivetrainVelocitySlot);
+        mRightWheelsMaster.getPIDController().setI(mRightVelocityPID.getI(), kDrivetrainVelocitySlot);
+        mRightWheelsMaster.getPIDController().setD(mRightVelocityPID.getD(), kDrivetrainVelocitySlot);
 
         mLeftWheelsMaster.burnFlash();
         mLeftWheelsSlave.burnFlash();
@@ -182,21 +170,21 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.getEncoder().setVelocityConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
         mRightWheelsSlave.getEncoder().setVelocityConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
 
-        mLeftWheelsMaster.getPIDController().setP(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getP(), kDrivetrainVoltageSlot);
-        mLeftWheelsMaster.getPIDController().setI(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getI(), kDrivetrainVoltageSlot);
-        mLeftWheelsMaster.getPIDController().setD(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID().getD(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setP(mLeftVoltagePID.getP(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setI(mLeftVoltagePID.getI(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setD(mLeftVoltagePID.getD(), kDrivetrainVoltageSlot);
 
-        mRightWheelsMaster.getPIDController().setP(sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getP(), kDrivetrainVoltageSlot);
-        mRightWheelsMaster.getPIDController().setI(sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getI(), kDrivetrainVoltageSlot);
-        mRightWheelsMaster.getPIDController().setD(sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID().getD(), kDrivetrainVoltageSlot);
+        mRightWheelsMaster.getPIDController().setP(mRightVoltagePID.getP(), kDrivetrainVoltageSlot);
+        mRightWheelsMaster.getPIDController().setI(mRightVoltagePID.getI(), kDrivetrainVoltageSlot);
+        mRightWheelsMaster.getPIDController().setD(mRightVoltagePID.getD(), kDrivetrainVoltageSlot);
 
-        mLeftWheelsMaster.getPIDController().setP(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP(), kDrivetrainVelocitySlot);
-        mLeftWheelsMaster.getPIDController().setI(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getI(), kDrivetrainVelocitySlot);
-        mLeftWheelsMaster.getPIDController().setD(sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getD(), kDrivetrainVelocitySlot);
+        mLeftWheelsMaster.getPIDController().setP(mLeftVelocityPID.getP(), kDrivetrainVelocitySlot);
+        mLeftWheelsMaster.getPIDController().setI(mLeftVelocityPID.getI(), kDrivetrainVelocitySlot);
+        mLeftWheelsMaster.getPIDController().setD(mLeftVelocityPID.getD(), kDrivetrainVelocitySlot);
 
-        mRightWheelsMaster.getPIDController().setP(sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP(), kDrivetrainVelocitySlot);
-        mRightWheelsMaster.getPIDController().setI(sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getI(), kDrivetrainVelocitySlot);
-        mRightWheelsMaster.getPIDController().setD(sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getD(), kDrivetrainVelocitySlot);
+        mRightWheelsMaster.getPIDController().setP(mRightVelocityPID.getP(), kDrivetrainVelocitySlot);
+        mRightWheelsMaster.getPIDController().setI(mRightVelocityPID.getI(), kDrivetrainVelocitySlot);
+        mRightWheelsMaster.getPIDController().setD(mRightVelocityPID.getD(), kDrivetrainVelocitySlot);
 
         mLeftWheelsMaster.burnFlash();
         mLeftWheelsSlave.burnFlash();
@@ -262,12 +250,52 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetHeading() {
-        ahrs.zeroYaw();
+        mAhrs.zeroYaw();
     }
 
     public void resetPose(Pose2d startingPose) {
         resetEncoders();
         mDriveOdometry.resetPosition(startingPose, getHeading());
+    }
+
+    public SimpleMotorFeedforward getFeedforward() {
+        return mFeedforward;
+    }
+
+    public DifferentialDriveKinematics getDriveKinematics() {
+        return mDriveKinematics;
+    }
+
+    public DifferentialDriveOdometry getDriveOdometry() {
+        return mDriveOdometry;
+    }
+
+    public RamseteController getRamseteController() {
+        return mRamseteController;
+    }
+
+    public PIDController getLeftVoltagePID() {
+        return mLeftVoltagePID;
+    }
+
+    public PIDController getRightVoltagePID() {
+        return mRightVoltagePID;
+    }
+
+    public PIDController getLeftVelocityPID() {
+        return mLeftVelocityPID;
+    }
+
+    public PIDController getRightVelocityPID() {
+        return mRightVelocityPID;
+    }
+
+    public LinearSystemLoop<N2, N2, N2> getDriveControlLoop() {
+        return mDriveControlLoop;
+    }
+
+    public Pose2d getCurrentPose() {
+        return mCurrentPose;
     }
 
     public DifferentialDriveWheelSpeeds getSpeeds() {
@@ -298,11 +326,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public Rotation2d getHeading() {
-        return Rotation2d.fromDegrees(-ahrs.getAngle());
+        return Rotation2d.fromDegrees(-mAhrs.getAngle());
     }
 
     public double getAngularVelocity() {
-        return -ahrs.getRate();
+        return -mAhrs.getRate();
     }
 
 }
