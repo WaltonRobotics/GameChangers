@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -26,7 +27,7 @@ public class Robot extends TimedRobot {
 
   public static Drivetrain driveTrain;
   public static Shooter shooter;
-
+  public static Intake intake;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
