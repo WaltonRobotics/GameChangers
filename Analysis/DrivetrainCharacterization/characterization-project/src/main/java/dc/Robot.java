@@ -19,34 +19,23 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWMTalonSRX;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 
 public class Robot extends TimedRobot {
 
-  static private double WHEEL_DIAMETER = 0.1524;
+  private static final boolean isRiseRobot = (!new DigitalInput(8).get() && new DigitalInput(8).get());
+
+  // For Rise robot: 6 inches (0.1524 m)
+  // For DeepSpace robot: 5 inches (0.127 m)
+  private static double WHEEL_DIAMETER = (isRiseRobot ? Units.inchesToMeters(6) : Units.inchesToMeters(5));
 
   Joystick leftStick;
   Joystick rightStick;
@@ -75,6 +64,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //if (!isReal()) SmartDashboard.putData(new SimEnabler());
+    SmartDashboard.putBoolean("Is Rise Robot", isRiseRobot);
 
     leftStick = new Joystick(0);
     rightStick = new Joystick(1);
@@ -112,7 +102,8 @@ public class Robot extends TimedRobot {
     // units and units/s
     //
 
-    double encoderConstant = 0.05984734; // (1 / 42) * WHEEL_DIAMETER * Math.PI;
+    // Uses empirical values instead of calculated encoder constants
+    double encoderConstant = (isRiseRobot ? 0.05984734 : (1 / 64.125)); // (1 / 42) * WHEEL_DIAMETER * Math.PI;
 
     //Encoder leftEncoder = new Encoder(0, 1);
     //leftEncoder.setDistancePerPulse(encoderConstant);

@@ -49,7 +49,7 @@ public final class Constants {
 
     public static class LiveDashboardKeys {
 
-        public static final String kLiveDashboardTableName = "Live Dashboard";
+        public static final String kLiveDashboardTableName = "Live_Dashboard";
         public static final String kRobotXKey = "robotX";
         public static final String kRobotYKey = "robotY";
         public static final String kRobotHeadingKey = "robotHeading";

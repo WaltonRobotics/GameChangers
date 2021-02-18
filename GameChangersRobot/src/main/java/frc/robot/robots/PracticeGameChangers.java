@@ -2,6 +2,7 @@ package frc.robot.robots;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 
 public class PracticeGameChangers implements WaltRobot {
@@ -9,8 +10,8 @@ public class PracticeGameChangers implements WaltRobot {
     private SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
     private PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
     private PIDController mDrivetrainRightVoltagePID = new PIDController(1, 0, 0);
-    private PIDController mDrivetrainLeftVelocityPID = new PIDController(0.05, 0, 0);
-    private PIDController mDrivetrainRightVelocityPID = new PIDController(0.05, 0, 0);
+    private PIDController mDrivetrainLeftVelocityPID = new PIDController(0.25, 0, 0);
+    private PIDController mDrivetrainRightVelocityPID = new PIDController(0.25, 0, 0);
 
     @Override
     public SimpleMotorFeedforward getDrivetrainFeedforward() {
@@ -49,6 +50,6 @@ public class PracticeGameChangers implements WaltRobot {
 
     @Override
     public double getTrackWidth() {
-        return 0.8;
+        return 0.6636711328082447;
     }
 }
