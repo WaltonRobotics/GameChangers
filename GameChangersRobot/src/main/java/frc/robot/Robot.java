@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.auton.RamseteTrackingCommand;
+import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentification;
 import frc.robot.subsystems.Drivetrain;
@@ -78,6 +79,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    CommandScheduler.getInstance().cancelAll();
+
 //    new SequentialCommandGroup(
 //            new DriveStraight(6.6),
 //            new WaitCommand(2),
@@ -98,7 +101,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    CommandScheduler.getInstance().cancelAll();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
@@ -116,7 +121,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    new DrivetrainCharacterizationRoutine().schedule();
+  }
 
   /** This function is called periodically during test mode. */
   @Override

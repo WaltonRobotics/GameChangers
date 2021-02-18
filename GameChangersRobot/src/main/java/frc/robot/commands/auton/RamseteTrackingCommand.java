@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpiutil.math.VecBuilder;
 import frc.robot.auton.LiveDashboardTable;
 import frc.robot.auton.LiveDashboardHelper;
@@ -56,6 +57,8 @@ public class RamseteTrackingCommand extends CommandBase {
      * @param trajectory The trajectory to follow.
      */
     public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean debugMode) {
+        addRequirements(sDrivetrain);
+
         mTrajectory = requireNonNullParam(trajectory, "trajectory", "RamseteCommand");
         mPose = sDrivetrain::getCurrentPose;
 
@@ -79,8 +82,6 @@ public class RamseteTrackingCommand extends CommandBase {
         mRightController = sDrivetrain.getRightVelocityPID();
 
         mUseSparkPID = useSparkPID;
-
-        addRequirements(sDrivetrain);
     }
 
     @Override

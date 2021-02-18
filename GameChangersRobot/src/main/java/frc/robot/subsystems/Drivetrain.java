@@ -203,10 +203,10 @@ public class Drivetrain extends SubsystemBase {
         updateRobotPose();
         SmartDashboard.putNumber("Angular Rate", getAngularVelocity());
         SmartDashboard.putNumber("Angle", getHeading().getDegrees());
-        SmartDashboard.putNumber("Left neo encoder velocity", getLeftVelocity());
-        SmartDashboard.putNumber("right neo encoder velocity", getRightVelocity());
-        SmartDashboard.putNumber("Left neo encoder distance", getLeftMetersDisplacement());
-        SmartDashboard.putNumber("right neo encoder distance", getRightMetersDisplacement());
+        SmartDashboard.putNumber("Left neo encoder velocity", getLeftVelocityMetersPerSec());
+        SmartDashboard.putNumber("right neo encoder velocity", getRightVelocityMetersPerSec());
+        SmartDashboard.putNumber("Left neo encoder distance", getLeftPositionMeters());
+        SmartDashboard.putNumber("right neo encoder distance", getRightPositionMeters());
 
         LiveDashboardHelper.putRobotData(sDrivetrain.getCurrentPose());
     }
@@ -300,24 +300,24 @@ public class Drivetrain extends SubsystemBase {
 
     public DifferentialDriveWheelSpeeds getSpeeds() {
         return new DifferentialDriveWheelSpeeds(
-                getLeftVelocity(),
-                getRightVelocity()
+                getLeftVelocityMetersPerSec(),
+                getRightVelocityMetersPerSec()
         );
     }
 
-    public double getLeftMetersDisplacement() {
+    public double getLeftPositionMeters() {
         return mLeftWheelsMaster.getEncoder().getPosition();
     }
 
-    public double getRightMetersDisplacement() {
+    public double getRightPositionMeters() {
         return mRightWheelsMaster.getEncoder().getPosition();
     }
 
-    public double getLeftVelocity() {
+    public double getLeftVelocityMetersPerSec() {
         return mLeftWheelsMaster.getEncoder().getVelocity();
     }
 
-    public double getRightVelocity() {
+    public double getRightVelocityMetersPerSec() {
         return mRightWheelsMaster.getEncoder().getVelocity();
     }
 
