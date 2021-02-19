@@ -24,6 +24,7 @@ public final class Constants {
         public static final int kRightMaster = 1;
         public static final int kRightSlave = 2;
 
+        public static final int kIntakeMotor = 5;
     }
 
     public static class DioIDs {
@@ -31,6 +32,10 @@ public final class Constants {
         public static final int kRobotId1 = 8;
         public static final int kRobotId2 = 9;
 
+    }
+
+    public static class PneumaticsIDs {
+        public static final int kIntakeToggle = 1;
     }
 
     public static class PIDSlots {

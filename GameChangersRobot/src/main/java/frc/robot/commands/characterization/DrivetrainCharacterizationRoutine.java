@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import static frc.robot.Robot.sDrivetrain;
+import static frc.robot.Robot.sIntake;
 
 public class DrivetrainCharacterizationRoutine extends CommandBase {
 
@@ -20,13 +21,17 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
     @Override
     public void initialize() {
         addRequirements(sDrivetrain);
+        addRequirements(sIntake);
 
         sDrivetrain.setupMotorsAuton();
         sDrivetrain.reset();
+
+        sIntake.setIntakeDeployed(true);
     }
 
     @Override
     public void execute() {
+        System.out.println("Hello");
         // Retrieve values to send back before telling the motors to do something
         double now = Timer.getFPGATimestamp();
 

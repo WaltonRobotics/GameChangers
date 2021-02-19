@@ -22,15 +22,15 @@ public class Paths {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
-            config.addConstraint(
-                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
-                            sDrivetrain.getDriveKinematics(), 10.0));
-            config.setKinematics(sDrivetrain.getDriveKinematics());
+//            config.addConstraint(
+//                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+//                            sDrivetrain.getDriveKinematics(), 10.0));
+//            config.setKinematics(sDrivetrain.getDriveKinematics());
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                            new Pose2d(Units.feetToMeters(0), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-                            new Pose2d(1.0, Units.feetToMeters(7.5), Rotation2d.fromDegrees(0))),
+                            new Pose2d(Units.feetToMeters(7.541), Units.feetToMeters(4.866), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(20.145), Units.feetToMeters(12.491), Rotation2d.fromDegrees(0))),
                     config
             );
         }

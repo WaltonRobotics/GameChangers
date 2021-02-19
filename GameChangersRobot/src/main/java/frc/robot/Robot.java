@@ -8,11 +8,15 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentification;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 
 import static frc.robot.Constants.DioIDs.kRobotId1;
 import static frc.robot.Constants.DioIDs.kRobotId2;
@@ -27,7 +31,10 @@ import static frc.robot.Constants.SmartDashboardKeys.kRightVelocityPKey;
  */
 public class Robot extends TimedRobot {
   public static Drivetrain sDrivetrain;
+  public static Intake sIntake;
   public static RobotIdentification sCurrentRobot;
+
+  private final DrivetrainCharacterizationRoutine drivetrainCharacterizationRoutine = new DrivetrainCharacterizationRoutine();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -41,6 +48,7 @@ public class Robot extends TimedRobot {
     populateShuffleboard();
 
     sDrivetrain = new Drivetrain();
+    sIntake = new Intake();
 
     CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
   }
@@ -79,7 +87,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    CommandScheduler.getInstance().cancelAll();
+    drivetrainCharacterizationRoutine.cancel();
 
 //    new SequentialCommandGroup(
 //            new DriveStraight(6.6),
@@ -88,9 +96,13 @@ public class Robot extends TimedRobot {
 //    ).schedule();
     sDrivetrain.setupMotorsAuton();
     sDrivetrain.reset();
-    sDrivetrain.resetPose(Paths.GalacticSearchPaths.sRedA.getInitialPose());
+    sDrivetrain.resetPose(Paths.TestTrajectory.sTestTrajectory.getInitialPose());
 
-    new RamseteTrackingCommand(Paths.GalacticSearchPaths.sRedA, true, false).schedule();
+    new SequentialCommandGroup(
+            new InstantCommand(() -> sIntake.setIntakeDeployed(true)),
+            new WaitCommand(1.0),
+            new RamseteTrackingCommand(Paths.TestTrajectory.sTestTrajectory, true, false)
+    ).schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -102,7 +114,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    CommandScheduler.getInstance().cancelAll();
+    drivetrainCharacterizationRoutine.cancel();
   }
 
   /** This function is called periodically during operator control. */
@@ -113,7 +125,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    drivetrainCharacterizationRoutine.cancel();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -122,7 +136,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {
-    new DrivetrainCharacterizationRoutine().schedule();
+    drivetrainCharacterizationRoutine.schedule();
   }
 
   /** This function is called periodically during test mode. */

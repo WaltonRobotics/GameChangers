@@ -30,7 +30,6 @@ import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
 import static frc.robot.Robot.sCurrentRobot;
-import static frc.robot.Robot.sDrivetrain;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -208,7 +207,7 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Left neo encoder distance", getLeftPositionMeters());
         SmartDashboard.putNumber("right neo encoder distance", getRightPositionMeters());
 
-        LiveDashboardHelper.putRobotData(sDrivetrain.getCurrentPose());
+        LiveDashboardHelper.putRobotData(getCurrentPose());
     }
 
     public void setArcadeSpeeds(double xSpeed, double zRotation) {
@@ -322,7 +321,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private void updateRobotPose() {
-        mCurrentPose = mDriveOdometry.update(getHeading(), mLeftWheelsMaster.getEncoder().getPosition(), mRightWheelsMaster.getEncoder().getPosition());
+        mCurrentPose = mDriveOdometry.update(getHeading(), getLeftPositionMeters(), getRightPositionMeters());
     }
 
     public Rotation2d getHeading() {
