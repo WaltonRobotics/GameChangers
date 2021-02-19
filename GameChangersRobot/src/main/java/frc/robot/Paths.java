@@ -22,10 +22,10 @@ public class Paths {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
-//            config.addConstraint(
-//                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
-//                            sDrivetrain.getDriveKinematics(), 10.0));
-//            config.setKinematics(sDrivetrain.getDriveKinematics());
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+            config.addConstraint(
+                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+                            sDrivetrain.getDriveKinematics(), 10.0));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
