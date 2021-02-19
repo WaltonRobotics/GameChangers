@@ -23,6 +23,7 @@ public class DriveStraight extends CommandBase {
     public void initialize() {
         drivetrain.reset();
         drivetrain.getmDriveStraightHeadingPIDController().reset(new TrapezoidProfile.State(0, 0));
+        System.out.println("Initialize completed!");
     }
 
     private double distanceAverage() {
@@ -31,8 +32,9 @@ public class DriveStraight extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrain.getmDriveStraightHeadingPIDController().setP(SmartDashboard.getNumber("Drive Straight Heading P", 0.19));
-        drivetrain.getmDriveStraightPowerController().setP(SmartDashboard.getNumber("Forward P", 0.8));
+        SmartDashboard.putNumber("Distance Average", distanceAverage());
+        //drivetrain.getmDriveStraightHeadingPIDController().setP(SmartDashboard.getNumber("Drive Straight Heading P", 0.19));
+        //drivetrain.getmDriveStraightPowerController().setP(SmartDashboard.getNumber("Forward P", 0.8));
         double turnRate = -drivetrain.getmDriveStraightHeadingPIDController().calculate(drivetrain.getHeading().getDegrees(), 0);
         double forward = drivetrain.getmDriveStraightPowerController().calculate(distanceAverage(), desiredDistance);
 

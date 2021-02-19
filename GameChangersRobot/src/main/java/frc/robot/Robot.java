@@ -66,9 +66,7 @@ public class Robot extends TimedRobot {
     new SequentialCommandGroup(
             new DriveStraight(2),
             new WaitCommand(2),
-            new TurnToAngle(90),
-            new WaitCommand(2),
-            new DriveStraight(1)
+            new TurnToAngle(90)
     ).schedule();
   }
 

@@ -107,6 +107,14 @@ public class Drivetrain extends SubsystemBase {
         mLeftWheelsMaster.getEncoder().setPositionConversionFactor(1 / 64.125);
         mRightWheelsMaster.getEncoder().setPositionConversionFactor(1 / 64.125);
 
+        mLeftWheelsMaster.getEncoder().setVelocityConversionFactor((1 / 64.125) / 60);
+        mRightWheelsMaster.getEncoder().setVelocityConversionFactor((1 / 64.125) / 60);
+
+        mLeftWheelsMaster.burnFlash();
+        mLeftWheelsSlave.burnFlash();
+        mRightWheelsSlave.burnFlash();
+        mRightWheelsMaster.burnFlash();
+
 //        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
 //        mLeftWheelsSlave.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
 //        mRightWheelsMaster.getEncoder().setPositionConversionFactor(currentRobot.getCurrentRobot().getDrivetrainPositionFactor());
@@ -132,11 +140,6 @@ public class Drivetrain extends SubsystemBase {
 //        mRightWheelsMaster.getPIDController().setP(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP(), VELOCITY_PID_SLOT);
 //        mRightWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getI(), VELOCITY_PID_SLOT);
 //        mRightWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getD(), VELOCITY_PID_SLOT);
-//
-//        mLeftWheelsMaster.burnFlash();
-//        mLeftWheelsSlave.burnFlash();
-//        mRightWheelsSlave.burnFlash();
-//        mRightWheelsMaster.burnFlash();
     }
     private ProfiledPIDController turnPIDController = new ProfiledPIDController(0.05, 0, 0,
             new TrapezoidProfile.Constraints(360, 80));
@@ -145,8 +148,8 @@ public class Drivetrain extends SubsystemBase {
         return turnPIDController;
     }
 
-    private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(80, 0, 0,
-            new TrapezoidProfile.Constraints(0.5,0.25));
+    private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(0.8, 0, 0,
+            new TrapezoidProfile.Constraints(0.1,0.1));
 
     public ProfiledPIDController getmDriveStraightPowerController() {
         return mDriveStraightPowerController;
@@ -156,6 +159,6 @@ public class Drivetrain extends SubsystemBase {
         return mDriveStraightHeadingPIDController;
     }
 
-    private ProfiledPIDController mDriveStraightHeadingPIDController = new ProfiledPIDController(20, 0, 0,
+    private ProfiledPIDController mDriveStraightHeadingPIDController = new ProfiledPIDController(0.2, 0, 0,
             new TrapezoidProfile.Constraints(60, 30));
 }
