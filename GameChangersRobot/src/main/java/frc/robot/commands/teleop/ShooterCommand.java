@@ -8,7 +8,7 @@ import static frc.robot.OI.shootButton;
 import static frc.robot.Robot.shooter;
 
 public class ShooterCommand extends CommandBase {
-
+    public ShooterCommand() {addRequirements(shooter);}
     double targetVelocity = 12500;
     double tolerance = 100;
 
@@ -81,6 +81,6 @@ public class ShooterCommand extends CommandBase {
 
     @Override
     public void execute() {
-
+        stateMachine.run();
     }
 }

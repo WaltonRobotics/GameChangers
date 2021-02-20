@@ -9,8 +9,10 @@ import static frc.robot.OI.retractButton;
 import static frc.robot.OI.deployButton;
 import static frc.robot.OI.intakingButton;
 import static frc.robot.Robot.intake;
+import static frc.robot.Robot.shooter;
 
 public class IntakeCommand extends CommandBase {
+    public IntakeCommand() {addRequirements(intake);}
 
     private IState mIdle = new IState() {
         @Override
