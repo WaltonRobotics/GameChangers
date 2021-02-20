@@ -23,7 +23,7 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
         addRequirements(sDrivetrain);
         addRequirements(sIntake);
 
-        sDrivetrain.setupMotorsAuton();
+        sDrivetrain.setupControllersAuton();
         sDrivetrain.reset();
 
         sIntake.setIntakeDeployed(true);

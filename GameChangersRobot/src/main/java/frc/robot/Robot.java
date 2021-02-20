@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
 //            new WaitCommand(2),
 //            new DriveStraight(6.5)
 //    ).schedule();
-    sDrivetrain.setupMotorsAuton();
+    sDrivetrain.setupControllersAuton();
     sDrivetrain.reset();
     sDrivetrain.resetPose(Paths.TestTrajectory.sTestTrajectory.getInitialPose());
 

@@ -77,11 +77,11 @@ public class Drivetrain extends SubsystemBase {
     private Pose2d mCurrentPose = new Pose2d();
 
     public Drivetrain() {
-        setupMotorsTeleop();
+        setupControllersTeleop();
         reset();
     }
 
-    public void setupMotorsTeleop() {
+    public void setupControllersTeleop() {
         mLeftWheelsMaster.restoreFactoryDefaults();
         mLeftWheelsSlave.restoreFactoryDefaults();
         mRightWheelsMaster.restoreFactoryDefaults();
@@ -139,7 +139,7 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.burnFlash();
     }
 
-    public void setupMotorsAuton() {
+    public void setupControllersAuton() {
         mLeftWheelsMaster.restoreFactoryDefaults();
         mLeftWheelsSlave.restoreFactoryDefaults();
         mRightWheelsMaster.restoreFactoryDefaults();
