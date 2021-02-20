@@ -48,7 +48,7 @@ public class Drivetrain extends SubsystemBase {
         resetHeading();
     }
 
-    private void resetEncoders() {
+    public void resetEncoders() {
         mLeftWheelsMaster.getEncoder().setPosition(0);
         mRightWheelsMaster.getEncoder().setPosition(0);
     }
@@ -149,7 +149,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private ProfiledPIDController mDriveStraightPowerController = new ProfiledPIDController(0.8, 0, 0,
-            new TrapezoidProfile.Constraints(0.1,0.1));
+            new TrapezoidProfile.Constraints(1.5,1.5));
 
     public ProfiledPIDController getmDriveStraightPowerController() {
         return mDriveStraightPowerController;

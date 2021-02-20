@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     SmartDashboard.putNumber("Drive Straight Heading P", 0.08);
     SmartDashboard.putNumber("Turn P", 0.05);
-    SmartDashboard.putNumber("Forward P", 2);
+    SmartDashboard.putNumber("Forward P", 1);
     CommandScheduler.getInstance().setDefaultCommand(drivetrain, new DriveCommand());
   }
 
