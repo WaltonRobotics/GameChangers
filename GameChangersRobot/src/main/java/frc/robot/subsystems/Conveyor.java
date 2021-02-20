@@ -3,12 +3,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.Conveyor.kBackConveyorMotor;
 import static frc.robot.Constants.Conveyor.kFrontConveyorMotor;
 import static frc.robot.OI.mFlyWheelMaster;
 
-public class Conveyor {
+public class Conveyor extends SubsystemBase {
     private VictorSPX mFrontConveyorMotor = new VictorSPX(kFrontConveyorMotor);
     private VictorSPX mBackConveyorMotor = new VictorSPX(kBackConveyorMotor);
 

@@ -8,7 +8,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.teleop.ConveyorCommand;
 import frc.robot.commands.teleop.DriveCommand;
+import frc.robot.commands.teleop.IntakeCommand;
+import frc.robot.commands.teleop.ShooterCommand;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -28,6 +32,7 @@ public class Robot extends TimedRobot {
   public static Drivetrain driveTrain;
   public static Shooter shooter;
   public static Intake intake;
+  public static Conveyor conveyor;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -36,8 +41,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveTrain = new Drivetrain();
     shooter = new Shooter();
+    intake = new Intake();
+    conveyor = new Conveyor();
 
     CommandScheduler.getInstance().setDefaultCommand(driveTrain, new DriveCommand());
+    CommandScheduler.getInstance().setDefaultCommand(shooter, new ShooterCommand());
+    CommandScheduler.getInstance().setDefaultCommand(intake, new IntakeCommand());
+    CommandScheduler.getInstance().setDefaultCommand(conveyor, new ConveyorCommand());
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);

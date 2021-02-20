@@ -1,5 +1,6 @@
 package frc.robot.commands.teleop;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.subsystems.Intake;
 
@@ -9,7 +10,7 @@ import static frc.robot.OI.deployButton;
 import static frc.robot.OI.intakingButton;
 import static frc.robot.Robot.intake;
 
-public class IntakeCommand {
+public class IntakeCommand extends CommandBase {
 
     private IState mIdle = new IState() {
         @Override
