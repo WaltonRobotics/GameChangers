@@ -37,8 +37,9 @@ public class Shooter extends SubsystemBase {
         flywheelMaster.setInverted(true);
         flywheelSlave.setInverted(false);
 
-        flywheelMaster.config_kF(0, 0.056);
-        flywheelMaster.config_kP(0, 0.013);
+        flywheelMaster.config_kF(0, .0498575917);
+        flywheelMaster.config_kP(0, 0.23);
+        flywheelMaster.config_kI(0, 0);
         flywheelMaster.config_kD(0, 0);
 
         // Voltage compensation

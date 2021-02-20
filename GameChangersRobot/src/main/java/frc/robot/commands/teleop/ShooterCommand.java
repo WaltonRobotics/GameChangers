@@ -9,8 +9,8 @@ import static frc.robot.Robot.shooter;
 
 public class ShooterCommand extends CommandBase {
 
-    double targetVelocity = 1.5;
-    double tolerance = 1;
+    double targetVelocity = 12500;
+    double tolerance = 100;
 
     IState mOff = new IState() {
         @Override
