@@ -50,7 +50,7 @@ public class RamseteTrackingCommand extends CommandBase {
     private double mPrevTime;
 
     /**
-     * Constructs a new RamseteCommand that, when executed, will follow the provided trajectory.
+     * Constructs a new RamseteTrackingCommand that, when executed, will follow the provided trajectory.
      * Performs no PID control and calculates no feedforwards; outputs are the raw wheel speeds
      * in meters per second from the RAMSETE controller, and will need to be converted into a usable form by the user.
      *
@@ -59,7 +59,7 @@ public class RamseteTrackingCommand extends CommandBase {
     public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean debugMode) {
         addRequirements(sDrivetrain);
 
-        mTrajectory = requireNonNullParam(trajectory, "trajectory", "RamseteCommand");
+        mTrajectory = requireNonNullParam(trajectory, "trajectory", "RamseteTrackingCommand");
         mPose = sDrivetrain::getCurrentPose;
 
         if(debugMode) {

@@ -82,10 +82,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setupMotorsTeleop() {
-        //        leftWheelsMaster.restoreFactoryDefaults();
-        //        leftWheelsSlave.restoreFactoryDefaults();
-        //        rightWheelsMaster.restoreFactoryDefaults();
-        //        rightWheelsSlave.restoreFactoryDefaults();
+        mLeftWheelsMaster.restoreFactoryDefaults();
+        mLeftWheelsSlave.restoreFactoryDefaults();
+        mRightWheelsMaster.restoreFactoryDefaults();
+        mRightWheelsSlave.restoreFactoryDefaults();
+
         mLeftWheelsMaster.setInverted(true);
 
         mLeftWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kCoast);
@@ -139,6 +140,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setupMotorsAuton() {
+        mLeftWheelsMaster.restoreFactoryDefaults();
+        mLeftWheelsSlave.restoreFactoryDefaults();
+        mRightWheelsMaster.restoreFactoryDefaults();
+        mRightWheelsSlave.restoreFactoryDefaults();
+
         mLeftWheelsMaster.setInverted(true);
 
         mLeftWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
