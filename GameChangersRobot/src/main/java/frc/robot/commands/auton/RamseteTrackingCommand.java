@@ -54,14 +54,16 @@ public class RamseteTrackingCommand extends CommandBase {
      * in meters per second from the RAMSETE controller, and will need to be converted into a usable form by the user.
      *
      * @param trajectory The trajectory to follow.
+     * @param useSparkPID Whether to use onboard SparkMax velocity PID or direct voltage control
+     * @param disableRamsete Whether to disable the Ramsete correction (for feedforward analysis)
      */
-    public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean debugMode) {
+    public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean disableRamsete) {
         addRequirements(sDrivetrain);
 
         mTrajectory = requireNonNullParam(trajectory, "trajectory", "RamseteTrackingCommand");
         mPose = sDrivetrain::getCurrentPose;
 
-        if (debugMode) {
+        if (disableRamsete) {
             mFollower = new RamseteController() {
                 @Override
                 public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
