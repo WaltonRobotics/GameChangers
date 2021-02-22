@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.teleop.DriveCommand;
-import frc.robot.robots.RobotIdentification;
+import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 
@@ -32,7 +32,7 @@ import static frc.robot.Constants.SmartDashboardKeys.kRightVelocityPKey;
 public class Robot extends TimedRobot {
   public static Drivetrain sDrivetrain;
   public static Intake sIntake;
-  public static RobotIdentification sCurrentRobot;
+  public static RobotIdentifier sCurrentRobot;
 
   private final DrivetrainCharacterizationRoutine drivetrainCharacterizationRoutine = new DrivetrainCharacterizationRoutine();
 
@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    sCurrentRobot = RobotIdentification.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
+    sCurrentRobot = RobotIdentifier.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
     System.out.println("Current robot is " + sCurrentRobot.name());
 
     populateShuffleboard();

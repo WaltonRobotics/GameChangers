@@ -3,8 +3,6 @@ package frc.robot.robots;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
-import static frc.robot.robots.RobotIdentification.*;
-
 public class CompDeepSpace implements WaltRobot {
     @Override
     public SimpleMotorFeedforward getDrivetrainFeedforward() {

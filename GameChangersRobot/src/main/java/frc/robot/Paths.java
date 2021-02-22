@@ -20,7 +20,7 @@ public class Paths {
 
         public static Trajectory generateTestTrajectory() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(4.0));
+                    Units.feetToMeters(4.0), Units.feetToMeters(3.0));
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
             config.addConstraint(

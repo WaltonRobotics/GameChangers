@@ -2,6 +2,7 @@ package frc.robot.robots;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
 public class PracticeGameChangers implements WaltRobot {
 
