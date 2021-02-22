@@ -19,13 +19,13 @@ public class DriveCommand extends CommandBase {
     }
 
     private double getLeftJoystickY() {
-        if(Math.abs(sLeftJoystick.getY()) < kDriveDeadband)
+        if (Math.abs(sLeftJoystick.getY()) < kDriveDeadband)
             return 0;
         return -sLeftJoystick.getY();
     }
 
     private double getRightJoystickY() {
-        if(Math.abs(sRightJoystick.getY()) < kDriveDeadband)
+        if (Math.abs(sRightJoystick.getY()) < kDriveDeadband)
             return 0;
         return -sRightJoystick.getY();
     }

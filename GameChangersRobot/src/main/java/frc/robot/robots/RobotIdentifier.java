@@ -22,7 +22,7 @@ public enum RobotIdentifier {
     }
 
     public static RobotIdentifier findByInputs(boolean input1, boolean input2) {
-       for (RobotIdentifier i : values()) {
+        for (RobotIdentifier i : values()) {
             if (i.input1 == input1 && i.input2 == input2) {
                 return i;
             }

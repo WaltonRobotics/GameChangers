@@ -11,12 +11,12 @@ import static frc.robot.Robot.sIntake;
 
 public class DrivetrainCharacterizationRoutine extends CommandBase {
 
-    private NetworkTableEntry mAutoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
-    private NetworkTableEntry mTelemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
-    private NetworkTableEntry mRotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
+    private final NetworkTableEntry mAutoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
+    private final NetworkTableEntry mTelemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
+    private final NetworkTableEntry mRotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
 
     private double mPriorAutospeed = 0;
-    private Number[] mNumberArray = new Number[10];
+    private final Number[] mNumberArray = new Number[10];
 
     @Override
     public void initialize() {

@@ -9,8 +9,8 @@ import static frc.robot.Constants.CANBusIDs.kIntakeMotor;
 import static frc.robot.Constants.PneumaticsIDs.kIntakeToggle;
 
 public class Intake extends SubsystemBase {
-    private VictorSPX mIntakeMotor = new VictorSPX(kIntakeMotor);
-    private Solenoid mIntakeToggle = new Solenoid(kIntakeToggle);
+    private final VictorSPX mIntakeMotor = new VictorSPX(kIntakeMotor);
+    private final Solenoid mIntakeToggle = new Solenoid(kIntakeToggle);
 
 
     public Intake() {

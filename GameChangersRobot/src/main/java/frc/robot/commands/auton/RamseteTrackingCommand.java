@@ -10,10 +10,9 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpiutil.math.VecBuilder;
-import frc.robot.auton.LiveDashboardTable;
 import frc.robot.auton.LiveDashboardHelper;
+import frc.robot.auton.LiveDashboardTable;
 import frc.robot.auton.RamseteDebuggingTable;
 
 import java.util.function.Supplier;
@@ -62,7 +61,7 @@ public class RamseteTrackingCommand extends CommandBase {
         mTrajectory = requireNonNullParam(trajectory, "trajectory", "RamseteTrackingCommand");
         mPose = sDrivetrain::getCurrentPose;
 
-        if(debugMode) {
+        if (debugMode) {
             mFollower = new RamseteController() {
                 @Override
                 public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
@@ -112,7 +111,7 @@ public class RamseteTrackingCommand extends CommandBase {
         double dt = curTime - mPrevTime;
 
         if (mPrevTime < 0) {
-            sDrivetrain.setVelocities(0,0, 0, 0);
+            sDrivetrain.setVelocities(0, 0, 0, 0);
             mPrevTime = curTime;
             return;
         }
