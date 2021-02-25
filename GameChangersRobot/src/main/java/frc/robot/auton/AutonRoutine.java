@@ -1,7 +1,9 @@
-package frc.robot.commands.auton;
+package frc.robot.auton;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.auton.RamseteTrackingCommand;
+import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 
 import static frc.robot.Paths.GalacticSearchPaths.*;

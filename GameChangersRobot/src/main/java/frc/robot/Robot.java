@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.auton.AutonRoutine;
+import frc.robot.auton.AutonRoutine;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.Drivetrain;
@@ -21,7 +21,7 @@ import static frc.robot.Constants.DioIDs.kRobotId1;
 import static frc.robot.Constants.DioIDs.kRobotId2;
 import static frc.robot.Constants.SmartDashboardKeys.kLeftVelocityPKey;
 import static frc.robot.Constants.SmartDashboardKeys.kRightVelocityPKey;
-import static frc.robot.commands.auton.AutonRoutine.DO_NOTHING;
+import static frc.robot.auton.AutonRoutine.DO_NOTHING;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
