@@ -326,6 +326,14 @@ public class Drivetrain extends SubsystemBase {
         return mRightWheelsMaster.getEncoder().getVelocity();
     }
 
+    public double getLeftVoltage() {
+        return mLeftWheelsMaster.getBusVoltage() * mLeftWheelsMaster.getAppliedOutput();
+    }
+
+    public double getRightVoltage() {
+        return mRightWheelsMaster.getBusVoltage() * mRightWheelsMaster.getAppliedOutput();
+    }
+
     private void updateRobotPose() {
         mCurrentPose = mDriveOdometry.update(getHeading(), getLeftPositionMeters(), getRightPositionMeters());
     }

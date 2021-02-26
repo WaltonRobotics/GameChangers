@@ -31,7 +31,6 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
 
     @Override
     public void execute() {
-        System.out.println("Hello");
         // Retrieve values to send back before telling the motors to do something
         double now = Timer.getFPGATimestamp();
 
@@ -42,10 +41,9 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
         double rightRate = sDrivetrain.getRightVelocityMetersPerSec();
 
         double battery = RobotController.getBatteryVoltage();
-        double motorVolts = battery * Math.abs(mPriorAutospeed);
 
-        double leftMotorVolts = motorVolts;
-        double rightMotorVolts = motorVolts;
+        double leftMotorVolts = sDrivetrain.getLeftVoltage();
+        double rightMotorVolts = sDrivetrain.getRightVoltage();
 
         // Retrieve the commanded speed from NetworkTables
         double autospeed = mAutoSpeedEntry.getDouble(0);

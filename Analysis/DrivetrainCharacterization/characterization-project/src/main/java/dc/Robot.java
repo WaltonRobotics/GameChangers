@@ -181,10 +181,9 @@ public class Robot extends TimedRobot {
     double rightRate = rightEncoderRate.get();
 
     double battery = RobotController.getBatteryVoltage();
-    double motorVolts = battery * Math.abs(priorAutospeed);
 
-    double leftMotorVolts = motorVolts;
-    double rightMotorVolts = motorVolts;
+    double leftMotorVolts = leftWheelsMaster.getBusVoltage() * leftWheelsMaster.getAppliedOutput();
+    double rightMotorVolts = rightWheelsMaster.getBusVoltage() * rightWheelsMaster.getAppliedOutput();
 
     // Retrieve the commanded speed from NetworkTables
     double autospeed = autoSpeedEntry.getDouble(0);
