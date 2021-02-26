@@ -16,7 +16,7 @@ public class StateMachine {
     public void run() {
         IState nextState = currentState.execute();
 
-        if(nextState != null) {
+        if (nextState != null) {
             if (nextState != currentState) {
                 currentState.finish();
                 currentState = nextState;

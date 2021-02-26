@@ -20,12 +20,12 @@ public class Intake extends SubsystemBase {
         mIntakeController.setNeutralMode(NeutralMode.Coast);
     }
 
-    public void setDeployed(boolean isDeployed) {
-        mIntakeSolenoid.set(isDeployed);
-    }
-
     public boolean isDeployed() {
         return mIntakeSolenoid.get();
+    }
+
+    public void setDeployed(boolean isDeployed) {
+        mIntakeSolenoid.set(isDeployed);
     }
 
     public void setRollerDutyCycles(double targetDutyCycles) {

@@ -110,6 +110,7 @@ public class Paths {
                     config
             );
         }
+
         public static Trajectory generateGalacticSearchRedB() {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(10.0), Units.feetToMeters(6.0));

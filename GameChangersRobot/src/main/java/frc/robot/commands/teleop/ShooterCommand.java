@@ -8,33 +8,8 @@ import static frc.robot.OI.shootButton;
 import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
-    public ShooterCommand() {addRequirements(sShooter);}
     double targetVelocity = 12500;
     double tolerance = 100;
-
-    IState mOff = new IState() {
-        @Override
-        public void initialize() {
-            sShooter.setOpenLoopDutyCycles(0);
-        }
-
-
-        @Override
-        public IState execute() {
-            sShooter.setOpenLoopDutyCycles(0);
-
-            if(shootButton.get()) {
-                return mSpinningUp;
-            }
-
-            return mOff;
-        }
-
-        @Override
-        public void finish() {
-        }
-    };
-
     IState mSpinningUp = new IState() {
         @Override
         public void initialize() {
@@ -51,7 +26,28 @@ public class ShooterCommand extends CommandBase {
         public void finish() {
         }
     };
+    IState mOff = new IState() {
+        @Override
+        public void initialize() {
+            sShooter.setOpenLoopDutyCycles(0);
+        }
 
+
+        @Override
+        public IState execute() {
+            sShooter.setOpenLoopDutyCycles(0);
+
+            if (shootButton.get()) {
+                return mSpinningUp;
+            }
+
+            return mOff;
+        }
+
+        @Override
+        public void finish() {
+        }
+    };
     IState mShooting = new IState() {
         @Override
         public void initialize() {
@@ -76,8 +72,11 @@ public class ShooterCommand extends CommandBase {
 
         }
     };
-
     StateMachine stateMachine = new StateMachine(mOff);
+
+    public ShooterCommand() {
+        addRequirements(sShooter);
+    }
 
     @Override
     public void execute() {

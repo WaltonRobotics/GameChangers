@@ -2,7 +2,7 @@ package frc.robot.utils.movingAverage;
 
 public class ExponentialMovingAverage implements MovingAverage {
 
-    private double mAlpha;
+    private final double mAlpha;
     private Double mMostRecentValue;
 
     public ExponentialMovingAverage(double alpha) {
