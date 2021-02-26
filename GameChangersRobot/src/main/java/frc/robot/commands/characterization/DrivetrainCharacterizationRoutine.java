@@ -14,9 +14,8 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
     private final NetworkTableEntry mAutoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
     private final NetworkTableEntry mTelemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
     private final NetworkTableEntry mRotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
-
-    private double mPriorAutospeed = 0;
     private final Number[] mNumberArray = new Number[10];
+    private double mPriorAutospeed = 0;
 
     @Override
     public void initialize() {

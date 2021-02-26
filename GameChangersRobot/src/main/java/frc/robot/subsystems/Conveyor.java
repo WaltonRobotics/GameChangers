@@ -10,8 +10,8 @@ import static frc.robot.Constants.CANBusIDs.kFrontConveyorID;
 
 
 public class Conveyor extends SubsystemBase {
-    private VictorSPX mFrontConveyorMotor = new VictorSPX(kFrontConveyorID);
-    private VictorSPX mBackConveyorMotor = new VictorSPX(kBackConveyorID);
+    private final VictorSPX mFrontConveyorMotor = new VictorSPX(kFrontConveyorID);
+    private final VictorSPX mBackConveyorMotor = new VictorSPX(kBackConveyorID);
 
     public void setFrontDutyCycles(double targetDutyCycles) {
         mFrontConveyorMotor.set(ControlMode.PercentOutput, targetDutyCycles);
