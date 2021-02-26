@@ -5,22 +5,15 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.Shooter.*;
-import static frc.robot.OI.*;
+import static frc.robot.Constants.CANBusIDs.kFlywheelMasterID;
+import static frc.robot.Constants.CANBusIDs.kFlywheelSlaveID;
 
 import frc.robot.utils.SimpleMovingAverage;
 
 public class Shooter extends SubsystemBase {
-    private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
-    private final TalonFX flywheelSlave = new TalonFX(kFlySlave);
 
-    private double minShootingDistance = 9;
-    private double maxShootingDistance = 25;
-
-    private double minDistanceRPM = 12800;
-    private double maxDistanceRPM = 13000;
-
-    public boolean isReadyToShoot = false;
+    private final TalonFX mFlywheelMaster = new TalonFX(kFlywheelMasterID);
+    private final TalonFX mFlywheelSlave = new TalonFX(kFlywheelSlaveID);
 
     private SimpleMovingAverage movingAverage = new SimpleMovingAverage(5);
 
@@ -29,40 +22,40 @@ public class Shooter extends SubsystemBase {
     }
 
     private void setupFlywheelControllers() {
-        flywheelMaster.selectProfileSlot(0, 0);
+        mFlywheelMaster.selectProfileSlot(0, 0);
 
-        flywheelMaster.setNeutralMode(NeutralMode.Coast);
-        flywheelSlave.setNeutralMode(NeutralMode.Coast);
+        mFlywheelMaster.setNeutralMode(NeutralMode.Coast);
+        mFlywheelSlave.setNeutralMode(NeutralMode.Coast);
 
-        flywheelMaster.setInverted(true);
-        flywheelSlave.setInverted(false);
+        mFlywheelMaster.setInverted(true);
+        mFlywheelSlave.setInverted(false);
 
-        flywheelMaster.config_kF(0, .0498575917);
-        flywheelMaster.config_kP(0, 0.23);
-        flywheelMaster.config_kI(0, 0);
-        flywheelMaster.config_kD(0, 0);
+        mFlywheelMaster.config_kF(0, .0498575917);
+        mFlywheelMaster.config_kP(0, 0.23);
+        mFlywheelMaster.config_kI(0, 0);
+        mFlywheelMaster.config_kD(0, 0);
 
         // Voltage compensation
-        flywheelMaster.configVoltageCompSaturation(10);
-        flywheelMaster.enableVoltageCompensation(true);
-        flywheelSlave.configVoltageCompSaturation(10);
-        flywheelSlave.enableVoltageCompensation(false);
+        mFlywheelMaster.configVoltageCompSaturation(10);
+        mFlywheelMaster.enableVoltageCompensation(true);
+        mFlywheelSlave.configVoltageCompSaturation(10);
+        mFlywheelSlave.enableVoltageCompensation(false);
     }
 
     public void setProfileSlot(int profileSlot) {
-        flywheelMaster.selectProfileSlot(profileSlot, 0);
+        mFlywheelMaster.selectProfileSlot(profileSlot, 0);
     }
 
     public void setOpenLoopDutyCycles(double targetDutyCycles) {
-        mFlyWheelMaster.set(ControlMode.Velocity, targetDutyCycles);
+        mFlywheelMaster.set(ControlMode.PercentOutput, targetDutyCycles);
     }
 
     public void setClosedLoopVelocity(double targetVelocity) {
-        mFlyWheelMaster.set(ControlMode.Velocity, targetVelocity);
+        mFlywheelMaster.set(ControlMode.Velocity, targetVelocity);
     }
 
     public double getVelocity() {
-        return mFlyWheelMaster.getSensorCollection().getIntegratedSensorVelocity();
+        return mFlywheelMaster.getSensorCollection().getIntegratedSensorVelocity();
     }
 
     @Override
