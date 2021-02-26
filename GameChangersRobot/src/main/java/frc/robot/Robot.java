@@ -17,11 +17,17 @@ import frc.robot.subsystems.Intake;
 
 import java.util.Arrays;
 
-import static frc.robot.Constants.DioIDs.kRobotId1;
-import static frc.robot.Constants.DioIDs.kRobotId2;
+import static frc.robot.Constants.DioIDs.kRobotID1;
+import static frc.robot.Constants.DioIDs.kRobotID2;
 import static frc.robot.Constants.SmartDashboardKeys.kLeftVelocityPKey;
 import static frc.robot.Constants.SmartDashboardKeys.kRightVelocityPKey;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
+
+import frc.robot.commands.teleop.ConveyorCommand;
+import frc.robot.commands.teleop.IntakeCommand;
+import frc.robot.commands.teleop.ShooterCommand;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,14 +40,22 @@ public class Robot extends TimedRobot {
     public static Intake sIntake;
     public static RobotIdentifier sCurrentRobot;
     private static SendableChooser<AutonRoutine> autonChooser;
+  private static final String kDefaultAuto = "Default";
+  private static final String kCustomAuto = "My Auto";
+  private String m_autoSelected;
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  public static Drivetrain driveTrain;
+  public static Shooter shooter;
+  public static Intake intake;
+  public static Conveyor conveyor;
   /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
+   * This function is run when the robot is first started up and should be
+   * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    sCurrentRobot = RobotIdentifier.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
+    sCurrentRobot = RobotIdentifier.findByInputs(new DigitalInput(kRobotID1).get(), new DigitalInput(kRobotID2).get());
     System.out.println("Current robot is " + sCurrentRobot.name());
 
     populateShuffleboard();
@@ -59,6 +73,19 @@ public class Robot extends TimedRobot {
   private void populateShuffleboard() {
     SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
     SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
+    driveTrain = new Drivetrain();
+    shooter = new Shooter();
+    intake = new Intake();
+    conveyor = new Conveyor();
+
+    CommandScheduler.getInstance().setDefaultCommand(driveTrain, new DriveCommand());
+    CommandScheduler.getInstance().setDefaultCommand(shooter, new ShooterCommand());
+    CommandScheduler.getInstance().setDefaultCommand(intake, new IntakeCommand());
+    CommandScheduler.getInstance().setDefaultCommand(conveyor, new ConveyorCommand());
+
+    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    m_chooser.addOption("My Auto", kCustomAuto);
+    SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**

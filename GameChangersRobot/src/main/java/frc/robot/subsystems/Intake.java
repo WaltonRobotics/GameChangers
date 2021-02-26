@@ -5,13 +5,13 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.CANBusIDs.kIntakeMotor;
-import static frc.robot.Constants.PneumaticsIDs.kIntakeToggle;
+import static frc.robot.Constants.CANBusIDs.kIntakeID;
+import static frc.robot.Constants.PneumaticsIDs.kIntakeSolenoidID;
 
 public class Intake extends SubsystemBase {
-    private final VictorSPX mIntakeMotor = new VictorSPX(kIntakeMotor);
-    private final Solenoid mIntakeToggle = new Solenoid(kIntakeToggle);
 
+    private VictorSPX mIntakeMotor = new VictorSPX(kIntakeID);
+    private Solenoid mIntakeToggle = new Solenoid(kIntakeSolenoidID);
 
     public Intake() {
 
@@ -28,5 +28,6 @@ public class Intake extends SubsystemBase {
     public void setRollerDutyCycles(double targetDutyCycles) {
         mIntakeMotor.set(ControlMode.PercentOutput, targetDutyCycles);
     }
+
 
 }

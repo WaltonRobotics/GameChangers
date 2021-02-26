@@ -18,24 +18,32 @@ public final class Constants {
 
     public static class CANBusIDs {
 
-        public static final int kLeftMaster = 3;
-        public static final int kLeftSlave = 4;
+        public static final int kDrivetrainLeftMasterID = 3;
+        public static final int kDrivetrainLeftSlaveID = 4;
+        public static final int kDrivetrainRightMasterID = 1;
+        public static final int kDrivetrainRightSlaveID = 2;
 
-        public static final int kRightMaster = 1;
-        public static final int kRightSlave = 2;
+        public static final int kIntakeID = 5;
 
-        public static final int kIntakeMotor = 5;
+        public static final int kFrontConveyorID = 7;
+        public static final int kBackConveyorID = 8;
+
+        public static final int kFlywheelMasterID = 9;
+        public static final int kFlywheelSlaveID = 10;
+
     }
 
     public static class DioIDs {
 
-        public static final int kRobotId1 = 8;
-        public static final int kRobotId2 = 9;
+        public static final int kRobotID1 = 8;
+        public static final int kRobotID2 = 9;
 
     }
 
     public static class PneumaticsIDs {
-        public static final int kIntakeToggle = 1;
+
+        public static final int kIntakeSolenoidID = 1;
+
     }
 
     public static class PIDSlots {
@@ -74,5 +82,4 @@ public final class Constants {
         public static final String kRightMeasurementKey = "rightMeasurement";
 
     }
-
 }
