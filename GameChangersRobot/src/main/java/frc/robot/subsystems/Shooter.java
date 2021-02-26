@@ -24,7 +24,9 @@ public class Shooter extends SubsystemBase {
         mFlywheelSlave.setNeutralMode(NeutralMode.Coast);
 
         mFlywheelMaster.setInverted(true);
+        mFlywheelMaster.setSensorPhase(true);
         mFlywheelSlave.setInverted(false);
+        mFlywheelSlave.setSensorPhase(false);
 
         mFlywheelMaster.config_kF(0, .0498575917);
         mFlywheelMaster.config_kP(0, 0.23);
