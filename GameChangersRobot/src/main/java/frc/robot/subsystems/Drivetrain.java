@@ -10,6 +10,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.SmartDashboardKeys.*;
+import java.util.Arrays;
+import frc.robot.utils.*;
+import jdk.jshell.execution.Util;
+import frc.robot.Constants;
+import java.util.Optional;
 
 import static frc.robot.Constants.Hardware.*;
 
@@ -141,6 +146,130 @@ public class Drivetrain extends SubsystemBase {
 //        mRightWheelsMaster.getPIDController().setI(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getI(), VELOCITY_PID_SLOT);
 //        mRightWheelsMaster.getPIDController().setD(currentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getD(), VELOCITY_PID_SLOT);
     }
+    public boolean checkSystem() {
+        System.out.println("Testing DRIVE.---------------------------------");
+        final double kCurrentThres = 0.5;
+        final double kRpmThres = 300;
+
+        mRightWheelsMaster.changeControlMode(CANSparkMax.TalonControlMode.Voltage);
+        mRightWheelsSlave.changeControlMode(CANSparkMax.TalonControlMode.Voltage);
+        mLeftWheelsMaster.changeControlMode(CANSparkMax.TalonControlMode.Voltage);
+        mLeftWheelsSlave.changeControlMode(CANSparkMax.TalonControlMode.Voltage);
+
+        mRightWheelsMaster.set(0.0);
+        mRightWheelsSlave.set(0.0);
+        mLeftWheelsMaster.set(0.0);
+        mLeftWheelsSlave.set(0.0);
+
+        mRightWheelsMaster.set(-6.0f);
+        Timer.delay(4.0);
+        final double currentRightMaster = mRightWheelsMaster.getOutputCurrent();
+        final double rpmRightWheelsMaster = mRightWheelsMaster.getSpeed();
+        mRightWheelsMaster.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mRightWheelsSlave.set(-6.0f);
+        Timer.delay(4.0);
+        final double currentRightSlave = mRightWheelsSlave.getOutputCurrent();
+        final double rpmRightWheelsSlave = mRightWheelsMaster.getSpeed();
+        mRightWheelsSlave.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mLeftWheelsMaster.set(6.0f);
+        Timer.delay(4.0);
+        final double currentLeftMaster = mLeftWheelsMaster.getOutputCurrent();
+        final double rpmLeftWheelsMaster = mLeftWheelsMaster.getspeed();
+        mLeftWheelsMaster.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mLeftWheelsSlave.set(6.0f);
+        Timer.delay(4.0);
+        final double currentLeftSlave = mLeftWheelsSlave.getOutputCurrent();
+        final double rpmLeftWheelsSlave = mLeftWheelsMaster.getSpeed();
+        mLeftWheelsSlave.set(0.0);
+
+        mRightWheelsMaster.changeControlMode(CANSparkMax.TalonControlMode.PercentVbus);
+        mLeftWheelsMaster.changeControlMode(CANSparkMax.TalonControlMode.PercentVbus);
+
+        mRightWheelsSlave.changeControlMode(CANSparkMax.TalonControlMode.Follower);
+        mRightWheelsSlave.set(Constants.kLeftMaster);
+
+        mLeftWheelsSlave.changeControlMode(CANSparkMax.TalonControlMode.Follower);
+        mLeftWheelsSlave.set(Constants.kLeftDriveMasterId);
+
+        System.out.println("Drive Right Master Current: " + currentRightMaster + " Drive Right Slave Current: "
+                + currentRightSlave);
+        System.out.println(
+                "Drive Left Master Current: " + currentLeftMaster + " Drive Left Slave Current: " + currentLeftSlave);
+        System.out.println("Drive RPM RMaster: " + rpmRightWheelsMaster + " RSlave: " + rpmRightWheelsSlave + " LMaster: "
+                + rpmLeftWheelsMaster + " LSlave: " + rpmLeftWheelsSlave);
+
+        boolean failure = false;
+
+        if (currentRightMaster < kCurrentThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Right Master Current Low !!!!!!!!!!");
+        }
+
+        if (currentRightSlave < kCurrentThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Right Slave Current Low !!!!!!!!!!");
+        }
+
+        if (currentLeftMaster < kCurrentThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Left Master Current Low !!!!!!!!!!");
+        }
+
+        if (currentLeftSlave < kCurrentThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Left Slave Current Low !!!!!!!!!!");
+        }
+
+        if (!Util.allCloseTo(Arrays.asList(currentRightMaster, currentRightSlave), currentRightMaster,
+                5.0)) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Right Currents Different !!!!!!!!!!");
+        }
+
+        if (!Util.allCloseTo(Arrays.asList(currentLeftMaster, currentLeftSlave), currentLeftSlave,
+                5.0)) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Left Currents Different !!!!!!!!!!!!!");
+        }
+
+        if (rpmRightWheelsMaster < kRpmThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Right Master RPM Low !!!!!!!!!!!!!!!!!!!");
+        }
+
+        if (rpmRightWheelsSlave < kRpmThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Right Slave RPM Low !!!!!!!!!!!!!!!!!!!");
+        }
+
+        if (rpmLeftWheelsMaster < kRpmThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Left Master RPM Low !!!!!!!!!!!!!!!!!!!");
+        }
+
+        if (rpmLeftWheelsSlave < kRpmThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Drive Left Slave RPM Low !!!!!!!!!!!!!!!!!!!");
+        }
+
+        if (!Util.allCloseTo(Arrays.asList(rpmRightWheelsMaster, rpmRightWheelsSlave, rpmLeftWheelsMaster, rpmLeftWheelsSlave),
+                rpmRightWheelsMaster, 250)) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!!! Drive RPMs different !!!!!!!!!!!!!!!!!!!");
+        }
+
+        return !failure;
+    }
+
     private ProfiledPIDController turnPIDController = new ProfiledPIDController(0.05, 0, 0,
             new TrapezoidProfile.Constraints(360, 80));
 

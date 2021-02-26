@@ -16,13 +16,16 @@ public class DriveStraight extends CommandBase {
         this.desiredDistance = desiredDistance;
 
         drivetrain.getmDriveStraightHeadingPIDController().setTolerance(1);
-        drivetrain.getmDriveStraightPowerController().setTolerance(0.11);
+        drivetrain.getmDriveStraightPowerController().setTolerance(0.09);
     }
 
     @Override
     public void initialize() {
+        drivetrain.resetEncoders();
+//        drivetrain.getmDriveStraightPowerController().setP(1);
+        System.out.println("P value set");
         drivetrain.reset();
-        drivetrain.getmDriveStraightHeadingPIDController().reset(new TrapezoidProfile.State(0, 0));
+        drivetrain.getmDriveStraightHeadingPIDController().reset(new TrapezoidProfile.State(desiredDistance, 0));
         System.out.println("Initialize completed!");
     }
 
@@ -42,12 +45,13 @@ public class DriveStraight extends CommandBase {
 
         SmartDashboard.putNumber("Turn rate", turnRate);
         SmartDashboard.putNumber("Forward rate", forward);
+        //drivetrain.setDutyCycles(forward, forward);
         drivetrain.setArcadeSpeeds(forward, turnRate);
     }
 
     @Override
     public boolean isFinished() {
-        return drivetrain.getmDriveStraightPowerController().atGoal() && drivetrain.getmDriveStraightHeadingPIDController().atGoal();
+        return drivetrain.getmDriveStraightPowerController().atSetpoint() && drivetrain.getmDriveStraightHeadingPIDController().atSetpoint();
         //return Math.abs((drivetrain.leftMetersTravelled() + drivetrain.rightMetersTravelled()) / 2) >= desiredDistance;
     }
     @Override

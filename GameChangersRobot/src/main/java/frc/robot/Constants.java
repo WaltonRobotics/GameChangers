@@ -26,6 +26,7 @@ public class Constants {
     public class SmartDashboardKeys{
 
         public static final String kdriveStraightheadingPkey = "Drive Straight Heading P";
+        public static final String kforwardP = "Forward P";
         public static final String kturnPkey = "Turn P";
         public static final String kleftEncodervalue = "Left Encoder Value";
         public static final String krightEncoderValue = "Right Encoder Value";
