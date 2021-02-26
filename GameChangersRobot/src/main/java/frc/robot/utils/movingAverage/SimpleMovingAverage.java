@@ -1,40 +1,43 @@
-package frc.robot.utils;
+package frc.robot.utils.movingAverage;
 
 import java.util.*;
 
-public class SimpleMovingAverage {
+public class SimpleMovingAverage implements MovingAverage {
 
     // queue used to store list so that we get the average
-    private final Queue<Double> Dataset = new LinkedList<Double>();
-    private int period;
-    private double sum;
+    private final Queue<Double> mDataset = new LinkedList<Double>();
+    private int mPeriod;
+    private double mSum;
 
     // constructor to initialize period
     public SimpleMovingAverage(int period)
     {
-        this.period = period;
+        this.mPeriod = period;
     }
 
     // function to add new data in the
     // list and update the sum so that
     // we get the new mean
+    @Override
     public void addData(double num)
     {
-        sum += num;
-        Dataset.add(num);
+        mSum += num;
+        mDataset.add(num);
 
         // Updating size so that length
         // of data set should be equal
         // to period as a normal mean has
-        if (Dataset.size() > period)
+        if (mDataset.size() > mPeriod)
         {
-            sum -= Dataset.remove();
+            mSum -= mDataset.remove();
         }
     }
 
     // function to calculate mean
+    @Override
     public double getMean()
     {
-        return sum / period;
+        return mSum / mPeriod;
     }
+
 }
