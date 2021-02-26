@@ -1,14 +1,23 @@
 package frc.robot.subsystems;
 
+
+import com.ctre.phoenix.Util;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import edu.wpi.first.wpilibj.Timer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.Arrays;
 
+import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.OI.*;
 
+import frc.robot.Constants;
 import frc.robot.utils.SimpleMovingAverage;
+
+import javax.naming.ldap.Control;
 
 public class Shooter extends SubsystemBase {
     private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
@@ -72,6 +81,76 @@ public class Shooter extends SubsystemBase {
 
     public double getAverageClosedLoopVelocity(){
         return movingAverage.getMean();
+    }
+
+    public boolean checkSystem() {
+        System.out.println("Testing SHOOTER.----------------------------------------");
+        final double kCurrentThres = 0.5;
+        final double kRpmThres = 1200;
+
+        flywheelMaster.set(TalonFXControlMode.PercentOutput, 6.0 / getBatteryVoltage());
+        Timer.delay(4.0);
+        final double currentRightMaster = flywheelMaster.getOutputCurrent();
+        final double rpmMaster = flywheelMaster.getSelectedSensorVelocity();
+        flywheelMaster.set(TalonFXControlMode.PercentOutput, 0.0 / getBatteryVoltage());
+
+        Timer.delay(2.0);
+
+        flywheelSlave.set(TalonFXControlMode.PercentOutput, 6.0 / getBatteryVoltage());
+        Timer.delay(4.0);
+        final double currentRightSlave = flywheelSlave.getOutputCurrent();
+        final double rpflywheelSlave = flywheelMaster.getSelectedSensorVelocity();
+        flywheelSlave.set(TalonFXControlMode.PercentOutput, 0.0 / getBatteryVoltage());
+
+        Timer.delay(2.0);
+
+//        mLeftSlave1.set(-6.0f);
+
+        Timer.delay(2.0);
+
+        flywheelSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
+
+        flywheelSlave.set(Constants.kRightShooterMasterId);
+
+        System.out.println("Shooter Fly Master Current: " + currentRightMaster + " Shooter Fly Slave Current: "
+                + currentRightSlave);
+//        System.out.println("Shooter RPM Master: " + rpmMaster + " RPM Right slave: " + rpflywheelSlave
+//                + " RPM Left Slave 1: " + rpmLeftSlave1 + " RPM Left Slave 2: " + rpmLeftSlave2);
+
+        boolean failure = false;
+
+        if (currentRightMaster < kCurrentThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Shooter Fly Master Current Low !!!!!!!!!!");
+        }
+
+        if (currentRightSlave < kCurrentThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Shooter Fly Slave Current Low !!!!!!!!!!");
+        }
+
+
+        if (!Util.allCloseTo(Arrays.asList(currentRightMaster, currentRightSlave), currentRightMaster, 5.0)) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Shooter currents different !!!!!!!!!!!!!!!!!");
+        }
+
+        if (rpmMaster < kRpmThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Shooter Master RPM Low !!!!!!!!!!!!!!!!!!!!!!!");
+        }
+
+        if (rpflywheelSlave < kRpmThres) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Shooter Right Slave RPM Low !!!!!!!!!!!!!!!!!!!!!!!");
+        }
+
+        if (!Util.allCloseTo(Arrays.asList(rpmMaster, rpflywheelSlave), rpmMaster, 250)) {
+            failure = true;
+            System.out.println("!!!!!!!!!!!!!!!!!! Shooter RPMs different !!!!!!!!!!!!!!!!!!!!!!!");
+        }
+
+        return !failure;
     }
 
 }
