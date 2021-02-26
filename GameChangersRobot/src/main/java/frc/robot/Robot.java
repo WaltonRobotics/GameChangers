@@ -109,7 +109,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
       sDrivetrain.setupControllersAuton();
 
-    AutonFlags.getInstance().setInAuton(true);
+    AutonFlags.getInstance().setIsInAuton(true);
 
       autonChooser.getSelected().getCommandGroup().schedule();
     }
@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopInit() {
-      AutonFlags.getInstance().setInAuton(false);
+      AutonFlags.getInstance().setIsInAuton(false);
     }
 
     /**

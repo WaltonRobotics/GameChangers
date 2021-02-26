@@ -23,7 +23,7 @@ public class StateMachine {
                 currentState.initialize();
             }
         } else {
-            // TODO: Log this!
+            System.out.println("[ERROR]: State machine has effectively terminated due to a null state.");
         }
     }
 }

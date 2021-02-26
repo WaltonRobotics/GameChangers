@@ -1,6 +1,5 @@
 package frc.robot.commands.teleop;
 
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.auton.AutonFlags;
 import frc.robot.stateMachine.IState;
@@ -44,7 +43,7 @@ public class IntakeCommand extends CommandBase {
     private IState mRetract = new IState() {
         @Override
         public void initialize() {
-            sIntake.setIntakeDeployed(false);
+            sIntake.setDeployed(false);
         }
 
         @Override
@@ -61,7 +60,7 @@ public class IntakeCommand extends CommandBase {
     private IState mDeploy = new IState() {
         @Override
         public void initialize() {
-            sIntake.setIntakeDeployed(true);
+            sIntake.setDeployed(true);
         }
 
         @Override

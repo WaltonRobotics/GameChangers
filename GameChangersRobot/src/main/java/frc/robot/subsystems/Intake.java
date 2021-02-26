@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,24 +11,25 @@ import static frc.robot.Constants.PneumaticsIDs.kIntakeSolenoidID;
 
 public class Intake extends SubsystemBase {
 
-    private VictorSPX mIntakeMotor = new VictorSPX(kIntakeID);
-    private Solenoid mIntakeToggle = new Solenoid(kIntakeSolenoidID);
+    private final VictorSPX mIntakeController = new VictorSPX(kIntakeID);
+    private final Solenoid mIntakeSolenoid = new Solenoid(kIntakeSolenoidID);
 
     public Intake() {
+        mIntakeController.setInverted(false);
 
+        mIntakeController.setNeutralMode(NeutralMode.Coast);
     }
 
-    public void setIntakeDeployed(boolean isDeployed) {
-        mIntakeToggle.set(isDeployed);
+    public void setDeployed(boolean isDeployed) {
+        mIntakeSolenoid.set(isDeployed);
     }
 
     public boolean isDeployed() {
-        return mIntakeToggle.get();
+        return mIntakeSolenoid.get();
     }
 
     public void setRollerDutyCycles(double targetDutyCycles) {
-        mIntakeMotor.set(ControlMode.PercentOutput, targetDutyCycles);
+        mIntakeController.set(ControlMode.PercentOutput, targetDutyCycles);
     }
-
 
 }
