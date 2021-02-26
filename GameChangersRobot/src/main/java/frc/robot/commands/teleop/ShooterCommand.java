@@ -5,23 +5,23 @@ import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 
 import static frc.robot.OI.shootButton;
-import static frc.robot.Robot.shooter;
+import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
-    public ShooterCommand() {addRequirements(shooter);}
+    public ShooterCommand() {addRequirements(sShooter);}
     double targetVelocity = 12500;
     double tolerance = 100;
 
     IState mOff = new IState() {
         @Override
         public void initialize() {
-            shooter.setOpenLoopDutyCycles(0);
+            sShooter.setOpenLoopDutyCycles(0);
         }
 
 
         @Override
         public IState execute() {
-            shooter.setOpenLoopDutyCycles(0);
+            sShooter.setOpenLoopDutyCycles(0);
 
             if(shootButton.get()) {
                 return mSpinningUp;
@@ -38,12 +38,12 @@ public class ShooterCommand extends CommandBase {
     IState mSpinningUp = new IState() {
         @Override
         public void initialize() {
-            shooter.setProfileSlot(0);
+            sShooter.setProfileSlot(0);
         }
 
         @Override
         public IState execute() {
-            shooter.setClosedLoopVelocity(targetVelocity);
+            sShooter.setClosedLoopVelocity(targetVelocity);
             return mSpinningUp;
         }
 
@@ -60,8 +60,8 @@ public class ShooterCommand extends CommandBase {
 
         @Override
         public IState execute() {
-            shooter.setClosedLoopVelocity(targetVelocity);
-            if (Math.abs(shooter.getAverageClosedLoopVelocity() - targetVelocity) <= tolerance) {
+            sShooter.setClosedLoopVelocity(targetVelocity);
+            if (Math.abs(sShooter.getVelocity() - targetVelocity) <= tolerance) {
                 if (!shootButton.get()) {
                     return mOff;
                 }

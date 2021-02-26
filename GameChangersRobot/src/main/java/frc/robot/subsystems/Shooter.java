@@ -8,14 +8,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.CANBusIDs.kFlywheelMasterID;
 import static frc.robot.Constants.CANBusIDs.kFlywheelSlaveID;
 
-import frc.robot.utils.SimpleMovingAverage;
-
 public class Shooter extends SubsystemBase {
 
     private final TalonFX mFlywheelMaster = new TalonFX(kFlywheelMasterID);
     private final TalonFX mFlywheelSlave = new TalonFX(kFlywheelSlaveID);
-
-    private SimpleMovingAverage movingAverage = new SimpleMovingAverage(5);
 
     public Shooter() {
         setupFlywheelControllers();
@@ -60,11 +56,7 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        movingAverage.addData(getVelocity());
-    }
 
-    public double getAverageClosedLoopVelocity(){
-        return movingAverage.getMean();
     }
 
 }

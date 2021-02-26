@@ -1,18 +1,18 @@
 package frc.robot.commands.teleop;
 
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.auton.AutonFlags;
 import frc.robot.stateMachine.IState;
-import frc.robot.subsystems.Intake;
 
-import static edu.wpi.first.wpilibj.TimedRobot.kDefaultPeriod;
 import static frc.robot.OI.retractButton;
 import static frc.robot.OI.deployButton;
 import static frc.robot.OI.intakingButton;
-import static frc.robot.Robot.intake;
-import static frc.robot.Robot.shooter;
+import static frc.robot.Robot.sIntake;
 
 public class IntakeCommand extends CommandBase {
-    public IntakeCommand() {addRequirements(intake);}
+
+    public IntakeCommand() {addRequirements(sIntake);}
 
     private IState mIdle = new IState() {
         @Override
@@ -22,11 +22,14 @@ public class IntakeCommand extends CommandBase {
 
         @Override
         public IState execute() {
+            sIntake.setRollerDutyCycles(0.0);
+
             if (retractButton.isRisingEdge()) {
                 return mRetract;
             } else if (deployButton.isRisingEdge()) {
                 return mDeploy;
-            } else if (intake.isDeployed() && intakingButton.get()) {
+            } else if (sIntake.isDeployed() && (intakingButton.get()
+                    || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
                 return mIntaking;
             }
             return mIdle;
@@ -41,7 +44,7 @@ public class IntakeCommand extends CommandBase {
     private IState mRetract = new IState() {
         @Override
         public void initialize() {
-            intake.setIntakeDeployed(false);
+            sIntake.setIntakeDeployed(false);
         }
 
         @Override
@@ -58,7 +61,7 @@ public class IntakeCommand extends CommandBase {
     private IState mDeploy = new IState() {
         @Override
         public void initialize() {
-            intake.setIntakeDeployed(true);
+            sIntake.setIntakeDeployed(true);
         }
 
         @Override
@@ -80,8 +83,10 @@ public class IntakeCommand extends CommandBase {
 
         @Override
         public IState execute() {
-            intake.setRollerDutyCycles(1.5);
-            if (!intakingButton.get()) {
+            sIntake.setRollerDutyCycles(0.8);
+
+            if (!(intakingButton.get()
+                    || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
                 return mIdle;
             } else {
                 return mIntaking;

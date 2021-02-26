@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentifier;
@@ -36,19 +37,14 @@ import frc.robot.subsystems.Shooter;
  * project.
  */
 public class Robot extends TimedRobot {
-    public static Drivetrain sDrivetrain;
-    public static Intake sIntake;
+
     public static RobotIdentifier sCurrentRobot;
     private static SendableChooser<AutonRoutine> autonChooser;
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  public static Drivetrain driveTrain;
-  public static Shooter shooter;
-  public static Intake intake;
-  public static Conveyor conveyor;
+  public static Drivetrain sDrivetrain;
+  public static Shooter sShooter;
+  public static Intake sIntake;
+  public static Conveyor sConveyor;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -61,7 +57,14 @@ public class Robot extends TimedRobot {
     populateShuffleboard();
 
     sDrivetrain = new Drivetrain();
+    sShooter = new Shooter();
     sIntake = new Intake();
+    sConveyor = new Conveyor();
+
+    CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
+    CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
+    CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
+    CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
 
     CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
     autonChooser = new SendableChooser<>();
@@ -73,19 +76,6 @@ public class Robot extends TimedRobot {
   private void populateShuffleboard() {
     SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
     SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
-    driveTrain = new Drivetrain();
-    shooter = new Shooter();
-    intake = new Intake();
-    conveyor = new Conveyor();
-
-    CommandScheduler.getInstance().setDefaultCommand(driveTrain, new DriveCommand());
-    CommandScheduler.getInstance().setDefaultCommand(shooter, new ShooterCommand());
-    CommandScheduler.getInstance().setDefaultCommand(intake, new IntakeCommand());
-    CommandScheduler.getInstance().setDefaultCommand(conveyor, new ConveyorCommand());
-
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**
@@ -118,6 +108,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
       sDrivetrain.setupControllersAuton();
+
+    AutonFlags.getInstance().setInAuton(true);
+
       autonChooser.getSelected().getCommandGroup().schedule();
     }
 
@@ -134,7 +127,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopInit() {
-
+      AutonFlags.getInstance().setInAuton(false);
     }
 
     /**

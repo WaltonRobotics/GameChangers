@@ -1,12 +1,16 @@
 package frc.robot.auton;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
+import frc.robot.commands.teleop.IntakeCommand;
 
 import static frc.robot.Paths.GalacticSearchPaths.*;
+import static frc.robot.Robot.sIntake;
 
 public enum AutonRoutine {
 
@@ -16,8 +20,12 @@ public enum AutonRoutine {
 
     GALACTIC_SEARCH_RED_A("Galactic Search Red A", new SequentialCommandGroup(
             new ResetPose(sRedA),
-            new RamseteTrackingCommand(sRedA, true, false))
-    ),
+            new InstantCommand(() -> sIntake.setIntakeDeployed(true)),
+            new WaitCommand(0.5),
+            new InstantCommand(() -> AutonFlags.getInstance().setAutonNeedsToIntake(true)),
+            new RamseteTrackingCommand(sRedA, true, false),
+            new InstantCommand(() -> AutonFlags.getInstance().setAutonNeedsToIntake(false))
+    )),
 
     GALACTIC_SEARCH_BLUE_A("Galactic Search Blue A", new SequentialCommandGroup(
             new ResetPose(sBlueA),
