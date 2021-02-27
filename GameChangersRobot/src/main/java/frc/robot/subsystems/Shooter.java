@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 
-import com.ctre.phoenix.Util;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import edu.wpi.first.wpilibj.Timer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -9,15 +8,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Arrays;
+import frc.robot.utils.Util;
 
 import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.OI.*;
 
-import frc.robot.Constants;
 import frc.robot.utils.SimpleMovingAverage;
 
-import javax.naming.ldap.Control;
 
 public class Shooter extends SubsystemBase {
     private final TalonFX flywheelMaster = new TalonFX(kFlyMaster);
@@ -108,9 +106,7 @@ public class Shooter extends SubsystemBase {
 
         Timer.delay(2.0);
 
-        flywheelSlave.changeControlMode(CANTalon.TalonControlMode.Follower);
-
-        flywheelSlave.set(Constants.kRightShooterMasterId);
+        setupFlywheelControllers();
 
         System.out.println("Shooter Fly Master Current: " + currentRightMaster + " Shooter Fly Slave Current: "
                 + currentRightSlave);
