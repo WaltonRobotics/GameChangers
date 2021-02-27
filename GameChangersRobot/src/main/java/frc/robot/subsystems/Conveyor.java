@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Util;
+import edu.wpi.first.wpilibj.RobotController;
 
 import java.util.Arrays;
 
@@ -39,28 +40,24 @@ public class Conveyor extends SubsystemBase {
         final double kCurrentThres = 0.5;
         final double kRpmThes = 2000.0;
 
-        mBackConveyorMotor.changeControlMode(VictorSPXControlMode.);
-        mFrontConveyorMotor.changeControlMode(VictorSPXControlMode.Voltage);
 
-        mBackConveyorMotor.set(0.0);
-        mFrontConveyorMotor.set(0.0);
+        mBackConveyorMotor.set(VictorSPXControlMode.PercentOutput, 0.0 / getBatteryVoltage());
+        mFrontConveyorMotor.set(VictorSPXControlMode.PercentOutput, 0.0 / getBatteryVoltage());
 
-        mFrontConveyorMotor.set(6.0f);
+        mFrontConveyorMotor.set(VictorSPXControlMode.PercentOutput, 6.0f / getBatteryVoltage());
         Timer.delay(4.0);
-        final double currentMaster = mFrontConveyorMotor.getOutputCurrent();
-        final double rpmMaster = mFrontConveyorMotor.getSpeed();
-        mFrontConveyorMotor.set(0.0f);
+        final double currentMaster = mFrontConveyorMotor.getMotorOutputVoltage() / RobotController.getInputCurrent();
+        final double rpmMaster = mFrontConveyorMotor.getSelectedSensorVelocity();
+        mFrontConveyorMotor.set(VictorSPXControlMode.PercentOutput, 0.0f / getBatteryVoltage());
 
         Timer.delay(2.0);
 
-        mBackConveyorMotor.set(-6.0f);
+        mBackConveyorMotor.set(VictorSPXControlMode.PercentOutput, -6.0f / getBatteryVoltage());
         Timer.delay(4.0);
-        final double currentSlave = mBackConveyorMotor.getOutputCurrent();
-        final double rpmSlave = mFrontConveyorMotor.getSpeed();
-        mBackConveyorMotor.set(0.0f);
+        final double currentSlave = mBackConveyorMotor.getMotorOutputVoltage() / RobotController.getInputCurrent();
+        final double rpmSlave = mFrontConveyorMotor.getSelectedSensorVelocity();
+        mBackConveyorMotor.set(VictorSPXControlMode.PercentOutput, 0.0f / getBatteryVoltage());
 
-        mBackConveyorMotor.changeControlMode(TalonControlMode.Follower);
-        mBackConveyorMotor.set(Constants.kConveyorMasterId);
 
         System.out.println("Conveyor Master Current: " + currentMaster + " Slave Current: " + currentSlave
                 + " rpmMaster: " + rpmMaster + " rpmSlave: " + rpmSlave);
