@@ -44,4 +44,8 @@ public class CompPowerUp implements WaltRobot {
         return 0;
     }
 
+    public double getLimelightMountingHeight() { return 0; }
+
+    public double getLimelightMountingAngle() { return 0; }
+
 }
