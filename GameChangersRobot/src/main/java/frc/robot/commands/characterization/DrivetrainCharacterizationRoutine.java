@@ -22,7 +22,7 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
         addRequirements(sDrivetrain);
         addRequirements(sIntake);
 
-        sDrivetrain.setupControllersAuton();
+        sDrivetrain.configureControllersAuton();
         sDrivetrain.reset();
 
         sIntake.setDeployed(true);

@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
     public static Shooter sShooter;
     public static Intake sIntake;
     public static Conveyor sConveyor;
-    private static SendableChooser<AutonRoutine> autonChooser;
+    private static SendableChooser<AutonRoutine> mAutonChooser;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -66,10 +66,10 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
 
         CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
-        autonChooser = new SendableChooser<>();
-        Arrays.stream(AutonRoutine.values()).forEach(n -> autonChooser.addOption(n.name(), n));
-        autonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
-        SmartDashboard.putData("Auton Selector", autonChooser);
+        mAutonChooser = new SendableChooser<>();
+        Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));
+        mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
+        SmartDashboard.putData("Auton Selector", mAutonChooser);
     }
 
     private void populateShuffleboard() {
@@ -106,11 +106,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        sDrivetrain.setupControllersAuton();
+        sDrivetrain.configureControllersAuton();
 
         AutonFlags.getInstance().setIsInAuton(true);
 
-        autonChooser.getSelected().getCommandGroup().schedule();
+        mAutonChooser.getSelected().getCommandGroup().schedule();
     }
 
     /**

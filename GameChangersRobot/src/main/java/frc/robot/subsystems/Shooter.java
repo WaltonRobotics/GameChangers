@@ -14,12 +14,10 @@ public class Shooter extends SubsystemBase {
     private final TalonFX mFlywheelSlave = new TalonFX(kFlywheelSlaveID);
 
     public Shooter() {
-        setupFlywheelControllers();
+        configureFlywheelControllers();
     }
 
-    private void setupFlywheelControllers() {
-        mFlywheelMaster.selectProfileSlot(0, 0);
-
+    private void configureFlywheelControllers() {
         mFlywheelMaster.setNeutralMode(NeutralMode.Coast);
         mFlywheelSlave.setNeutralMode(NeutralMode.Coast);
 
@@ -28,10 +26,15 @@ public class Shooter extends SubsystemBase {
         mFlywheelSlave.setInverted(false);
         mFlywheelSlave.setSensorPhase(false);
 
-        mFlywheelMaster.config_kF(0, .0498575917);
+        mFlywheelMaster.config_kF(0, 0.0498575917);
         mFlywheelMaster.config_kP(0, 0.23);
         mFlywheelMaster.config_kI(0, 0);
         mFlywheelMaster.config_kD(0, 0);
+
+        mFlywheelMaster.config_kF(1, 0.0498575917);
+        mFlywheelMaster.config_kP(1, 0.23);
+        mFlywheelMaster.config_kI(1, 0);
+        mFlywheelMaster.config_kD(1, 0);
 
         // Voltage compensation
         mFlywheelMaster.configVoltageCompSaturation(10);
@@ -48,12 +51,16 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.set(ControlMode.PercentOutput, targetDutyCycles);
     }
 
-    public void setClosedLoopVelocity(double targetVelocity) {
+    public void setClosedLoopVelocityRawUnits(double targetVelocity) {
         mFlywheelMaster.set(ControlMode.Velocity, targetVelocity);
     }
 
-    public double getVelocity() {
+    public double getVelocityRawUnits() {
         return mFlywheelMaster.getSensorCollection().getIntegratedSensorVelocity();
+    }
+
+    public double getClosedLoopErrorRawUnits() {
+        return mFlywheelMaster.getClosedLoopError();
     }
 
     @Override
