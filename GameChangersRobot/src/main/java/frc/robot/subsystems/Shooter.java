@@ -88,7 +88,7 @@ public class Shooter extends SubsystemBase {
 
         flywheelMaster.set(TalonFXControlMode.PercentOutput, 6.0 / getBatteryVoltage());
         Timer.delay(4.0);
-        final double currentRightMaster = flywheelMaster.getOutputCurrent();
+        final double currentRightMaster = flywheelMaster.getStatorCurrent();
         final double rpmMaster = flywheelMaster.getSelectedSensorVelocity();
         flywheelMaster.set(TalonFXControlMode.PercentOutput, 0.0 / getBatteryVoltage());
 
