@@ -3,7 +3,7 @@ package frc.robot.utils;
 import java.util.Arrays;
 import java.util.List;
 
-public class Util {
+public class UtilMethods {
 
     public static double limit(double v, double maxMagnitude) {
         return limit(v, -maxMagnitude, maxMagnitude);

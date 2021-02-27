@@ -3,7 +3,7 @@ package frc.robot.stateMachine;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import static frc.robot.utils.Util.joinStrings;
+import static frc.robot.utils.UtilMethods.joinStrings;
 
 public class StateMachine {
 

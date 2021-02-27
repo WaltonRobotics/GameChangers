@@ -38,6 +38,9 @@ public final class Constants {
         public static final int kRobotID1 = 8;
         public static final int kRobotID2 = 9;
 
+        public static final int kFrontConveyorSensorID = 4;
+        public static final int kBackConveyorSensorID = 5;
+
     }
 
     public static class PneumaticsIDs {
@@ -50,6 +53,13 @@ public final class Constants {
 
         public static final int kDrivetrainVoltageSlot = 0;
         public static final int kDrivetrainVelocitySlot = 1;
+
+    }
+
+    public static class Conveyor {
+
+        // The time that the IRSensor flickers randomly after changing states
+        public static final double kIRSensorFlickeringTime = 3;
 
     }
 
