@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.auton.AutonFlags;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
+import frc.robot.subsystems.SubsystemFlags;
 
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sIntake;
@@ -23,7 +24,7 @@ public class IntakeCommand extends CommandBase {
         mIdle = new IState() {
             @Override
             public void initialize() {
-
+                SubsystemFlags.getInstance().setIntaking(false);
             }
 
             @Override
@@ -45,11 +46,18 @@ public class IntakeCommand extends CommandBase {
             public void finish() {
 
             }
+
+            @Override
+            public String getName() {
+                return "Idle";
+            }
         };
 
         mDeploy = new IState() {
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setIntaking(false);
+
                 sIntake.setDeployed(true);
             }
 
@@ -62,11 +70,18 @@ public class IntakeCommand extends CommandBase {
             public void finish() {
 
             }
+
+            @Override
+            public String getName() {
+                return "Deploy";
+            }
         };
 
         mRetract = new IState() {
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setIntaking(false);
+
                 sIntake.setDeployed(false);
             }
 
@@ -79,12 +94,17 @@ public class IntakeCommand extends CommandBase {
             public void finish() {
 
             }
+
+            @Override
+            public String getName() {
+                return "Retract";
+            }
         };
 
         mIntaking = new IState() {
             @Override
             public void initialize() {
-
+                SubsystemFlags.getInstance().setIntaking(true);
             }
 
             @Override
@@ -104,9 +124,14 @@ public class IntakeCommand extends CommandBase {
             public void finish() {
 
             }
+
+            @Override
+            public String getName() {
+                return "Intaking";
+            }
         };
 
-        mStateMachine = new StateMachine(mIdle);
+        mStateMachine = new StateMachine("Intake", mIdle);
     }
 
     @Override

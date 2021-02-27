@@ -3,6 +3,7 @@ package frc.robot.commands.background;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
+import frc.robot.subsystems.SubsystemFlags;
 
 import java.util.function.BooleanSupplier;
 
@@ -34,6 +35,8 @@ public class ShooterCommand extends CommandBase {
         mIdle = new IState() {
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setReadyToShoot(false);
+
                 sShooter.setOpenLoopDutyCycles(0);
             }
 
@@ -55,11 +58,18 @@ public class ShooterCommand extends CommandBase {
             @Override
             public void finish() {
             }
+
+            @Override
+            public String getName() {
+                return "Idle";
+            }
         };
 
         mSpinningUp = new IState() {
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setReadyToShoot(false);
+
                 sShooter.setProfileSlot(0);
             }
 
@@ -80,12 +90,20 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
+                SubsystemFlags.getInstance().setReadyToShoot(true);
+            }
+
+            @Override
+            public String getName() {
+                return "Spinning Up";
             }
         };
 
         mShooting = new IState() {
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setReadyToShoot(true);
+
                 sShooter.setProfileSlot(1);
             }
 
@@ -108,6 +126,11 @@ public class ShooterCommand extends CommandBase {
             public void finish() {
 
             }
+
+            @Override
+            public String getName() {
+                return "Shooting";
+            }
         };
 
         mSpinningDown = new IState() {
@@ -115,6 +138,8 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setReadyToShoot(true);
+
                 mStartTime = getFPGATimestamp();
             }
 
@@ -134,9 +159,14 @@ public class ShooterCommand extends CommandBase {
             public void finish() {
 
             }
+
+            @Override
+            public String getName() {
+                return "Spinning Down";
+            }
         };
 
-        mStateMachine = new StateMachine(mIdle);
+        mStateMachine = new StateMachine("Shooter", mIdle);
     }
 
     @Override

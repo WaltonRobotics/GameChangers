@@ -7,4 +7,7 @@ public interface IState {
     IState execute();
 
     void finish();
+
+    String getName();
+
 }
