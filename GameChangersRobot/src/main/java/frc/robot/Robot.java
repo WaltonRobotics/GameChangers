@@ -64,8 +64,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
         CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
         CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
-
-        CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
+        
         mAutonChooser = new SendableChooser<>();
         Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));
         mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
