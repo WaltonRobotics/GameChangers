@@ -113,5 +113,5 @@ public class IntakeCommand extends CommandBase {
     public void execute() {
         mStateMachine.run();
     }
-    
+
 }
