@@ -30,6 +30,7 @@ import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
 import static frc.robot.Robot.sCurrentRobot;
+import static frc.robot.Robot.sDrivetrain;
 
 public class Drivetrain extends SubsystemBase {
 

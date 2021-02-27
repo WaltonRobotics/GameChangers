@@ -89,7 +89,7 @@ public class Gamepad extends Joystick {
             this.angle = angle;
         }
 
-        public int angle() {
+        public int getAngle() {
             return angle;
         }
 
@@ -109,10 +109,10 @@ public class Gamepad extends Joystick {
      * non d-pad buttons enum
      */
     public enum Button {
-        _1(1), _2(2), _3(3), _4(4),
+        LEFt_BUTTON(1), DOWN_BUTTON(2), RIGHT_BUTTON(3), TOP_BUTTON(4),
         LEFT_BUMPER(5), RIGHT_BUMPER(6),
         LEFT_TRIGGER(7), RIGHT_TRIGGER(8),
-        _9(9), _10(10),
+        BACK_BUTTON(9), START_BUTTON(10),
         LEFT_STICK_BUTTON(11), RIGHT_STICK_BUTTON(12);
 
         private final int index;
@@ -121,7 +121,7 @@ public class Gamepad extends Joystick {
             this.index = index;
         }
 
-        public int index() {
+        public int getIndex() {
             return index;
         }
 

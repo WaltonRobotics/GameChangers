@@ -7,7 +7,8 @@ import frc.robot.stateMachine.StateMachine;
 import java.util.function.BooleanSupplier;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
-import static frc.robot.OI.shootButton;
+import static frc.robot.OI.sBarfButton;
+import static frc.robot.OI.sShootButton;
 import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
@@ -24,7 +25,8 @@ public class ShooterCommand extends CommandBase {
 
     private StateMachine mStateMachine;
 
-    private final BooleanSupplier mNeedsToShoot = () -> (shootButton.get());
+    private final BooleanSupplier mNeedsToShoot = () -> (sShootButton.get());
+    private final BooleanSupplier mNeedsToBarf = () -> (sBarfButton.get());
 
     public ShooterCommand() {
         addRequirements(sShooter);
@@ -43,7 +45,11 @@ public class ShooterCommand extends CommandBase {
             public IState execute() {
                 sShooter.setOpenLoopDutyCycles(0);
 
-                if (shootButton.get()) {
+                if (mNeedsToShoot.getAsBoolean()) {
+                    return mSpinningUp;
+                }
+
+                if (mNeedsToBarf.getAsBoolean()) {
                     return mSpinningUp;
                 }
 
@@ -65,7 +71,7 @@ public class ShooterCommand extends CommandBase {
             public IState execute() {
                 sShooter.setClosedLoopVelocityRawUnits(mSetpointRawUnits);
 
-                if (!mNeedsToShoot.getAsBoolean()) {
+                if (!mNeedsToShoot.getAsBoolean() && !mNeedsToBarf.getAsBoolean()) {
                     return mSpinningDown;
                 }
 
@@ -91,7 +97,7 @@ public class ShooterCommand extends CommandBase {
             public IState execute() {
                 sShooter.setClosedLoopVelocityRawUnits(mSetpointRawUnits);
 
-                if (!mNeedsToShoot.getAsBoolean()) {
+                if (!mNeedsToShoot.getAsBoolean() && !mNeedsToBarf.getAsBoolean()) {
                     return mSpinningDown;
                 }
 

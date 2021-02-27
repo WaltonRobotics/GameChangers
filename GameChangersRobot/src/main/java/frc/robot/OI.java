@@ -6,6 +6,9 @@ import frc.robot.utils.Gamepad;
 
 import static frc.robot.Constants.InputDevices.*;
 import static frc.robot.Robot.sDrivetrain;
+import static frc.robot.utils.EnhancedJoystickButton.POV_N;
+import static frc.robot.utils.EnhancedJoystickButton.POV_S;
+import static frc.robot.utils.Gamepad.Button.*;
 
 public class OI {
 
@@ -15,13 +18,12 @@ public class OI {
 
     public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sRightJoystick, 2);
 
-    public static EnhancedJoystickButton shootButton = new EnhancedJoystickButton(sGamePad, 1);
-    public static EnhancedJoystickButton retractButton = new EnhancedJoystickButton(sGamePad, 2);
-    public static EnhancedJoystickButton deployButton = new EnhancedJoystickButton(sGamePad, 3);
-    public static EnhancedJoystickButton intakingButton = new EnhancedJoystickButton(sGamePad, 4);
+    public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamePad, RIGHT_TRIGGER.getIndex());
+    public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamePad, RIGHT_BUMPER.getIndex());
 
-    static {
-        sResetDrivetrainButton.whenPressed(() -> sDrivetrain.reset());
-    }
+    public static EnhancedJoystickButton sRetractIntakeButton = new EnhancedJoystickButton(sGamePad, POV_N);
+    public static EnhancedJoystickButton sDeployIntakeButton = new EnhancedJoystickButton(sGamePad, POV_S);
+    public static EnhancedJoystickButton sIntakeButton = new EnhancedJoystickButton(sGamePad, LEFT_TRIGGER.getIndex());
+    public static EnhancedJoystickButton sOuttakeButton = new EnhancedJoystickButton(sGamePad, LEFT_BUMPER.getIndex());
 
 }
