@@ -29,9 +29,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = new Drivetrain();
-    SmartDashboard.putNumber("Drive Straight Heading P", 0.01);
-    SmartDashboard.putNumber("Turn P", 0.08);
-    SmartDashboard.putNumber("Forward P", 1.75);
+    SmartDashboard.putNumber("Drive Straight Heading P", 0.03);
+    SmartDashboard.putNumber("Turn P", 0.05);
+    SmartDashboard.putNumber("Forward P", 2);
     CommandScheduler.getInstance().setDefaultCommand(drivetrain, new DriveCommand());
   }
 

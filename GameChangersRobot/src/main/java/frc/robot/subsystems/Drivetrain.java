@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import java.util.Arrays;
+import frc.robot.utils.Util;
 import frc.robot.utils.*;
-import jdk.jshell.execution.Util;
 import frc.robot.Constants;
 import java.util.Optional;
 
@@ -151,54 +151,42 @@ public class Drivetrain extends SubsystemBase {
         final double kCurrentThres = 0.5;
         final double kRpmThres = 300;
 
-        mRightWheelsMaster.changeControlMode(CANSparkMax.TalonControlMode.Voltage);
-        mRightWheelsSlave.changeControlMode(CANSparkMax.TalonControlMode.Voltage);
-        mLeftWheelsMaster.changeControlMode(CANSparkMax.TalonControlMode.Voltage);
-        mLeftWheelsSlave.changeControlMode(CANSparkMax.TalonControlMode.Voltage);
+        mRightWheelsMaster.setVoltage(0);
+        mRightWheelsSlave.setVoltage(0);
+        mLeftWheelsMaster.setVoltage(0);
+        mLeftWheelsSlave.setVoltage(0);
 
-        mRightWheelsMaster.set(0.0);
-        mRightWheelsSlave.set(0.0);
-        mLeftWheelsMaster.set(0.0);
-        mLeftWheelsSlave.set(0.0);
-
-        mRightWheelsMaster.set(-6.0f);
+        mRightWheelsMaster.setVoltage(-6.0f);
         Timer.delay(4.0);
         final double currentRightMaster = mRightWheelsMaster.getOutputCurrent();
-        final double rpmRightWheelsMaster = mRightWheelsMaster.getSpeed();
+        final double rpmRightWheelsMaster = mRightWheelsMaster.getEncoder().getVelocity();
         mRightWheelsMaster.set(0.0f);
 
         Timer.delay(2.0);
 
-        mRightWheelsSlave.set(-6.0f);
+        mRightWheelsSlave.setVoltage(-6.0f);
         Timer.delay(4.0);
         final double currentRightSlave = mRightWheelsSlave.getOutputCurrent();
-        final double rpmRightWheelsSlave = mRightWheelsMaster.getSpeed();
+        final double rpmRightWheelsSlave = mRightWheelsMaster.getEncoder().getVelocity();
         mRightWheelsSlave.set(0.0f);
 
         Timer.delay(2.0);
 
-        mLeftWheelsMaster.set(6.0f);
+        mLeftWheelsMaster.setVoltage(6.0f);
         Timer.delay(4.0);
         final double currentLeftMaster = mLeftWheelsMaster.getOutputCurrent();
-        final double rpmLeftWheelsMaster = mLeftWheelsMaster.getspeed();
+        final double rpmLeftWheelsMaster = mLeftWheelsMaster.getEncoder().getVelocity();
         mLeftWheelsMaster.set(0.0f);
 
         Timer.delay(2.0);
 
-        mLeftWheelsSlave.set(6.0f);
+        mLeftWheelsSlave.setVoltage(6.0f);
         Timer.delay(4.0);
         final double currentLeftSlave = mLeftWheelsSlave.getOutputCurrent();
-        final double rpmLeftWheelsSlave = mLeftWheelsMaster.getSpeed();
+        final double rpmLeftWheelsSlave = mLeftWheelsMaster.getEncoder().getVelocity();
         mLeftWheelsSlave.set(0.0);
 
-        mRightWheelsMaster.changeControlMode(CANSparkMax.TalonControlMode.PercentVbus);
-        mLeftWheelsMaster.changeControlMode(CANSparkMax.TalonControlMode.PercentVbus);
-
-        mRightWheelsSlave.changeControlMode(CANSparkMax.TalonControlMode.Follower);
-        mRightWheelsSlave.set(Constants.kLeftMaster);
-
-        mLeftWheelsSlave.changeControlMode(CANSparkMax.TalonControlMode.Follower);
-        mLeftWheelsSlave.set(Constants.kLeftDriveMasterId);
+        setupMotors();
 
         System.out.println("Drive Right Master Current: " + currentRightMaster + " Drive Right Slave Current: "
                 + currentRightSlave);
