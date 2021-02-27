@@ -15,16 +15,15 @@ public class DriveStraight extends CommandBase {
 
         this.desiredDistance = desiredDistance;
         drivetrain.getmDriveStraightPowerController().setTolerance(0.09);
-        drivetrain.getmDriveStraightHeadingPIDController().setTolerance(1);
+        drivetrain.getmDriveStraightHeadingPIDController().setTolerance(3);
     }
 
     @Override
     public void initialize() {
-        drivetrain.resetEncoders();
 //        drivetrain.getmDriveStraightPowerController().setP(1);
         //System.out.println("P value set");
         drivetrain.reset();
-        drivetrain.getmDriveStraightHeadingPIDController().reset(new TrapezoidProfile.State(desiredDistance, 0));
+        drivetrain.getmDriveStraightPowerController().reset(new TrapezoidProfile.State(desiredDistance, 0));
 //        drivetrain.getmDriveStraightPowerController().setTolerance(0.09);
 //        drivetrain.getmDriveStraightHeadingPIDController().setTolerance(1);
         System.out.println("Initialize completed!");
