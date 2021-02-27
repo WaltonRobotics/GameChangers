@@ -1,4 +1,4 @@
-package frc.robot.commands.teleop;
+package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
@@ -18,12 +18,12 @@ public class ShooterCommand extends CommandBase {
 
     private double mSetpointRawUnits = 12500;
 
-    private IState mIdle;
-    private IState mSpinningUp;
-    private IState mShooting;
-    private IState mSpinningDown;
+    private final IState mIdle;
+    private final IState mSpinningUp;
+    private final IState mShooting;
+    private final IState mSpinningDown;
 
-    private StateMachine mStateMachine;
+    private final StateMachine mStateMachine;
 
     private final BooleanSupplier mNeedsToShoot = () -> (sShootButton.get());
     private final BooleanSupplier mNeedsToBarf = () -> (sBarfButton.get());
@@ -31,10 +31,6 @@ public class ShooterCommand extends CommandBase {
     public ShooterCommand() {
         addRequirements(sShooter);
 
-        configureStateMachine();
-    }
-
-    private void configureStateMachine() {
         mIdle = new IState() {
             @Override
             public void initialize() {
