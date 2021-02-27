@@ -16,7 +16,7 @@ public class OI {
     public static Joystick sRightJoystick = new Joystick(kRightJoystickPort);
     public static Gamepad sGamePad = new Gamepad(kGamepadPort);
 
-    public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sRightJoystick, 2);
+    public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sRightJoystick, 3);
 
     public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamePad, RIGHT_TRIGGER.getIndex());
     public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamePad, RIGHT_BUMPER.getIndex());
