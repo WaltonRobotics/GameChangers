@@ -13,10 +13,7 @@ import frc.robot.commands.teleop.ConveyorCommand;
 import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.commands.teleop.IntakeCommand;
 import frc.robot.commands.teleop.ShooterCommand;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,6 +31,7 @@ public class Robot extends TimedRobot {
   public static Shooter shooter;
   public static Intake intake;
   public static Conveyor conveyor;
+  public static Turret turret;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
