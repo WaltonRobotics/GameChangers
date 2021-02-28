@@ -8,6 +8,7 @@ import frc.robot.utils.IRSensor;
 
 import static frc.robot.Constants.CANBusIDs.kBackConveyorID;
 import static frc.robot.Constants.CANBusIDs.kFrontConveyorID;
+import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
 import static frc.robot.Constants.DioIDs.kConveyorBackSensorID;
 import static frc.robot.Constants.DioIDs.kConveyorFrontSensorID;
 
@@ -61,6 +62,6 @@ public class Conveyor extends SubsystemBase {
     }
 
     public boolean shouldNudge() {
-        return false;
+        return getBallCount() < kMaximumBallCapacity - 1 && mFrontConveyorBool.get();
     }
 }

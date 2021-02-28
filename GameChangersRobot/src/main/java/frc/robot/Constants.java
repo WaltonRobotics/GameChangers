@@ -4,8 +4,8 @@ public final class Constants {
 
     public static class ContextFlags {
 
-        public static boolean isInTuningMode = false;
-        public static boolean isInfiniteRecharge = false;
+        public static boolean kIsInTuningMode = false;
+        public static boolean kIsInfiniteRecharge = false;
 
     }
 
@@ -68,7 +68,7 @@ public final class Constants {
         // The time that the IRSensor flickers randomly after changing states
         public static final double kIRSensorFlickeringTime = 0.1;
         public static final double kNudgeTime = 0.29;
-        public static final int maximumBallCapacity = (ContextFlags.isInfiniteRecharge ? 5 : 3);
+        public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
 
     }
 

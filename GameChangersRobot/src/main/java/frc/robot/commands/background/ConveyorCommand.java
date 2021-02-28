@@ -5,6 +5,9 @@ import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 
+import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
+import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
+import static frc.robot.Constants.Conveyor.kNudgeTime;
 import static frc.robot.OI.sOverrideBackConveyorButton;
 import static frc.robot.OI.sOverrideFrontConveyorButton;
 import static frc.robot.Robot.sConveyor;
@@ -42,13 +45,7 @@ public class ConveyorCommand extends CommandBase {
                     sConveyor.setBackDutyCycles(0.0);
                 }
 
-                if (SubsystemFlags.getInstance().isReadyToShoot()) {
-                    return mFeeding;
-                }
-
-
-
-                return mIdle;
+                return determineState();
             }
 
             @Override
@@ -70,7 +67,19 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                return null;
+                if (sConveyor.getBallCount() < kMaximumBallCapacity) {
+                    sConveyor.setFrontDutyCycles(1.0);
+                } else {
+                    sConveyor.setFrontDutyCycles(0.0);
+                }
+
+                if (sOverrideBackConveyorButton.get()) {
+                    sConveyor.setBackDutyCycles(1.0);
+                } else {
+                    sConveyor.setBackDutyCycles(0.0);
+                }
+
+                return determineState();
             }
 
             @Override
@@ -92,7 +101,10 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                return null;
+                sConveyor.setFrontDutyCycles(-1.0);
+                sConveyor.setBackDutyCycles(-1.0);
+
+                return determineState();
             }
 
             @Override
@@ -107,14 +119,23 @@ public class ConveyorCommand extends CommandBase {
         };
 
         mNudging = new IState() {
+            private double mStartTime;
+
             @Override
             public void initialize() {
-
+                mStartTime = getFPGATimestamp();
             }
 
             @Override
             public IState execute() {
-                return null;
+                sConveyor.setFrontDutyCycles(1.0);
+                sConveyor.setBackDutyCycles(1.0);
+
+                if (getFPGATimestamp() - mStartTime > kNudgeTime) {
+                    return determineState();
+                }
+
+                return mNudging;
             }
 
             @Override
@@ -136,7 +157,10 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                return null;
+                sConveyor.setFrontDutyCycles(1.0);
+                sConveyor.setBackDutyCycles(1.0);
+
+                return determineState();
             }
 
             @Override
@@ -151,6 +175,26 @@ public class ConveyorCommand extends CommandBase {
         };
 
         mStateMachine = new StateMachine("Conveyor", mIdle);
+    }
+
+    private IState determineState() {
+        if (SubsystemFlags.getInstance().isReadyToShoot()) {
+            return mFeeding;
+        }
+
+        if (SubsystemFlags.getInstance().isOuttaking()) {
+            return mOuttaking;
+        }
+
+        if (sConveyor.shouldNudge()) {
+            return mNudging;
+        }
+
+        if (SubsystemFlags.getInstance().isIntaking()) {
+            return mIntaking;
+        }
+
+        return mIdle;
     }
 
     @Override
