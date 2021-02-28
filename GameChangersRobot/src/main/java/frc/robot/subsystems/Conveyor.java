@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
-import frc.robot.utils.UtilMethods;
 
 import static frc.robot.Constants.CANBusIDs.kConveyorBackID;
 import static frc.robot.Constants.CANBusIDs.kConveyorFrontID;

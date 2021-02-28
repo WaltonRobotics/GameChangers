@@ -117,7 +117,6 @@ public class IntakeCommand extends CommandBase {
                 } else {
                     return mIntaking;
                 }
-
             }
 
             @Override
