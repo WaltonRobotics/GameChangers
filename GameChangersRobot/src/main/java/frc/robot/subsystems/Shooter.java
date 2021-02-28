@@ -27,9 +27,9 @@ public class Shooter extends SubsystemBase {
         mFlywheelSlave.setInverted(false);
         mFlywheelSlave.setSensorPhase(false);
 
-        // TODO: Check the following two settings by running flywheels on manual joystick
-        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
-        mFlywheelMaster.configVelocityMeasurementWindow(32);
+//        TODO: Check the following two settings by running flywheels on manual joystick
+//        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
+//        mFlywheelMaster.configVelocityMeasurementWindow(32);
 
         mFlywheelMaster.config_kF(0, 0.0498575917);
         mFlywheelMaster.config_kP(0, 0.23);
