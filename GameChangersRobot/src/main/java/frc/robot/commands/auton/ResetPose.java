@@ -10,6 +10,8 @@ public class ResetPose extends InstantCommand {
     private final Trajectory trajectory;
 
     public ResetPose(Trajectory trajectory) {
+        addRequirements(sDrivetrain);
+
         this.trajectory = trajectory;
     }
 

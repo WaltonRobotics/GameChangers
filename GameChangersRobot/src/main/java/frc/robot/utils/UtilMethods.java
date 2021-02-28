@@ -5,11 +5,11 @@ import java.util.List;
 
 public class UtilMethods {
 
-    public static double limit(double v, double maxMagnitude) {
-        return limit(v, -maxMagnitude, maxMagnitude);
+    public static double limitMagnitude(double v, double maxMagnitude) {
+        return limitRange(v, -maxMagnitude, maxMagnitude);
     }
 
-    public static double limit(double v, double min, double max) {
+    public static double limitRange(double v, double min, double max) {
         return Math.min(max, Math.max(min, v));
     }
 

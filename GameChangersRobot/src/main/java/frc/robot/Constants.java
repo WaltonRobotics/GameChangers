@@ -25,8 +25,8 @@ public final class Constants {
 
         public static final int kIntakeID = 5;
 
-        public static final int kFrontConveyorID = 7;
-        public static final int kBackConveyorID = 8;
+        public static final int kConveyorFrontID = 7;
+        public static final int kConveyorBackID = 8;
 
         public static final int kFlywheelMasterID = 9;
         public static final int kFlywheelSlaveID = 10;
@@ -38,8 +38,8 @@ public final class Constants {
         public static final int kRobotID1 = 8;
         public static final int kRobotID2 = 9;
 
-        public static final int kFrontConveyorSensorID = 4;
-        public static final int kBackConveyorSensorID = 5;
+        public static final int kConveyorFrontSensorID = 4;
+        public static final int kConveyorBackSensorID = 5;
 
     }
 
