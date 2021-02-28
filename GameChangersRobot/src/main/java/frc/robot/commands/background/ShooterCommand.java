@@ -37,12 +37,12 @@ public class ShooterCommand extends CommandBase {
             public void initialize() {
                 SubsystemFlags.getInstance().setReadyToShoot(false);
 
-                sShooter.setOpenLoopDutyCycles(0);
+                sShooter.setOpenLoopDutyCycle(0);
             }
 
             @Override
             public IState execute() {
-                sShooter.setOpenLoopDutyCycles(0);
+                sShooter.setOpenLoopDutyCycle(0);
 
                 if (mNeedsToShoot.getAsBoolean()) {
                     return mSpinningUp;

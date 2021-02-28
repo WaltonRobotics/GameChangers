@@ -30,7 +30,7 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sIntake.setRollerDutyCycles(0.0);
+                sIntake.setRollerDutyCycle(0.0);
 
                 if (sRetractIntakeButton.isRisingEdge()) {
                     return mRetract;
@@ -113,7 +113,7 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sIntake.setRollerDutyCycles(0.8);
+                sIntake.setRollerDutyCycle(0.8);
 
                 if (!(sIntakeButton.get()
                         || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
@@ -142,7 +142,7 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sIntake.setRollerDutyCycles(-0.8);
+                sIntake.setRollerDutyCycle(-0.8);
 
                 if (!sOuttakeButton.get()) {
                     return mIdle;

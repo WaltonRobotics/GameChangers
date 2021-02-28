@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
 
+import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
 import static frc.robot.Constants.CANBusIDs.kBackConveyorID;
 import static frc.robot.Constants.CANBusIDs.kFrontConveyorID;
 import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
@@ -30,12 +32,20 @@ public class Conveyor extends SubsystemBase {
         mBallCount = 0;
     }
 
-    public void setFrontDutyCycles(double targetDutyCycles) {
-        mFrontConveyorController.set(ControlMode.PercentOutput, targetDutyCycles);
+    public void setFrontDutyCycle(double targetDutyCycle) {
+        mFrontConveyorController.set(ControlMode.PercentOutput, targetDutyCycle);
     }
 
-    public void setBackDutyCycles(double targetDutyCycles) {
-        mBackConveyorController.set(ControlMode.PercentOutput, targetDutyCycles);
+    public void setFrontVoltage(double targetVoltage) {
+        setFrontDutyCycle(targetVoltage / getBatteryVoltage());
+    }
+
+    public void setBackDutyCycle(double targetDutyCycle) {
+        mBackConveyorController.set(ControlMode.PercentOutput, targetDutyCycle);
+    }
+
+    public void setBackVoltage(double targetVoltage) {
+        setBackDutyCycle(targetVoltage / getBatteryVoltage());
     }
 
     @Override

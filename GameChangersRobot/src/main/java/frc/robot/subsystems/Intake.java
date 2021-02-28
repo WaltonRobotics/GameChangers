@@ -28,8 +28,8 @@ public class Intake extends SubsystemBase {
         mIntakeSolenoid.set(isDeployed);
     }
 
-    public void setRollerDutyCycles(double targetDutyCycles) {
-        mIntakeController.set(ControlMode.PercentOutput, targetDutyCycles);
+    public void setRollerDutyCycle(double targetDutyCycle) {
+        mIntakeController.set(ControlMode.PercentOutput, targetDutyCycle);
     }
 
 }

@@ -2,10 +2,10 @@ package frc.robot.commands.characterization;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
 import static frc.robot.Robot.sDrivetrain;
 import static frc.robot.Robot.sIntake;
 
@@ -39,7 +39,7 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
         double rightPosition = sDrivetrain.getRightPositionMeters();
         double rightRate = sDrivetrain.getRightVelocityMetersPerSec();
 
-        double battery = RobotController.getBatteryVoltage();
+        double battery = getBatteryVoltage();
 
         double leftMotorVolts = sDrivetrain.getLeftVoltage();
         double rightMotorVolts = sDrivetrain.getRightVoltage();
