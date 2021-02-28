@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,6 +26,10 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.setSensorPhase(true);
         mFlywheelSlave.setInverted(false);
         mFlywheelSlave.setSensorPhase(false);
+
+        // TODO: Check the following two settings by running flywheels on manual joystick
+        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
+        mFlywheelMaster.configVelocityMeasurementWindow(32);
 
         mFlywheelMaster.config_kF(0, 0.0498575917);
         mFlywheelMaster.config_kP(0, 0.23);
