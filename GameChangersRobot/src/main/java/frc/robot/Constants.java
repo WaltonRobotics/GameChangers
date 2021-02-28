@@ -31,6 +31,7 @@ public final class Constants {
 
         public static final int kRobotId1 = 8;
         public static final int kRobotId2 = 9;
+        public static final int kPixyId =
 
     }
 
