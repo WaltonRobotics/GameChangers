@@ -25,5 +25,7 @@ public class OI {
     public static EnhancedJoystickButton sDeployIntakeButton = new EnhancedJoystickButton(sGamePad, POV_S);
     public static EnhancedJoystickButton sIntakeButton = new EnhancedJoystickButton(sGamePad, LEFT_TRIGGER.getIndex());
     public static EnhancedJoystickButton sOuttakeButton = new EnhancedJoystickButton(sGamePad, LEFT_BUMPER.getIndex());
+    public static EnhancedJoystickButton sOverrideFrontConveyorButton = new EnhancedJoystickButton(sGamePad, BACK_BUTTON.getIndex());
+    public static EnhancedJoystickButton sOverrideBackConveyorButton = new EnhancedJoystickButton(sGamePad, START_BUTTON.getIndex());
 
 }

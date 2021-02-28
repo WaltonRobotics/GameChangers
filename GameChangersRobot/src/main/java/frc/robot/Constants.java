@@ -2,6 +2,13 @@ package frc.robot;
 
 public final class Constants {
 
+    public static class ContextFlags {
+
+        public static boolean isInTuningMode = false;
+        public static boolean isInfiniteRecharge = false;
+
+    }
+
     public static class InputDevices {
 
         public static final int kLeftJoystickPort = 0;
@@ -25,8 +32,8 @@ public final class Constants {
 
         public static final int kIntakeID = 5;
 
-        public static final int kConveyorFrontID = 7;
-        public static final int kConveyorBackID = 8;
+        public static final int kFrontConveyorID = 7;
+        public static final int kBackConveyorID = 8;
 
         public static final int kFlywheelMasterID = 9;
         public static final int kFlywheelSlaveID = 10;
@@ -61,6 +68,7 @@ public final class Constants {
         // The time that the IRSensor flickers randomly after changing states
         public static final double kIRSensorFlickeringTime = 0.1;
         public static final double kNudgeTime = 0.29;
+        public static final int maximumBallCapacity = (ContextFlags.isInfiniteRecharge ? 5 : 3);
 
     }
 

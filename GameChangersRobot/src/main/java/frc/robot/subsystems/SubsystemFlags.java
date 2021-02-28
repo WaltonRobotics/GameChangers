@@ -14,6 +14,7 @@ public class SubsystemFlags {
     private static final SubsystemFlags sInstance = new SubsystemFlags();
 
     private boolean mIntaking = false;
+    private boolean mOuttaking = false;
     private boolean mReadyToShoot = false;
 
     public static SubsystemFlags getInstance() {
@@ -26,6 +27,14 @@ public class SubsystemFlags {
 
     public void setIntaking(boolean intaking) {
         this.mIntaking = intaking;
+    }
+
+    public boolean isOuttaking() {
+        return mOuttaking;
+    }
+
+    public void setOuttaking(boolean outtaking) {
+        this.mOuttaking = outtaking;
     }
 
     public boolean isReadyToShoot() {

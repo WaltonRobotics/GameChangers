@@ -6,50 +6,50 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
 
-import static frc.robot.Constants.CANBusIDs.kConveyorBackID;
-import static frc.robot.Constants.CANBusIDs.kConveyorFrontID;
+import static frc.robot.Constants.CANBusIDs.kBackConveyorID;
+import static frc.robot.Constants.CANBusIDs.kFrontConveyorID;
 import static frc.robot.Constants.DioIDs.kConveyorBackSensorID;
 import static frc.robot.Constants.DioIDs.kConveyorFrontSensorID;
 
 public class Conveyor extends SubsystemBase {
 
-    private final VictorSPX mConveyorFrontController = new VictorSPX(kConveyorFrontID);
-    private final VictorSPX mConveyorBackController = new VictorSPX(kConveyorBackID);
+    private final VictorSPX mFrontConveyorController = new VictorSPX(kFrontConveyorID);
+    private final VictorSPX mBackConveyorController = new VictorSPX(kBackConveyorID);
 
-    private final IRSensor mConveyorFrontSensor = new IRSensor(kConveyorFrontSensorID);
-    private final IRSensor mConveyorBackSensor = new IRSensor(kConveyorBackSensorID);
-    private final EnhancedBoolean mConveyorFrontBool = new EnhancedBoolean();
-    private final EnhancedBoolean mConveyorBackBool = new EnhancedBoolean();
+    private final IRSensor mFrontConveyorSensor = new IRSensor(kConveyorFrontSensorID);
+    private final IRSensor mBackConveyorSensor = new IRSensor(kConveyorBackSensorID);
+    private final EnhancedBoolean mFrontConveyorBool = new EnhancedBoolean();
+    private final EnhancedBoolean mBackConveyorBool = new EnhancedBoolean();
 
     private int mBallCount;
 
     public Conveyor() {
-        mConveyorFrontController.setInverted(true);
+        mFrontConveyorController.setInverted(true);
 
         mBallCount = 0;
     }
 
     public void setFrontDutyCycles(double targetDutyCycles) {
-        mConveyorFrontController.set(ControlMode.PercentOutput, targetDutyCycles);
+        mFrontConveyorController.set(ControlMode.PercentOutput, targetDutyCycles);
     }
 
     public void setBackDutyCycles(double targetDutyCycles) {
-        mConveyorBackController.set(ControlMode.PercentOutput, targetDutyCycles);
+        mBackConveyorController.set(ControlMode.PercentOutput, targetDutyCycles);
     }
 
     @Override
     public void periodic() {
-        mConveyorFrontSensor.update();
-        mConveyorBackSensor.update();
+        mFrontConveyorSensor.update();
+        mBackConveyorSensor.update();
 
-        mConveyorFrontBool.set(mConveyorFrontSensor.get());
-        mConveyorBackBool.set(mConveyorBackSensor.get());
+        mFrontConveyorBool.set(mFrontConveyorSensor.get());
+        mBackConveyorBool.set(mBackConveyorSensor.get());
 
-        if (mConveyorFrontBool.isRisingEdge()) {
+        if (mFrontConveyorBool.isRisingEdge()) {
             mBallCount++;
         }
 
-        if (mConveyorBackBool.isFallingEdge()) {
+        if (mBackConveyorBool.isFallingEdge()) {
             mBallCount--;
         }
 
@@ -58,5 +58,9 @@ public class Conveyor extends SubsystemBase {
 
     public int getBallCount() {
         return mBallCount;
+    }
+
+    public boolean shouldNudge() {
+        return false;
     }
 }
