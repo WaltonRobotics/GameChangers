@@ -13,36 +13,36 @@ public class SubsystemFlags {
 
     private static final SubsystemFlags sInstance = new SubsystemFlags();
 
-    private boolean mIntaking = false;
-    private boolean mOuttaking = false;
-    private boolean mReadyToShoot = false;
+    private boolean mIsIntaking = false;
+    private boolean mIsOuttaking = false;
+    private boolean mIsReadyToShoot = false;
 
     public static SubsystemFlags getInstance() {
         return sInstance;
     }
 
     public boolean isIntaking() {
-        return mIntaking;
+        return mIsIntaking;
     }
 
-    public void setIntaking(boolean intaking) {
-        this.mIntaking = intaking;
+    public void setIsIntaking(boolean isIntaking) {
+        this.mIsIntaking = isIntaking;
     }
 
     public boolean isOuttaking() {
-        return mOuttaking;
+        return mIsOuttaking;
     }
 
-    public void setOuttaking(boolean outtaking) {
-        this.mOuttaking = outtaking;
+    public void setIsOuttaking(boolean isOuttaking) {
+        this.mIsOuttaking = isOuttaking;
     }
 
     public boolean isReadyToShoot() {
-        return mReadyToShoot;
+        return mIsReadyToShoot;
     }
 
-    public void setReadyToShoot(boolean readyToShoot) {
-        this.mReadyToShoot = readyToShoot;
+    public void setIsReadyToShoot(boolean isReadyToShoot) {
+        this.mIsReadyToShoot = isReadyToShoot;
     }
 
 }

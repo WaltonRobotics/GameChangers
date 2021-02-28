@@ -35,7 +35,7 @@ public class ShooterCommand extends CommandBase {
         mIdle = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setReadyToShoot(false);
+                SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
                 sShooter.setOpenLoopDutyCycle(0);
             }
@@ -68,7 +68,7 @@ public class ShooterCommand extends CommandBase {
         mSpinningUp = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setReadyToShoot(false);
+                SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
                 sShooter.setProfileSlot(0);
             }
@@ -90,7 +90,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
-                SubsystemFlags.getInstance().setReadyToShoot(true);
+                SubsystemFlags.getInstance().setIsReadyToShoot(true);
             }
 
             @Override
@@ -102,7 +102,7 @@ public class ShooterCommand extends CommandBase {
         mShooting = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setReadyToShoot(true);
+                SubsystemFlags.getInstance().setIsReadyToShoot(true);
 
                 sShooter.setProfileSlot(1);
             }
@@ -138,7 +138,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setReadyToShoot(true);
+                SubsystemFlags.getInstance().setIsReadyToShoot(true);
 
                 mStartTime = getFPGATimestamp();
             }

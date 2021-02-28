@@ -23,6 +23,7 @@ import frc.robot.subsystems.Shooter;
 
 import java.util.Arrays;
 
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DioIDs.kRobotID1;
 import static frc.robot.Constants.DioIDs.kRobotID2;
 import static frc.robot.Constants.SmartDashboardKeys.kLeftVelocityPKey;
@@ -73,8 +74,10 @@ public class Robot extends TimedRobot {
     }
 
     private void populateShuffleboard() {
-        SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
-        SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
+        if (kIsInTuningMode) {
+            SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
+            SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
+        }
     }
 
     /**

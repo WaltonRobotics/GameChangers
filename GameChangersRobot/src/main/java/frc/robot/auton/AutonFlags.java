@@ -4,27 +4,27 @@ public class AutonFlags {
 
     private static final AutonFlags sInstance = new AutonFlags();
 
-    private boolean mInAuton = false;
-    private boolean mAutonNeedsToIntake = false;
+    private boolean mIsInAuton = false;
+    private boolean mDoesAutonNeedToIntake = false;
 
     public static AutonFlags getInstance() {
         return sInstance;
     }
 
     public boolean isInAuton() {
-        return mInAuton;
+        return mIsInAuton;
     }
 
     public void setIsInAuton(boolean isInAuton) {
-        this.mInAuton = isInAuton;
+        this.mIsInAuton = isInAuton;
     }
 
     public boolean doesAutonNeedToIntake() {
-        return mAutonNeedsToIntake;
+        return mDoesAutonNeedToIntake;
     }
 
-    public void setAutonNeedsToIntake(boolean autonNeedsToIntake) {
-        this.mAutonNeedsToIntake = autonNeedsToIntake;
+    public void setDoesAutonNeedToIntake(boolean doesAutonNeedToIntake) {
+        this.mDoesAutonNeedToIntake = doesAutonNeedToIntake;
     }
 
 }
