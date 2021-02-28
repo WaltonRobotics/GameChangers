@@ -26,6 +26,7 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
+
                 return null;
             }
 
@@ -107,6 +108,11 @@ public class ConveyorCommand extends CommandBase {
         };
 
         mStateMachine = new StateMachine("Conveyor", mIdle);
+    }
+
+    @Override
+    public void execute() {
+        mStateMachine.run();
     }
 
 }

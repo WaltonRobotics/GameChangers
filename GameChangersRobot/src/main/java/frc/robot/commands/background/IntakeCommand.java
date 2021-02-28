@@ -15,6 +15,7 @@ public class IntakeCommand extends CommandBase {
     private final IState mDeploy;
     private final IState mRetract;
     private final IState mIntaking;
+    private final IState mOuttaking;
 
     private final StateMachine mStateMachine;
 
@@ -38,7 +39,10 @@ public class IntakeCommand extends CommandBase {
                 } else if (sIntake.isDeployed() && (sIntakeButton.get()
                         || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
                     return mIntaking;
+                } else if (sIntake.isDeployed() && sOuttakeButton.get()) {
+                    return mOuttaking;
                 }
+
                 return mIdle;
             }
 
@@ -114,9 +118,9 @@ public class IntakeCommand extends CommandBase {
                 if (!(sIntakeButton.get()
                         || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
                     return mIdle;
-                } else {
-                    return mIntaking;
                 }
+
+                return mIntaking;
             }
 
             @Override
@@ -127,6 +131,34 @@ public class IntakeCommand extends CommandBase {
             @Override
             public String getName() {
                 return "Intaking";
+            }
+        };
+
+        mOuttaking = new IState() {
+            @Override
+            public void initialize() {
+
+            }
+
+            @Override
+            public IState execute() {
+                sIntake.setRollerDutyCycles(-0.8);
+
+                if (!sOuttakeButton.get()) {
+                    return mIdle;
+                }
+
+                return mOuttaking;
+            }
+
+            @Override
+            public void finish() {
+
+            }
+
+            @Override
+            public String getName() {
+                return "Outtaking";
             }
         };
 
