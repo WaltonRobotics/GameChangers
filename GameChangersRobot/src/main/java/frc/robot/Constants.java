@@ -59,7 +59,8 @@ public final class Constants {
     public static class Conveyor {
 
         // The time that the IRSensor flickers randomly after changing states
-        public static final double kIRSensorFlickeringTime = 3;
+        public static final double kIRSensorFlickeringTime = 0.1;
+        public static final double kNudgeTime = 0.29;
 
     }
 
