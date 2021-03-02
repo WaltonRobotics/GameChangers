@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.EnhancedBoolean;
@@ -29,7 +28,7 @@ public class Conveyor extends SubsystemBase {
     public Conveyor() {
         mFrontConveyorController.setInverted(true);
 
-        mBallCount = 0;
+        resetBallCount();
     }
 
     public void setFrontDutyCycle(double targetDutyCycle) {
@@ -65,6 +64,14 @@ public class Conveyor extends SubsystemBase {
         }
 
         mBallCount = Math.max(mBallCount, 0);
+    }
+
+    public void resetBallCount() {
+        setBallCount(0);
+    }
+
+    public void setBallCount(int ballCount) {
+        mBallCount = ballCount;
     }
 
     public int getBallCount() {
