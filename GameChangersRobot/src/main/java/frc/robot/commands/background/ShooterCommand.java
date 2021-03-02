@@ -8,6 +8,8 @@ import frc.robot.subsystems.SubsystemFlags;
 import java.util.function.BooleanSupplier;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
+import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
+import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 import static frc.robot.OI.sBarfButton;
 import static frc.robot.OI.sShootButton;
 import static frc.robot.Robot.sShooter;
@@ -70,7 +72,7 @@ public class ShooterCommand extends CommandBase {
             public void initialize() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
-                sShooter.setProfileSlot(0);
+                sShooter.setProfileSlot(kShooterSpinningUpSlot);
             }
 
             @Override
@@ -104,7 +106,7 @@ public class ShooterCommand extends CommandBase {
             public void initialize() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(true);
 
-                sShooter.setProfileSlot(1);
+                sShooter.setProfileSlot(kShooterShootingSlot);
             }
 
             @Override

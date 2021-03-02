@@ -62,6 +62,9 @@ public final class Constants {
         public static final int kDrivetrainVoltageSlot = 0;
         public static final int kDrivetrainVelocitySlot = 1;
 
+        public static final int kShooterSpinningUpSlot = 0;
+        public static final int kShooterShootingSlot = 1;
+
     }
 
     public static class Conveyor {
