@@ -6,7 +6,7 @@ package frc.robot.robots;
 
 public enum RobotIdentifier {
 
-    COMP_DEEP_SPACE(true, false, new CompDeepSpace()),
+    COMP_DEEP_SPACE(true, true, new CompDeepSpace()),
     PRACTICE_GAME_CHANGERS(false, true, new PracticeGameChangers()),
     COMP_GAME_CHANGERS(false, false, new CompGameChangers());
 
@@ -22,11 +22,12 @@ public enum RobotIdentifier {
     }
 
     public static RobotIdentifier findByInputs(boolean input1, boolean input2) {
-        for (RobotIdentifier i : values()) {
+        /*for (RobotIdentifier i : values()) {
             if (i.input1 == input1 && i.input2 == input2) {
                 return i;
             }
-        }
+        }*/
+
         return PRACTICE_GAME_CHANGERS;
     }
 

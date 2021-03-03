@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
@@ -54,6 +55,9 @@ public class Conveyor extends SubsystemBase {
 
         mFrontConveyorBool.set(mFrontConveyorSensor.get());
         mBackConveyorBool.set(mBackConveyorSensor.get());
+
+        SmartDashboard.putBoolean("Front Conveyor bool", mFrontConveyorBool.get());
+        SmartDashboard.putNumber("Ball count", mBallCount);
 
         if (mFrontConveyorBool.isRisingEdge()) {
             mBallCount++;
