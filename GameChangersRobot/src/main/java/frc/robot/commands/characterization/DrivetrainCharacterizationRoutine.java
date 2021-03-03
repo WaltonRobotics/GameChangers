@@ -2,10 +2,10 @@ package frc.robot.commands.characterization;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
 import static frc.robot.Robot.sDrivetrain;
 import static frc.robot.Robot.sIntake;
 
@@ -14,24 +14,22 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
     private final NetworkTableEntry mAutoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");
     private final NetworkTableEntry mTelemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
     private final NetworkTableEntry mRotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
-
-    private double mPriorAutospeed = 0;
     private final Number[] mNumberArray = new Number[10];
+    private double mPriorAutospeed = 0;
 
     @Override
     public void initialize() {
         addRequirements(sDrivetrain);
         addRequirements(sIntake);
 
-        sDrivetrain.setupControllersAuton();
+        sDrivetrain.configureControllersAuton();
         sDrivetrain.reset();
 
-        sIntake.setIntakeDeployed(true);
+        sIntake.setDeployed(true);
     }
 
     @Override
     public void execute() {
-        System.out.println("Hello");
         // Retrieve values to send back before telling the motors to do something
         double now = Timer.getFPGATimestamp();
 
@@ -41,11 +39,10 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
         double rightPosition = sDrivetrain.getRightPositionMeters();
         double rightRate = sDrivetrain.getRightVelocityMetersPerSec();
 
-        double battery = RobotController.getBatteryVoltage();
-        double motorVolts = battery * Math.abs(mPriorAutospeed);
+        double battery = getBatteryVoltage();
 
-        double leftMotorVolts = motorVolts;
-        double rightMotorVolts = motorVolts;
+        double leftMotorVolts = sDrivetrain.getLeftVoltage();
+        double rightMotorVolts = sDrivetrain.getRightVoltage();
 
         // Retrieve the commanded speed from NetworkTables
         double autospeed = mAutoSpeedEntry.getDouble(0);

@@ -1,21 +1,31 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.utils.EnhancedJoystickButton;
+import frc.robot.utils.Gamepad;
 
-import static frc.robot.Constants.InputDevices.kLeftJoystickPort;
-import static frc.robot.Constants.InputDevices.kRightJoystickPort;
+import static frc.robot.Constants.InputDevices.*;
 import static frc.robot.Robot.sDrivetrain;
+import static frc.robot.utils.EnhancedJoystickButton.POV_N;
+import static frc.robot.utils.EnhancedJoystickButton.POV_S;
+import static frc.robot.utils.Gamepad.Button.*;
 
 public class OI {
 
     public static Joystick sLeftJoystick = new Joystick(kLeftJoystickPort);
     public static Joystick sRightJoystick = new Joystick(kRightJoystickPort);
+    public static Gamepad sGamePad = new Gamepad(kGamepadPort);
 
-    public static JoystickButton sResetDrivetrainButton = new JoystickButton(sRightJoystick, 2);
+    public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sRightJoystick, 3);
 
-    static {
-        sResetDrivetrainButton.whenPressed(() -> sDrivetrain.reset());
-    }
+    public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamePad, RIGHT_TRIGGER.getIndex());
+    public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamePad, RIGHT_BUMPER.getIndex());
+
+    public static EnhancedJoystickButton sRetractIntakeButton = new EnhancedJoystickButton(sGamePad, POV_N);
+    public static EnhancedJoystickButton sDeployIntakeButton = new EnhancedJoystickButton(sGamePad, POV_S);
+    public static EnhancedJoystickButton sIntakeButton = new EnhancedJoystickButton(sGamePad, LEFT_TRIGGER.getIndex());
+    public static EnhancedJoystickButton sOuttakeButton = new EnhancedJoystickButton(sGamePad, LEFT_BUMPER.getIndex());
+    public static EnhancedJoystickButton sOverrideFrontConveyorButton = new EnhancedJoystickButton(sGamePad, BACK_BUTTON.getIndex());
+    public static EnhancedJoystickButton sOverrideBackConveyorButton = new EnhancedJoystickButton(sGamePad, START_BUTTON.getIndex());
 
 }

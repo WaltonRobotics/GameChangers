@@ -9,17 +9,24 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
-import frc.robot.commands.teleop.DriveCommand;
+import frc.robot.commands.background.ConveyorCommand;
+import frc.robot.commands.background.DriveCommand;
+import frc.robot.commands.background.IntakeCommand;
+import frc.robot.commands.background.ShooterCommand;
 import frc.robot.robots.RobotIdentifier;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.vision.LimelightHelper;
+import frc.robot.subsystems.Shooter;
 
 import java.util.Arrays;
 
-import static frc.robot.Constants.DioIDs.kRobotId1;
-import static frc.robot.Constants.DioIDs.kRobotId2;
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.DioIDs.kRobotID1;
+import static frc.robot.Constants.DioIDs.kRobotID2;
 import static frc.robot.Constants.SmartDashboardKeys.kLeftVelocityPKey;
 import static frc.robot.Constants.SmartDashboardKeys.kRightVelocityPKey;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
@@ -32,70 +39,84 @@ import static frc.robot.vision.LimelightHelper.getCamtran;
  * project.
  */
 public class Robot extends TimedRobot {
-    public static Drivetrain sDrivetrain;
-    public static Intake sIntake;
+
     public static RobotIdentifier sCurrentRobot;
-    private static SendableChooser<AutonRoutine> autonChooser;
+    public static Drivetrain sDrivetrain;
+    public static Shooter sShooter;
+    public static Intake sIntake;
+    public static Conveyor sConveyor;
+    public static RobotIdentifier sCurrentRobot;
+    private static SendableChooser<AutonRoutine> mAutonChooser;
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
-    sCurrentRobot = RobotIdentifier.findByInputs(new DigitalInput(kRobotId1).get(), new DigitalInput(kRobotId2).get());
-    System.out.println("Current robot is " + sCurrentRobot.name());
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
+    @Override
+    public void robotInit() {
+        sCurrentRobot = RobotIdentifier.findByInputs(new DigitalInput(kRobotID1).get(), new DigitalInput(kRobotID2).get());
+        System.out.println("Current robot is " + sCurrentRobot.name());
 
-    populateShuffleboard();
+        populateShuffleboard();
 
-    sDrivetrain = new Drivetrain();
-    sIntake = new Intake();
+        sDrivetrain = new Drivetrain();
+        sShooter = new Shooter();
+        sIntake = new Intake();
+        sConveyor = new Conveyor();
 
-    CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
-    autonChooser = new SendableChooser<>();
-    Arrays.stream(AutonRoutine.values()).forEach(n -> autonChooser.addOption(n.name(), n));
-    autonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
-    SmartDashboard.putData("Auton Selector", autonChooser);
-  }
+        CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
+        CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
+        CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
+        CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
 
-  private void populateShuffleboard() {
-    SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
-    SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
-  }
+        mAutonChooser = new SendableChooser<>();
+        Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));
+        mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
+        SmartDashboard.putData("Auton Selector", mAutonChooser);
+    }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
+    private void populateShuffleboard() {
+        if (kIsInTuningMode) {
+            SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
+            SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
+        }
+    }
 
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
+    /**
+     * This function is called every robot packet, no matter the mode. Use this for items like
+     * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
+     *
+     * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+     * SmartDashboard integrated updating.
+     */
 
-    SmartDashboard.putNumberArray("camtran", getCamtran());
-  }
+    @Override
+    public void robotPeriodic() {
+        // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+        // commands, running already-scheduled commands, removing finished or interrupted commands,
+        // and running subsystem periodic() methods.  This must be called from the robot's periodic
+        // block in order for anything in the Command-based framework to work.
+        CommandScheduler.getInstance().run();
+        SmartDashboard.putNumberArray("camtran", getCamtran());
+    }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select between different
-   * autonomous modes using the dashboard. The sendable chooser code works with the Java
-   * SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the chooser code and
-   * uncomment the getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to the switch structure
-   * below with additional strings. If using the SendableChooser make sure to add them to the
-   * chooser code above as well.
-   */
-  @Override
-  public void autonomousInit() {
-      sDrivetrain.setupControllersAuton();
-      autonChooser.getSelected().getCommandGroup().schedule();
+    /**
+     * This autonomous (along with the chooser code above) shows how to select between different
+     * autonomous modes using the dashboard. The sendable chooser code works with the Java
+     * SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the chooser code and
+     * uncomment the getString line to get the auto name from the text box below the Gyro
+     *
+     * <p>You can add additional auto modes by adding additional comparisons to the switch structure
+     * below with additional strings. If using the SendableChooser make sure to add them to the
+     * chooser code above as well.
+     */
+    @Override
+    public void autonomousInit() {
+        sDrivetrain.configureControllersAuton();
+
+        AutonFlags.getInstance().setIsInAuton(true);
+
+        mAutonChooser.getSelected().getCommandGroup().schedule();
     }
 
     /**
@@ -111,7 +132,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopInit() {
-
+        AutonFlags.getInstance().setIsInAuton(false);
     }
 
     /**

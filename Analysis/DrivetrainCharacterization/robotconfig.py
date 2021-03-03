@@ -1,38 +1,30 @@
 {
-    # Class names of motor controllers used.
-    # Options:
-    # 'Spark'
-    # 'Victor'
-    # 'VictorSP'
-    # 'PWMTalonSRX'
-    # 'PWMVictorSPX'
-    # 'WPI_TalonSRX'
-    # 'WPI_VictorSPX'
-    "rightControllerTypes": ["Spark", "Spark"],
-    "leftControllerTypes": ["Spark", "Spark"],
+    # Note: The first motor in the list of ports should be the one with an encoder
     # Ports for the left-side motors
     "leftMotorPorts": [3, 4],
     # Ports for the right-side motors
     "rightMotorPorts": [1, 2],
+    # Note: Inversions of the slaves (i.e. any motor *after* the first on
+    # each side of the drive) are *with respect to their master*.  This is
+    # different from the other poject types!
     # Inversions for the left-side motors
-    "leftMotorsInverted": [False, False],
+    "leftMotorsInverted": [True, False],
     # Inversions for the right side motors
     "rightMotorsInverted": [False, False],
-    # Wheel diameter (in units of your choice - will dictate units of analysis)
-    "wheelDiameter": 0.127,
     # If your robot has only one encoder, set all right encoder fields to `None`
     # Encoder edges-per-revolution (*NOT* cycles per revolution!)
     # This value should be the edges per revolution *of the wheels*, and so
     # should take into account gearing between the encoder and the wheels
     "encoderEPR": 512,
-    # Ports for the left-side encoder
-    "leftEncoderPorts": [0, 1],
-    # Ports for the right-side encoder
-    "rightEncoderPorts": [2, 3],
     # Whether the left encoder is inverted
-    "leftEncoderInverted": False,
+    "leftEncoderInverted": True,
     # Whether the right encoder is inverted:
     "rightEncoderInverted": False,
+    # The total gear reduction between the motor and the wheels, expressed as
+    # a fraction [motor turns]/[wheel turns]
+    "gearing": 1,
+    # Wheel diameter (in units of your choice - will dictate units of analysis)
+    "wheelDiameter": 0.1524,
     # Your gyro type (one of "NavX", "Pigeon", "ADXRS450", "AnalogGyro", or "None")
     "gyroType": "NavX",
     # Whatever you put into the constructor of your gyro
@@ -45,4 +37,5 @@
     # "" (NavX using default SPI, ADXRS450 using onboard CS0, or no gyro)
     "gyroPort": "SPI.Port.kMXP",
 }
+
 

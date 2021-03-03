@@ -2,6 +2,14 @@ package frc.robot;
 
 public final class Constants {
 
+    public static class ContextFlags {
+
+        public static boolean kIsInCompetition = false;
+        public static boolean kIsInTuningMode = false;
+        public static boolean kIsInfiniteRecharge = false;
+
+    }
+
     public static class InputDevices {
 
         public static final int kLeftJoystickPort = 0;
@@ -18,31 +26,55 @@ public final class Constants {
 
     public static class CANBusIDs {
 
-        public static final int kLeftMaster = 3;
-        public static final int kLeftSlave = 4;
+        public static final int kDrivetrainLeftMasterID = 3;
+        public static final int kDrivetrainLeftSlaveID = 4;
+        public static final int kDrivetrainRightMasterID = 1;
+        public static final int kDrivetrainRightSlaveID = 2;
 
-        public static final int kRightMaster = 1;
-        public static final int kRightSlave = 2;
+        public static final int kIntakeID = 5;
 
-        public static final int kIntakeMotor = 5;
+        public static final int kFrontConveyorID = 7;
+        public static final int kBackConveyorID = 8;
+
+        public static final int kFlywheelMasterID = 9;
+        public static final int kFlywheelSlaveID = 10;
+
     }
 
     public static class DioIDs {
 
-        public static final int kRobotId1 = 8;
-        public static final int kRobotId2 = 9;
         public static final int kPixyId =
+        public static final int kRobotID1 = 8;
+        public static final int kRobotID2 = 9;
+
+        public static final int kConveyorFrontSensorID = 4;
+        public static final int kConveyorBackSensorID = 5;
 
     }
 
     public static class PneumaticsIDs {
-        public static final int kIntakeToggle = 1;
+
+        public static final int kIntakeSolenoidID = 1;
+
     }
 
     public static class PIDSlots {
 
         public static final int kDrivetrainVoltageSlot = 0;
         public static final int kDrivetrainVelocitySlot = 1;
+
+        public static final int kShooterSpinningUpSlot = 0;
+        public static final int kShooterShootingSlot = 1;
+
+    }
+
+    public static class Conveyor {
+
+        // The time that the IRSensor flickers randomly after changing states
+        public static final double kIRSensorFlickeringTime = 0.1;
+        public static final double kNudgeTime = 0.29;
+        public static final double kNudgeVoltage = 8.0;
+        public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
 
     }
 
@@ -75,5 +107,4 @@ public final class Constants {
         public static final String kRightMeasurementKey = "rightMeasurement";
 
     }
-
 }

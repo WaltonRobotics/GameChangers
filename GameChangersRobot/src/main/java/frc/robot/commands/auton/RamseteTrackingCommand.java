@@ -53,8 +53,8 @@ public class RamseteTrackingCommand extends CommandBase {
      * Performs no PID control and calculates no feedforwards; outputs are the raw wheel speeds
      * in meters per second from the RAMSETE controller, and will need to be converted into a usable form by the user.
      *
-     * @param trajectory The trajectory to follow.
-     * @param useSparkPID Whether to use onboard SparkMax velocity PID or direct voltage control
+     * @param trajectory     The trajectory to follow.
+     * @param useSparkPID    Whether to use onboard SparkMax velocity PID or direct voltage control
      * @param disableRamsete Whether to disable the Ramsete correction (for feedforward analysis)
      */
     public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean disableRamsete) {
