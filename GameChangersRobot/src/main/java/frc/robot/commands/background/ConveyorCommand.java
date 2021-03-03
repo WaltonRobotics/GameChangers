@@ -66,7 +66,7 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                if (sConveyor.getBallCount() < kMaximumBallCapacity) {
+                if (sConveyor.getBallCount() < kMaximumBallCapacity - 1) {
                     sConveyor.setFrontDutyCycle(1.0);
                 } else {
                     sConveyor.setFrontDutyCycle(0.0);
@@ -127,7 +127,12 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sConveyor.setFrontVoltage(kNudgeVoltage);
+                if (sConveyor.getBallCount() < kMaximumBallCapacity - 1) {
+                    sConveyor.setFrontVoltage(kNudgeVoltage);
+                } else {
+                    sConveyor.setFrontVoltage(0.0);
+                }
+
                 sConveyor.setBackVoltage(kNudgeVoltage);
 
                 if (getFPGATimestamp() - mStartTime > kNudgeTime) {
