@@ -4,29 +4,32 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
+import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
 import java.util.function.BooleanSupplier;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
-import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
-import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
+import static frc.robot.Constants.Shooter.kFFMinTargetSamples;
+import static frc.robot.Constants.Shooter.kFFWindowSize;
 import static frc.robot.OI.sBarfButton;
 import static frc.robot.OI.sShootButton;
 import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
 
-    private double kToleranceRawUnits = 100;
+    private double kSpinUpToleranceRawUnits = 100;
     private double kSpinDownTime = 0.25;
 
     private double mSetpointRawUnits = 12500;
 
     private final IState mIdle;
     private final IState mSpinningUp;
+    private final IState mCalculatingFF;
     private final IState mShooting;
     private final IState mSpinningDown;
 
     private final StateMachine mStateMachine;
+    private final SimpleMovingAverage mFFEstimator;
 
     private final BooleanSupplier mNeedsToShoot = () -> (sShootButton.get());
     private final BooleanSupplier mNeedsToBarf = () -> (sBarfButton.get());
@@ -72,7 +75,7 @@ public class ShooterCommand extends CommandBase {
             public void initialize() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
-                sShooter.setProfileSlot(kShooterSpinningUpSlot);
+                sShooter.configureForSpinningUp();
             }
 
             @Override
@@ -80,10 +83,52 @@ public class ShooterCommand extends CommandBase {
                 sShooter.setClosedLoopVelocityRawUnits(mSetpointRawUnits);
 
                 if (!mNeedsToShoot.getAsBoolean() && !mNeedsToBarf.getAsBoolean()) {
-                    return mSpinningDown;
+                    return mIdle;
                 }
 
-                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) <= kToleranceRawUnits) {
+                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) <= kSpinUpToleranceRawUnits) {
+                    return mCalculatingFF;
+                }
+
+                return this;
+            }
+
+            @Override
+            public void finish() {
+
+            }
+
+            @Override
+            public String getName() {
+                return "Spinning Up";
+            }
+        };
+
+        mCalculatingFF = new IState() {
+            @Override
+            public void initialize() {
+                SubsystemFlags.getInstance().setIsReadyToShoot(false);
+
+                sShooter.configureForSpinningUp();
+
+                mFFEstimator.clear();
+            }
+
+            @Override
+            public IState execute() {
+                sShooter.setClosedLoopVelocityRawUnits(mSetpointRawUnits);
+
+                if (!mNeedsToShoot.getAsBoolean() && !mNeedsToBarf.getAsBoolean()) {
+                    return mIdle;
+                }
+
+                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) > kSpinUpToleranceRawUnits) {
+                    return mSpinningUp;
+                }
+
+                mFFEstimator.addData(sShooter.getEstimatedKf());
+
+                if (mFFEstimator.getNumValues() >= kFFMinTargetSamples) {
                     return mShooting;
                 }
 
@@ -97,7 +142,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public String getName() {
-                return "Spinning Up";
+                return "Calculating FF";
             }
         };
 
@@ -106,7 +151,7 @@ public class ShooterCommand extends CommandBase {
             public void initialize() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(true);
 
-                sShooter.setProfileSlot(kShooterShootingSlot);
+                sShooter.configureForOpenLoop(mFFEstimator.getMean());
             }
 
             @Override
@@ -115,10 +160,6 @@ public class ShooterCommand extends CommandBase {
 
                 if (!mNeedsToShoot.getAsBoolean() && !mNeedsToBarf.getAsBoolean()) {
                     return mSpinningDown;
-                }
-
-                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) > kToleranceRawUnits) {
-                    return mSpinningUp;
                 }
 
                 return this;
@@ -169,6 +210,7 @@ public class ShooterCommand extends CommandBase {
         };
 
         mStateMachine = new StateMachine("Shooter", mIdle);
+        mFFEstimator = new SimpleMovingAverage(kFFWindowSize);
     }
 
     @Override

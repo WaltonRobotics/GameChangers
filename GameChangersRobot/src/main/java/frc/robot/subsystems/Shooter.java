@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.CANBusIDs.kFlywheelMasterID;
 import static frc.robot.Constants.CANBusIDs.kFlywheelSlaveID;
-import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
+import static frc.robot.Constants.PIDSlots.kShooterOpenLoopSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
+import static frc.robot.Constants.Shooter.kVoltageSaturation;
 
 public class Shooter extends SubsystemBase {
 
@@ -37,16 +38,28 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.config_kI(kShooterSpinningUpSlot, 0);
         mFlywheelMaster.config_kD(kShooterSpinningUpSlot, 0);
 
-        mFlywheelMaster.config_kF(kShooterShootingSlot, 0.0498575917);
-        mFlywheelMaster.config_kP(kShooterShootingSlot, 0.23);
-        mFlywheelMaster.config_kI(kShooterShootingSlot, 0);
-        mFlywheelMaster.config_kD(kShooterShootingSlot, 0);
+        mFlywheelMaster.config_kF(kShooterOpenLoopSlot, 0.0498575917);
+        mFlywheelMaster.config_kP(kShooterOpenLoopSlot, 0);
+        mFlywheelMaster.config_kI(kShooterOpenLoopSlot, 0);
+        mFlywheelMaster.config_kD(kShooterOpenLoopSlot, 0);
+    }
 
-        // Voltage compensation
-        mFlywheelMaster.configVoltageCompSaturation(10);
-        mFlywheelMaster.enableVoltageCompensation(true);
-        mFlywheelSlave.configVoltageCompSaturation(10);
+    public void configureForSpinningUp() {
+        setProfileSlot(kShooterSpinningUpSlot);
+
+        mFlywheelMaster.enableVoltageCompensation(false);
         mFlywheelSlave.enableVoltageCompensation(false);
+    }
+
+    public void configureForOpenLoop(double kFF) {
+        setProfileSlot(kShooterOpenLoopSlot);
+
+        mFlywheelMaster.configVoltageCompSaturation(kVoltageSaturation);
+        mFlywheelMaster.enableVoltageCompensation(true);
+        mFlywheelSlave.configVoltageCompSaturation(kVoltageSaturation);
+        mFlywheelSlave.enableVoltageCompensation(false);
+
+        mFlywheelMaster.config_kF(kShooterOpenLoopSlot, kFF);
     }
 
     public void setProfileSlot(int profileSlot) {
@@ -62,11 +75,15 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getVelocityRawUnits() {
-        return mFlywheelMaster.getSensorCollection().getIntegratedSensorVelocity();
+        return mFlywheelMaster.getSelectedSensorVelocity();
     }
 
     public double getClosedLoopErrorRawUnits() {
         return mFlywheelMaster.getClosedLoopError();
+    }
+
+    public double getEstimatedKf() {
+        return ((mFlywheelMaster.getMotorOutputPercent() * 1023) / getVelocityRawUnits());
     }
 
     @Override

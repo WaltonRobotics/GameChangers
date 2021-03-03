@@ -4,10 +4,18 @@ public class ExponentialMovingAverage implements MovingAverage {
 
     private final double mAlpha;
     private Double mMostRecentValue;
+    private int mNumValues;
 
     public ExponentialMovingAverage(double alpha) {
         this.mAlpha = alpha;
-        this.mMostRecentValue = null;
+
+        clear();
+    }
+
+    @Override
+    public void clear() {
+        mMostRecentValue = null;
+        mNumValues = 0;
     }
 
     @Override
@@ -16,13 +24,19 @@ public class ExponentialMovingAverage implements MovingAverage {
             mMostRecentValue = num;
         }
 
-        double newValue = mMostRecentValue + mAlpha * (num - mMostRecentValue);
-        mMostRecentValue = newValue;
+        mMostRecentValue = mMostRecentValue + mAlpha * (num - mMostRecentValue);
+
+        mNumValues++;
     }
 
     @Override
     public double getMean() {
         return mMostRecentValue;
+    }
+
+    @Override
+    public int getNumValues() {
+        return mNumValues;
     }
 
 }

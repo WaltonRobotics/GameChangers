@@ -63,7 +63,15 @@ public final class Constants {
         public static final int kDrivetrainVelocitySlot = 1;
 
         public static final int kShooterSpinningUpSlot = 0;
-        public static final int kShooterShootingSlot = 1;
+        public static final int kShooterOpenLoopSlot = 1;
+
+    }
+
+    public static class Shooter {
+
+        public static final double kVoltageSaturation = 12;
+        public static final int kFFWindowSize = 20;
+        public static final int kFFMinTargetSamples = 20;
 
     }
 

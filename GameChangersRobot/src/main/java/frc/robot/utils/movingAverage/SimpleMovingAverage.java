@@ -9,10 +9,18 @@ public class SimpleMovingAverage implements MovingAverage {
     private final Queue<Double> mDataset = new LinkedList<Double>();
     private final int mPeriod;
     private double mSum;
+    private int mNumValues;
 
     // constructor to initialize period
     public SimpleMovingAverage(int period) {
         this.mPeriod = period;
+    }
+
+    @Override
+    public void clear() {
+        mDataset.clear();
+        mSum = 0;
+        mNumValues = 0;
     }
 
     // function to add new data in the
@@ -29,12 +37,19 @@ public class SimpleMovingAverage implements MovingAverage {
         if (mDataset.size() > mPeriod) {
             mSum -= mDataset.remove();
         }
+
+        mNumValues++;
     }
 
     // function to calculate mean
     @Override
     public double getMean() {
         return mSum / mPeriod;
+    }
+
+    @Override
+    public int getNumValues() {
+        return mNumValues;
     }
 
 }
