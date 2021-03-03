@@ -2,11 +2,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.CANBusIDs.kFlywheelMasterID;
-import static frc.robot.Constants.CANBusIDs.kFlywheelSlaveID;
+import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 
@@ -55,14 +55,16 @@ public class Shooter extends SubsystemBase {
 
     public void setOpenLoopDutyCycle(double targetDutyCycle) {
         mFlywheelMaster.set(ControlMode.PercentOutput, targetDutyCycle);
+        mFlywheelSlave.set(TalonFXControlMode.Follower, kFlywheelMasterID);
     }
 
     public void setClosedLoopVelocityRawUnits(double targetVelocity) {
         mFlywheelMaster.set(ControlMode.Velocity, targetVelocity);
+        mFlywheelSlave.set(TalonFXControlMode.Follower, kFlywheelMasterID);
     }
 
     public double getVelocityRawUnits() {
-        return mFlywheelMaster.getSensorCollection().getIntegratedSensorVelocity();
+        return mFlywheelMaster.getSelectedSensorVelocity();
     }
 
     public double getClosedLoopErrorRawUnits() {
