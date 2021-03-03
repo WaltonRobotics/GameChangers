@@ -14,6 +14,7 @@ import frc.robot.commands.teleop.DriveCommand;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.vision.LimelightHelper;
 
 import java.util.Arrays;
 
@@ -22,6 +23,7 @@ import static frc.robot.Constants.DioIDs.kRobotId2;
 import static frc.robot.Constants.SmartDashboardKeys.kLeftVelocityPKey;
 import static frc.robot.Constants.SmartDashboardKeys.kRightVelocityPKey;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
+import static frc.robot.vision.LimelightHelper.getCamtran;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -76,6 +78,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    SmartDashboard.putNumberArray("camtran", getCamtran());
   }
 
   /**

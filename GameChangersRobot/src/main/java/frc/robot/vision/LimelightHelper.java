@@ -12,19 +12,24 @@ import static frc.robot.Robot.sCurrentRobot;
 
 public class LimelightHelper {
 
-    private static final double FEET_OFFSET = 0.16;
+
     private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
     private static NetworkTableEntry tx = table.getEntry("tx");
     private static NetworkTableEntry ty = table.getEntry("ty");
     private static NetworkTableEntry ta = table.getEntry("ta");
     private static NetworkTableEntry tv = table.getEntry("tv");
     private static NetworkTableEntry ledMode = table.getEntry("ledMode");
     private static NetworkTableEntry pipeline = table.getEntry("pipeline");
+    private static NetworkTableEntry camtran = table.getEntry("camtran");
 
     private static double targetHeight = 89.69;
+    private static final double FEET_OFFSET = 0.16;
 
     private static MovingAverage linearFilter = new MovingAverage(5, 0);
     private static boolean limelightToggle = false;
+
+    private boolean limelightHasValidTarget;
 
     private LimelightHelper() {
     }
@@ -56,6 +61,10 @@ public class LimelightHelper {
      */
     public static double getTV() {
         return tv.getDouble(0);
+    }
+
+    public static double[] getCamtran() {
+        return camtran.getDoubleArray(new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
     }
 
     public static void setLedMode(boolean on) {
