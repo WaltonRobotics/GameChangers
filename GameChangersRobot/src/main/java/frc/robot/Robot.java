@@ -45,7 +45,6 @@ public class Robot extends TimedRobot {
     public static Shooter sShooter;
     public static Intake sIntake;
     public static Conveyor sConveyor;
-    public static RobotIdentifier sCurrentRobot;
     private static SendableChooser<AutonRoutine> mAutonChooser;
 
     /**
@@ -60,14 +59,18 @@ public class Robot extends TimedRobot {
         populateShuffleboard();
 
         sDrivetrain = new Drivetrain();
-        sShooter = new Shooter();
-        sIntake = new Intake();
-        sConveyor = new Conveyor();
-
         CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
-        CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
-        CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
-        CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
+
+        if(sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS || sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+            sShooter = new Shooter();
+            sIntake = new Intake();
+            sConveyor = new Conveyor();
+
+            CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
+            CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
+            CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
+        }
+
 
         mAutonChooser = new SendableChooser<>();
         Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));

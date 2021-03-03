@@ -43,7 +43,7 @@ public final class Constants {
 
     public static class DioIDs {
 
-        public static final int kPixyId =
+       // public static final int kPixyId =
         public static final int kRobotID1 = 8;
         public static final int kRobotID2 = 9;
 
