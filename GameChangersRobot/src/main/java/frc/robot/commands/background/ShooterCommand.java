@@ -37,8 +37,6 @@ public class ShooterCommand extends CommandBase {
         mIdle = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsReadyToShoot(false);
-
                 sShooter.setOpenLoopDutyCycle(0);
             }
 
@@ -70,8 +68,6 @@ public class ShooterCommand extends CommandBase {
         mSpinningUp = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsReadyToShoot(false);
-
                 sShooter.setProfileSlot(kShooterSpinningUpSlot);
             }
 
@@ -92,7 +88,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
-                SubsystemFlags.getInstance().setIsReadyToShoot(true);
+
             }
 
             @Override
@@ -126,7 +122,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
-
+                SubsystemFlags.getInstance().setIsReadyToShoot(false);
             }
 
             @Override
@@ -159,7 +155,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
-
+                SubsystemFlags.getInstance().setIsReadyToShoot(false);
             }
 
             @Override
