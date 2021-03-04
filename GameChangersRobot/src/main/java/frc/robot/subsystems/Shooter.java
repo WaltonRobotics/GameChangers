@@ -68,10 +68,12 @@ public class Shooter extends SubsystemBase {
 
     public void setOpenLoopDutyCycle(double targetDutyCycle) {
         mFlywheelMaster.set(ControlMode.PercentOutput, targetDutyCycle);
+        mFlywheelSlave.set(ControlMode.Follower, kFlywheelMasterID);
     }
 
     public void setClosedLoopVelocityRawUnits(double targetVelocity) {
         mFlywheelMaster.set(ControlMode.Velocity, targetVelocity);
+        mFlywheelSlave.set(ControlMode.Follower, kFlywheelMasterID);
     }
 
     public double getVelocityRawUnits() {

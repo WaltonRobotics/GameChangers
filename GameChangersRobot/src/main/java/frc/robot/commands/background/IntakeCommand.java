@@ -25,7 +25,7 @@ public class IntakeCommand extends CommandBase {
         mIdle = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsIntaking(false);
+
             }
 
             @Override
@@ -60,8 +60,6 @@ public class IntakeCommand extends CommandBase {
         mDeploy = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsIntaking(false);
-
                 sIntake.setDeployed(true);
             }
 
@@ -84,8 +82,6 @@ public class IntakeCommand extends CommandBase {
         mRetract = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsIntaking(false);
-
                 sIntake.setDeployed(false);
             }
 
@@ -125,7 +121,7 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public void finish() {
-
+                SubsystemFlags.getInstance().setIsIntaking(false);
             }
 
             @Override
@@ -137,7 +133,7 @@ public class IntakeCommand extends CommandBase {
         mOuttaking = new IState() {
             @Override
             public void initialize() {
-
+                SubsystemFlags.getInstance().setIsOuttaking(true);
             }
 
             @Override
@@ -153,7 +149,7 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public void finish() {
-
+                SubsystemFlags.getInstance().setIsOuttaking(false);
             }
 
             @Override
