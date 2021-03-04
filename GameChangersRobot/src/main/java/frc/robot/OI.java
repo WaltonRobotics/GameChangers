@@ -5,7 +5,6 @@ import frc.robot.utils.EnhancedJoystickButton;
 import frc.robot.utils.Gamepad;
 
 import static frc.robot.Constants.InputDevices.*;
-import static frc.robot.Robot.sDrivetrain;
 import static frc.robot.utils.EnhancedJoystickButton.POV_N;
 import static frc.robot.utils.EnhancedJoystickButton.POV_S;
 import static frc.robot.utils.Gamepad.Button.*;
@@ -14,18 +13,18 @@ public class OI {
 
     public static Joystick sLeftJoystick = new Joystick(kLeftJoystickPort);
     public static Joystick sRightJoystick = new Joystick(kRightJoystickPort);
-    public static Gamepad sGamePad = new Gamepad(kGamepadPort);
+    public static Gamepad sGamepad = new Gamepad(kGamepadPort);
 
     public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sRightJoystick, 3);
 
-    public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamePad, RIGHT_TRIGGER.getIndex());
-    public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamePad, RIGHT_BUMPER.getIndex());
+    public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamepad, RIGHT_TRIGGER.getIndex());
+    public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUMPER.getIndex());
 
-    public static EnhancedJoystickButton sRetractIntakeButton = new EnhancedJoystickButton(sGamePad, POV_N);
-    public static EnhancedJoystickButton sDeployIntakeButton = new EnhancedJoystickButton(sGamePad, POV_S);
-    public static EnhancedJoystickButton sIntakeButton = new EnhancedJoystickButton(sGamePad, LEFT_TRIGGER.getIndex());
-    public static EnhancedJoystickButton sOuttakeButton = new EnhancedJoystickButton(sGamePad, LEFT_BUMPER.getIndex());
-    public static EnhancedJoystickButton sOverrideFrontConveyorButton = new EnhancedJoystickButton(sGamePad, BACK_BUTTON.getIndex());
-    public static EnhancedJoystickButton sOverrideBackConveyorButton = new EnhancedJoystickButton(sGamePad, START_BUTTON.getIndex());
+    public static EnhancedJoystickButton sRetractIntakeButton = new EnhancedJoystickButton(sGamepad, POV_N);
+    public static EnhancedJoystickButton sDeployIntakeButton = new EnhancedJoystickButton(sGamepad, POV_S);
+    public static EnhancedJoystickButton sIntakeButton = new EnhancedJoystickButton(sGamepad, LEFT_TRIGGER.getIndex());
+    public static EnhancedJoystickButton sOuttakeButton = new EnhancedJoystickButton(sGamepad, LEFT_BUMPER.getIndex());
+    public static EnhancedJoystickButton sOverrideFrontConveyorButton = new EnhancedJoystickButton(sGamepad, BACK_BUTTON.getIndex());
+    public static EnhancedJoystickButton sOverrideBackConveyorButton = new EnhancedJoystickButton(sGamepad, START_BUTTON.getIndex());
 
 }

@@ -74,6 +74,14 @@ public final class Constants {
         public static final double kNudgeTime = 0.29;
         public static final double kNudgeVoltage = 8.0;
         public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
+        public static final int kFrontLoadingCapacity = 1;
+
+    }
+
+    public static class Shooter {
+
+        public static final double kMeasurementTuningMinDutyCycle = 0.4;
+        public static final double kMeasurementTuningMaxDutyCycle = 1.0;
 
     }
 
@@ -81,6 +89,9 @@ public final class Constants {
 
         public static final String kLeftVelocityPKey = "Drivetrain/Left Velocity P";
         public static final String kRightVelocityPKey = "Drivetrain/Right Velocity P";
+
+        public static final String kShooterMeasurementPeriodKey = "Shooter/Measurement Period";
+        public static final String kShooterMeasurementWindowKey = "Shooter/Measurement Window";
 
     }
 
