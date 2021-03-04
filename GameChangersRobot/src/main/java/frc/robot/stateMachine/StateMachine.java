@@ -2,6 +2,9 @@ package frc.robot.stateMachine;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.utils.DebuggingLog;
+
+import java.util.logging.Level;
 
 import static frc.robot.utils.UtilMethods.joinStrings;
 
@@ -32,7 +35,8 @@ public class StateMachine {
                 mCurrentState.initialize();
             }
         } else {
-            System.out.println("[ERROR]: State machine has effectively terminated due to a null state.");
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "State machine \"" + mName
+                    + "\" has effectively terminated due to a null state");
         }
     }
 

@@ -20,8 +20,10 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utils.DebuggingLog;
 
 import java.util.Arrays;
+import java.util.logging.Level;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DioIDs.kRobotID1;
@@ -53,7 +55,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         sCurrentRobot = RobotIdentifier.findByInputs(new DigitalInput(kRobotID1).get(), new DigitalInput(kRobotID2).get());
-        System.out.println("Current robot is " + sCurrentRobot.name());
+        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Current robot is " + sCurrentRobot.name());
 
         populateShuffleboard();
 
