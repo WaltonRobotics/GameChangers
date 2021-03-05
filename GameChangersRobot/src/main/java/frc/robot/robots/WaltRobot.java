@@ -23,4 +23,8 @@ public interface WaltRobot {
 
     double getTrackWidth();
 
+    double getLimelightMountingHeight();
+
+    double getLimelightMountingAngle();
+
 }

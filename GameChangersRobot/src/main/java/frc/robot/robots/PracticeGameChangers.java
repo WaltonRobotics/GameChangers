@@ -50,4 +50,14 @@ public class PracticeGameChangers implements WaltRobot {
     public double getTrackWidth() {
         return 0.6644190927877744;
     }
+
+    @Override
+    public double getLimelightMountingHeight() {
+        return 24;
+    }
+
+    @Override
+    public double getLimelightMountingAngle() {
+        return 35;
+    }
 }

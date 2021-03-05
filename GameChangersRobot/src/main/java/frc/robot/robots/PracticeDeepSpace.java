@@ -44,5 +44,15 @@ public class PracticeDeepSpace implements WaltRobot {
         return 0;
     }
 
+    @Override
+    public double getLimelightMountingHeight() {
+        return 0;
+    }
+
+    @Override
+    public double getLimelightMountingAngle() {
+        return 0;
+    }
+
 
 }

@@ -43,4 +43,14 @@ public class CompGameChangers implements WaltRobot {
     public double getTrackWidth() {
         return 0;
     }
+
+    @Override
+    public double getLimelightMountingHeight() {
+        return 0;
+    }
+
+    @Override
+    public double getLimelightMountingAngle() {
+        return 0;
+    }
 }

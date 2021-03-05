@@ -32,17 +32,18 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.setSensorPhase(true);
         mFlywheelSlave.setInverted(false);
         mFlywheelSlave.setSensorPhase(false);
+        mFlywheelSlave.follow(mFlywheelMaster);
 
 //        TODO: Check the following two settings by scheduling the JoystickShooterControl command
 //        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
 //        mFlywheelMaster.configVelocityMeasurementWindow(32);
 
-        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, 0.0498575917);
+        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, 0.04934694);
         mFlywheelMaster.config_kP(kShooterSpinningUpSlot, 0.23);
         mFlywheelMaster.config_kI(kShooterSpinningUpSlot, 0);
         mFlywheelMaster.config_kD(kShooterSpinningUpSlot, 0);
 
-        mFlywheelMaster.config_kF(kShooterShootingSlot, 0.0498575917);
+        mFlywheelMaster.config_kF(kShooterShootingSlot, 0.04934694);
         mFlywheelMaster.config_kP(kShooterShootingSlot, 0.23);
         mFlywheelMaster.config_kI(kShooterShootingSlot, 0);
         mFlywheelMaster.config_kD(kShooterShootingSlot, 0);
