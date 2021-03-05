@@ -12,6 +12,8 @@ import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
+import static frc.robot.Constants.Shooter.kFlywheelDiameter;
+import static frc.robot.Constants.Shooter.kFlywheelEncoderPPR;
 import static frc.robot.Constants.SmartDashboardKeys.kShooterMeasurementPeriodKey;
 import static frc.robot.Constants.SmartDashboardKeys.kShooterMeasurementWindowKey;
 
@@ -34,7 +36,7 @@ public class Shooter extends SubsystemBase {
         mFlywheelSlave.setSensorPhase(false);
         mFlywheelSlave.follow(mFlywheelMaster);
 
-//        TODO: Check the following two settings by scheduling the JoystickShooterControl command
+//        TODO: Check the following two settings by scheduling the ShooterMeasurementTuning command
 //        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
 //        mFlywheelMaster.configVelocityMeasurementWindow(32);
 
@@ -44,7 +46,7 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.config_kD(kShooterSpinningUpSlot, 0);
 
         mFlywheelMaster.config_kF(kShooterShootingSlot, 0.04934694);
-        mFlywheelMaster.config_kP(kShooterShootingSlot, 0.23);
+        mFlywheelMaster.config_kP(kShooterShootingSlot, 0.21);
         mFlywheelMaster.config_kI(kShooterShootingSlot, 0);
         mFlywheelMaster.config_kD(kShooterShootingSlot, 0);
 
@@ -75,6 +77,14 @@ public class Shooter extends SubsystemBase {
 
     public double getClosedLoopErrorRawUnits() {
         return mFlywheelMaster.getClosedLoopError();
+    }
+
+    public double getClosedLoopErrorRevolutionsPerSec() {
+        return getClosedLoopErrorRawUnits() / kFlywheelEncoderPPR * 10.;
+    }
+
+    public double getClosedLoopErrorInchesPerSec() {
+        return getClosedLoopErrorRevolutionsPerSec() * kFlywheelDiameter;
     }
 
     @Override

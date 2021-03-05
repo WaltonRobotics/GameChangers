@@ -10,14 +10,12 @@ import java.util.function.BooleanSupplier;
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
+import static frc.robot.Constants.Shooter.*;
 import static frc.robot.OI.sBarfButton;
 import static frc.robot.OI.sShootButton;
 import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
-
-    private double kToleranceRawUnits = 100;
-    private double kSpinDownTime = 0.25;
 
     private double mSetpointRawUnits = 12500;
 
@@ -79,7 +77,7 @@ public class ShooterCommand extends CommandBase {
                     return mSpinningDown;
                 }
 
-                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) <= kToleranceRawUnits) {
+                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) <= kSpinningUpToleranceRawUnits) {
                     return mShooting;
                 }
 
@@ -113,7 +111,7 @@ public class ShooterCommand extends CommandBase {
                     return mSpinningDown;
                 }
 
-                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) > kToleranceRawUnits) {
+                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) > kShootingToleranceRawUnits) {
                     return mSpinningUp;
                 }
 

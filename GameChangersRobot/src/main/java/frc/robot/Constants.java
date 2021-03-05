@@ -83,6 +83,14 @@ public final class Constants {
         public static final double kMeasurementTuningMinDutyCycle = 0.4;
         public static final double kMeasurementTuningMaxDutyCycle = 1.0;
 
+        public static final double kSpinningUpToleranceRawUnits = 75;
+        public static final double kShootingToleranceRawUnits = 150;
+
+        public static final double kSpinDownTime = 0.25;
+
+        public static final int kFlywheelEncoderPPR = 2048;
+        public static final double kFlywheelDiameter = 4.0;
+
     }
 
     public static class FieldConstants {
@@ -99,7 +107,6 @@ public final class Constants {
 
         public static final String kShooterMeasurementPeriodKey = "Shooter/Measurement Period";
         public static final String kShooterMeasurementWindowKey = "Shooter/Measurement Window";
-
     }
 
     public static class LiveDashboardKeys {
