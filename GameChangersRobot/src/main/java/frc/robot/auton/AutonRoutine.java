@@ -41,24 +41,24 @@ public enum AutonRoutine {
             new RamseteTrackingCommand(sBlueB, true, false))
     );
 
-    String name;
-    CommandBase commandGroup;
+    String mDescription;
+    CommandBase mCommandGroup;
 
-    AutonRoutine(String name, CommandBase commandGroup) {
-        this.name = name;
-        this.commandGroup = commandGroup;
+    AutonRoutine(String description, CommandBase commandGroup) {
+        this.mDescription = description;
+        this.mCommandGroup = commandGroup;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return mDescription;
     }
 
     public CommandBase getCommandGroup() {
-        return commandGroup;
+        return mCommandGroup;
     }
 
     @Override
     public String toString() {
-        return name;
+        return name() + ": " + mDescription;
     }
 }

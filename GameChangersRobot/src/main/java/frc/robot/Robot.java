@@ -59,19 +59,26 @@ public class Robot extends TimedRobot {
         populateShuffleboard();
 
         sDrivetrain = new Drivetrain();
-        sShooter = new Shooter();
-        sIntake = new Intake();
-        sConveyor = new Conveyor();
-
         CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
-        CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
-        CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
-        CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
 
-        mAutonChooser = new SendableChooser<>();
-        Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));
-        mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
-        SmartDashboard.putData("Auton Selector", mAutonChooser);
+        // Only instantiate subsystems/autons which require them for Infinite Recharge/Game Changers robots
+        // to maintain backwards compatibility with DeepSpace
+        if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS
+                || sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+            sShooter = new Shooter();
+            CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
+
+            sIntake = new Intake();
+            CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
+
+            sConveyor = new Conveyor();
+            CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
+
+            mAutonChooser = new SendableChooser<>();
+            Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));
+            mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
+            SmartDashboard.putData("Auton Selector", mAutonChooser);
+        }
     }
 
     private void populateShuffleboard() {
@@ -116,7 +123,12 @@ public class Robot extends TimedRobot {
 
         AutonFlags.getInstance().setIsInAuton(true);
 
-        mAutonChooser.getSelected().getCommandGroup().schedule();
+        // Auton routines do not work with DeepSpace robots due to subsystem requirements
+        if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS
+                || sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+
+            mAutonChooser.getSelected().getCommandGroup().schedule();
+        }
     }
 
     /**
