@@ -87,7 +87,7 @@ public final class Constants {
 
     public static class FieldConstants {
 
-        public static final double kTargetHeightFeet = 89.69;
+        public static final double kTargetHeightInches = 89.75;
         public static final double kTargetFrontOffsetFeet = 0.16;
 
     }

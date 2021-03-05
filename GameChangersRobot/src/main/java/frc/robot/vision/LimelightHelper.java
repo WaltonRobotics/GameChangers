@@ -3,10 +3,10 @@ package frc.robot.vision;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
+import static frc.robot.Constants.FieldConstants.kTargetHeightInches;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class LimelightHelper {
@@ -23,7 +23,6 @@ public class LimelightHelper {
     private static NetworkTableEntry pipeline = table.getEntry("pipeline");
     private static NetworkTableEntry camtran = table.getEntry("camtran");
 
-    private static final double kTargetHeight = 89.69;
     private static final SimpleMovingAverage mTYMovingAverage = new SimpleMovingAverage(5);
 
     private LimelightHelper() {
@@ -83,7 +82,7 @@ public class LimelightHelper {
     }
 
     public static double getDistanceFeet() {
-        return ((kTargetHeight - sCurrentRobot.getCurrentRobot().getLimelightMountingHeight()) /
+        return ((kTargetHeightInches - sCurrentRobot.getCurrentRobot().getLimelightMountingHeight()) /
                 (Math.tan(Units.degreesToRadians(sCurrentRobot.getCurrentRobot().getLimelightMountingAngle() + getTY()))))
                 / 12;
     }
