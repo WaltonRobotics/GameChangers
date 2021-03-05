@@ -80,16 +80,29 @@ public final class Constants {
 
     public static class Shooter {
 
+        // The range of output duty cycles the shooter will typically be operating within
+        // Used to tune the measurement period and window
         public static final double kMeasurementTuningMinDutyCycle = 0.4;
         public static final double kMeasurementTuningMaxDutyCycle = 1.0;
 
+        // The tolerance to exit the spinning up state and enter the shooting state
         public static final double kSpinningUpToleranceRawUnits = 75;
+        // The tolerance to maintain the shooting state
         public static final double kShootingToleranceRawUnits = 150;
 
+        // Short period of time after the shoot button is released where the flywheels
+        // continue rotating to ensure last few shots don't go amiss
         public static final double kSpinDownTime = 0.25;
 
         public static final int kFlywheelEncoderPPR = 2048;
         public static final double kFlywheelDiameter = 4.0;
+
+    }
+
+    public static class ProMiniConstants {
+
+        // Tolerance of duty cycles read from DIO pins
+        public static final double kDutyCycleTolerance = 0.1;
 
     }
 

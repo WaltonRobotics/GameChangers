@@ -126,6 +126,8 @@ public class Robot extends TimedRobot {
         // Auton routines do not work with DeepSpace robots due to subsystem requirements
         if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS
                 || sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+            DebuggingLog.getInstance().getLogger().log(Level.INFO, "Selected autonomous description: "
+                    + mAutonChooser.getSelected().getDescription());
 
             mAutonChooser.getSelected().getCommandGroup().schedule();
         }

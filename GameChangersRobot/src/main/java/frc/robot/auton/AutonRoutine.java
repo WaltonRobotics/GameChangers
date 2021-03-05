@@ -41,8 +41,8 @@ public enum AutonRoutine {
             new RamseteTrackingCommand(sBlueB, true, false))
     );
 
-    String mDescription;
-    CommandBase mCommandGroup;
+    private final String mDescription;
+    private final CommandBase mCommandGroup;
 
     AutonRoutine(String description, CommandBase commandGroup) {
         this.mDescription = description;
