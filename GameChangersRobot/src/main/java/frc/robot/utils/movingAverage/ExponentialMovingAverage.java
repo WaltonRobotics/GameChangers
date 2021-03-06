@@ -16,8 +16,7 @@ public class ExponentialMovingAverage implements MovingAverage {
             mMostRecentValue = num;
         }
 
-        double newValue = mMostRecentValue + mAlpha * (num - mMostRecentValue);
-        mMostRecentValue = newValue;
+        mMostRecentValue = mMostRecentValue + mAlpha * (num - mMostRecentValue);
     }
 
     @Override
