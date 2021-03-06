@@ -31,12 +31,17 @@ public class LimelightHelper {
 
     private LimelightHelper() {
         // Update moving averages when tx and ty change
+        // Only average in values when we see the target
         mTx.addListener(event -> {
-            mTxMovingAverage.addData(event.value.getDouble());
+            if (getTV() > 0) {
+                mTxMovingAverage.addData(event.value.getDouble());
+            }
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
         mTy.addListener(event -> {
-            mTyMovingAverage.addData(event.value.getDouble());
+            if (getTV() > 0) {
+                mTyMovingAverage.addData(event.value.getDouble());
+            }
         }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
