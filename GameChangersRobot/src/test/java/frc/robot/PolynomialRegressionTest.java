@@ -26,6 +26,7 @@ public class PolynomialRegressionTest {
         PolynomialRegression polynomial = new PolynomialRegression(xy, 2);
 
         System.out.println(polynomial);
+        System.out.println(polynomial.predict(9.5));
 
         Assert.assertTrue(polynomial.getR2() > 0.8);
     }

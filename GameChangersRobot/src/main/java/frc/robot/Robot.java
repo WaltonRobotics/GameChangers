@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DioIDs.kRobotID1;
 import static frc.robot.Constants.DioIDs.kRobotID2;
+import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
 
@@ -85,6 +86,7 @@ public class Robot extends TimedRobot {
             SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
             SmartDashboard.putNumber(kShooterMeasurementPeriodKey, 1);
             SmartDashboard.putNumber(kShooterMeasurementWindowKey, 1);
+            SmartDashboard.putNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
         }
     }
 

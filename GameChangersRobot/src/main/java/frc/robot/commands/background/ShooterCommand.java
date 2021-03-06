@@ -1,16 +1,21 @@
 package frc.robot.commands.background;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
+import frc.robot.utils.DebuggingLog;
 
 import java.util.function.BooleanSupplier;
+import java.util.logging.Level;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.SmartDashboardKeys.kShooterTuningSetpointRawUnitsKey;
 import static frc.robot.OI.sBarfButton;
 import static frc.robot.OI.sShootButton;
 import static frc.robot.Robot.sShooter;
@@ -43,6 +48,12 @@ public class ShooterCommand extends CommandBase {
                 sShooter.setOpenLoopDutyCycle(0);
 
                 if (mNeedsToShoot.getAsBoolean()) {
+                    if (kIsInTuningMode) {
+                        mSetpointRawUnits = SmartDashboard.getNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
+                    } else {
+                        mSetpointRawUnits = sShooter.getEstimatedVelocityFromTarget();
+                    }
+
                     return mSpinningUp;
                 }
 
@@ -66,6 +77,8 @@ public class ShooterCommand extends CommandBase {
         mSpinningUp = new IState() {
             @Override
             public void initialize() {
+                DebuggingLog.getInstance().getLogger().log(Level.FINE, String.valueOf(mSetpointRawUnits));
+
                 sShooter.setProfileSlot(kShooterSpinningUpSlot);
             }
 

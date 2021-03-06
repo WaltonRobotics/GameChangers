@@ -35,13 +35,7 @@ public class PolynomialRegression {
         // create a solver that allows elements to be added or removed efficiently
         this.mSolver = LinearSolverFactory_DDRM.adjustable();
 
-        double[] x = new double[xy.length];
-        double[] y = new double[xy.length];
-        for (int i = 0; i < xy.length; ++i) {
-            x[i] = xy[i][0];
-            y[i] = xy[i][1];
-        }
-        fit(x, y);
+        fit(xy);
     }
 
     public PolynomialRegression(double[] x, double[] y, int degree) {
@@ -63,6 +57,21 @@ public class PolynomialRegression {
      */
     public double[] getCoef() {
         return mCoef.data;
+    }
+
+    /**
+     * Computes the best fit set of polynomial coefficients to the provided observations.
+     *
+     * @param xy a two-dimensional table of x and y values
+     */
+    public void fit(double[][] xy) {
+        double[] x = new double[xy.length];
+        double[] y = new double[xy.length];
+        for (int i = 0; i < xy.length; ++i) {
+            x[i] = xy[i][0];
+            y[i] = xy[i][1];
+        }
+        fit(x, y);
     }
 
     /**
@@ -97,6 +106,21 @@ public class PolynomialRegression {
 
         // solver the the coefficients
         mSolver.solve(mY, mCoef);
+    }
+
+    /**
+     * Returns the expected response {@code y} given the value of the predictor variable {@code x}.
+     *
+     * @param x
+     *            the value of the predictor variable
+     * @return the expected response {@code y} given the value of the predictor variable {@code x}
+     */
+    public double predict(double x) {
+        // horner's method
+        double y = 0.0;
+        for (int j = mDegree; j >= 0; j--)
+            y = getCoef()[j] + (x * y);
+        return y;
     }
 
     /**

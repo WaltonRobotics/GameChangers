@@ -95,6 +95,19 @@ public final class Constants {
         public static final int kFlywheelEncoderPPR = 2048;
         public static final double kFlywheelDiameter = 4.0;
 
+        public static final double kDefaultShootingDistanceFeet = 11.2;
+        public static final double kDefaultVelocityRawUnits = 13000;
+
+        // Change to false to use polynomial interpolation instead
+        public static final boolean kUseInterpolationMap = true;
+
+        public static final double kOptimalShootingDistance = 11;
+        public static final double kOptimalShootingDistanceFloor = 10.2;
+        public static final double kOptimalShootingDistanceCeiling = 12.0;
+
+        public static final double kAbsoluteShootingDistanceFloor = 10.03;
+        public static final double kAbsoluteShootingDistanceCeiling = 23.2;
+
     }
 
     public static final class Tuning {
@@ -143,6 +156,8 @@ public final class Constants {
         public static final String kShooterErrorRPSKey = "Shooter/Error RPS";
         public static final String kShooterErrorInchesKey = "Shooter/Error Inches Per Sec";
         public static final String kShooterFlywheelVelocityKey = "Shooter/Flywheel Velocity Raw Units";
+        public static final String kShooterTuningSetpointRawUnitsKey = "Shooter/Tuning Setpoint Raw Units";
+        public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
 
         public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";

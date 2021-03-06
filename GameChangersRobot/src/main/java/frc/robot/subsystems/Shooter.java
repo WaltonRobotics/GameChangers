@@ -7,14 +7,18 @@ import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.UtilMethods;
+import frc.robot.utils.interpolation.InterpolatingDouble;
+import frc.robot.utils.interpolation.InterpolatingTreeMap;
+import frc.robot.vision.LimelightHelper;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
-import static frc.robot.Constants.Shooter.kFlywheelDiameter;
-import static frc.robot.Constants.Shooter.kFlywheelEncoderPPR;
+import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.SmartDashboardKeys.*;
+import static frc.robot.Robot.sCurrentRobot;
 
 public class Shooter extends SubsystemBase {
 
@@ -86,6 +90,31 @@ public class Shooter extends SubsystemBase {
         return getClosedLoopErrorRevolutionsPerSec() * kFlywheelDiameter;
     }
 
+    public double getEstimatedVelocityFromTarget() {
+        // If the limelight does not see a target, we use the last known "ty" value since
+        // LimelightHelper uses a MovingAverage to keep track of it at all times
+
+        double distanceFeet = LimelightHelper.getDistanceToTargetFeet();
+
+        distanceFeet = UtilMethods.limitRange(distanceFeet, kAbsoluteShootingDistanceFloor,
+                kAbsoluteShootingDistanceCeiling);
+
+        if (kUseInterpolationMap) {
+            InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> map
+                    = sCurrentRobot.getCurrentRobot().getShooterMap();
+
+            InterpolatingDouble result = map.getInterpolated(new InterpolatingDouble(distanceFeet));
+
+            if (result != null) {
+                return result.value;
+            } else {
+                return map.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
+            }
+        } else {
+            return sCurrentRobot.getCurrentRobot().getShooterPolynomial().predict(distanceFeet);
+        }
+    }
+
     @Override
     public void periodic() {
         if (kIsInTuningMode) {
@@ -99,6 +128,7 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber(kShooterErrorRawUnitsKey, getClosedLoopErrorRawUnits());
         SmartDashboard.putNumber(kShooterErrorRPSKey, getClosedLoopErrorRevolutionsPerSec());
         SmartDashboard.putNumber(kShooterErrorInchesKey, getClosedLoopErrorInchesPerSec());
+        SmartDashboard.putNumber(kShooterLimelightDistanceFeetKey, LimelightHelper.getDistanceToTargetFeet());
     }
 
 }
