@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
@@ -13,6 +14,7 @@ import static frc.robot.Constants.Conveyor.kFrontLoadingCapacity;
 import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
 import static frc.robot.Constants.DioIDs.kConveyorBackSensorID;
 import static frc.robot.Constants.DioIDs.kConveyorFrontSensorID;
+import static frc.robot.Constants.SmartDashboardKeys.*;
 
 public class Conveyor extends SubsystemBase {
 
@@ -65,6 +67,10 @@ public class Conveyor extends SubsystemBase {
         }
 
         mBallCount = Math.max(mBallCount, 0);
+
+        SmartDashboard.putBoolean(kConveyorFrontSensorStateKey, mFrontConveyorBool.get());
+        SmartDashboard.putBoolean(kConveyorBackSensorStateKey, mBackConveyorBool.get());
+        SmartDashboard.putNumber(kConveyorBallCountKey, mBallCount);
     }
 
     public void resetBallCount() {

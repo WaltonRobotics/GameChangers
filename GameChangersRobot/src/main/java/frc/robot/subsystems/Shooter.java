@@ -14,8 +14,7 @@ import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 import static frc.robot.Constants.Shooter.kFlywheelDiameter;
 import static frc.robot.Constants.Shooter.kFlywheelEncoderPPR;
-import static frc.robot.Constants.SmartDashboardKeys.kShooterMeasurementPeriodKey;
-import static frc.robot.Constants.SmartDashboardKeys.kShooterMeasurementWindowKey;
+import static frc.robot.Constants.SmartDashboardKeys.*;
 
 public class Shooter extends SubsystemBase {
 
@@ -95,6 +94,11 @@ public class Shooter extends SubsystemBase {
             mFlywheelMaster.configVelocityMeasurementWindow(
                     (int)SmartDashboard.getNumber(kShooterMeasurementWindowKey, 1));
         }
+
+        SmartDashboard.putNumber(kShooterFlywheelVelocityKey, getVelocityRawUnits());
+        SmartDashboard.putNumber(kShooterErrorRawUnitsKey, getClosedLoopErrorRawUnits());
+        SmartDashboard.putNumber(kShooterErrorRPSKey, getClosedLoopErrorRevolutionsPerSec());
+        SmartDashboard.putNumber(kShooterErrorInchesKey, getClosedLoopErrorInchesPerSec());
     }
 
 }

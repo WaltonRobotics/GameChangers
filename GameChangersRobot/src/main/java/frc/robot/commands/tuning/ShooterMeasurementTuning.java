@@ -6,8 +6,8 @@ import frc.robot.utils.UtilMethods;
 
 import java.util.logging.Level;
 
-import static frc.robot.Constants.Shooter.kMeasurementTuningMaxDutyCycle;
-import static frc.robot.Constants.Shooter.kMeasurementTuningMinDutyCycle;
+import static frc.robot.Constants.Tuning.kShooterMeasurementTuningMaxDutyCycle;
+import static frc.robot.Constants.Tuning.kShooterMeasurementTuningMinDutyCycle;
 import static frc.robot.OI.sGamepad;
 import static frc.robot.Robot.sShooter;
 
@@ -46,7 +46,7 @@ public class ShooterMeasurementTuning extends CommandBase {
         double dutyCycle = UtilMethods.scaleRange(
                 sGamepad.getRightX(),
                 -1, 1,
-                kMeasurementTuningMinDutyCycle, kMeasurementTuningMaxDutyCycle
+                kShooterMeasurementTuningMinDutyCycle, kShooterMeasurementTuningMaxDutyCycle
         );
 
         sShooter.setOpenLoopDutyCycle(dutyCycle);

@@ -83,11 +83,6 @@ public final class Constants {
 
     public static class Shooter {
 
-        // The range of output duty cycles the shooter will typically be operating within
-        // Used to tune the measurement period and window
-        public static final double kMeasurementTuningMinDutyCycle = 0.4;
-        public static final double kMeasurementTuningMaxDutyCycle = 1.0;
-
         // The tolerance to exit the spinning up state and enter the shooting state
         public static final double kSpinningUpToleranceRawUnits = 75;
         // The tolerance to maintain the shooting state
@@ -99,6 +94,17 @@ public final class Constants {
 
         public static final int kFlywheelEncoderPPR = 2048;
         public static final double kFlywheelDiameter = 4.0;
+
+    }
+
+    public static final class Tuning {
+
+        // The range of output duty cycles the shooter will typically be operating within
+        // Used to tune the measurement period and window
+        public static final double kShooterMeasurementTuningMinDutyCycle = 0.4;
+        public static final double kShooterMeasurementTuningMaxDutyCycle = 1.0;
+
+        public static final int kDrivetrainAccelerationWindow = 8;
 
     }
 
@@ -133,6 +139,14 @@ public final class Constants {
 
         public static final String kShooterMeasurementPeriodKey = "Shooter/Measurement Period";
         public static final String kShooterMeasurementWindowKey = "Shooter/Measurement Window";
+        public static final String kShooterErrorRawUnitsKey = "Shooter/Error Raw Units";
+        public static final String kShooterErrorRPSKey = "Shooter/Error RPS";
+        public static final String kShooterErrorInchesKey = "Shooter/Error Inches Per Sec";
+        public static final String kShooterFlywheelVelocityKey = "Shooter/Flywheel Velocity Raw Units";
+
+        public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
+        public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
+        public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
     }
 
     public static class LiveDashboardKeys {
