@@ -26,11 +26,23 @@ public class LimelightHelper {
     private static final NetworkTableEntry mCamMode = mTable.getEntry("camMode");
     private static final NetworkTableEntry mPipeline = mTable.getEntry("pipeline");
 
-    private static final SimpleMovingAverage mTxMovingAverage = new SimpleMovingAverage(1);
+    private static final SimpleMovingAverage mTxMovingAverage = new SimpleMovingAverage(5);
     private static final SimpleMovingAverage mTyMovingAverage = new SimpleMovingAverage(5);
 
     private LimelightHelper() {
-
+        // Update moving averages when tx and ty change
+        // Only average in values when we see the target
+//        mTx.addListener(event -> {
+//            if (getTV() > 0) {
+//                mTxMovingAverage.addData(event.value.getDouble());
+//            }
+//        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+//
+//        mTy.addListener(event -> {
+//            if (getTV() > 0) {
+//                mTyMovingAverage.addData(event.value.getDouble());
+//            }
+//        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
     public static void updateData() {

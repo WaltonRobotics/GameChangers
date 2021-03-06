@@ -27,11 +27,11 @@ public class StateMachine {
 
     public void run() {
         if (mCurrentState.getName() == null) {
-            DebuggingLog.getInstance().getLogger().log(Level.WARNING, mCurrentState.getName() + " state has a null name!");
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    mCurrentState.getName() + " state has a null name!");
         } else {
             SmartDashboard.putString(joinStrings(" ", mName, "Current State"), mCurrentState.getName());
         }
-
 
         IState nextState = mCurrentState.execute();
 

@@ -96,17 +96,17 @@ public final class Constants {
         public static final double kFlywheelDiameter = 4.0;
 
         public static final double kDefaultShootingDistanceFeet = 11.2;
-        public static final double kDefaultVelocityRawUnits = 13000;
+        public static final double kDefaultVelocityRawUnits = 11500;
 
         // Change to false to use polynomial interpolation instead
         public static final boolean kUseInterpolationMap = true;
 
         public static final double kOptimalShootingDistance = 11;
-        public static final double kOptimalShootingDistanceFloor = 10.2;
-        public static final double kOptimalShootingDistanceCeiling = 12.0;
+        public static final double kOptimalShootingDistanceFloor = 10;
+        public static final double kOptimalShootingDistanceCeiling = 12;
 
-        public static final double kAbsoluteShootingDistanceFloor = 8.8;
-        public static final double kAbsoluteShootingDistanceCeiling = 23.2;
+        public static final double kAbsoluteShootingDistanceFloor = 8.61;
+        public static final double kAbsoluteShootingDistanceCeiling = 22.38;
 
     }
 
