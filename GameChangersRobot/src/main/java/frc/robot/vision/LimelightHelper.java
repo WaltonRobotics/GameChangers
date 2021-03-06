@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
 import static frc.robot.Constants.FieldConstants.kTargetHeightInches;
-import static frc.robot.Constants.LimelightConstants.kLEDsOff;
-import static frc.robot.Constants.LimelightConstants.kLEDsOn;
+import static frc.robot.Constants.LimelightConstants.*;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class LimelightHelper {
@@ -24,6 +23,7 @@ public class LimelightHelper {
     private static final NetworkTableEntry mTv = mTable.getEntry("tv");
     private static final NetworkTableEntry mCamtran = mTable.getEntry("camtran");
     private static final NetworkTableEntry mLedMode = mTable.getEntry("ledMode");
+    private static final NetworkTableEntry mCamMode = mTable.getEntry("camMode");
     private static final NetworkTableEntry mPipeline = mTable.getEntry("pipeline");
 
     private static final SimpleMovingAverage mTxMovingAverage = new SimpleMovingAverage(1);
@@ -81,6 +81,18 @@ public class LimelightHelper {
             mLedMode.setNumber(kLEDsOn);
         } else {
             mLedMode.setNumber(kLEDsOff);
+        }
+    }
+
+    public static int getCamMode() {
+        return mCamMode.getNumber(0).intValue();
+    }
+
+    public static void setCamMode(boolean isVisionProcessing) {
+        if (isVisionProcessing) {
+            mCamMode.setNumber(kVisionMode);
+        } else {
+            mCamMode.setNumber(kDriverMode);
         }
     }
 
