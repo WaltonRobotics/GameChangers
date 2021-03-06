@@ -206,4 +206,9 @@ public class ConveyorCommand extends CommandBase {
         mStateMachine.run();
     }
 
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
 }

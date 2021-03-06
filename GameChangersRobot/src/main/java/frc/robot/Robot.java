@@ -11,15 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
-import frc.robot.commands.background.ConveyorCommand;
-import frc.robot.commands.background.DriveCommand;
-import frc.robot.commands.background.IntakeCommand;
-import frc.robot.commands.background.ShooterCommand;
+import frc.robot.commands.background.*;
 import frc.robot.robots.RobotIdentifier;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
 
 import java.util.Arrays;
@@ -44,6 +38,7 @@ public class Robot extends TimedRobot {
     public static Shooter sShooter;
     public static Intake sIntake;
     public static Conveyor sConveyor;
+    public static ProMini sProMini;
 
     private static SendableChooser<AutonRoutine> mAutonChooser;
 
@@ -73,6 +68,9 @@ public class Robot extends TimedRobot {
 
             sConveyor = new Conveyor();
             CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
+
+            sProMini = new ProMini();
+            CommandScheduler.getInstance().setDefaultCommand(sProMini, new ProMiniCommand());
 
             mAutonChooser = new SendableChooser<>();
             Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));

@@ -169,4 +169,10 @@ public class ShooterCommand extends CommandBase {
     public void execute() {
         mStateMachine.run();
     }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
 }

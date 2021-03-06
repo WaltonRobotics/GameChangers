@@ -1,15 +1,27 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.DutyCycle;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
 
 import java.util.logging.Level;
 
-import static frc.robot.Constants.ProMiniConstants.kDutyCycleTolerance;
+import static frc.robot.Constants.DioIDs.kLEDStripWriteLineID;
+import static frc.robot.Constants.DioIDs.kPixyCamReadLineID;
+import static frc.robot.Constants.ProMini.kDutyCycleTolerance;
 
-public class ProMini {
+public class ProMini extends SubsystemBase {
 
-    public enum PixyCamReadLineStates {
+    private final DigitalInput mPixyCamReadLine = new DigitalInput(kPixyCamReadLineID);
+    private final DutyCycle mPixyCamReadLineDutyCycle = new DutyCycle(mPixyCamReadLine);
+
+    private final DigitalOutput mLEDStripWriteLine = new DigitalOutput(kLEDStripWriteLineID);
+    private final DutyCycle mLEDStripWriteLineDutyCycle = new DutyCycle(mLEDStripWriteLine);
+
+    public enum PixyCamReadLineState {
         NO_DETERMINATION(0.0),
         GALACTIC_SEARCH_RED_A(0.25),
         GALACTIC_SEARCH_RED_B(0.5),
@@ -18,11 +30,11 @@ public class ProMini {
 
         private final double mDutyCycle;
 
-        PixyCamReadLineStates(double dutyCycle) {
+        PixyCamReadLineState(double dutyCycle) {
             this.mDutyCycle = dutyCycle;
         }
 
-        public static PixyCamReadLineStates findByDutyCycle(double dutyCycle) {
+        public static PixyCamReadLineState findByDutyCycle(double dutyCycle) {
             double interval = values()[1].getDutyCycle() - values()[0].getDutyCycle();
 
             if (kDutyCycleTolerance >= interval / 2) {
@@ -30,7 +42,7 @@ public class ProMini {
                         "Duty cycle tolerance on PixyCam digital read line results in overlapping intervals");
             }
 
-            for (PixyCamReadLineStates state : values()) {
+            for (PixyCamReadLineState state : values()) {
                 if (UtilMethods.isWithinTolerance(dutyCycle, state.getDutyCycle(), 0.5)) {
                     return state;
                 }
@@ -44,7 +56,7 @@ public class ProMini {
         }
     }
 
-    public enum LEDStripWriteLineStates {
+    public enum LEDStripWriteLineState {
         IDLE(0.0),
         TURN_LEFT(0.2),
         TURN_RIGHT(0.4),
@@ -54,13 +66,25 @@ public class ProMini {
 
         private final double mDutyCycle;
 
-        LEDStripWriteLineStates(double dutyCycle) {
+        LEDStripWriteLineState(double dutyCycle) {
             this.mDutyCycle = dutyCycle;
         }
 
         public double getDutyCycle() {
             return mDutyCycle;
         }
+    }
+
+    public ProMini() {
+        mLEDStripWriteLine.enablePWM(0.0);
+    }
+
+    public void setLEDStripState(LEDStripWriteLineState state) {
+        mLEDStripWriteLine.updateDutyCycle(state.getDutyCycle());
+    }
+
+    public PixyCamReadLineState getPixyCamState() {
+        return PixyCamReadLineState.findByDutyCycle(mPixyCamReadLineDutyCycle.getOutput());
     }
 
 }

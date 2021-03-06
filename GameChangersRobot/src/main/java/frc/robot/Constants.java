@@ -43,11 +43,14 @@ public final class Constants {
 
     public static class DioIDs {
 
-        public static final int kRobotID1 = 8;
-        public static final int kRobotID2 = 9;
-
         public static final int kConveyorFrontSensorID = 4;
         public static final int kConveyorBackSensorID = 5;
+
+        public static final int kPixyCamReadLineID = 6;
+        public static final int kLEDStripWriteLineID = 7;
+
+        public static final int kRobotID1 = 8;
+        public static final int kRobotID2 = 9;
 
     }
 
@@ -99,10 +102,20 @@ public final class Constants {
 
     }
 
-    public static class ProMiniConstants {
+    public static class ProMini {
 
         // Tolerance of duty cycles read from DIO pins
         public static final double kDutyCycleTolerance = 0.1;
+
+    }
+
+    public static class LimelightConstants {
+
+        public static final int kLEDsOff = 1;
+        public static final int kLEDsOn = 3;
+
+        public static final int kVisionMode = 0;
+        public static final int kDriverMode = 1;
 
     }
 
