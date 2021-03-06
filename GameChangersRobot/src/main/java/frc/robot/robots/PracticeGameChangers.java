@@ -15,15 +15,13 @@ public class PracticeGameChangers implements WaltRobot {
     private final PIDController mDrivetrainRightVelocityPID = new PIDController(0.197, 0, 0);
 
     private final double[][] mDistanceToVelocityTable = {
-            { 10.03, 12650 },
-            { 12.72, 12300 },
-            { 15.3, 12350 },
-            { 17.17, 12650 },
-            { 18.9, 12650 },
-            { 19.97, 12750 },
-            { 8.38, 12700 },
-            { 22.9, 13400 },
-            { 23.2, 13800 }
+            { 8.61, 13000 },
+            { 10.94, 11500 },
+            { 12.83, 11400 },
+            { 15.735, 11250 },
+            { 17.254, 11350 },
+            { 19.22, 11750 },
+            { 22.38, 12425 },
     };
 
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mShooterMap;
@@ -78,12 +76,12 @@ public class PracticeGameChangers implements WaltRobot {
 
     @Override
     public double getLimelightMountingHeight() {
-        return 24;
+        return 23;
     }
 
     @Override
     public double getLimelightMountingAngle() {
-        return 35;
+        return 33.5;
     }
 
     @Override

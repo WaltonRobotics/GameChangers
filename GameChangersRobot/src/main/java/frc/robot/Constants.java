@@ -73,7 +73,7 @@ public final class Constants {
     public static class Conveyor {
 
         // The time that the IRSensor flickers randomly after changing states
-        public static final double kIRSensorFlickeringTime = 0.1;
+        public static final double kIRSensorFlickeringTime = 0.75;
         public static final double kNudgeTime = 0.29;
         public static final double kNudgeVoltage = 8.0;
         public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
@@ -84,7 +84,7 @@ public final class Constants {
     public static class Shooter {
 
         // The tolerance to exit the spinning up state and enter the shooting state
-        public static final double kSpinningUpToleranceRawUnits = 75;
+        public static final double kSpinningUpToleranceRawUnits = 300;
         // The tolerance to maintain the shooting state
         public static final double kShootingToleranceRawUnits = 150;
 
@@ -105,7 +105,7 @@ public final class Constants {
         public static final double kOptimalShootingDistanceFloor = 10.2;
         public static final double kOptimalShootingDistanceCeiling = 12.0;
 
-        public static final double kAbsoluteShootingDistanceFloor = 10.03;
+        public static final double kAbsoluteShootingDistanceFloor = 8.8;
         public static final double kAbsoluteShootingDistanceCeiling = 23.2;
 
     }

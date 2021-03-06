@@ -44,13 +44,13 @@ public class Shooter extends SubsystemBase {
 //        mFlywheelMaster.configVelocityMeasurementWindow(32);
 
         mFlywheelMaster.config_kF(kShooterSpinningUpSlot, 0.04934694);
-        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, 0.23);
-        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, 0);
+        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, 0.2);
+        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, 0.002);
         mFlywheelMaster.config_kD(kShooterSpinningUpSlot, 0);
 
         mFlywheelMaster.config_kF(kShooterShootingSlot, 0.04934694);
         mFlywheelMaster.config_kP(kShooterShootingSlot, 0.21);
-        mFlywheelMaster.config_kI(kShooterShootingSlot, 0);
+        mFlywheelMaster.config_kI(kShooterShootingSlot, 0.002);
         mFlywheelMaster.config_kD(kShooterShootingSlot, 0);
 
         // Voltage compensation
@@ -117,6 +117,8 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
+        LimelightHelper.updateData();
+
         if (kIsInTuningMode) {
             mFlywheelMaster.configVelocityMeasurementPeriod(
                     VelocityMeasPeriod.valueOf(SmartDashboard.getNumber(kShooterMeasurementPeriodKey, 1)));

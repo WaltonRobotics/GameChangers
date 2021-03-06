@@ -7,8 +7,7 @@ import frc.robot.subsystems.SubsystemFlags;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.Conveyor.*;
-import static frc.robot.OI.sOverrideBackConveyorButton;
-import static frc.robot.OI.sOverrideFrontConveyorButton;
+import static frc.robot.OI.*;
 import static frc.robot.Robot.sConveyor;
 
 public class ConveyorCommand extends CommandBase {
@@ -113,7 +112,7 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public String getName() {
-                return null;
+                return "Outtaking";
             }
         };
 
@@ -179,6 +178,8 @@ public class ConveyorCommand extends CommandBase {
         };
 
         mStateMachine = new StateMachine("Conveyor", mIdle);
+
+        sResetBallCountButton.whenPressed(sConveyor::resetBallCount);
     }
 
     private IState determineState() {

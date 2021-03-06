@@ -109,7 +109,7 @@ public class Gamepad extends Joystick {
      * non d-pad buttons enum
      */
     public enum Button {
-        LEFt_BUTTON(1), DOWN_BUTTON(2), RIGHT_BUTTON(3), TOP_BUTTON(4),
+        LEFT_BUTTON(1), DOWN_BUTTON(2), RIGHT_BUTTON(3), TOP_BUTTON(4),
         LEFT_BUMPER(5), RIGHT_BUMPER(6),
         LEFT_TRIGGER(7), RIGHT_TRIGGER(8),
         BACK_BUTTON(9), START_BUTTON(10),
