@@ -193,4 +193,27 @@ public class PolynomialRegression {
         return 1 - SSRes / SSTot;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        int j = mDegree;
+
+        while (j >= 0 && Math.abs(getCoef()[j]) < 1E-5)
+            j--;
+
+        // create remaining terms
+        while (j >= 0) {
+            if (j == 0)
+                s.append(String.format("%.2f ", getCoef()[j]));
+            else if (j == 1)
+                s.append(String.format("%.2fx + ", getCoef()[j]));
+            else
+                s.append(String.format("%.2fx^%d + ", getCoef()[j], j));
+            j--;
+        }
+
+        s.append("  (R^2 = ").append(String.format("%.3f", getR2())).append(")");
+        return s.toString();
+    }
+
 }

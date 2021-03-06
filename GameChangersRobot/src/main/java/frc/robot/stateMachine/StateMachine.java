@@ -21,6 +21,8 @@ public class StateMachine {
         } else {
             throw new IllegalArgumentException("Initial state must not be null!");
         }
+
+        mCurrentState.initialize();
     }
 
     public void run() {
@@ -29,7 +31,7 @@ public class StateMachine {
         IState nextState = mCurrentState.execute();
 
         if (nextState != null) {
-            if (nextState != mCurrentState) {
+            if (!nextState.equals(mCurrentState)) {
                 mCurrentState.finish();
                 mCurrentState = nextState;
                 mCurrentState.initialize();
