@@ -46,6 +46,13 @@ public class InterpolatingDouble implements Interpolable<InterpolatingDouble>, I
     }
 
     @Override
+    public boolean equals(Object object) {
+        if(!(object instanceof InterpolatingDouble)) return false;
+        InterpolatingDouble other = (InterpolatingDouble) object;
+        return value.equals(other.value);
+    }
+
+    @Override
     public String toString() {
         return value + "";
     }
