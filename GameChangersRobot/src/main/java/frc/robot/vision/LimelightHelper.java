@@ -1,6 +1,5 @@
 package frc.robot.vision;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -9,6 +8,8 @@ import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
 import static frc.robot.Constants.FieldConstants.kTargetHeightInches;
 import static frc.robot.Constants.LimelightConstants.*;
+import static frc.robot.Constants.Shooter.kTxWindowSize;
+import static frc.robot.Constants.Shooter.kTyWindowSize;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class LimelightHelper {
@@ -26,8 +27,8 @@ public class LimelightHelper {
     private static final NetworkTableEntry mCamMode = mTable.getEntry("camMode");
     private static final NetworkTableEntry mPipeline = mTable.getEntry("pipeline");
 
-    private static final SimpleMovingAverage mTxMovingAverage = new SimpleMovingAverage(5);
-    private static final SimpleMovingAverage mTyMovingAverage = new SimpleMovingAverage(5);
+    private static final SimpleMovingAverage mTxMovingAverage = new SimpleMovingAverage(kTxWindowSize);
+    private static final SimpleMovingAverage mTyMovingAverage = new SimpleMovingAverage(kTyWindowSize);
 
     private LimelightHelper() {
         // Update moving averages when tx and ty change

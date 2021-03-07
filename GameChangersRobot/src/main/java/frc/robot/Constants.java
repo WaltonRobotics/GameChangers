@@ -108,6 +108,9 @@ public final class Constants {
         public static final double kAbsoluteShootingDistanceFloor = 8.61;
         public static final double kAbsoluteShootingDistanceCeiling = 22.38;
 
+        public static final int kTxWindowSize = 5;
+        public static final int kTyWindowSize = 5;
+
     }
 
     public static final class Tuning {
@@ -124,7 +127,7 @@ public final class Constants {
     public static class ProMini {
 
         // Tolerance of duty cycles read from DIO pins
-        public static final double kDutyCycleTolerance = 0.1;
+        public static final double kDutyCycleTolerance = 0.05;
 
     }
 
