@@ -62,6 +62,10 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.config_kF(kShooterOpenLoopSlot, kFF);
     }
 
+    public void setFF(double kFF) {
+        mFlywheelMaster.config_kF(kShooterOpenLoopSlot, kFF);
+    }
+
     public void setProfileSlot(int profileSlot) {
         mFlywheelMaster.selectProfileSlot(profileSlot, 0);
     }

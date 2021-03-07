@@ -158,6 +158,11 @@ public class ShooterCommand extends CommandBase {
             public IState execute() {
                 sShooter.setClosedLoopVelocityRawUnits(mSetpointRawUnits);
 
+                if (sShooter.getVelocityRawUnits() > mSetpointRawUnits) {
+                    mFFEstimator.addData(sShooter.getEstimatedKf());
+                    sShooter.setFF(mFFEstimator.getMean());
+                }
+
                 if (!mNeedsToShoot.getAsBoolean() && !mNeedsToBarf.getAsBoolean()) {
                     return mSpinningDown;
                 }
