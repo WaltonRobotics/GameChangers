@@ -77,7 +77,8 @@ public class ShooterCommand extends CommandBase {
         mSpinningUp = new IState() {
             @Override
             public void initialize() {
-                DebuggingLog.getInstance().getLogger().log(Level.FINE, String.valueOf(mSetpointRawUnits));
+                DebuggingLog.getInstance().getLogger().log(Level.FINE, "Shooter velocity setpoint: "
+                        + mSetpointRawUnits);
 
                 sShooter.setProfileSlot(kShooterSpinningUpSlot);
             }
