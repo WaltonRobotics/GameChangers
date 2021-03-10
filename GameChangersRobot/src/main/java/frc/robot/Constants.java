@@ -76,8 +76,8 @@ public final class Constants {
         public static final double kCalculatingFFToleranceRawUnits = 150;
 
         public static final double kVoltageSaturation = 10;
-        public static final int kFFWindowSize = 20;
-        public static final int kFFMinTargetSamples = 20;
+        public static final int kFFWindowSize = 40;
+        public static final int kFFMinTargetSamples = 40;
 
         // Short period of time after the shoot button is released where the flywheels
         // continue rotating to ensure last few shots don't go amiss

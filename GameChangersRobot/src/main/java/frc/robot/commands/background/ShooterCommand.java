@@ -78,7 +78,8 @@ public class ShooterCommand extends CommandBase {
         mSpinningUp = new IState() {
             @Override
             public void initialize() {
-                DebuggingLog.getInstance().getLogger().log(Level.FINE, String.valueOf(mSetpointRawUnits));
+                DebuggingLog.getInstance().getLogger().log(Level.FINE, "Shooter velocity setpoint: " +
+                        String.valueOf(mSetpointRawUnits));
 
                 sShooter.configureForSpinningUp();
             }
@@ -131,6 +132,8 @@ public class ShooterCommand extends CommandBase {
 
                 mFFEstimator.addData(sShooter.getEstimatedKf());
 
+                System.out.println(sShooter.getEstimatedKf());
+
                 if (mFFEstimator.getNumValues() >= kFFMinTargetSamples) {
                     return mShooting;
                 }
@@ -161,10 +164,10 @@ public class ShooterCommand extends CommandBase {
             public IState execute() {
                 sShooter.setClosedLoopVelocityRawUnits(mSetpointRawUnits);
 
-                if (sShooter.getVelocityRawUnits() > mSetpointRawUnits) {
-                    mFFEstimator.addData(sShooter.getEstimatedKf());
-                    sShooter.setFF(mFFEstimator.getMean());
-                }
+//                if (sShooter.getVelocityRawUnits() > mSetpointRawUnits) {
+//                    mFFEstimator.addData(sShooter.getEstimatedKf());
+//                    sShooter.setFF(mFFEstimator.getMean());
+//                }
 
                 if (!mNeedsToShoot.getAsBoolean() && !mNeedsToBarf.getAsBoolean()) {
                     return mSpinningDown;

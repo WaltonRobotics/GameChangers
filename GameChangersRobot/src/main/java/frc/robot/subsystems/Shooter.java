@@ -56,25 +56,19 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.config_IntegralZone(kShooterOpenLoopSlot, 0);
 
         // Voltage compensation
-        mFlywheelMaster.enableVoltageCompensation(false);
+        mFlywheelMaster.configVoltageCompSaturation(kVoltageSaturation);
+        mFlywheelMaster.enableVoltageCompensation(true);
+        mFlywheelSlave.configVoltageCompSaturation(kVoltageSaturation);
         mFlywheelSlave.enableVoltageCompensation(false);
     }
 
     public void configureForSpinningUp() {
         setProfileSlot(kShooterSpinningUpSlot);
-
-        mFlywheelMaster.enableVoltageCompensation(false);
-        mFlywheelSlave.enableVoltageCompensation(false);
     }
 
     public void configureForOpenLoop(double kFF) {
         setProfileSlot(kShooterOpenLoopSlot);
-        mFlywheelMaster.config_kF(kShooterOpenLoopSlot, kFF);
-
-        mFlywheelMaster.configVoltageCompSaturation(kVoltageSaturation);
-        mFlywheelMaster.enableVoltageCompensation(true);
-        mFlywheelSlave.configVoltageCompSaturation(kVoltageSaturation);
-        mFlywheelSlave.enableVoltageCompensation(false);
+        setFF(kFF);
     }
 
     public void setFF(double kFF) {
@@ -137,7 +131,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getEstimatedKf() {
-        return ((mFlywheelMaster.getMotorOutputPercent() * 1023) / getVelocityRawUnits());
+        return (1023 / 12.0 * mFlywheelMaster.getMotorOutputVoltage()) / getVelocityRawUnits();
     }
 
     @Override
