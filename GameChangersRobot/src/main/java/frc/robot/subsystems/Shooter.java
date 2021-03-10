@@ -69,13 +69,12 @@ public class Shooter extends SubsystemBase {
 
     public void configureForOpenLoop(double kFF) {
         setProfileSlot(kShooterOpenLoopSlot);
+        mFlywheelMaster.config_kF(kShooterOpenLoopSlot, kFF);
 
         mFlywheelMaster.configVoltageCompSaturation(kVoltageSaturation);
         mFlywheelMaster.enableVoltageCompensation(true);
         mFlywheelSlave.configVoltageCompSaturation(kVoltageSaturation);
         mFlywheelSlave.enableVoltageCompensation(false);
-
-        mFlywheelMaster.config_kF(kShooterOpenLoopSlot, kFF);
     }
 
     public void setFF(double kFF) {
