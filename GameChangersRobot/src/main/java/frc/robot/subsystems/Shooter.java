@@ -14,9 +14,11 @@ import frc.robot.vision.LimelightHelper;
 
 import static frc.robot.Constants.CANBusIDs.kFlywheelMasterID;
 import static frc.robot.Constants.CANBusIDs.kFlywheelSlaveID;
-import static frc.robot.Constants.PIDSlots.kShooterOpenLoopSlot;
-import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
-import static frc.robot.Constants.Shooter.kVoltageSaturation;
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.PIDSlots.*;
+import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.SmartDashboardKeys.*;
+import static frc.robot.Robot.sCurrentRobot;
 
 public class Shooter extends SubsystemBase {
 
@@ -47,10 +49,15 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.config_kD(kShooterSpinningUpSlot, 0);
         mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, 600);
 
-        mFlywheelMaster.config_kF(kShooterOpenLoopSlot, 0.0498575917);
+        mFlywheelMaster.config_kF(kShooterOpenLoopSlot, 0.04934694);
         mFlywheelMaster.config_kP(kShooterOpenLoopSlot, 0);
         mFlywheelMaster.config_kI(kShooterOpenLoopSlot, 0);
         mFlywheelMaster.config_kD(kShooterOpenLoopSlot, 0);
+        mFlywheelMaster.config_IntegralZone(kShooterOpenLoopSlot, 0);
+
+        // Voltage compensation
+        mFlywheelMaster.enableVoltageCompensation(false);
+        mFlywheelSlave.enableVoltageCompensation(false);
     }
 
     public void configureForSpinningUp() {
@@ -95,6 +102,39 @@ public class Shooter extends SubsystemBase {
 
     public double getClosedLoopErrorRawUnits() {
         return mFlywheelMaster.getClosedLoopError();
+    }
+
+    public double getClosedLoopErrorRevolutionsPerSec() {
+        return getClosedLoopErrorRawUnits() / kFlywheelEncoderPPR * 10.;
+    }
+
+    public double getClosedLoopErrorInchesPerSec() {
+        return getClosedLoopErrorRevolutionsPerSec() * kFlywheelDiameter;
+    }
+
+    public double getEstimatedVelocityFromTarget() {
+        // If the limelight does not see a target, we use the last known "ty" value since
+        // LimelightHelper uses a MovingAverage to keep track of it at all times
+
+        double distanceFeet = LimelightHelper.getDistanceToTargetFeet();
+
+        distanceFeet = UtilMethods.limitRange(distanceFeet, kAbsoluteShootingDistanceFloor,
+                kAbsoluteShootingDistanceCeiling);
+
+        if (kUseInterpolationMap) {
+            InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> map
+                    = sCurrentRobot.getCurrentRobot().getShooterMap();
+
+            InterpolatingDouble result = map.getInterpolated(new InterpolatingDouble(distanceFeet));
+
+            if (result != null) {
+                return result.value;
+            } else {
+                return map.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
+            }
+        } else {
+            return sCurrentRobot.getCurrentRobot().getShooterPolynomial().predict(distanceFeet);
+        }
     }
 
     public double getEstimatedKf() {

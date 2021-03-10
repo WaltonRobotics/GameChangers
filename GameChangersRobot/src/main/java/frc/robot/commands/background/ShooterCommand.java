@@ -5,22 +5,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
+import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
 import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
-import static frc.robot.Constants.Shooter.kFFMinTargetSamples;
-import static frc.robot.Constants.Shooter.kFFWindowSize;
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.SmartDashboardKeys.kShooterTuningSetpointRawUnitsKey;
 import static frc.robot.OI.sBarfButton;
 import static frc.robot.OI.sShootButton;
 import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
-
-    private double kSpinUpToleranceRawUnits = 100;
-    private double kSpinDownTime = 0.25;
 
     private double mSetpointRawUnits = 12500;
 
@@ -92,7 +91,7 @@ public class ShooterCommand extends CommandBase {
                     return mIdle;
                 }
 
-                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) <= kSpinUpToleranceRawUnits) {
+                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) <= kSpinningUpToleranceRawUnits) {
                     return mCalculatingFF;
                 }
 
@@ -113,8 +112,6 @@ public class ShooterCommand extends CommandBase {
         mCalculatingFF = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsReadyToShoot(false);
-
                 sShooter.configureForSpinningUp();
 
                 mFFEstimator.clear();
@@ -128,7 +125,7 @@ public class ShooterCommand extends CommandBase {
                     return mIdle;
                 }
 
-                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) > kSpinUpToleranceRawUnits) {
+                if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) > kCalculatingFFToleranceRawUnits) {
                     return mSpinningUp;
                 }
 
@@ -193,7 +190,6 @@ public class ShooterCommand extends CommandBase {
             @Override
             public void initialize() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(true);
-
                 mStartTime = getFPGATimestamp();
             }
 

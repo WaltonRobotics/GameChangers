@@ -5,7 +5,7 @@ public final class Constants {
     public static class ContextFlags {
 
         public static boolean kIsInCompetition = false;
-        public static boolean kIsInTuningMode = false;
+        public static boolean kIsInTuningMode = true;
         public static boolean kIsInfiniteRecharge = false;
 
     }
@@ -72,29 +72,12 @@ public final class Constants {
 
     public static class Shooter {
 
-        public static final double kVoltageSaturation = 12;
+        public static final double kSpinningUpToleranceRawUnits = 300;
+        public static final double kCalculatingFFToleranceRawUnits = 150;
+
+        public static final double kVoltageSaturation = 10;
         public static final int kFFWindowSize = 20;
         public static final int kFFMinTargetSamples = 20;
-
-    }
-
-    public static class Conveyor {
-
-        // The time that the IRSensor flickers randomly after changing states
-        public static final double kIRSensorFlickeringTime = 0.75;
-        public static final double kNudgeTime = 0.29;
-        public static final double kNudgeVoltage = 8.0;
-        public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
-        public static final int kFrontLoadingCapacity = 2;
-
-    }
-
-    public static class Shooter {
-
-        // The tolerance to exit the spinning up state and enter the shooting state
-        public static final double kSpinningUpToleranceRawUnits = 300;
-        // The tolerance to maintain the shooting state
-        public static final double kShootingToleranceRawUnits = 150;
 
         // Short period of time after the shoot button is released where the flywheels
         // continue rotating to ensure last few shots don't go amiss
@@ -118,6 +101,17 @@ public final class Constants {
 
         public static final int kTxWindowSize = 5;
         public static final int kTyWindowSize = 5;
+
+    }
+
+    public static class Conveyor {
+
+        // The time that the IRSensor flickers randomly after changing states
+        public static final double kIRSensorFlickeringTime = 0.75;
+        public static final double kNudgeTime = 0.29;
+        public static final double kNudgeVoltage = 8.0;
+        public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
+        public static final int kFrontLoadingCapacity = 2;
 
     }
 
