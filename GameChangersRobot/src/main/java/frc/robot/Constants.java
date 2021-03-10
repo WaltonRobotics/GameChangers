@@ -110,6 +110,7 @@ public final class Constants {
         public static final double kIRSensorFlickeringTime = 0.75;
         public static final double kNudgeTime = 0.29;
         public static final double kNudgeVoltage = 8.0;
+        public static final double kFeedingVoltage = 11.25;
         public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
         public static final int kFrontLoadingCapacity = 2;
 
