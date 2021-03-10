@@ -13,6 +13,8 @@ public class SimpleMovingAverage implements MovingAverage {
     // constructor to initialize period
     public SimpleMovingAverage(int period) {
         this.mPeriod = period;
+
+        clear();
     }
 
     @Override
