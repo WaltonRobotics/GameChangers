@@ -6,7 +6,7 @@ import java.util.Queue;
 public class SimpleMovingAverage implements MovingAverage {
 
     // queue used to store list so that we get the average
-    private final Queue<Double> mDataset = new LinkedList<Double>();
+    private final Queue<Double> mDataset = new LinkedList<>();
     private final int mPeriod;
     private double mSum;
 
