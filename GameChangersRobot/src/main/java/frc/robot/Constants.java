@@ -43,11 +43,14 @@ public final class Constants {
 
     public static class DioIDs {
 
-        public static final int kRobotID1 = 8;
-        public static final int kRobotID2 = 9;
-
         public static final int kConveyorFrontSensorID = 4;
         public static final int kConveyorBackSensorID = 5;
+
+        public static final int kPixyCamReadLineID = 6;
+        public static final int kLEDStripWriteLineID = 7;
+
+        public static final int kRobotID1 = 8;
+        public static final int kRobotID2 = 9;
 
     }
 
@@ -78,10 +81,78 @@ public final class Constants {
     public static class Conveyor {
 
         // The time that the IRSensor flickers randomly after changing states
-        public static final double kIRSensorFlickeringTime = 0.1;
+        public static final double kIRSensorFlickeringTime = 0.75;
         public static final double kNudgeTime = 0.29;
         public static final double kNudgeVoltage = 8.0;
         public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
+        public static final int kFrontLoadingCapacity = 2;
+
+    }
+
+    public static class Shooter {
+
+        // The tolerance to exit the spinning up state and enter the shooting state
+        public static final double kSpinningUpToleranceRawUnits = 300;
+        // The tolerance to maintain the shooting state
+        public static final double kShootingToleranceRawUnits = 150;
+
+        // Short period of time after the shoot button is released where the flywheels
+        // continue rotating to ensure last few shots don't go amiss
+        public static final double kSpinDownTime = 0.25;
+
+        public static final int kFlywheelEncoderPPR = 2048;
+        public static final double kFlywheelDiameter = 4.0;
+
+        public static final double kDefaultShootingDistanceFeet = 11.2;
+        public static final double kDefaultVelocityRawUnits = 11500;
+
+        // Change to false to use polynomial interpolation instead
+        public static final boolean kUseInterpolationMap = true;
+
+        public static final double kOptimalShootingDistance = 11;
+        public static final double kOptimalShootingDistanceFloor = 10;
+        public static final double kOptimalShootingDistanceCeiling = 12;
+
+        public static final double kAbsoluteShootingDistanceFloor = 8.61;
+        public static final double kAbsoluteShootingDistanceCeiling = 22.38;
+
+        public static final int kTxWindowSize = 5;
+        public static final int kTyWindowSize = 5;
+
+    }
+
+    public static final class Tuning {
+
+        // The range of output duty cycles the shooter will typically be operating within
+        // Used to tune the measurement period and window
+        public static final double kShooterMeasurementTuningMinDutyCycle = 0.4;
+        public static final double kShooterMeasurementTuningMaxDutyCycle = 1.0;
+
+        public static final int kDrivetrainAccelerationWindow = 8;
+
+    }
+
+    public static class ProMini {
+
+        // Tolerance of duty cycles read from DIO pins
+        public static final double kDutyCycleTolerance = 0.05;
+
+    }
+
+    public static class LimelightConstants {
+
+        public static final int kLEDsOff = 1;
+        public static final int kLEDsOn = 3;
+
+        public static final int kVisionMode = 0;
+        public static final int kDriverMode = 1;
+
+    }
+
+    public static class FieldConstants {
+
+        public static final double kTargetHeightInches = 89.75;
+        public static final double kTargetFrontOffsetFeet = 0.16;
 
     }
 
@@ -90,6 +161,18 @@ public final class Constants {
         public static final String kLeftVelocityPKey = "Drivetrain/Left Velocity P";
         public static final String kRightVelocityPKey = "Drivetrain/Right Velocity P";
 
+        public static final String kShooterMeasurementPeriodKey = "Shooter/Measurement Period";
+        public static final String kShooterMeasurementWindowKey = "Shooter/Measurement Window";
+        public static final String kShooterErrorRawUnitsKey = "Shooter/Error Raw Units";
+        public static final String kShooterErrorRPSKey = "Shooter/Error RPS";
+        public static final String kShooterErrorInchesKey = "Shooter/Error Inches Per Sec";
+        public static final String kShooterFlywheelVelocityKey = "Shooter/Flywheel Velocity Raw Units";
+        public static final String kShooterTuningSetpointRawUnitsKey = "Shooter/Tuning Setpoint Raw Units";
+        public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
+
+        public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
+        public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
+        public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
     }
 
     public static class LiveDashboardKeys {

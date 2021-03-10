@@ -15,7 +15,6 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
     private final NetworkTableEntry mTelemetryEntry = NetworkTableInstance.getDefault().getEntry("/robot/telemetry");
     private final NetworkTableEntry mRotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
     private final Number[] mNumberArray = new Number[10];
-    private double mPriorAutospeed = 0;
 
     @Override
     public void initialize() {
@@ -46,7 +45,6 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
 
         // Retrieve the commanded speed from NetworkTables
         double autospeed = mAutoSpeedEntry.getDouble(0);
-        mPriorAutospeed = autospeed;
 
         // command motors to do things
         sDrivetrain.setDutyCycles((mRotateEntry.getBoolean(false) ? -1 : 1) * autospeed, autospeed);

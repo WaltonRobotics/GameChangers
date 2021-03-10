@@ -2,6 +2,9 @@ package frc.robot.stateMachine;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.utils.DebuggingLog;
+
+import java.util.logging.Level;
 
 import static frc.robot.utils.UtilMethods.joinStrings;
 
@@ -18,21 +21,29 @@ public class StateMachine {
         } else {
             throw new IllegalArgumentException("Initial state must not be null!");
         }
+
+        mCurrentState.initialize();
     }
 
     public void run() {
-        SmartDashboard.putString(joinStrings(" ", mName, "Current State"), mCurrentState.getName());
+        if (mCurrentState.getName() == null) {
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    mCurrentState.getName() + " state has a null name!");
+        } else {
+            SmartDashboard.putString(joinStrings(" ", mName, "Current State"), mCurrentState.getName());
+        }
 
         IState nextState = mCurrentState.execute();
 
         if (nextState != null) {
-            if (nextState != mCurrentState) {
+            if (!nextState.equals(mCurrentState)) {
                 mCurrentState.finish();
                 mCurrentState = nextState;
                 mCurrentState.initialize();
             }
         } else {
-            System.out.println("[ERROR]: State machine has effectively terminated due to a null state.");
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "State machine \"" + mName
+                    + "\" has effectively terminated due to a null state");
         }
     }
 

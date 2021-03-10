@@ -1,5 +1,6 @@
 package frc.robot.commands.background;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
@@ -7,6 +8,7 @@ import frc.robot.subsystems.SubsystemFlags;
 import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
 import java.util.function.BooleanSupplier;
+import java.util.logging.Level;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.Shooter.kFFMinTargetSamples;
@@ -40,8 +42,6 @@ public class ShooterCommand extends CommandBase {
         mIdle = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsReadyToShoot(false);
-
                 sShooter.setOpenLoopDutyCycle(0);
             }
 
@@ -50,6 +50,12 @@ public class ShooterCommand extends CommandBase {
                 sShooter.setOpenLoopDutyCycle(0);
 
                 if (mNeedsToShoot.getAsBoolean()) {
+                    if (kIsInTuningMode) {
+                        mSetpointRawUnits = SmartDashboard.getNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
+                    } else {
+                        mSetpointRawUnits = sShooter.getEstimatedVelocityFromTarget();
+                    }
+
                     return mSpinningUp;
                 }
 
@@ -73,7 +79,7 @@ public class ShooterCommand extends CommandBase {
         mSpinningUp = new IState() {
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsReadyToShoot(false);
+                DebuggingLog.getInstance().getLogger().log(Level.FINE, String.valueOf(mSetpointRawUnits));
 
                 sShooter.configureForSpinningUp();
             }
@@ -137,7 +143,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
-                SubsystemFlags.getInstance().setIsReadyToShoot(true);
+
             }
 
             @Override
@@ -172,7 +178,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
-
+                SubsystemFlags.getInstance().setIsReadyToShoot(false);
             }
 
             @Override
@@ -205,7 +211,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
-
+                SubsystemFlags.getInstance().setIsReadyToShoot(false);
             }
 
             @Override
@@ -222,4 +228,10 @@ public class ShooterCommand extends CommandBase {
     public void execute() {
         mStateMachine.run();
     }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
 }

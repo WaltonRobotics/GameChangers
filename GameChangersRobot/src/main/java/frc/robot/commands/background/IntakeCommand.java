@@ -166,4 +166,9 @@ public class IntakeCommand extends CommandBase {
         mStateMachine.run();
     }
 
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
 }

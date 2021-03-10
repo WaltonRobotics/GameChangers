@@ -2,8 +2,15 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.UtilMethods;
+import frc.robot.utils.interpolation.InterpolatingDouble;
+import frc.robot.utils.interpolation.InterpolatingTreeMap;
+import frc.robot.vision.LimelightHelper;
 
 import static frc.robot.Constants.CANBusIDs.kFlywheelMasterID;
 import static frc.robot.Constants.CANBusIDs.kFlywheelSlaveID;
@@ -28,15 +35,17 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.setSensorPhase(true);
         mFlywheelSlave.setInverted(false);
         mFlywheelSlave.setSensorPhase(false);
+        mFlywheelSlave.follow(mFlywheelMaster);
 
-//        TODO: Check the following two settings by running flywheels on manual joystick
+//        TODO: Check the following two settings by scheduling the ShooterMeasurementTuning command
 //        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
 //        mFlywheelMaster.configVelocityMeasurementWindow(32);
 
-        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, 0.0498575917);
-        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, 0.23);
-        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, 0);
+        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, 0.04934694);
+        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, 0.2);
+        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, 0.002);
         mFlywheelMaster.config_kD(kShooterSpinningUpSlot, 0);
+        mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, 600);
 
         mFlywheelMaster.config_kF(kShooterOpenLoopSlot, 0.0498575917);
         mFlywheelMaster.config_kP(kShooterOpenLoopSlot, 0);
@@ -94,7 +103,20 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
+        LimelightHelper.updateData();
 
+        if (kIsInTuningMode) {
+            mFlywheelMaster.configVelocityMeasurementPeriod(
+                    VelocityMeasPeriod.valueOf(SmartDashboard.getNumber(kShooterMeasurementPeriodKey, 1)));
+            mFlywheelMaster.configVelocityMeasurementWindow(
+                    (int)SmartDashboard.getNumber(kShooterMeasurementWindowKey, 1));
+        }
+
+        SmartDashboard.putNumber(kShooterFlywheelVelocityKey, getVelocityRawUnits());
+        SmartDashboard.putNumber(kShooterErrorRawUnitsKey, getClosedLoopErrorRawUnits());
+        SmartDashboard.putNumber(kShooterErrorRPSKey, getClosedLoopErrorRevolutionsPerSec());
+        SmartDashboard.putNumber(kShooterErrorInchesKey, getClosedLoopErrorInchesPerSec());
+        SmartDashboard.putNumber(kShooterLimelightDistanceFeetKey, LimelightHelper.getDistanceToTargetFeet());
     }
 
 }
