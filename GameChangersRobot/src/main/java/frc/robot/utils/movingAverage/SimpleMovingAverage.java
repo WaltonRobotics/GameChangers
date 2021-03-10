@@ -15,6 +15,12 @@ public class SimpleMovingAverage implements MovingAverage {
         this.mPeriod = period;
     }
 
+    @Override
+    public void clear() {
+        mDataset.clear();
+        mSum = 0;
+    }
+
     // function to add new data in the
     // list and update the sum so that
     // we get the new mean
@@ -34,7 +40,12 @@ public class SimpleMovingAverage implements MovingAverage {
     // function to calculate mean
     @Override
     public double getMean() {
-        return mSum / mPeriod;
+        return mSum / getNumValues();
+    }
+
+    @Override
+    public int getNumValues() {
+        return mDataset.size();
     }
 
 }
