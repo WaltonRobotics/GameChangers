@@ -165,6 +165,12 @@ public final class Constants {
         public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
         public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
+
+        public static final String kdriveStraightheadingPkey = "Drive Straight Heading P";
+        public static final String kforwardP = "Forward P";
+        public static final String kturnPkey = "Turn P";
+        public static final String kleftEncodervalue = "Left Encoder Value";
+        public static final String krightEncoderValue = "Right Encoder Value";
     }
 
     public static class LiveDashboardKeys {
