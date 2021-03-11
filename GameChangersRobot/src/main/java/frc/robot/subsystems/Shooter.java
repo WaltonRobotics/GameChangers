@@ -131,7 +131,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getEstimatedKf() {
-        return (1023 / 12.0 * mFlywheelMaster.getMotorOutputVoltage()) / getVelocityRawUnits();
+        return (1023.0 / 12.0 * mFlywheelMaster.getMotorOutputVoltage()) / getVelocityRawUnits();
     }
 
     @Override
