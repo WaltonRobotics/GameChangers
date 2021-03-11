@@ -4,14 +4,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import static frc.robot.Robot.drivetrain;
+import static frc.robot.Robot.sDrivetrain;
 
 public class TurnToAngle extends CommandBase {
 
     private double targetAngle;
 
     public TurnToAngle(double targetAngle) {
-        addRequirements(drivetrain);
+        addRequirements(sDrivetrain);
         this.targetAngle = targetAngle;
     }
 
@@ -19,29 +19,28 @@ public class TurnToAngle extends CommandBase {
     public void initialize() {
         System.out.println("turning to " + targetAngle);
 
-        drivetrain.getTurnPIDController().reset(new TrapezoidProfile.State(drivetrain.getHeading().getDegrees(), 0));
-        drivetrain.getTurnPIDController().setTolerance(6.0);
+        sDrivetrain.getTurnPID().reset(new TrapezoidProfile.State(sDrivetrain.getHeading().getDegrees(), 0));
 
         SmartDashboard.putNumber("Turn Setpoint", targetAngle);
     }
 
     @Override
     public void execute() {
-        drivetrain.getTurnPIDController().setP(SmartDashboard.getNumber("Turn P", 0.05));
-        double turnRate = -drivetrain.getTurnPIDController().calculate(drivetrain.getHeading().getDegrees(), targetAngle);
-        SmartDashboard.putNumber("Velocity error", drivetrain.getTurnPIDController().getVelocityError());
-        SmartDashboard.putNumber("Position error", drivetrain.getTurnPIDController().getPositionError());
-        System.out.println(drivetrain.getTurnPIDController().getPositionError());
-        drivetrain.setDutyCycles(turnRate, -turnRate);
+        sDrivetrain.getTurnPID().setP(SmartDashboard.getNumber("Turn P", 0.05));
+        double turnRate = -sDrivetrain.getTurnPID().calculate(sDrivetrain.getHeading().getDegrees(), targetAngle);
+        SmartDashboard.putNumber("Velocity error", sDrivetrain.getTurnPID().getVelocityError());
+        SmartDashboard.putNumber("Position error", sDrivetrain.getTurnPID().getPositionError());
+        System.out.println(sDrivetrain.getTurnPID().getPositionError());
+        sDrivetrain.setDutyCycles(turnRate, -turnRate);
     }
 
     @Override
     public void end(boolean interrupted) {
-        drivetrain.setDutyCycles(0, 0);
+        sDrivetrain.setDutyCycles(0, 0);
     }
 
     @Override
     public boolean isFinished() {
-        return drivetrain.getTurnPIDController().atGoal();
+        return sDrivetrain.getTurnPID().atSetpoint();
     }
 }

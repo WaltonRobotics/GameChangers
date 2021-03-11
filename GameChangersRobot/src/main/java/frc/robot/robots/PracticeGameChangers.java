@@ -1,12 +1,22 @@
 package frc.robot.robots;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
 import frc.robot.utils.interpolation.PolynomialRegression;
 
 public class PracticeGameChangers implements WaltRobot {
+
+    private final ProfiledPIDController mDrivetrainTurnPID = new ProfiledPIDController(0.013, 0, 0,
+            new TrapezoidProfile.Constraints(400, 400));
+
+    private final ProfiledPIDController mDrivetrainDriveStraightPowerPID = new ProfiledPIDController(0.8, 0, 0,
+            new TrapezoidProfile.Constraints(1.5,1.5));
+    private final ProfiledPIDController mDrivetrainDriveStraightHeadingPID = new ProfiledPIDController(0.2, 0, 0,
+            new TrapezoidProfile.Constraints(60, 30));
 
     private final SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
     private final PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
@@ -57,6 +67,21 @@ public class PracticeGameChangers implements WaltRobot {
     @Override
     public PIDController getDrivetrainRightVelocityPID() {
         return mDrivetrainRightVelocityPID;
+    }
+
+    @Override
+    public ProfiledPIDController getDrivetrainTurnPID() {
+        return mDrivetrainTurnPID;
+    }
+
+    @Override
+    public ProfiledPIDController getDrivetrainDriveStraightPowerPID() {
+        return mDrivetrainDriveStraightPowerPID;
+    }
+
+    @Override
+    public ProfiledPIDController getDrivetrainDriveStraightHeadingPID() {
+        return mDrivetrainDriveStraightHeadingPID;
     }
 
     @Override

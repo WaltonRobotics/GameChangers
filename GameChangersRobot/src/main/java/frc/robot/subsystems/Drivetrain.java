@@ -6,10 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.controller.LinearQuadraticRegulator;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.controller.*;
 import edu.wpi.first.wpilibj.estimator.KalmanFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -77,6 +74,13 @@ public class Drivetrain extends SubsystemBase {
     private final PIDController mRightVoltagePID = sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID();
     private final PIDController mLeftVelocityPID = sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID();
     private final PIDController mRightVelocityPID = sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID();
+
+    private final ProfiledPIDController mTurnPID = sCurrentRobot.getCurrentRobot().getDrivetrainTurnPID();
+
+    private final ProfiledPIDController mDriveStraightPowerPID
+            = sCurrentRobot.getCurrentRobot().getDrivetrainDriveStraightPowerPID();
+    private final ProfiledPIDController mDriveStraightHeadingPID
+            = sCurrentRobot.getCurrentRobot().getDrivetrainDriveStraightHeadingPID();
 
     private Pose2d mCurrentPose = new Pose2d();
 
@@ -271,6 +275,18 @@ public class Drivetrain extends SubsystemBase {
 
     public PIDController getRightVelocityPID() {
         return mRightVelocityPID;
+    }
+
+    public ProfiledPIDController getTurnPID() {
+        return mTurnPID;
+    }
+
+    public ProfiledPIDController getDriveStraightPowerPID() {
+        return mDriveStraightPowerPID;
+    }
+
+    public ProfiledPIDController getDriveStraightHeadingPID() {
+        return mDriveStraightHeadingPID;
     }
 
     public LinearSystemLoop<N2, N2, N2> getDriveControlLoop() {

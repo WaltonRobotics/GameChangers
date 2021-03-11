@@ -1,6 +1,7 @@
 package frc.robot.robots;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
@@ -29,6 +30,21 @@ public class PracticeDeepSpace implements WaltRobot {
 
     @Override
     public PIDController getDrivetrainRightVelocityPID() {
+        return null;
+    }
+
+    @Override
+    public ProfiledPIDController getDrivetrainTurnPID() {
+        return null;
+    }
+
+    @Override
+    public ProfiledPIDController getDrivetrainDriveStraightPowerPID() {
+        return null;
+    }
+
+    @Override
+    public ProfiledPIDController getDrivetrainDriveStraightHeadingPID() {
         return null;
     }
 
