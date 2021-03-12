@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Robot.sDrivetrain;
 
 public class DriveStraight extends CommandBase {
@@ -20,9 +21,9 @@ public class DriveStraight extends CommandBase {
     public void initialize() {
 //        drivetrain.getmDriveStraightPowerController().setP(1);
         //System.out.println("P value set");
-        sDrivetrain.reset();
-        sDrivetrain.getDriveStraightPowerPID().reset(new TrapezoidProfile.State(desiredDistance, 0));
-        sDrivetrain.getDriveStraightHeadingPID().reset(new TrapezoidProfile.State(0, 0));
+        // sDrivetrain.reset();
+        sDrivetrain.getDriveStraightPowerPID().reset(new TrapezoidProfile.State(getDistanceAverage() + desiredDistance, 0));
+        sDrivetrain.getDriveStraightHeadingPID().reset(new TrapezoidProfile.State(sDrivetrain.getHeading().getDegrees(), 0));
 //        drivetrain.getmDriveStraightPowerController().setTolerance(0.09);
 //        drivetrain.getmDriveStraightHeadingPIDController().setTolerance(1);
         System.out.println("Initialize completed!");
@@ -36,8 +37,10 @@ public class DriveStraight extends CommandBase {
     public void execute() {
         SmartDashboard.putNumber("Distance Average", getDistanceAverage());
 
-        sDrivetrain.getDriveStraightPowerPID().setP(SmartDashboard.getNumber("Forward P", 0.8));
-        sDrivetrain.getDriveStraightHeadingPID().setP(SmartDashboard.getNumber("Drive Straight Heading P", 0.19));
+        if (kIsInTuningMode) {
+            sDrivetrain.getDriveStraightPowerPID().setP(SmartDashboard.getNumber("Forward P", 0.8));
+            sDrivetrain.getDriveStraightHeadingPID().setP(SmartDashboard.getNumber("Drive Straight Heading P", 0.19));
+        }
 
         double forward = sDrivetrain.getDriveStraightPowerPID().calculate(getDistanceAverage(), desiredDistance);
         double turnRate = -sDrivetrain.getDriveStraightHeadingPID().calculate(sDrivetrain.getHeading().getDegrees(), 0);

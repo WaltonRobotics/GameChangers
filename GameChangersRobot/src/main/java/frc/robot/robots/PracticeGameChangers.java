@@ -10,7 +10,7 @@ import frc.robot.utils.interpolation.PolynomialRegression;
 
 public class PracticeGameChangers implements WaltRobot {
 
-    private final ProfiledPIDController mDrivetrainTurnPID = new ProfiledPIDController(0.013, 0, 0,
+    private final ProfiledPIDController mDrivetrainTurnPID = new ProfiledPIDController(0.015, 0, 0,
             new TrapezoidProfile.Constraints(400, 400));
 
     private final ProfiledPIDController mDrivetrainDriveStraightPowerPID = new ProfiledPIDController(0.8, 0, 0,
@@ -42,6 +42,12 @@ public class PracticeGameChangers implements WaltRobot {
         mShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
 
         populateShooterInterpolationMethods();
+
+        mDrivetrainTurnPID.enableContinuousInput(-180.0, 180.0);
+        mDrivetrainTurnPID.setTolerance(1, 1);
+
+        mDrivetrainDriveStraightPowerPID.setTolerance(0.09);
+        mDrivetrainDriveStraightHeadingPID.setTolerance(3);
     }
 
     @Override

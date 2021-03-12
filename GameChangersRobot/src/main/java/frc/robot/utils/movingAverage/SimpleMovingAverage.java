@@ -42,7 +42,7 @@ public class SimpleMovingAverage implements MovingAverage {
     // function to calculate mean
     @Override
     public double getMean() {
-        return mSum / getNumValues();
+        return mSum / mPeriod;
     }
 
     @Override

@@ -1,6 +1,10 @@
 package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.commands.auton.AutoAlign;
+import frc.robot.vision.LimelightHelper;
+
+import java.util.function.DoubleSupplier;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DriverPreferences.kDriveDeadband;
@@ -15,6 +19,8 @@ public class DriveCommand extends CommandBase {
         if (kIsInTuningMode) {
             sResetDrivetrainButton.whenPressed(() -> sDrivetrain.reset());
         }
+
+        sAutoAlignButton.whenPressed(new AutoAlign().withTimeout(1.5));
     }
 
     @Override
