@@ -151,6 +151,8 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setIsReadyToShoot(true);
+
                 mStartTime = getFPGATimestamp();
             }
 
