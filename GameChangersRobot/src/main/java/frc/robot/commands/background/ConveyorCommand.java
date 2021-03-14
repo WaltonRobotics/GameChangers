@@ -160,8 +160,8 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sConveyor.setFrontVoltage(kFeedVoltage);
-                sConveyor.setBackVoltage(kFeedVoltage);
+                sConveyor.setFrontDutyCycle(1.0);
+                sConveyor.setBackDutyCycle(1.0);
 
                 return determineState();
             }
