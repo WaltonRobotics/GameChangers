@@ -16,7 +16,6 @@ import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.vision.LimelightHelper;
-import frc.robot.vision.PixyCamHelper;
 
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -109,9 +108,6 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-
-        SmartDashboard.putString("PixyCam Galactic Search Determination",
-                PixyCamHelper.getGalacticSearchDetermination().name());
     }
 
     /**
