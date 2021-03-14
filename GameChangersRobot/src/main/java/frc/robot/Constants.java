@@ -46,8 +46,8 @@ public final class Constants {
         public static final int kConveyorFrontSensorID = 4;
         public static final int kConveyorBackSensorID = 5;
 
-        public static final int kPixyCamReadLineID = 6;
-        public static final int kLEDStripWriteLineID = 7;
+        public static final int kLEDStripWriteLineID = 6;
+        public static final int kPixyCamReadLineID = 7;
 
         public static final int kRobotID1 = 8;
         public static final int kRobotID2 = 9;

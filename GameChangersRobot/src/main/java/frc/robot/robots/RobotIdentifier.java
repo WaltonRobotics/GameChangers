@@ -34,4 +34,5 @@ public enum RobotIdentifier {
     public WaltRobot getCurrentRobot() {
         return currentRobot;
     }
+
 }

@@ -15,6 +15,8 @@ import frc.robot.commands.background.*;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
+import frc.robot.vision.LimelightHelper;
+import frc.robot.vision.PixyCamHelper;
 
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -39,7 +41,7 @@ public class Robot extends TimedRobot {
     public static Shooter sShooter;
     public static Intake sIntake;
     public static Conveyor sConveyor;
-    public static ProMini sProMini;
+    public static ProMicro sProMicro;
 
     private static SendableChooser<AutonRoutine> mAutonChooser;
 
@@ -70,14 +72,16 @@ public class Robot extends TimedRobot {
             sConveyor = new Conveyor();
             CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
 
-            sProMini = new ProMini();
-            CommandScheduler.getInstance().setDefaultCommand(sProMini, new ProMiniCommand());
+            sProMicro = new ProMicro();
+            CommandScheduler.getInstance().setDefaultCommand(sProMicro, new ProMicroCommand());
 
             mAutonChooser = new SendableChooser<>();
             Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));
             mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
             SmartDashboard.putData("Auton Selector", mAutonChooser);
         }
+
+        LimelightHelper.setLEDMode(false);
     }
 
     private void populateShuffleboard() {
@@ -105,6 +109,9 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+
+        SmartDashboard.putString("PixyCam Galactic Search Determination",
+                PixyCamHelper.getGalacticSearchDetermination().name());
     }
 
     /**
@@ -122,6 +129,8 @@ public class Robot extends TimedRobot {
         sDrivetrain.configureControllersAuton();
 
         AutonFlags.getInstance().setIsInAuton(true);
+
+        LimelightHelper.setLEDMode(false);
 
         // Auton routines do not work with DeepSpace robots due to subsystem requirements
         if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS
@@ -147,6 +156,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         AutonFlags.getInstance().setIsInAuton(false);
+
+        LimelightHelper.setLEDMode(false);
     }
 
     /**

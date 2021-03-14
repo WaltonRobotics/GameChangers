@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
@@ -13,13 +12,10 @@ import static frc.robot.Constants.DioIDs.kLEDStripWriteLineID;
 import static frc.robot.Constants.DioIDs.kPixyCamReadLineID;
 import static frc.robot.Constants.ProMini.kDutyCycleTolerance;
 
-public class ProMini extends SubsystemBase {
-
-    private final DigitalInput mPixyCamReadLine = new DigitalInput(kPixyCamReadLineID);
-    private final DutyCycle mPixyCamReadLineDutyCycle = new DutyCycle(mPixyCamReadLine);
+public class ProMicro extends SubsystemBase {
 
     private final DigitalOutput mLEDStripWriteLine = new DigitalOutput(kLEDStripWriteLineID);
-    private final DutyCycle mLEDStripWriteLineDutyCycle = new DutyCycle(mLEDStripWriteLine);
+    private final DigitalInput mPixyCamReadLine = new DigitalInput(kPixyCamReadLineID);
 
     public enum PixyCamReadLineState {
         NO_DETERMINATION(0.0),
@@ -43,7 +39,7 @@ public class ProMini extends SubsystemBase {
             }
 
             for (PixyCamReadLineState state : values()) {
-                if (UtilMethods.isWithinTolerance(dutyCycle, state.getDutyCycle(), 0.5)) {
+                if (UtilMethods.isWithinTolerance(dutyCycle, state.getDutyCycle(), kDutyCycleTolerance)) {
                     return state;
                 }
             }
@@ -75,16 +71,22 @@ public class ProMini extends SubsystemBase {
         }
     }
 
-    public ProMini() {
-        mLEDStripWriteLine.enablePWM(0.0);
+    public ProMicro() {
+        // mLEDStripWriteLine.enablePWM(0.0);
+    }
+
+    @Override
+    public void periodic() {
     }
 
     public void setLEDStripState(LEDStripWriteLineState state) {
-        mLEDStripWriteLine.updateDutyCycle(state.getDutyCycle());
+        // mLEDStripWriteLine.updateDutyCycle(state.getDutyCycle());
+        mLEDStripWriteLine.set(true);
     }
 
     public PixyCamReadLineState getPixyCamState() {
-        return PixyCamReadLineState.findByDutyCycle(mPixyCamReadLineDutyCycle.getOutput());
+        // System.out.println(mPixyCamReadLine.getDutyCycle());
+        return PixyCamReadLineState.findByDutyCycle(0);
     }
 
 }

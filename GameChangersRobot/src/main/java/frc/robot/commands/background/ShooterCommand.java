@@ -6,6 +6,7 @@ import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 import frc.robot.utils.DebuggingLog;
+import frc.robot.vision.LimelightHelper;
 
 import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
@@ -48,6 +49,8 @@ public class ShooterCommand extends CommandBase {
                 sShooter.setOpenLoopDutyCycle(0);
 
                 if (mNeedsToShoot.getAsBoolean()) {
+                    LimelightHelper.setLEDMode(true);
+
                     if (kIsInTuningMode) {
                         mSetpointRawUnits = SmartDashboard.getNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
                     } else {
@@ -148,8 +151,6 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void initialize() {
-                SubsystemFlags.getInstance().setIsReadyToShoot(true);
-
                 mStartTime = getFPGATimestamp();
             }
 
@@ -168,6 +169,8 @@ public class ShooterCommand extends CommandBase {
             @Override
             public void finish() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(false);
+
+                LimelightHelper.setLEDMode(false);
             }
 
             @Override

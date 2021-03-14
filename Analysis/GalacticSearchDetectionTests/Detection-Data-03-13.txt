@@ -1,0 +1,23 @@
+Red A:
+  block 0: sig: 1 x: 164 y: 122 width: 44 height: 40 index: 0 age: 255
+  block 1: sig: 1 x: 246 y: 46 width: 20 height: 17 index: 1 age: 255
+  block 2: sig: 1 x: 32 y: 44 width: 12 height: 6 index: 3 age: 255
+  Worst Score: 8.67
+
+Blue A:
+  block 0: sig: 1 x: 293 y: 32 width: 14 height: 13 index: 0 age: 255
+  block 1: sig: 1 x: 109 y: 33 width: 10 height: 8 index: 1 age: 255
+  block 2: sig: 1 x: 158 y: 19 width: 8 height: 7 index: 2 age: 255
+  Worst Score: 8.53
+  
+Red B:
+  block 0: sig: 1 x: 250 y: 49 width: 20 height: 16 index: 0 age: 255
+  block 1: sig: 1 x: 104 y: 32 width: 12 height: 9 index: 1 age: 255
+  block 2: sig: 1 x: 2 y: 134 width: 4 height: 8 index: 2 age: 255
+  Worst Score: 10.61
+
+Blue B:
+  block 0: sig: 1 x: 227 y: 35 width: 14 height: 12 index: 0 age: 255
+  block 1: sig: 1 x: 114 y: 25 width: 12 height: 8 index: 3 age: 255
+  block 2: sig: 1 x: 193 y: 14 width: 6 height: 6 index: 2 age: 255
+  Worst Score: 7.40
