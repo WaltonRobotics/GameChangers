@@ -21,6 +21,7 @@ public final class Constants {
     public static class DriverPreferences {
 
         public static final double kDriveDeadband = 0.1;
+        public static final boolean kUseSquareCurve = true;
 
     }
 
@@ -73,8 +74,8 @@ public final class Constants {
     public static class Conveyor {
 
         // The time that the IRSensor flickers randomly after changing states
-        public static final double kIRSensorFlickeringTime = 0.75;
-        public static final double kNudgeTime = 0.29;
+        public static final double kIRSensorFlickeringTimeSeconds = 0.75;
+        public static final double kNudgeTimeSeconds = 0.29;
         public static final double kNudgeVoltage = 8.0;
         public static final double kFeedVoltage = 11.75;
         public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
@@ -91,10 +92,10 @@ public final class Constants {
 
         // Short period of time after the shoot button is released where the flywheels
         // continue rotating to ensure last few shots don't go amiss
-        public static final double kSpinDownTime = 0.25;
+        public static final double kSpinDownTimeSeconds = 0.25;
 
         public static final int kFlywheelEncoderPPR = 2048;
-        public static final double kFlywheelDiameter = 4.0;
+        public static final double kFlywheelDiameterInches = 4.0;
 
         public static final double kDefaultShootingDistanceFeet = 11.2;
         public static final double kDefaultVelocityRawUnits = 11500;
@@ -151,8 +152,22 @@ public final class Constants {
 
     public static class SmartDashboardKeys {
 
-        public static final String kLeftVelocityPKey = "Drivetrain/Left Velocity P";
-        public static final String kRightVelocityPKey = "Drivetrain/Right Velocity P";
+        public static final String kDrivetrainLeftVelocityPKey = "Drivetrain/Left Velocity P";
+        public static final String kDrivetrainRightVelocityPKey = "Drivetrain/Right Velocity P";
+        public static final String kDrivetrainAngularVelocityKey = "Drivetrain/Angular Velocity Deg/s";
+        public static final String kDrivetrainHeadingKey = "Drivetrain/Heading (deg)";
+        public static final String kDrivetrainLeftPositionKey = "Drivetrain/Left Encoder Position Meters";
+        public static final String kDrivetrainRightPositionKey = "Drivetrain/Right Encoder Position Meters";
+        public static final String kDrivetrainLeftVelocityKey = "Drivetrain/Left Encoder Velocity Meters/s";
+        public static final String kDrivetrainRightVelocityKey = "Drivetrain/Right Encoder Velocity Meters/s";
+
+        public static final String kAutoAlignHeadingSetpointKey = "Auto Align/Heading Setpoint Deg";
+        public static final String kAutoAlignPositionErrorKey = "Auto Align/Position Error Deg";
+        public static final String kAutoAlignVelocityErrorKey = "Auto Align/Velocity Error Deg/s";
+        public static final String kAutoAlignTurnRateKey = "Auto Align/Turn Rate";
+        public static final String kAutoAlignTurnPKey = "Auto Align/Turn P";
+        public static final String kAutoAlignTurnIKey = "Auto Align/Turn I";
+        public static final String kAutoAlignTurnDKey = "Auto Align/Turn D";
 
         public static final String kShooterMeasurementPeriodKey = "Shooter/Measurement Period";
         public static final String kShooterMeasurementWindowKey = "Shooter/Measurement Window";
@@ -167,11 +182,6 @@ public final class Constants {
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
         public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
 
-        public static final String kdriveStraightheadingPkey = "Drive Straight Heading P";
-        public static final String kforwardP = "Forward P";
-        public static final String kturnPkey = "Turn P";
-        public static final String kleftEncodervalue = "Left Encoder Value";
-        public static final String krightEncoderValue = "Right Encoder Value";
     }
 
     public static class LiveDashboardKeys {

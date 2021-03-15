@@ -89,7 +89,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public double getClosedLoopErrorInchesPerSec() {
-        return getClosedLoopErrorRevolutionsPerSec() * kFlywheelDiameter;
+        return getClosedLoopErrorRevolutionsPerSec() * kFlywheelDiameterInches;
     }
 
     public double getEstimatedVelocityFromTarget() {

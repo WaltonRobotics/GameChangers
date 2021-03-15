@@ -28,8 +28,7 @@ import static frc.robot.Constants.ContextFlags.kIsInCompetition;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
-import static frc.robot.Constants.SmartDashboardKeys.kLeftVelocityPKey;
-import static frc.robot.Constants.SmartDashboardKeys.kRightVelocityPKey;
+import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class Drivetrain extends SubsystemBase {
@@ -180,19 +179,19 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         if (kIsInTuningMode) {
-            mLeftWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kLeftVelocityPKey,
+            mLeftWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kDrivetrainLeftVelocityPKey,
                     sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP()), kDrivetrainVelocitySlot);
 
-            mRightWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kRightVelocityPKey,
+            mRightWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kDrivetrainRightVelocityPKey,
                     sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP()), kDrivetrainVelocitySlot);
         }
 
-        SmartDashboard.putNumber("Angular Rate", getAngularVelocity());
-        SmartDashboard.putNumber("Angle", getHeading().getDegrees());
-        SmartDashboard.putNumber("Left neo encoder velocity", getLeftVelocityMetersPerSec());
-        SmartDashboard.putNumber("right neo encoder velocity", getRightVelocityMetersPerSec());
-        SmartDashboard.putNumber("Left neo encoder distance", getLeftPositionMeters());
-        SmartDashboard.putNumber("right neo encoder distance", getRightPositionMeters());
+        SmartDashboard.putNumber(kDrivetrainAngularVelocityKey, getAngularVelocityDegreesPerSec());
+        SmartDashboard.putNumber(kDrivetrainHeadingKey, getHeading().getDegrees());
+        SmartDashboard.putNumber(kDrivetrainLeftPositionKey, getLeftPositionMeters());
+        SmartDashboard.putNumber(kDrivetrainRightPositionKey, getRightPositionMeters());
+        SmartDashboard.putNumber(kDrivetrainLeftVelocityKey, getLeftVelocityMetersPerSec());
+        SmartDashboard.putNumber(kDrivetrainRightVelocityKey, getRightVelocityMetersPerSec());
 
         updateRobotPose();
         LiveDashboardHelper.putRobotData(getCurrentPose());
@@ -336,7 +335,7 @@ public class Drivetrain extends SubsystemBase {
         return Rotation2d.fromDegrees(-mAhrs.getAngle());
     }
 
-    public double getAngularVelocity() {
+    public double getAngularVelocityDegreesPerSec() {
         return -mAhrs.getRate();
     }
 

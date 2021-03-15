@@ -86,11 +86,14 @@ public class Robot extends TimedRobot {
 
     private void populateShuffleboard() {
         if (kIsInTuningMode) {
-            SmartDashboard.putNumber(kLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
-            SmartDashboard.putNumber(kRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
+            SmartDashboard.putNumber(kDrivetrainLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
+            SmartDashboard.putNumber(kDrivetrainRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
             SmartDashboard.putNumber(kShooterMeasurementPeriodKey, 1);
             SmartDashboard.putNumber(kShooterMeasurementWindowKey, 1);
             SmartDashboard.putNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
+            SmartDashboard.putNumber(kAutoAlignTurnPKey, sCurrentRobot.getCurrentRobot().getDrivetrainTurnPID().getP());
+            SmartDashboard.putNumber(kAutoAlignTurnIKey, sCurrentRobot.getCurrentRobot().getDrivetrainTurnPID().getI());
+            SmartDashboard.putNumber(kAutoAlignTurnDKey, sCurrentRobot.getCurrentRobot().getDrivetrainTurnPID().getD());
         }
     }
 

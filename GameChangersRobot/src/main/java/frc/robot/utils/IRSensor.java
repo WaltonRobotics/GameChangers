@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static edu.wpi.first.wpilibj.RobotController.getFPGATime;
-import static frc.robot.Constants.Conveyor.kIRSensorFlickeringTime;
+import static frc.robot.Constants.Conveyor.kIRSensorFlickeringTimeSeconds;
 
 public class IRSensor extends DigitalInput {
 
@@ -26,9 +26,9 @@ public class IRSensor extends DigitalInput {
     }
 
     public void update() {
-        SmartDashboard.putBoolean("Ignore state", mIgnoreState);
+//        SmartDashboard.putBoolean("Ignore state", mIgnoreState);
 
-        if (mIgnoreState && getFPGATime() - mIgnoreStateStartTime >= kIRSensorFlickeringTime) {
+        if (mIgnoreState && getFPGATime() - mIgnoreStateStartTime >= kIRSensorFlickeringTimeSeconds) {
             mIgnoreState = false;
         }
 

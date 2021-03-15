@@ -161,7 +161,7 @@ public class ShooterCommand extends CommandBase {
                 // Hold the previous setpoint for a short period so Power Cells don't go short
                 sShooter.setClosedLoopVelocityRawUnits(mSetpointRawUnits);
 
-                if (getFPGATimestamp() - mStartTime > kSpinDownTime) {
+                if (getFPGATimestamp() - mStartTime > kSpinDownTimeSeconds) {
                     return mIdle;
                 }
 

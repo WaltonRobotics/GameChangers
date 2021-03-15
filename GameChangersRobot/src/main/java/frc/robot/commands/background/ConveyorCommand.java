@@ -134,7 +134,7 @@ public class ConveyorCommand extends CommandBase {
 
                 sConveyor.setBackVoltage(kNudgeVoltage);
 
-                if (getFPGATimestamp() - mStartTime > kNudgeTime) {
+                if (getFPGATimestamp() - mStartTime > kNudgeTimeSeconds) {
                     return determineState();
                 }
 
