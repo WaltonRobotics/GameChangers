@@ -106,6 +106,16 @@ public class PracticeGameChangers implements WaltRobot {
     }
 
     @Override
+    public double getDrivetrainMaxVelocity() {
+        return 8;
+    }
+
+    @Override
+    public double getDrivetrainMaxAcceleration() {
+        return 3;
+    }
+
+    @Override
     public double getLimelightMountingHeight() {
         return 23;
     }

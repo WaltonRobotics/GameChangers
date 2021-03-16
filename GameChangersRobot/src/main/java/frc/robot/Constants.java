@@ -103,12 +103,11 @@ public final class Constants {
         // Change to false to use polynomial interpolation instead
         public static final boolean kUseInterpolationMap = true;
 
-        public static final double kOptimalShootingDistance = 11;
-        public static final double kOptimalShootingDistanceFloor = 10;
-        public static final double kOptimalShootingDistanceCeiling = 12;
+        public static final double kOptimalShootingDistanceFloorFeet = 10;
+        public static final double kOptimalShootingDistanceCeilingFeet = 12;
 
-        public static final double kAbsoluteShootingDistanceFloor = 8.61;
-        public static final double kAbsoluteShootingDistanceCeiling = 22.38;
+        public static final double kAbsoluteShootingDistanceFloorFeet = 8.61;
+        public static final double kAbsoluteShootingDistanceCeilingFeet = 22.38;
 
         public static final int kTxWindowSize = 1;
         public static final int kTyWindowSize = 5;
@@ -129,7 +128,7 @@ public final class Constants {
     public static class ProMicro {
 
         public static final int kSerialPortBaudRate = 9600;
-        public static final double kUpdateRate = 0.2;
+        public static final double kUpdateRateSeconds = 0.2;
 
     }
 

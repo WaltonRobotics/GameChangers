@@ -64,6 +64,16 @@ public class CompGameChangers implements WaltRobot {
     }
 
     @Override
+    public double getDrivetrainMaxVelocity() {
+        return 0;
+    }
+
+    @Override
+    public double getDrivetrainMaxAcceleration() {
+        return 0;
+    }
+
+    @Override
     public double getLimelightMountingHeight() {
         return 0;
     }

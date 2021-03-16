@@ -98,8 +98,8 @@ public class Shooter extends SubsystemBase {
 
         double distanceFeet = LimelightHelper.getDistanceToTargetFeet();
 
-        distanceFeet = UtilMethods.limitRange(distanceFeet, kAbsoluteShootingDistanceFloor,
-                kAbsoluteShootingDistanceCeiling);
+        distanceFeet = UtilMethods.limitRange(distanceFeet, kAbsoluteShootingDistanceFloorFeet,
+                kAbsoluteShootingDistanceCeilingFeet);
 
         if (kUseInterpolationMap) {
             InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> map

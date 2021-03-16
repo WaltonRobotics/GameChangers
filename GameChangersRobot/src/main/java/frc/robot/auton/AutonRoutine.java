@@ -26,7 +26,12 @@ public enum AutonRoutine {
             new ConditionalCommand(
                     // Red A
                     new SequentialCommandGroup(
-
+                            new InstantCommand(() -> sDrivetrain.reset()),
+                            new ResetPose(sRedA),
+                            new SetIntakeToggle(true, 0.5),
+                            new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+                            new RamseteTrackingCommand(sRedA, true, false),
+                            new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(false))
                     ),
                     new ConditionalCommand(
                             // Red B
@@ -45,21 +50,6 @@ public enum AutonRoutine {
                     () -> PixyCamHelper.getGalacticSearchDetermination()
                             == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A
             )
-    ),
-
-    GALACTIC_SEARCH_BLUE_A("Galactic Search Blue A", new SequentialCommandGroup(
-            new ResetPose(sBlueA),
-            new RamseteTrackingCommand(sBlueA, true, false))
-    ),
-
-    GALACTIC_SEARCH_RED_B("Galactic Search Red B", new SequentialCommandGroup(
-            new ResetPose(sRedB),
-            new RamseteTrackingCommand(sRedB, true, false))
-    ),
-
-    GALACTIC_SEARCH_BLUE_B("Galactic Search Blue B", new SequentialCommandGroup(
-            new ResetPose(sBlueB),
-            new RamseteTrackingCommand(sBlueB, true, false))
     );
 
     private final String mDescription;
