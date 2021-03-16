@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.utils.EnhancedJoystickButton;
 import frc.robot.utils.Gamepad;
 
@@ -18,6 +19,7 @@ public class OI {
     public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sLeftJoystick, 1);
     public static EnhancedJoystickButton sResetBallCountButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUTTON.getIndex());
     public static EnhancedJoystickButton sAutoAlignButton = new EnhancedJoystickButton(sRightJoystick, 1);
+    public static EnhancedJoystickButton quickTurnButton = new EnhancedJoystickButton(sRightJoystick, 2);
 
     public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamepad, RIGHT_TRIGGER.getIndex());
     public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUMPER.getIndex());

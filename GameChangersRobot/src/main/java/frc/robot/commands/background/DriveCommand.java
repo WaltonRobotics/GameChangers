@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DriverPreferences.kDriveDeadband;
 import static frc.robot.OI.*;
+import static frc.robot.Robot.driveModeChooser;
 import static frc.robot.Robot.sDrivetrain;
 
 public class DriveCommand extends CommandBase {
@@ -25,7 +26,9 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        sDrivetrain.setDutyCycles(getLeftJoystickY(), getRightJoystickY());
+//        sDrivetrain.setDutyCycles(getLeftJoystickY(), getRightJoystickY());
+
+        driveModeChooser.getSelected().feed();
     }
 
     private double getLeftJoystickY() {

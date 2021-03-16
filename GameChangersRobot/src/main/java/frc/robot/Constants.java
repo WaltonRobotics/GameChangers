@@ -21,6 +21,8 @@ public final class Constants {
     public static class DriverPreferences {
 
         public static final double kDriveDeadband = 0.1;
+        public static final double QUICK_STOP_THRESHOLD = 0.2;
+        public static final double QUICK_STOP_ALPHA = 0.1;
 
     }
 

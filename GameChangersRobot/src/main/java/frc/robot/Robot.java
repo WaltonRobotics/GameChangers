@@ -12,6 +12,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
 import frc.robot.commands.background.*;
+import frc.robot.commands.background.driveMode.ArcadeDrive;
+import frc.robot.commands.background.driveMode.CurvatureDrive;
+import frc.robot.commands.background.driveMode.DriveMode;
+import frc.robot.commands.background.driveMode.TankDrive;
+import frc.robot.commands.background.responseFunction.*;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
@@ -43,6 +48,8 @@ public class Robot extends TimedRobot {
     public static ProMicro sProMicro;
 
     private static SendableChooser<AutonRoutine> mAutonChooser;
+    public static SendableChooser<DriveMode> driveModeChooser;
+    public static SendableChooser<ResponseFunction> responseFunctionChooser;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -79,6 +86,19 @@ public class Robot extends TimedRobot {
             mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
             SmartDashboard.putData("Auton Selector", mAutonChooser);
         }
+
+        driveModeChooser = new SendableChooser<>();
+        driveModeChooser.setDefaultOption("Curvature", new CurvatureDrive());
+        driveModeChooser.addOption("Tank", new TankDrive());
+        driveModeChooser.addOption("Arcade", new ArcadeDrive());
+        SmartDashboard.putData("Drive Mode Selector", driveModeChooser);
+
+        responseFunctionChooser = new SendableChooser<>();
+        responseFunctionChooser.addOption("Linear", new LinearResponse());
+        responseFunctionChooser.setDefaultOption("Squared", new SquaredResponse());
+        responseFunctionChooser.addOption("Cubic", new CubicResponse());
+        responseFunctionChooser.addOption("S Curve", new SCurveResponse());
+        SmartDashboard.putData("Response Function Selector", responseFunctionChooser);
 
         LimelightHelper.setLEDMode(false);
     }
