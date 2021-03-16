@@ -35,14 +35,14 @@ public enum AutonRoutine {
                                     // Blue A
                                     new SequentialCommandGroup(),
                                     // Blue B
-                                    new SequentialCommandGroup()
-                                    PixyCamHelper.getGalacticSearchDetermination()
+                                    new SequentialCommandGroup(),
+                                    () -> PixyCamHelper.getGalacticSearchDetermination()
                                             == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_BLUE_A
                             ),
-                            PixyCamHelper.getGalacticSearchDetermination()
+                            () -> PixyCamHelper.getGalacticSearchDetermination()
                                     == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_B
                     ),
-                    PixyCamHelper.getGalacticSearchDetermination()
+                    () -> PixyCamHelper.getGalacticSearchDetermination()
                             == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A
             )
     ),
