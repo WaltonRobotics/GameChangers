@@ -10,8 +10,8 @@ public enum RobotIdentifier {
     PRACTICE_GAME_CHANGERS(true, true, new PracticeGameChangers()),
     COMP_GAME_CHANGERS(false, false, new CompGameChangers());
 
-    boolean input1;
-    boolean input2;
+    private final boolean input1;
+    private final boolean input2;
 
     WaltRobot currentRobot;
 

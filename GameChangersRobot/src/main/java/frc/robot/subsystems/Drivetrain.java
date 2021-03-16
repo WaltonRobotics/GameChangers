@@ -40,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
     private final AHRS mAhrs = new AHRS(SPI.Port.kMXP);
 
     private final SimpleMotorFeedforward mFeedforward = sCurrentRobot.getCurrentRobot().getDrivetrainFeedforward();
-    private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(sCurrentRobot.getCurrentRobot().getTrackWidth());
+    private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(sCurrentRobot.getCurrentRobot().getDrivetrainTrackWidth());
     private final DifferentialDriveOdometry mDriveOdometry = new DifferentialDriveOdometry(getHeading());
     private final RamseteController mRamseteController = new RamseteController();
 

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.util.Units;
 
 import java.util.Arrays;
 
+import static frc.robot.Robot.sCurrentRobot;
 import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
@@ -68,20 +69,20 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchRedA() {
 
-            double maxVelocity = 8;
 
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(maxVelocity), Units.feetToMeters(3));
+                    Units.feetToMeters(sCurrentRobot.getCurrentRobot().getDrivetrainMaxVelocity()),
+                    Units.feetToMeters(sCurrentRobot.getCurrentRobot().getDrivetrainMaxAcceleration()));
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(maxVelocity);
+            config.setEndVelocity(sCurrentRobot.getCurrentRobot().getDrivetrainMaxVelocity());
 //            config.addConstraint(
 //                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
 //                            sDrivetrain.getDriveKinematics(), 10.0));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                            new Pose2d(Units.feetToMeters(4.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(3.729), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
                             new Pose2d(Units.feetToMeters(8.036), Units.feetToMeters(7.244), Rotation2d.fromDegrees(-35.148)),
                             new Pose2d(Units.feetToMeters(12.532), Units.feetToMeters(5.04), Rotation2d.fromDegrees(20.55)),
                             new Pose2d(Units.feetToMeters(15.223), Units.feetToMeters(12.669), Rotation2d.fromDegrees(0)),

@@ -2,12 +2,10 @@ package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.auton.AutoAlign;
-import frc.robot.vision.LimelightHelper;
-
-import java.util.function.DoubleSupplier;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
-import static frc.robot.Constants.DriverPreferences.kDriveDeadband;
+import static frc.robot.Constants.DriverPreferences.kDriveJoystickDeadband;
+import static frc.robot.Constants.DriverPreferences.kUseSquareCurve;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sDrivetrain;
 
@@ -29,15 +27,29 @@ public class DriveCommand extends CommandBase {
     }
 
     private double getLeftJoystickY() {
-        if (Math.abs(sLeftJoystick.getY()) < kDriveDeadband)
+        double rawValue =  sLeftJoystick.getY();
+
+        if (Math.abs(rawValue) < kDriveJoystickDeadband)
             return 0;
-        return -sLeftJoystick.getY();
+
+        if (kUseSquareCurve) {
+            return -Math.copySign(Math.pow(rawValue, 2), rawValue);
+        }
+
+        return -rawValue;
     }
 
     private double getRightJoystickY() {
-        if (Math.abs(sRightJoystick.getY()) < kDriveDeadband)
+        double rawValue =  sRightJoystick.getY();
+
+        if (Math.abs(rawValue) < kDriveJoystickDeadband)
             return 0;
-        return -sRightJoystick.getY();
+
+        if (kUseSquareCurve) {
+            return -Math.copySign(Math.pow(rawValue, 2), rawValue);
+        }
+
+        return -rawValue;
     }
 
     @Override

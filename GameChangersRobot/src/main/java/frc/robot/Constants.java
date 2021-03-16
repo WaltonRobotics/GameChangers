@@ -20,7 +20,7 @@ public final class Constants {
 
     public static class DriverPreferences {
 
-        public static final double kDriveDeadband = 0.1;
+        public static final double kDriveJoystickDeadband = 0.1;
         public static final boolean kUseSquareCurve = true;
 
     }
@@ -126,10 +126,10 @@ public final class Constants {
 
     }
 
-    public static class ProMini {
+    public static class ProMicro {
 
-        // Tolerance of duty cycles read from DIO pins
-        public static final double kDutyCycleTolerance = 0.05;
+        public static final int kSerialPortBaudRate = 9600;
+        public static final double kUpdateRate = 0.2;
 
     }
 
@@ -181,6 +181,9 @@ public final class Constants {
         public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
         public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
+
+        public static final String kProMicroLEDWriteMessageKey = "Pro Micro/LED Write Message";
+        public static final String kProMicroPixyCamReadMessageKey = "Pro Micro/PixyCam Read Message";
 
     }
 

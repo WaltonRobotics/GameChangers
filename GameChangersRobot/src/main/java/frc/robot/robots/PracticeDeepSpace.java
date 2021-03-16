@@ -59,7 +59,7 @@ public class PracticeDeepSpace implements WaltRobot {
     }
 
     @Override
-    public double getTrackWidth() {
+    public double getDrivetrainTrackWidth() {
         return 0;
     }
 

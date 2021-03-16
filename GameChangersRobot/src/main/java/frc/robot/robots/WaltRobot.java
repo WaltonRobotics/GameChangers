@@ -30,7 +30,10 @@ public interface WaltRobot {
 
     double getDrivetrainVelocityFactor();
 
-    double getTrackWidth();
+    double getDrivetrainTrackWidth();
+
+    double getDrivetrainMaxVelocity();
+    double getDrivetrainMaxAcceleration();
 
     double getLimelightMountingHeight();
 

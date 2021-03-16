@@ -101,7 +101,7 @@ public class PracticeGameChangers implements WaltRobot {
     }
 
     @Override
-    public double getTrackWidth() {
+    public double getDrivetrainTrackWidth() {
         return 0.6644190927877744;
     }
 

@@ -1,45 +1,43 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.DebuggingLog;
-import frc.robot.utils.UtilMethods;
 
 import java.util.logging.Level;
 
-import static frc.robot.Constants.DioIDs.kLEDStripWriteLineID;
-import static frc.robot.Constants.DioIDs.kPixyCamReadLineID;
-import static frc.robot.Constants.ProMini.kDutyCycleTolerance;
+import static frc.robot.Constants.ProMicro.kSerialPortBaudRate;
+import static frc.robot.Constants.ProMicro.kUpdateRate;
+import static frc.robot.Constants.SmartDashboardKeys.kProMicroLEDWriteMessageKey;
+import static frc.robot.Constants.SmartDashboardKeys.kProMicroPixyCamReadMessageKey;
 
 public class ProMicro extends SubsystemBase {
 
-    private final DigitalOutput mLEDStripWriteLine = new DigitalOutput(kLEDStripWriteLineID);
-    private final DigitalInput mPixyCamReadLine = new DigitalInput(kPixyCamReadLineID);
+    private SerialPort mSerialPort;
 
-    public enum PixyCamReadLineState {
-        NO_DETERMINATION(0.0),
-        GALACTIC_SEARCH_RED_A(0.25),
-        GALACTIC_SEARCH_RED_B(0.5),
-        GALACTIC_SEARCH_BLUE_A(0.75),
-        GALACTIC_SEARCH_BLUE_B(1.0);
+    private PixyCamReadMessage mCurrentPixyCamReadMessage;
+    private LEDStripWriteMessage mCurrentLEDStripWriteMessage;
 
-        private final double mDutyCycle;
+    private Notifier mUpdateNotifier;
 
-        PixyCamReadLineState(double dutyCycle) {
-            this.mDutyCycle = dutyCycle;
+    public enum PixyCamReadMessage {
+        NO_DETERMINATION((byte)0x0A),
+        GALACTIC_SEARCH_RED_A((byte)0x0B),
+        GALACTIC_SEARCH_RED_B((byte)0x0C),
+        GALACTIC_SEARCH_BLUE_A((byte)0x0D),
+        GALACTIC_SEARCH_BLUE_B((byte)0x0E);
+
+        private final byte mMessageByte;
+
+        PixyCamReadMessage(byte messageByte) {
+            this.mMessageByte = messageByte;
         }
 
-        public static PixyCamReadLineState findByDutyCycle(double dutyCycle) {
-            double interval = values()[1].getDutyCycle() - values()[0].getDutyCycle();
-
-            if (kDutyCycleTolerance >= interval / 2) {
-                DebuggingLog.getInstance().getLogger().log(Level.WARNING,
-                        "Duty cycle tolerance on PixyCam digital read line results in overlapping intervals");
-            }
-
-            for (PixyCamReadLineState state : values()) {
-                if (UtilMethods.isWithinTolerance(dutyCycle, state.getDutyCycle(), kDutyCycleTolerance)) {
+        public static PixyCamReadMessage findByMessageByte(byte readByte) {
+            for (PixyCamReadMessage state : values()) {
+                if (state.getMessageByte() == readByte) {
                     return state;
                 }
             }
@@ -47,46 +45,76 @@ public class ProMicro extends SubsystemBase {
             return NO_DETERMINATION;
         }
 
-        public double getDutyCycle() {
-            return mDutyCycle;
+        public byte getMessageByte() {
+            return mMessageByte;
         }
     }
 
-    public enum LEDStripWriteLineState {
-        IDLE(0.0),
-        TURN_LEFT(0.2),
-        TURN_RIGHT(0.4),
-        MOVE_FORWARD(0.6),
-        MOVE_BACKWARD(0.8),
-        ALIGNED_AND_IN_RANGE(1.0);
+    public enum LEDStripWriteMessage {
+        IDLE((byte)0x00),
+        TURN_LEFT_RANGE_BLINKING((byte)0x1A),
+        TURN_RIGHT_RANGE_BLINKING((byte)0x1B),
+        TURN_LEFT((byte)0x1C),
+        TURN_RIGHT((byte)0x1D),
+        ALIGNED_RANGE_BLINKING((byte)0x1E),
+        ALIGNED_AND_IN_RANGE((byte)0x1F);
 
-        private final double mDutyCycle;
+        private final byte mMessageByte;
 
-        LEDStripWriteLineState(double dutyCycle) {
-            this.mDutyCycle = dutyCycle;
+        LEDStripWriteMessage(byte messageByte) {
+            this.mMessageByte = messageByte;
         }
 
-        public double getDutyCycle() {
-            return mDutyCycle;
+        public byte getMessageByte() {
+            return mMessageByte;
         }
     }
 
     public ProMicro() {
-        // mLEDStripWriteLine.enablePWM(0.0);
+        try {
+            mSerialPort = new SerialPort(kSerialPortBaudRate, SerialPort.Port.kUSB1);
+        } catch(Exception e) {
+            try {
+                DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                        "Serial port connection on USB 1 port failed. Falling back to USB 2 port");
+
+                mSerialPort = new SerialPort(kSerialPortBaudRate, SerialPort.Port.kUSB2);
+            } catch(Exception e1) {
+                DebuggingLog.getInstance().getLogger().log(Level.SEVERE,
+                        "Serial port connection failed on both ports");
+            }
+        }
+
+        mCurrentPixyCamReadMessage = PixyCamReadMessage.NO_DETERMINATION;
+        mCurrentLEDStripWriteMessage = LEDStripWriteMessage.IDLE;
+
+        mUpdateNotifier = new Notifier(this::update);
+        mUpdateNotifier.startPeriodic(kUpdateRate);
     }
 
     @Override
     public void periodic() {
+        SmartDashboard.putString(kProMicroPixyCamReadMessageKey, mCurrentPixyCamReadMessage.name());
+        SmartDashboard.putString(kProMicroLEDWriteMessageKey, mCurrentLEDStripWriteMessage.name());
     }
 
-    public void setLEDStripState(LEDStripWriteLineState state) {
-        // mLEDStripWriteLine.updateDutyCycle(state.getDutyCycle());
-        mLEDStripWriteLine.set(true);
+    public void setLEDStripMessage(LEDStripWriteMessage state) {
+        mCurrentLEDStripWriteMessage = state;
     }
 
-    public PixyCamReadLineState getPixyCamState() {
-        // System.out.println(mPixyCamReadLine.getDutyCycle());
-        return PixyCamReadLineState.findByDutyCycle(0);
+    public PixyCamReadMessage getPixyCamDetermination() {
+        return mCurrentPixyCamReadMessage;
+    }
+
+    private void update() {
+        if (mSerialPort != null) {
+            mSerialPort.write(new byte[] {mCurrentLEDStripWriteMessage.getMessageByte()}, 1);
+
+            if (mSerialPort.getBytesReceived() > 0) {
+                System.out.println(mSerialPort.read(1)[0]);
+                mCurrentPixyCamReadMessage = PixyCamReadMessage.findByMessageByte(mSerialPort.read(1)[0]);
+            }
+        }
     }
 
 }

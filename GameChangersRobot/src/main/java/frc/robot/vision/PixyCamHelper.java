@@ -6,8 +6,8 @@ import static frc.robot.Robot.sProMicro;
 
 public class PixyCamHelper {
 
-    public static ProMicro.PixyCamReadLineState getGalacticSearchDetermination() {
-        return sProMicro.getPixyCamState();
+    public static ProMicro.PixyCamReadMessage getGalacticSearchDetermination() {
+        return sProMicro.getPixyCamDetermination();
     }
 
 }
