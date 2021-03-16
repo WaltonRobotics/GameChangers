@@ -36,10 +36,10 @@ public class IntakeCommand extends CommandBase {
                     return mRetract;
                 } else if (sDeployIntakeButton.isRisingEdge()) {
                     return mDeploy;
-                } else if (sIntake.isDeployed() && (sIntakeButton.get()
-                        || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
+                } else if (sIntakeButton.get()
+                        || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake())) {
                     return mIntaking;
-                } else if (sIntake.isDeployed() && sOuttakeButton.get()) {
+                } else if (sOuttakeButton.get()) {
                     return mOuttaking;
                 }
 
