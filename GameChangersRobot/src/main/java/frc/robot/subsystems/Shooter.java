@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.ShooterConfig;
@@ -13,8 +15,10 @@ import frc.robot.utils.UtilMethods;
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.vision.LimelightHelper;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 
+import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
@@ -150,6 +154,77 @@ public class Shooter extends SubsystemBase {
 
     public ShooterConfig getConfig() {
         return mConfig;
+    }
+
+    public boolean checkSystem() {
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,
+                "Checking Shooter Subsystem");
+
+        final double kCurrentThres = 0.5;
+        final double kRpmThres = 9000;
+
+        mFlywheelMaster.set(TalonFXControlMode.PercentOutput, 6.0 / RobotController.getBatteryVoltage());
+        Timer.delay(4.0);
+        final double currentRightMaster = mFlywheelMaster.getStatorCurrent();
+        final double rpmMaster = mFlywheelMaster.getSelectedSensorVelocity();
+        mFlywheelMaster.set(TalonFXControlMode.PercentOutput, 0.0);
+
+        Timer.delay(2.0);
+
+        mFlywheelSlave.set(TalonFXControlMode.PercentOutput, 6.0 / RobotController.getBatteryVoltage());
+        Timer.delay(4.0);
+        final double currentRightSlave = mFlywheelSlave.getStatorCurrent();
+        final double rpmFlywheelSlave = mFlywheelSlave.getSelectedSensorVelocity();
+        mFlywheelSlave.set(TalonFXControlMode.PercentOutput, 0.0);
+
+        Timer.delay(2.0);
+
+        configureFlywheelControllers();
+
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,
+                ("Shooter Flywheel Master Current: " + currentRightMaster + " Shooter Flywheel Slave Current: "
+                + currentRightSlave));
+
+        boolean failure = false;
+
+        if (currentRightMaster < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Master Current Low!");
+        }
+
+        if (currentRightSlave < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Slave Current Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(
+                currentRightMaster, currentRightSlave), currentRightMaster, 5.0)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Currents Different!");
+        }
+
+        if (rpmMaster < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Master RPM Low!");
+        }
+
+        if (rpmFlywheelSlave < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Slave RPM Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(rpmMaster, rpmFlywheelSlave), rpmMaster, 1000)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel RPMs Different!");
+        }
+
+        return !failure;
     }
 
 }

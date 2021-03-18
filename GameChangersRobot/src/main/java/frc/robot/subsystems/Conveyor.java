@@ -1,14 +1,21 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.ConveyorConfig;
+import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
+import frc.robot.utils.UtilMethods;
 
-import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
+import java.util.Arrays;
+import java.util.logging.Level;
+
 import static frc.robot.Constants.CANBusIDs.kBackConveyorID;
 import static frc.robot.Constants.CANBusIDs.kFrontConveyorID;
 import static frc.robot.Constants.Conveyor.kFrontLoadingCapacity;
@@ -43,7 +50,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void setFrontVoltage(double targetVoltage) {
-        setFrontDutyCycle(targetVoltage / getBatteryVoltage());
+        setFrontDutyCycle(targetVoltage / RobotController.getBatteryVoltage());
     }
 
     public void setBackDutyCycle(double targetDutyCycle) {
@@ -51,7 +58,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void setBackVoltage(double targetVoltage) {
-        setBackDutyCycle(targetVoltage / getBatteryVoltage());
+        setBackDutyCycle(targetVoltage / RobotController.getBatteryVoltage());
     }
 
     @Override
@@ -95,5 +102,55 @@ public class Conveyor extends SubsystemBase {
 
     public ConveyorConfig getConfig() {
         return mConfig;
+    }
+
+    public boolean checkSystem() {
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,
+                "Checking Conveyor Subsystem");
+
+        final double kCurrentThres = 0.5;
+
+        mBackConveyorController.set(VictorSPXControlMode.PercentOutput, 0.0);
+        mFrontConveyorController.set(VictorSPXControlMode.PercentOutput, 0.0);
+
+        mFrontConveyorController.set(VictorSPXControlMode.PercentOutput, 6.0f / RobotController.getBatteryVoltage());
+        Timer.delay(4.0);
+        final double frontConveyorCurrent = mFrontConveyorController.getMotorOutputVoltage()
+                / RobotController.getInputCurrent();
+        mFrontConveyorController.set(VictorSPXControlMode.PercentOutput, 0.0);
+
+        Timer.delay(2.0);
+
+        mBackConveyorController.set(VictorSPXControlMode.PercentOutput, -6.0f / RobotController.getBatteryVoltage());
+        Timer.delay(4.0);
+        final double backConveyorCurrent = mBackConveyorController.getMotorOutputVoltage()
+                / RobotController.getInputCurrent();
+        mBackConveyorController.set(VictorSPXControlMode.PercentOutput, 0.0f);
+
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,"Front Conveyor Current: " + frontConveyorCurrent
+                + " Back Conveyor Current: " + backConveyorCurrent);
+
+        boolean failure = false;
+
+        if (frontConveyorCurrent < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Front Conveyor Current Low!");
+        }
+
+        if (backConveyorCurrent < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Back Conveyor Current Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(frontConveyorCurrent, backConveyorCurrent),
+                frontConveyorCurrent, 5.0)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Conveyor Currents Different!");
+        }
+
+        return !failure;
     }
 }

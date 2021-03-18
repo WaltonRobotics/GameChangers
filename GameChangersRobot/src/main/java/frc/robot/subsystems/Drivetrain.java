@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.*;
 import edu.wpi.first.wpilibj.estimator.KalmanFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -23,6 +24,11 @@ import edu.wpi.first.wpiutil.math.VecBuilder;
 import edu.wpi.first.wpiutil.math.numbers.N2;
 import frc.robot.auton.LiveDashboardHelper;
 import frc.robot.config.DrivetrainConfig;
+import frc.robot.utils.DebuggingLog;
+import frc.robot.utils.UtilMethods;
+
+import java.util.Arrays;
+import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInCompetition;
@@ -349,6 +355,121 @@ public class Drivetrain extends SubsystemBase {
 
     public DrivetrainConfig getConfig() {
         return mConfig;
+    }
+
+    public boolean checkSystem() {
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,
+                "Testing Drive Subsystem");
+        final double kCurrentThres = 0.5;
+        final double kRpmThres = 0.5;
+
+        mRightWheelsMaster.setVoltage(0);
+        mRightWheelsSlave.setVoltage(0);
+        mLeftWheelsMaster.setVoltage(0);
+        mLeftWheelsSlave.setVoltage(0);
+
+        mRightWheelsMaster.setVoltage(-6.0f);
+        Timer.delay(4.0);
+        final double currentRightMaster = mRightWheelsMaster.getOutputCurrent();
+        final double rpmRightWheelsMaster = mRightWheelsMaster.getEncoder().getVelocity();
+        mRightWheelsMaster.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mRightWheelsSlave.setVoltage(-6.0f);
+        Timer.delay(4.0);
+        final double currentRightSlave = mRightWheelsSlave.getOutputCurrent();
+        final double rpmRightWheelsSlave = mRightWheelsMaster.getEncoder().getVelocity();
+        mRightWheelsSlave.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mLeftWheelsMaster.setVoltage(6.0f);
+        Timer.delay(4.0);
+        final double currentLeftMaster = mLeftWheelsMaster.getOutputCurrent();
+        final double rpmLeftWheelsMaster = mLeftWheelsMaster.getEncoder().getVelocity();
+        mLeftWheelsMaster.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mLeftWheelsSlave.setVoltage(6.0f);
+        Timer.delay(4.0);
+        final double currentLeftSlave = mLeftWheelsSlave.getOutputCurrent();
+        final double rpmLeftWheelsSlave = mLeftWheelsMaster.getEncoder().getVelocity();
+        mLeftWheelsSlave.set(0.0);
+
+        configureControllersExcludingIdleMode();
+
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,"Drive Right Master Current: " + currentRightMaster
+                + " Drive Right Slave Current: " + currentRightSlave);
+        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Drive Left Master Current: " + currentLeftMaster
+                + " Drive Left Slave Current: " + currentLeftSlave);
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,"Drive RPM RMaster: " + rpmRightWheelsMaster
+                + " RSlave: " + rpmRightWheelsSlave + " LMaster: " + rpmLeftWheelsMaster
+                + " LSlave: " + rpmLeftWheelsSlave);
+
+        boolean failure = false;
+
+        if (currentRightMaster < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,"Drive Right Master Current Low!");
+        }
+
+        if (currentRightSlave < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Slave Current Low!");
+        }
+
+        if (currentLeftMaster < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Master Current Low!");
+        }
+
+        if (currentLeftSlave < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Slave Current Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(currentRightMaster, currentRightSlave), currentRightMaster,
+                5.0)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Currents Different!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(currentLeftMaster, currentLeftSlave), currentLeftSlave,
+                5.0)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Currents Different!");
+        }
+
+        if (rpmRightWheelsMaster < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Master RPM Low!");
+        }
+
+        if (rpmRightWheelsSlave < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Slave RPM Low!");
+        }
+
+        if (rpmLeftWheelsMaster < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Master RPM Low!");
+        }
+
+        if (rpmLeftWheelsSlave < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Slave RPM Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(rpmRightWheelsMaster, rpmRightWheelsSlave,
+                rpmLeftWheelsMaster, rpmLeftWheelsSlave),
+                rpmRightWheelsMaster, 0.5)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive RPMs different!");
+        }
+
+        return !failure;
     }
 
 }
