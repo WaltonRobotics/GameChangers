@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.config.ConveyorConfig;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
 
@@ -15,14 +16,17 @@ import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
 import static frc.robot.Constants.DioIDs.kConveyorBackSensorID;
 import static frc.robot.Constants.DioIDs.kConveyorFrontSensorID;
 import static frc.robot.Constants.SmartDashboardKeys.*;
+import static frc.robot.Robot.sCurrentRobot;
 
 public class Conveyor extends SubsystemBase {
+
+    private final ConveyorConfig mConfig = sCurrentRobot.getCurrentRobot().getConveyorConfig();
 
     private final VictorSPX mFrontConveyorController = new VictorSPX(kFrontConveyorID);
     private final VictorSPX mBackConveyorController = new VictorSPX(kBackConveyorID);
 
-    private final IRSensor mFrontConveyorSensor = new IRSensor(kConveyorFrontSensorID);
-    private final IRSensor mBackConveyorSensor = new IRSensor(kConveyorBackSensorID);
+    private final IRSensor mFrontConveyorSensor = new IRSensor(kConveyorFrontSensorID, mConfig.kIRSensorFlickeringTimeSeconds);
+    private final IRSensor mBackConveyorSensor = new IRSensor(kConveyorBackSensorID, mConfig.kIRSensorFlickeringTimeSeconds);
     private final EnhancedBoolean mFrontConveyorBool = new EnhancedBoolean();
     private final EnhancedBoolean mBackConveyorBool = new EnhancedBoolean();
 
@@ -87,5 +91,9 @@ public class Conveyor extends SubsystemBase {
 
     public boolean shouldNudge() {
         return getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity && mFrontConveyorBool.get();
+    }
+
+    public ConveyorConfig getConfig() {
+        return mConfig;
     }
 }

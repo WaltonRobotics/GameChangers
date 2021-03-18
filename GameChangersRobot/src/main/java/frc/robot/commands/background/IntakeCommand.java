@@ -109,7 +109,7 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sIntake.setRollerDutyCycle(0.8);
+                sIntake.setRollerDutyCycle(sIntake.getConfig().kIntakeDutyCycle);
 
                 if (!(sIntakeButton.get()
                         || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
@@ -138,7 +138,7 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sIntake.setRollerDutyCycle(-0.8);
+                sIntake.setRollerDutyCycle(sIntake.getConfig().kOuttakeDutyCycle);
 
                 if (!sOuttakeButton.get()) {
                     return mIdle;

@@ -23,7 +23,7 @@ import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
 
-    private double mSetpointRawUnits = 12500;
+    private double mSetpointRawUnits = kDefaultVelocityRawUnits;
 
     private final IState mIdle;
     private final IState mSpinningUp;

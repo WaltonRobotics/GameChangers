@@ -40,6 +40,8 @@ public final class Constants {
         public static final int kFlywheelMasterID = 9;
         public static final int kFlywheelSlaveID = 10;
 
+        public static final int kTurretID = 11;
+
     }
 
     public static class DioIDs {
@@ -73,11 +75,6 @@ public final class Constants {
 
     public static class Conveyor {
 
-        // The time that the IRSensor flickers randomly after changing states
-        public static final double kIRSensorFlickeringTimeSeconds = 0.75;
-        public static final double kNudgeTimeSeconds = 0.29;
-        public static final double kNudgeVoltage = 8.0;
-        public static final double kFeedVoltage = 11.75;
         public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
         public static final int kFrontLoadingCapacity = 2;
 

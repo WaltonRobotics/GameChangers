@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
     public static Shooter sShooter;
     public static Intake sIntake;
     public static Conveyor sConveyor;
+    public static Turret sTurret;
     public static ProMicro sProMicro;
 
     private static SendableChooser<AutonRoutine> mAutonChooser;
@@ -71,6 +72,11 @@ public class Robot extends TimedRobot {
 
             sConveyor = new Conveyor();
             CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
+
+            if (sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+                sTurret = new Turret();
+                CommandScheduler.getInstance().setDefaultCommand(sTurret, new TurretCommand());
+            }
 
             sProMicro = new ProMicro();
             CommandScheduler.getInstance().setDefaultCommand(sProMicro, new ProMicroCommand());

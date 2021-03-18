@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.config.ShooterConfig;
 import frc.robot.utils.UtilMethods;
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
@@ -14,13 +15,14 @@ import frc.robot.vision.LimelightHelper;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
-import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class Shooter extends SubsystemBase {
+
+    private final ShooterConfig mConfig = sCurrentRobot.getCurrentRobot().getShooterConfig();
 
     private final TalonFX mFlywheelMaster = new TalonFX(kFlywheelMasterID);
     private final TalonFX mFlywheelSlave = new TalonFX(kFlywheelSlaveID);
@@ -43,22 +45,26 @@ public class Shooter extends SubsystemBase {
 //        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
 //        mFlywheelMaster.configVelocityMeasurementWindow(32);
 
-        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, 0.04934694);
-        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, 0.2);
-        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, 0.002);
-        mFlywheelMaster.config_kD(kShooterSpinningUpSlot, 0);
-        mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, 600);
+        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, mConfig.kSpinningUpF);
+        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, mConfig.kSpinningUpP);
+        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, mConfig.kSpinningUpI);
+        mFlywheelMaster.config_kD(kShooterSpinningUpSlot, mConfig.kSpinningUpD);
+        mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, mConfig.kSpinningUpIZone);
+        mFlywheelMaster.configMaxIntegralAccumulator(kShooterSpinningUpSlot, mConfig.kSpinningUpMaxIntegralAccumulator);
+        mFlywheelMaster.configClosedLoopPeakOutput(kShooterSpinningUpSlot, mConfig.kSpinningUpPeakOutput);
 
-        mFlywheelMaster.config_kF(kShooterShootingSlot, 0.04934694);
-        mFlywheelMaster.config_kP(kShooterShootingSlot, 0.21);
-        mFlywheelMaster.config_kI(kShooterShootingSlot, 0.002);
-        mFlywheelMaster.config_kD(kShooterShootingSlot, 0);
-        mFlywheelMaster.config_IntegralZone(kShooterShootingSlot, 600);
+        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, mConfig.kShootingF);
+        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, mConfig.kShootingP);
+        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, mConfig.kShootingI);
+        mFlywheelMaster.config_kD(kShooterSpinningUpSlot, mConfig.kShootingD);
+        mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, mConfig.kSpinningUpIZone);
+        mFlywheelMaster.configMaxIntegralAccumulator(kShooterSpinningUpSlot, mConfig.kSpinningUpMaxIntegralAccumulator);
+        mFlywheelMaster.configClosedLoopPeakOutput(kShooterSpinningUpSlot, mConfig.kSpinningUpPeakOutput);
 
         // Voltage compensation
-        mFlywheelMaster.configVoltageCompSaturation(10);
+        mFlywheelMaster.configVoltageCompSaturation(mConfig.kMaxVoltage);
         mFlywheelMaster.enableVoltageCompensation(true);
-        mFlywheelSlave.configVoltageCompSaturation(10);
+        mFlywheelSlave.configVoltageCompSaturation(mConfig.kMaxVoltage);
         mFlywheelSlave.enableVoltageCompensation(false);
     }
 
@@ -133,6 +139,10 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber(kShooterErrorRPSKey, getClosedLoopErrorRevolutionsPerSec());
         SmartDashboard.putNumber(kShooterErrorInchesKey, getClosedLoopErrorInchesPerSec());
         SmartDashboard.putNumber(kShooterLimelightDistanceFeetKey, LimelightHelper.getDistanceToTargetFeet());
+    }
+
+    public ShooterConfig getConfig() {
+        return mConfig;
     }
 
 }
