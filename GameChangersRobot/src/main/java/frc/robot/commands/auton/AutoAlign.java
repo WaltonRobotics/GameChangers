@@ -23,6 +23,8 @@ public class AutoAlign extends CommandBase {
 
     @Override
     public void initialize() {
+        LimelightHelper.setLEDMode(true);
+
         targetHeading = sDrivetrain.getHeading().getDegrees() - LimelightHelper.getTX();
 
         DebuggingLog.getInstance().getLogger().log(Level.INFO, "Auto align turning to: " + targetHeading);
@@ -58,6 +60,8 @@ public class AutoAlign extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         sDrivetrain.setDutyCycles(0, 0);
+
+        LimelightHelper.setLEDMode(false);
     }
 
     @Override
