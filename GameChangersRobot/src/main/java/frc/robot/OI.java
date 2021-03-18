@@ -23,6 +23,7 @@ public class OI {
 
     public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamepad, RIGHT_TRIGGER.getIndex());
     public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUMPER.getIndex());
+    public static EnhancedJoystickButton sToggleLimelightLEDsButton = new EnhancedJoystickButton(sGamepad, TOP_DPAD_BUTTON.getIndex());
 
     public static EnhancedJoystickButton sRetractIntakeButton = new EnhancedJoystickButton(sGamepad, POV_N);
     public static EnhancedJoystickButton sDeployIntakeButton = new EnhancedJoystickButton(sGamepad, POV_S);
