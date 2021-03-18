@@ -11,13 +11,7 @@ import frc.robot.utils.interpolation.PolynomialRegression;
 /* Generic interface for all Walton robots and their characteristics. */
 public interface WaltRobot {
 
-    /* Turret/shooter methods */
-    double getLimelightMountingHeight();
-    double getLimelightMountingAngle();
-
     void populateShooterInterpolationMethods();
-    InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> getShooterMap();
-    PolynomialRegression getShooterPolynomial();
 
     DrivetrainConfig getDrivetrainConfig();
     ShooterConfig getShooterConfig();

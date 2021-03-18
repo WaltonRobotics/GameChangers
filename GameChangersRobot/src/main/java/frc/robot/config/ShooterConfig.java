@@ -1,5 +1,9 @@
 package frc.robot.config;
 
+import frc.robot.utils.interpolation.InterpolatingDouble;
+import frc.robot.utils.interpolation.InterpolatingTreeMap;
+import frc.robot.utils.interpolation.PolynomialRegression;
+
 public class ShooterConfig {
 
     // Velocity PIDF Control
@@ -24,5 +28,8 @@ public class ShooterConfig {
     // Limelight
     public double kLimelightMountingHeight;
     public double kLimelightMountingAngle;
+
+    public InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kShooterMap;
+    public PolynomialRegression kShooterPolynomial;
 
 }

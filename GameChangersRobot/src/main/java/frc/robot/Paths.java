@@ -15,31 +15,6 @@ import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
 
-    public static Trajectory generateBarrelRacingPath() {
-        TrajectoryConfig config = new TrajectoryConfig(
-                Units.feetToMeters(10.0), Units.feetToMeters(6.0));
-
-        config.setKinematics(sDrivetrain.getDriveKinematics());
-        config.addConstraint(
-                new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
-                        sDrivetrain.getDriveKinematics(), 10.0));
-
-        return TrajectoryGenerator.generateTrajectory(
-                Arrays.asList(
-                        new Pose2d(Units.feetToMeters(2.5), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0.069)),
-                        new Pose2d(Units.feetToMeters(13.895), Units.feetToMeters(6.116), Rotation2d.fromDegrees(-94.485)),
-                        new Pose2d(Units.feetToMeters(12.186), Units.feetToMeters(2.624), Rotation2d.fromDegrees(111.26)),
-                        new Pose2d(Units.feetToMeters(11.692), Units.feetToMeters(6.34), Rotation2d.fromDegrees(39.031)),
-                        new Pose2d(Units.feetToMeters(21.574), Units.feetToMeters(8.846), Rotation2d.fromDegrees(59.526)),
-                        new Pose2d(Units.feetToMeters(19.21), Units.feetToMeters(11.928), Rotation2d.fromDegrees(-136.805)),
-                        new Pose2d(Units.feetToMeters(19.336), Units.feetToMeters(7.259), Rotation2d.fromDegrees(-28.706)),
-                        new Pose2d(Units.feetToMeters(25.978), Units.feetToMeters(3.025), Rotation2d.fromDegrees(27.306)),
-                        new Pose2d(Units.feetToMeters(25.458), Units.feetToMeters(7.656), Rotation2d.fromDegrees(178.519)),
-                        new Pose2d(Units.feetToMeters(2.46), Units.feetToMeters(8.28), Rotation2d.fromDegrees(-179.633))),
-                config
-        );
-    }
-
     public static class TestTrajectory {
         public static Trajectory sTestTrajectory = generateTestTrajectory();
 
@@ -68,17 +43,12 @@ public class Paths {
         public static Trajectory sBlueB = generateGalacticSearchBlueB();
 
         public static Trajectory generateGalacticSearchRedA() {
-
-
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(sCurrentRobot.getCurrentRobot().getDrivetrainMaxVelocity()),
-                    Units.feetToMeters(sCurrentRobot.getCurrentRobot().getDrivetrainMaxAcceleration()));
+                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(sCurrentRobot.getCurrentRobot().getDrivetrainMaxVelocity());
-//            config.addConstraint(
-//                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
-//                            sDrivetrain.getDriveKinematics(), 10.0));
+            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -93,12 +63,11 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchBlueA() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(6.0));
+                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.addConstraint(
-                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
-                            sDrivetrain.getDriveKinematics(), 10.0));
+            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -114,12 +83,11 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchRedB() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(6.0));
+                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.addConstraint(
-                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
-                            sDrivetrain.getDriveKinematics(), 10.0));
+            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -134,12 +102,11 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchBlueB() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(6.0));
+                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.addConstraint(
-                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
-                            sDrivetrain.getDriveKinematics(), 10.0));
+            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(

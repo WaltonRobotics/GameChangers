@@ -4,8 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.auton.AutoAlign;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
-import static frc.robot.Constants.DriverPreferences.kDriveJoystickDeadband;
-import static frc.robot.Constants.DriverPreferences.kUseSquareCurve;
+import static frc.robot.Constants.DriverPreferences.*;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sDrivetrain;
 
@@ -18,7 +17,7 @@ public class DriveCommand extends CommandBase {
             sResetDrivetrainButton.whenPressed(() -> sDrivetrain.reset());
         }
 
-        sAutoAlignButton.whenPressed(new AutoAlign().withTimeout(1.5));
+        sAutoAlignButton.whenPressed(new AutoAlign().withTimeout(kAutoAlignTimeout));
     }
 
     @Override

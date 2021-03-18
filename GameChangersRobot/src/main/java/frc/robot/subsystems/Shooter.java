@@ -11,7 +11,6 @@ import frc.robot.config.ShooterConfig;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
 import frc.robot.utils.interpolation.InterpolatingDouble;
-import frc.robot.utils.interpolation.InterpolatingTreeMap;
 import frc.robot.vision.LimelightHelper;
 
 import java.util.logging.Level;
@@ -53,6 +52,7 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.config_kP(kShooterSpinningUpSlot, mConfig.kSpinningUpP);
         mFlywheelMaster.config_kI(kShooterSpinningUpSlot, mConfig.kSpinningUpI);
         mFlywheelMaster.config_kD(kShooterSpinningUpSlot, mConfig.kSpinningUpD);
+        mFlywheelMaster.configAllowableClosedloopError(kShooterSpinningUpSlot, 0);
         mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, mConfig.kSpinningUpIZone);
         mFlywheelMaster.configMaxIntegralAccumulator(kShooterSpinningUpSlot, mConfig.kSpinningUpMaxIntegralAccumulator);
         mFlywheelMaster.configClosedLoopPeakOutput(kShooterSpinningUpSlot, mConfig.kSpinningUpPeakOutput);
@@ -61,6 +61,7 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.config_kP(kShooterShootingSlot, mConfig.kShootingP);
         mFlywheelMaster.config_kI(kShooterShootingSlot, mConfig.kShootingI);
         mFlywheelMaster.config_kD(kShooterShootingSlot, mConfig.kShootingD);
+        mFlywheelMaster.configAllowableClosedloopError(kShooterShootingSlot, 0);
         mFlywheelMaster.config_IntegralZone(kShooterShootingSlot, mConfig.kShootingIZone);
         mFlywheelMaster.configMaxIntegralAccumulator(kShooterShootingSlot, mConfig.kShootingMaxIntegralAccumulator);
         mFlywheelMaster.configClosedLoopPeakOutput(kShooterShootingSlot, mConfig.kShootingPeakOutput);
@@ -117,18 +118,15 @@ public class Shooter extends SubsystemBase {
                 kAbsoluteShootingDistanceCeilingFeet);
 
         if (kUseInterpolationMap) {
-            InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> map
-                    = sCurrentRobot.getCurrentRobot().getShooterMap();
-
-            InterpolatingDouble result = map.getInterpolated(new InterpolatingDouble(distanceFeet));
+            InterpolatingDouble result = mConfig.kShooterMap.getInterpolated(new InterpolatingDouble(distanceFeet));
 
             if (result != null) {
                 return result.value;
             } else {
-                return map.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
+                return mConfig.kShooterMap.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
             }
         } else {
-            return sCurrentRobot.getCurrentRobot().getShooterPolynomial().predict(distanceFeet);
+            return mConfig.kShooterPolynomial.predict(distanceFeet);
         }
     }
 

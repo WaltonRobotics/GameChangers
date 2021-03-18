@@ -11,26 +11,6 @@ import frc.robot.utils.interpolation.PolynomialRegression;
 
 public class PracticeGameChangers implements WaltRobot {
 
-    private final SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
-    private final PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
-    private final PIDController mDrivetrainRightVoltagePID = new PIDController(1, 0, 0);
-    private final PIDController mDrivetrainLeftVelocityPID = new PIDController(0.197, 0, 0);
-    private final PIDController mDrivetrainRightVelocityPID = new PIDController(0.197, 0, 0);
-
-    private final ProfiledPIDController mDrivetrainTurnProfiledPID = new ProfiledPIDController(
-            0.015, 0, 0,
-            new TrapezoidProfile.Constraints(400, 400)
-    );
-
-    private final ProfiledPIDController mDrivetrainDriveStraightPowerProfiledPID = new ProfiledPIDController(
-            0.8, 0, 0,
-            new TrapezoidProfile.Constraints(1.5,1.5)
-    );
-    private final ProfiledPIDController mDrivetrainDriveStraightHeadingProfiledPID = new ProfiledPIDController(
-            0.2, 0, 0,
-            new TrapezoidProfile.Constraints(60, 30)
-    );
-
     private final double[][] mDistanceToVelocityTable = {
             { 8.61, 13000 },
             { 10.94, 11500 },
@@ -56,18 +36,31 @@ public class PracticeGameChangers implements WaltRobot {
 
         populateShooterInterpolationMethods();
 
+        ProfiledPIDController mDrivetrainTurnProfiledPID = new ProfiledPIDController(
+                0.015, 0, 0,
+                new TrapezoidProfile.Constraints(400, 400)
+        );
         mDrivetrainTurnProfiledPID.enableContinuousInput(-180.0, 180.0);
         mDrivetrainTurnProfiledPID.setTolerance(1, 1);
 
+        ProfiledPIDController mDrivetrainDriveStraightPowerProfiledPID = new ProfiledPIDController(
+                0.8, 0, 0,
+                new TrapezoidProfile.Constraints(1.5, 1.5)
+        );
         mDrivetrainDriveStraightPowerProfiledPID.setTolerance(0.09);
-        mDrivetrainDriveStraightHeadingProfiledPID.setTolerance(3);
+
+        ProfiledPIDController mDrivetrainDriveStraightHeadingProfiledPID = new ProfiledPIDController(
+                0.2, 0, 0,
+                new TrapezoidProfile.Constraints(60, 30)
+        );
+        mDrivetrainDriveStraightHeadingProfiledPID.setTolerance(1.5);
 
         mDrivetrainConfig = new DrivetrainConfig();
-        mDrivetrainConfig.feedforward = mDrivetrainFeedforward;
-        mDrivetrainConfig.leftVoltagePID = mDrivetrainLeftVoltagePID;
-        mDrivetrainConfig.rightVoltagePID = mDrivetrainRightVoltagePID;
-        mDrivetrainConfig.leftVelocityPID = mDrivetrainLeftVelocityPID;
-        mDrivetrainConfig.rightVelocityPID = mDrivetrainRightVelocityPID;
+        mDrivetrainConfig.feedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
+        mDrivetrainConfig.leftVoltagePID = new PIDController(1, 0, 0);
+        mDrivetrainConfig.rightVoltagePID = new PIDController(1, 0, 0);
+        mDrivetrainConfig.leftVelocityPID = new PIDController(0.197, 0, 0);
+        mDrivetrainConfig.rightVelocityPID = new PIDController(0.197, 0, 0);
         mDrivetrainConfig.turnProfiledPID = mDrivetrainTurnProfiledPID;
         mDrivetrainConfig.driveStraightProfiledPowerPID = mDrivetrainDriveStraightPowerProfiledPID;
         mDrivetrainConfig.driveStraightProfiledHeadingPID = mDrivetrainDriveStraightHeadingProfiledPID;
@@ -80,19 +73,33 @@ public class PracticeGameChangers implements WaltRobot {
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
 
         mShooterConfig = new ShooterConfig();
+        mShooterConfig.kSpinningUpF = 0.04934694;
+        mShooterConfig.kSpinningUpP = 0.2;
+        mShooterConfig.kSpinningUpI = 0.002;
+        mShooterConfig.kSpinningUpD = 0;
+        mShooterConfig.kSpinningUpIZone = 600;
+        mShooterConfig.kSpinningUpMaxIntegralAccumulator = 1000;
+        mShooterConfig.kSpinningUpPeakOutput = 1.0;
+
+        mShooterConfig.kShootingF = 0.04934694;
+        mShooterConfig.kShootingP = 0.21;
+        mShooterConfig.kShootingI = 0.002;
+        mShooterConfig.kShootingD = 0;
+        mShooterConfig.kShootingIZone = 600;
+        mShooterConfig.kShootingMaxIntegralAccumulator = 1000;
+        mShooterConfig.kShootingPeakOutput = 1.0;
+
+        mShooterConfig.kMaxVoltage = 11.0;
+
+        mShooterConfig.kLimelightMountingHeight = 23;
+        mShooterConfig.kLimelightMountingAngle = 33.5;
+
+        mShooterConfig.kShooterMap = mShooterMap;
+        mShooterConfig.kShooterPolynomial = mShooterPolynomial;
+
         mIntakeConfig = new IntakeConfig();
         mConveyorConfig = new ConveyorConfig();
         mTurretConfig = new TurretConfig();
-    }
-
-    @Override
-    public double getLimelightMountingHeight() {
-        return 23;
-    }
-
-    @Override
-    public double getLimelightMountingAngle() {
-        return 33.5;
     }
 
     @Override
@@ -103,16 +110,6 @@ public class PracticeGameChangers implements WaltRobot {
         for (double[] pair : mDistanceToVelocityTable) {
             mShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
         }
-    }
-
-    @Override
-    public InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> getShooterMap() {
-        return mShooterMap;
-    }
-
-    @Override
-    public PolynomialRegression getShooterPolynomial() {
-        return mShooterPolynomial;
     }
 
     @Override
