@@ -57,7 +57,8 @@ public final class Constants {
 
     public static class PneumaticsIDs {
 
-        public static final int kIntakeSolenoidID = 1;
+        public static final int kDeployIntakeSolenoidID = 1;
+        public static final int kRetractIntakeSolenoidID = 2;
 
     }
 

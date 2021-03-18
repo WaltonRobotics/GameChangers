@@ -61,6 +61,7 @@ public class IntakeCommand extends CommandBase {
             @Override
             public void initialize() {
                 sIntake.setDeployed(true);
+                sIntake.setRetracted(false);
             }
 
             @Override
@@ -83,6 +84,7 @@ public class IntakeCommand extends CommandBase {
             @Override
             public void initialize() {
                 sIntake.setDeployed(false);
+                sIntake.setRetracted(true);
             }
 
             @Override
