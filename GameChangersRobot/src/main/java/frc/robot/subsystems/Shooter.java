@@ -8,10 +8,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.ShooterConfig;
+import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
 import frc.robot.vision.LimelightHelper;
+
+import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
@@ -101,6 +104,11 @@ public class Shooter extends SubsystemBase {
     public double getEstimatedVelocityFromTarget() {
         // If the limelight does not see a target, we use the last known "ty" value since
         // LimelightHelper uses a MovingAverage to keep track of it at all times
+
+        if (LimelightHelper.getTV() <= 0) {
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "No target found for shooter. Using last known information");
+        }
 
         double distanceFeet = LimelightHelper.getDistanceToTargetFeet();
 
