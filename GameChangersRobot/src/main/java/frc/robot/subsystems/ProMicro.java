@@ -20,8 +20,6 @@ public class ProMicro extends SubsystemBase {
     private PixyCamReadMessage mCurrentPixyCamReadMessage;
     private LEDStripWriteMessage mCurrentLEDStripWriteMessage;
 
-    private Notifier mUpdateNotifier;
-
     public enum PixyCamReadMessage {
         NO_DETERMINATION((byte)0x0A),
         GALACTIC_SEARCH_RED_A((byte)0x0B),
@@ -88,8 +86,8 @@ public class ProMicro extends SubsystemBase {
         mCurrentPixyCamReadMessage = PixyCamReadMessage.NO_DETERMINATION;
         mCurrentLEDStripWriteMessage = LEDStripWriteMessage.IDLE;
 
-        mUpdateNotifier = new Notifier(this::update);
-        mUpdateNotifier.startPeriodic(kUpdateRateSeconds);
+        Notifier updateNotifier = new Notifier(this::update);
+        updateNotifier.startPeriodic(kUpdateRateSeconds);
     }
 
     @Override
