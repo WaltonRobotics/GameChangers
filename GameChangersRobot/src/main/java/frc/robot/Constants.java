@@ -49,9 +49,6 @@ public final class Constants {
         public static final int kConveyorFrontSensorID = 4;
         public static final int kConveyorBackSensorID = 5;
 
-        public static final int kLEDStripWriteLineID = 6;
-        public static final int kPixyCamReadLineID = 7;
-
         public static final int kRobotID1 = 8;
         public static final int kRobotID2 = 9;
 
@@ -157,13 +154,25 @@ public final class Constants {
         public static final String kDrivetrainLeftVelocityKey = "Drivetrain/Left Encoder Velocity Meters/s";
         public static final String kDrivetrainRightVelocityKey = "Drivetrain/Right Encoder Velocity Meters/s";
 
-        public static final String kAutoAlignHeadingSetpointKey = "Auto Align/Heading Setpoint Deg";
-        public static final String kAutoAlignPositionErrorKey = "Auto Align/Position Error Deg";
-        public static final String kAutoAlignVelocityErrorKey = "Auto Align/Velocity Error Deg/s";
-        public static final String kAutoAlignTurnRateKey = "Auto Align/Turn Rate";
-        public static final String kAutoAlignTurnPKey = "Auto Align/Turn P";
-        public static final String kAutoAlignTurnIKey = "Auto Align/Turn I";
-        public static final String kAutoAlignTurnDKey = "Auto Align/Turn D";
+        public static final String kTurnToAngleHeadingSetpointKey = "Turn to Angle/Heading Setpoint Deg";
+        public static final String kTurnToAnglePositionErrorKey = "Turn to Angle/Position Error Deg";
+        public static final String kTurnToAngleVelocityErrorKey = "Turn to Angle/Velocity Error Deg/s";
+        public static final String kTurnToAngleRateKey = "Turn to Angle/Rate";
+        public static final String kTurnToAnglePKey = "Turn to Angle/Turn P";
+        public static final String kTurnToAngleIKey = "Turn to Angle/Turn I";
+        public static final String kTurnToAngleDKey = "Turn to Angle/Turn D";
+
+        public static final String kDriveStraightDistanceAverageKey = "Drive Straight/Distance Average";
+        public static final String kDriveStraightForwardPKey = "Drive Straight/Forward P";
+        public static final String kDriveStraightForwardIKey = "Drive Straight/Forward I";
+        public static final String kDriveStraightForwardDKey = "Drive Straight/Forward D";
+        public static final String kDriveStraightHeadingPKey = "Drive Straight/Heading P";
+        public static final String kDriveStraightHeadingIKey = "Drive Straight/Heading I";
+        public static final String kDriveStraightHeadingDKey = "Drive Straight/Heading D";
+        public static final String kDriveStraightForwardErrorKey = "Drive Straight/Forward Error";
+        public static final String kDriveStraightForwardRateKey = "Drive Straight/Forward Rate";
+        public static final String kDriveStraightHeadingErrorKey = "Drive Straight/Heading Error";
+        public static final String kDriveStraightTurnRateKey = "Drive Straight/Turn Rate";
 
         public static final String kShooterMeasurementPeriodKey = "Shooter/Measurement Period";
         public static final String kShooterMeasurementWindowKey = "Shooter/Measurement Window";

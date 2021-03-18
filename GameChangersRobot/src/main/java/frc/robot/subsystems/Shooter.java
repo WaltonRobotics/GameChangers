@@ -18,6 +18,7 @@ import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.SmartDashboardKeys.*;
@@ -56,13 +57,13 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.configMaxIntegralAccumulator(kShooterSpinningUpSlot, mConfig.kSpinningUpMaxIntegralAccumulator);
         mFlywheelMaster.configClosedLoopPeakOutput(kShooterSpinningUpSlot, mConfig.kSpinningUpPeakOutput);
 
-        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, mConfig.kShootingF);
-        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, mConfig.kShootingP);
-        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, mConfig.kShootingI);
-        mFlywheelMaster.config_kD(kShooterSpinningUpSlot, mConfig.kShootingD);
-        mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, mConfig.kSpinningUpIZone);
-        mFlywheelMaster.configMaxIntegralAccumulator(kShooterSpinningUpSlot, mConfig.kSpinningUpMaxIntegralAccumulator);
-        mFlywheelMaster.configClosedLoopPeakOutput(kShooterSpinningUpSlot, mConfig.kSpinningUpPeakOutput);
+        mFlywheelMaster.config_kF(kShooterShootingSlot, mConfig.kShootingF);
+        mFlywheelMaster.config_kP(kShooterShootingSlot, mConfig.kShootingP);
+        mFlywheelMaster.config_kI(kShooterShootingSlot, mConfig.kShootingI);
+        mFlywheelMaster.config_kD(kShooterShootingSlot, mConfig.kShootingD);
+        mFlywheelMaster.config_IntegralZone(kShooterShootingSlot, mConfig.kShootingIZone);
+        mFlywheelMaster.configMaxIntegralAccumulator(kShooterShootingSlot, mConfig.kShootingMaxIntegralAccumulator);
+        mFlywheelMaster.configClosedLoopPeakOutput(kShooterShootingSlot, mConfig.kShootingPeakOutput);
 
         // Voltage compensation
         mFlywheelMaster.configVoltageCompSaturation(mConfig.kMaxVoltage);

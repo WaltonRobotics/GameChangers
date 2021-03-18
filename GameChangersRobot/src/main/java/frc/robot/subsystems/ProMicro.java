@@ -109,7 +109,8 @@ public class ProMicro extends SubsystemBase {
             mSerialPort.write(new byte[] {mCurrentLEDStripWriteMessage.getMessageByte()}, 1);
 
             if (mSerialPort.getBytesReceived() > 0) {
-//                System.out.println(mSerialPort.read(1)[0]);
+//                DebuggingLog.getInstance().getLogger().log(Level.FINE,
+//                        "Received byte " + mSerialPort.read(1)[0] + "" + " from Pro Micro");
                 mCurrentPixyCamReadMessage = PixyCamReadMessage.findByMessageByte(mSerialPort.read(1)[0]);
             }
         }

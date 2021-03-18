@@ -11,31 +11,6 @@ import frc.robot.utils.interpolation.PolynomialRegression;
 /* Generic interface for all Walton robots and their characteristics. */
 public interface WaltRobot {
 
-    /* Drivetrain methods */
-    SimpleMotorFeedforward getDrivetrainFeedforward();
-
-    PIDController getDrivetrainLeftVoltagePID();
-
-    PIDController getDrivetrainRightVoltagePID();
-
-    PIDController getDrivetrainLeftVelocityPID();
-
-    PIDController getDrivetrainRightVelocityPID();
-
-    ProfiledPIDController getDrivetrainTurnPID();
-
-    ProfiledPIDController getDrivetrainDriveStraightPowerPID();
-    ProfiledPIDController getDrivetrainDriveStraightHeadingPID();
-
-    double getDrivetrainPositionFactor();
-
-    double getDrivetrainVelocityFactor();
-
-    double getDrivetrainTrackWidth();
-
-    double getDrivetrainMaxVelocity();
-    double getDrivetrainMaxAcceleration();
-
     /* Turret/shooter methods */
     double getLimelightMountingHeight();
     double getLimelightMountingAngle();
