@@ -8,9 +8,6 @@ public class DrivetrainConfig {
 
     public SimpleMotorFeedforward feedforward;
 
-    public double kLeftMaxVoltage;
-    public double kRightMaxVoltage;
-
     public PIDController leftVoltagePID;
     public PIDController rightVoltagePID;
 
@@ -21,12 +18,15 @@ public class DrivetrainConfig {
     public ProfiledPIDController driveStraightProfiledPowerPID;
     public ProfiledPIDController driveStraightProfiledHeadingPID;
 
+    public double kLeftMaxVoltage;
+    public double kRightMaxVoltage;
+
     public double kPositionFactor;
     public double kVelocityFactor;
 
-    public double kTrackWidth;
+    public double kTrackWidthMeters;
 
-    public double kMaxVelocity;
-    public double kMaxAcceleration;
+    public double kMaxVelocityMetersPerSecond;
+    public double kMaxAccelerationMetersPerSecondSquared;
 
 }

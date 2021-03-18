@@ -11,19 +11,25 @@ import frc.robot.utils.interpolation.PolynomialRegression;
 
 public class PracticeGameChangers implements WaltRobot {
 
-    private final ProfiledPIDController mDrivetrainTurnPID = new ProfiledPIDController(0.015, 0, 0,
-            new TrapezoidProfile.Constraints(400, 400));
-
-    private final ProfiledPIDController mDrivetrainDriveStraightPowerPID = new ProfiledPIDController(0.8, 0, 0,
-            new TrapezoidProfile.Constraints(1.5,1.5));
-    private final ProfiledPIDController mDrivetrainDriveStraightHeadingPID = new ProfiledPIDController(0.2, 0, 0,
-            new TrapezoidProfile.Constraints(60, 30));
-
     private final SimpleMotorFeedforward mDrivetrainFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
     private final PIDController mDrivetrainLeftVoltagePID = new PIDController(1, 0, 0);
     private final PIDController mDrivetrainRightVoltagePID = new PIDController(1, 0, 0);
     private final PIDController mDrivetrainLeftVelocityPID = new PIDController(0.197, 0, 0);
     private final PIDController mDrivetrainRightVelocityPID = new PIDController(0.197, 0, 0);
+
+    private final ProfiledPIDController mDrivetrainTurnProfiledPID = new ProfiledPIDController(
+            0.015, 0, 0,
+            new TrapezoidProfile.Constraints(400, 400)
+    );
+
+    private final ProfiledPIDController mDrivetrainDriveStraightPowerProfiledPID = new ProfiledPIDController(
+            0.8, 0, 0,
+            new TrapezoidProfile.Constraints(1.5,1.5)
+    );
+    private final ProfiledPIDController mDrivetrainDriveStraightHeadingProfiledPID = new ProfiledPIDController(
+            0.2, 0, 0,
+            new TrapezoidProfile.Constraints(60, 30)
+    );
 
     private final double[][] mDistanceToVelocityTable = {
             { 8.61, 13000 },
@@ -38,17 +44,45 @@ public class PracticeGameChangers implements WaltRobot {
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mShooterMap;
     private final PolynomialRegression mShooterPolynomial;
 
+    private final DrivetrainConfig mDrivetrainConfig;
+    private final ShooterConfig mShooterConfig;
+    private final IntakeConfig mIntakeConfig;
+    private final ConveyorConfig mConveyorConfig;
+    private final TurretConfig mTurretConfig;
+
     public PracticeGameChangers() {
         mShooterMap = new InterpolatingTreeMap<>();
         mShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
 
         populateShooterInterpolationMethods();
 
-        mDrivetrainTurnPID.enableContinuousInput(-180.0, 180.0);
-        mDrivetrainTurnPID.setTolerance(1, 1);
+        mDrivetrainTurnProfiledPID.enableContinuousInput(-180.0, 180.0);
+        mDrivetrainTurnProfiledPID.setTolerance(1, 1);
 
-        mDrivetrainDriveStraightPowerPID.setTolerance(0.09);
-        mDrivetrainDriveStraightHeadingPID.setTolerance(3);
+        mDrivetrainDriveStraightPowerProfiledPID.setTolerance(0.09);
+        mDrivetrainDriveStraightHeadingProfiledPID.setTolerance(3);
+
+        mDrivetrainConfig = new DrivetrainConfig();
+        mDrivetrainConfig.feedforward = mDrivetrainFeedforward;
+        mDrivetrainConfig.leftVoltagePID = mDrivetrainLeftVoltagePID;
+        mDrivetrainConfig.rightVoltagePID = mDrivetrainRightVoltagePID;
+        mDrivetrainConfig.leftVelocityPID = mDrivetrainLeftVelocityPID;
+        mDrivetrainConfig.rightVelocityPID = mDrivetrainRightVelocityPID;
+        mDrivetrainConfig.turnProfiledPID = mDrivetrainTurnProfiledPID;
+        mDrivetrainConfig.driveStraightProfiledPowerPID = mDrivetrainDriveStraightPowerProfiledPID;
+        mDrivetrainConfig.driveStraightProfiledHeadingPID = mDrivetrainDriveStraightHeadingProfiledPID;
+        mDrivetrainConfig.kPositionFactor = 0.05984734;
+        mDrivetrainConfig.kVelocityFactor = mDrivetrainConfig.kPositionFactor / 60.0;
+        mDrivetrainConfig.kTrackWidthMeters = 0.6644190927877744;
+        mDrivetrainConfig.kMaxVelocityMetersPerSecond = 8.0;
+        mDrivetrainConfig.kMaxAccelerationMetersPerSecondSquared = 3.0;
+        mDrivetrainConfig.kLeftMaxVoltage = 12.0;
+        mDrivetrainConfig.kRightMaxVoltage = 12.0;
+
+        mShooterConfig = new ShooterConfig();
+        mIntakeConfig = new IntakeConfig();
+        mConveyorConfig = new ConveyorConfig();
+        mTurretConfig = new TurretConfig();
     }
 
     @Override
@@ -78,17 +112,17 @@ public class PracticeGameChangers implements WaltRobot {
 
     @Override
     public ProfiledPIDController getDrivetrainTurnPID() {
-        return mDrivetrainTurnPID;
+        return mDrivetrainTurnProfiledPID;
     }
 
     @Override
     public ProfiledPIDController getDrivetrainDriveStraightPowerPID() {
-        return mDrivetrainDriveStraightPowerPID;
+        return mDrivetrainDriveStraightPowerProfiledPID;
     }
 
     @Override
     public ProfiledPIDController getDrivetrainDriveStraightHeadingPID() {
-        return mDrivetrainDriveStraightHeadingPID;
+        return mDrivetrainDriveStraightHeadingProfiledPID;
     }
 
     @Override
@@ -148,26 +182,26 @@ public class PracticeGameChangers implements WaltRobot {
 
     @Override
     public DrivetrainConfig getDrivetrainConfig() {
-        return null;
+        return mDrivetrainConfig;
     }
 
     @Override
     public ShooterConfig getShooterConfig() {
-        return null;
+        return mShooterConfig;
     }
 
     @Override
     public IntakeConfig getIntakeConfig() {
-        return null;
+        return mIntakeConfig;
     }
 
     @Override
     public ConveyorConfig getConveyorConfig() {
-        return null;
+        return mConveyorConfig;
     }
 
     @Override
     public TurretConfig getTurretConfig() {
-        return null;
+        return mTurretConfig;
     }
 }
