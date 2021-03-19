@@ -48,7 +48,9 @@ public class Drivetrain extends SubsystemBase {
     private final CANSparkMax mRightWheelsSlave = new CANSparkMax(kDrivetrainRightSlaveID, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final AHRS mAhrs = new AHRS(SPI.Port.kMXP);
 
-    private final SimpleMotorFeedforward mFeedforward = mConfig.feedforward;
+    private final SimpleMotorFeedforward mLinearFeedforward = mConfig.linearFeedforward;
+    private final SimpleMotorFeedforward mAngularFeedforward = mConfig.angularFeedforward;
+
     private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(
             mConfig.kTrackWidthMeters
     );
@@ -56,9 +58,9 @@ public class Drivetrain extends SubsystemBase {
     private final RamseteController mRamseteController = new RamseteController();
 
     private final LinearSystem<N2, N2, N2> mDriveModel = LinearSystemId.identifyDrivetrainSystem(
-            mFeedforward.kv,
-            mFeedforward.ka,
-            1.0, 1.0
+            mLinearFeedforward.kv,
+            mLinearFeedforward.ka,
+            mAngularFeedforward.kv, mAngularFeedforward.ka
     );
     private final KalmanFilter<N2, N2, N2> mDriveObserver = new KalmanFilter<>(
             Nat.N2(), Nat.N2(),
@@ -258,8 +260,12 @@ public class Drivetrain extends SubsystemBase {
         mDriveOdometry.resetPosition(startingPose, getHeading());
     }
 
-    public SimpleMotorFeedforward getFeedforward() {
-        return mFeedforward;
+    public SimpleMotorFeedforward getLinearFeedforward() {
+        return mLinearFeedforward;
+    }
+
+    public SimpleMotorFeedforward getAngularFeedforward() {
+        return mAngularFeedforward;
     }
 
     public DifferentialDriveKinematics getDriveKinematics() {

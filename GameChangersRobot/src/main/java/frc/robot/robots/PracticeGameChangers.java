@@ -56,7 +56,8 @@ public class PracticeGameChangers implements WaltRobot {
         mDrivetrainDriveStraightHeadingProfiledPID.setTolerance(1.5);
 
         mDrivetrainConfig = new DrivetrainConfig();
-        mDrivetrainConfig.feedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
+        mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
+        mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(1.0, 1.0, 1.0);
         mDrivetrainConfig.leftVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.rightVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.leftVelocityPID = new PIDController(0.197, 0, 0);
@@ -107,8 +108,8 @@ public class PracticeGameChangers implements WaltRobot {
         mConveyorConfig.kNudgeTimeSeconds = 0.29;
         mConveyorConfig.kFrontConveyorNudgeVoltage = 8.0;
         mConveyorConfig.kBackConveyorNudgeVoltage = 8.0;
-        mConveyorConfig.kFrontConveyorFeedVoltage = 12.0;
-        mConveyorConfig.kBackConveyorFeedVoltage = 12.0;
+        mConveyorConfig.kFrontConveyorFeedVoltage = 11.75;
+        mConveyorConfig.kBackConveyorFeedVoltage = 11.75;
         mConveyorConfig.kFrontConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kBackConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kFrontConveyorOuttakeDutyCycle = -1.0;

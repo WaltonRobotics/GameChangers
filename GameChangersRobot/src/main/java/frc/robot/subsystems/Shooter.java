@@ -18,7 +18,6 @@ import frc.robot.vision.LimelightHelper;
 import java.util.Arrays;
 import java.util.logging.Level;
 
-import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;

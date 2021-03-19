@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
 public class DrivetrainConfig {
 
-    public SimpleMotorFeedforward feedforward;
+    public SimpleMotorFeedforward linearFeedforward;
+    public SimpleMotorFeedforward angularFeedforward;
 
     public PIDController leftVoltagePID;
     public PIDController rightVoltagePID;

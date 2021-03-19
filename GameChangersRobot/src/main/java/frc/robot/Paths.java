@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.util.Units;
 
 import java.util.Arrays;
 
-import static frc.robot.Robot.sCurrentRobot;
 import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
@@ -24,7 +23,7 @@ public class Paths {
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
             config.addConstraint(
-                    new DifferentialDriveVoltageConstraint(sDrivetrain.getFeedforward(),
+                    new DifferentialDriveVoltageConstraint(sDrivetrain.getLinearFeedforward(),
                             sDrivetrain.getDriveKinematics(), 10.0));
 
             return TrajectoryGenerator.generateTrajectory(
