@@ -4,7 +4,7 @@ public final class Constants {
 
     public static class ContextFlags {
 
-        public static boolean kIsInCompetition = true;
+        public static boolean kIsInCompetition = false;
         public static boolean kIsInTuningMode = false;
         public static boolean kIsInfiniteRecharge = false;
 
