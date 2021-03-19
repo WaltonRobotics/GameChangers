@@ -4,7 +4,7 @@ public final class Constants {
 
     public static class ContextFlags {
 
-        public static boolean kIsInCompetition = false;
+        public static boolean kIsInCompetition = true;
         public static boolean kIsInTuningMode = false;
         public static boolean kIsInfiniteRecharge = false;
 
@@ -58,7 +58,7 @@ public final class Constants {
     public static class PneumaticsIDs {
 
         public static final int kDeployIntakeSolenoidID = 1;
-        public static final int kRetractIntakeSolenoidID = 2;
+        public static final int kRetractIntakeSolenoidID = 4;
 
     }
 
