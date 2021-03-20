@@ -75,24 +75,24 @@ public class CompGameChangers implements WaltRobot {
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
 
         mShooterConfig = new ShooterConfig();
-        mShooterConfig.kSpinningUpF = 0.04934694;
-        mShooterConfig.kSpinningUpP = 0.2;
-        mShooterConfig.kSpinningUpI = 0.002;
+        mShooterConfig.kSpinningUpF = 0.05018491;
+        mShooterConfig.kSpinningUpP = 0.24;
+        mShooterConfig.kSpinningUpI = 0.00049;
         mShooterConfig.kSpinningUpD = 0;
-        mShooterConfig.kSpinningUpIZone = 600;
-        mShooterConfig.kSpinningUpMaxIntegralAccumulator = 1000;
+        mShooterConfig.kSpinningUpIZone = 800;
+        mShooterConfig.kSpinningUpMaxIntegralAccumulator = 0;
 
-        mShooterConfig.kShootingF = 0.04934694;
-        mShooterConfig.kShootingP = 0.21;
-        mShooterConfig.kShootingI = 0.002;
+        mShooterConfig.kShootingF = 0.05018491;
+        mShooterConfig.kShootingP = 0.25;
+        mShooterConfig.kShootingI = 0.0005;
         mShooterConfig.kShootingD = 0;
-        mShooterConfig.kShootingIZone = 600;
-        mShooterConfig.kShootingMaxIntegralAccumulator = 1000;
+        mShooterConfig.kShootingIZone = 800;
+        mShooterConfig.kShootingMaxIntegralAccumulator = 0;
 
         mShooterConfig.kMaxVoltage = 11.0;
 
-        mShooterConfig.kLimelightMountingHeight = 23;
-        mShooterConfig.kLimelightMountingAngle = 33.5;
+        mShooterConfig.kLimelightMountingHeight = 22.5;
+        mShooterConfig.kLimelightMountingAngle = 30;
 
         mShooterConfig.kShooterMap = mShooterMap;
         mShooterConfig.kShooterPolynomial = mShooterPolynomial;
@@ -124,6 +124,11 @@ public class CompGameChangers implements WaltRobot {
         final double kGearRatio = 230.0 / 30.0;
         final double kTicksPerDriverRotation = 177;
         mTurretConfig.kTicksPerDegree = kTicksPerDriverRotation * kGearRatio / 360.0;
+        mTurretConfig.kPositionalP = 4.0;
+        mTurretConfig.kPositionalI = 0.002;
+        mTurretConfig.kPositionalD = 0.0;
+        mTurretConfig.kPositionalIZone = 100;
+        mTurretConfig.kPositionalMaxIntegralAccumulator = 0;
     }
 
     @Override

@@ -40,6 +40,8 @@ public class Turret extends SubsystemBase {
     }
 
     private void configureTurretController() {
+        mTurretController.configFactoryDefault();
+
         mTurretController.setNeutralMode(NeutralMode.Brake);
 
         mTurretController.setInverted(false);
@@ -54,13 +56,12 @@ public class Turret extends SubsystemBase {
         mTurretController.configPeakOutputReverse(-1);
 
         // Set up limits
-//        mTurretController.configForwardLimitSwitchSource(LimitSwitchSource.RemoteCANifier,
-//                LimitSwitchNormal.NormallyOpen);
+        mTurretController.configForwardLimitSwitchSource(LimitSwitchSource.RemoteCANifier,
+                LimitSwitchNormal.NormallyOpen);
         mTurretController.configForwardSoftLimitThreshold(mConfig.kForwardSoftLimitRawUnits);
         mTurretController.configReverseSoftLimitThreshold(mConfig.kReverseSoftLimitRawUnits);
-        mTurretController.configForwardSoftLimitEnable(true);
-        mTurretController.configReverseSoftLimitEnable(true);
         mTurretController.overrideLimitSwitchesEnable(false);
+        disableSoftLimits();
 
         // Set up positional control
         mTurretController.config_kF(kTurretPositionalSlot, 0);
@@ -101,10 +102,20 @@ public class Turret extends SubsystemBase {
 
         SmartDashboard.putBoolean(kTurretForwardLimitStateKey, isForwardLimitClosed());
         SmartDashboard.putNumber(kTurretRobotRelativeHeadingRawUnitsKey, mTurretController.getSelectedSensorPosition());
-        SmartDashboard.putNumber(kTurretRobotRelativeHeadingDegreesKey,
-                getRobotRelativeHeadingFromRawUnits(mTurretController.getSelectedSensorPosition()).getDegrees());
+        SmartDashboard.putNumber(kTurretRobotRelativeHeadingDegreesKey, getCurrentRobotRelativeHeading().getDegrees());
         SmartDashboard.putNumber(kTurretAngularVelocityRawUnitsKey, mTurretController.getSelectedSensorVelocity());
         SmartDashboard.putString(kTurretControlStateKey, mControlState.name());
+        SmartDashboard.putNumber("Turret/Setpoint", mSetpoint);
+    }
+
+    public void enableSoftLimits() {
+        mTurretController.configForwardSoftLimitEnable(true);
+        mTurretController.configReverseSoftLimitEnable(true);
+    }
+
+    public void disableSoftLimits() {
+        mTurretController.configForwardSoftLimitEnable(false);
+        mTurretController.configReverseSoftLimitEnable(false);
     }
 
     public boolean isForwardLimitClosed() {
@@ -121,9 +132,10 @@ public class Turret extends SubsystemBase {
 
     public void setOpenLoopDutyCycle(double targetDutyCycle) {
         if (mControlState != ControlState.DUTY_CYCLE) {
-            mSetpoint = targetDutyCycle;
             mControlState = ControlState.DUTY_CYCLE;
         }
+
+        mSetpoint = targetDutyCycle;
     }
 
     public void setRobotRelativeHeading(Rotation2d targetHeading, ControlState controlState) {
@@ -134,18 +146,22 @@ public class Turret extends SubsystemBase {
         setpointRawUnits = UtilMethods.limitRange(setpointRawUnits,
                 mConfig.kReverseSoftLimitRawUnits, mConfig.kForwardSoftLimitRawUnits);
 
-        if (controlState == ControlState.POSITIONAL && mControlState != ControlState.POSITIONAL) {
-            mSetpoint = setpointRawUnits;
-            mTurretController.selectProfileSlot(kTurretPositionalSlot, 0);
-            mControlState = ControlState.POSITIONAL;
-        } else if (controlState == ControlState.MOTION_MAGIC && mControlState != ControlState.MOTION_MAGIC) {
-            mSetpoint = setpointRawUnits;
-            mTurretController.selectProfileSlot(kTurretMotionMagicSlot, 0);
-            mControlState = ControlState.MOTION_MAGIC;
+        if (controlState == ControlState.POSITIONAL) {
+            if (mControlState != ControlState.POSITIONAL) {
+                mTurretController.selectProfileSlot(kTurretPositionalSlot, 0);
+                mControlState = ControlState.POSITIONAL;
+            }
+        } else if (controlState == ControlState.MOTION_MAGIC) {
+            if (mControlState != ControlState.MOTION_MAGIC) {
+                mTurretController.selectProfileSlot(kTurretMotionMagicSlot, 0);
+                mControlState = ControlState.MOTION_MAGIC;
+            }
         } else {
             DebuggingLog.getInstance().getLogger().log(Level.WARNING,
                     "The desired control state " + controlState.name() + " for setting turret heading is invalid");
         }
+
+        mSetpoint = setpointRawUnits;
     }
 
     public void setFieldRelativeHeading(Rotation2d targetHeading, Rotation2d robotFieldRelativeHeading,
@@ -168,6 +184,14 @@ public class Turret extends SubsystemBase {
         } else {
             return mTurretController.getActiveTrajectoryPosition() - mSetpoint;
         }
+    }
+
+    public double getCurrentRobotRelativeHeadingRawUnits() {
+        return mTurretController.getSelectedSensorPosition();
+    }
+
+    public Rotation2d getCurrentRobotRelativeHeading() {
+        return getRobotRelativeHeadingFromRawUnits(getCurrentRobotRelativeHeadingRawUnits());
     }
 
     private double getRawUnitsFromRobotRelativeHeading(Rotation2d heading) {

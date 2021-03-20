@@ -5,7 +5,7 @@ public final class Constants {
     public static class ContextFlags {
 
         public static boolean kIsInCompetition = false;
-        public static boolean kIsInTuningMode = true;
+        public static boolean kIsInTuningMode = false;
         public static boolean kIsInfiniteRecharge = false;
 
     }
@@ -23,6 +23,10 @@ public final class Constants {
         public static final double kDriveJoystickDeadband = 0.1;
         public static final boolean kUseSquareCurve = true;
         public static final double kAutoAlignTimeout = 1.5;
+        public static final double kTurretMasterOverrideDeadband = 0.15;
+        public static final double kNormalScaleFactor = 0.6;
+        public static final double kTurboScaleFactor = 1.0;
+        public static final double kTurretScaleFactor = 0.4;
 
     }
 
@@ -112,6 +116,13 @@ public final class Constants {
 
         public static final int kTxWindowSize = 1;
         public static final int kTyWindowSize = 5;
+
+    }
+
+    public static class Turret {
+
+        public static final double kClosedLoopErrorTolerance = 3.77 * 2.0 / 3.0;
+        public static final int kWithinToleranceLoopsToSettle = 5;
 
     }
 
@@ -207,6 +218,9 @@ public final class Constants {
 
         public static final String kProMicroLEDWriteMessageKey = "Pro Micro/LED Write Message";
         public static final String kProMicroPixyCamReadMessageKey = "Pro Micro/PixyCam Read Message";
+
+        public static final String kNormalScaleFactorKey = "Driver Preferences/Normal Scale Factor";
+        public static final String kTurboScaleFactorKey = "Driver Preferences/Turbo Scale Factor";
 
     }
 

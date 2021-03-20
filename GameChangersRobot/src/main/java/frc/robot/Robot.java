@@ -24,6 +24,8 @@ import java.util.logging.Level;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DioIDs.kRobotID1;
 import static frc.robot.Constants.DioIDs.kRobotID2;
+import static frc.robot.Constants.DriverPreferences.kNormalScaleFactor;
+import static frc.robot.Constants.DriverPreferences.kTurboScaleFactor;
 import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
@@ -87,7 +89,7 @@ public class Robot extends TimedRobot {
 
         populateShuffleboard();
 
-        LimelightHelper.setLEDMode(false);
+        LimelightHelper.setLEDMode(true);
     }
 
     private void populateShuffleboard() {
@@ -102,6 +104,9 @@ public class Robot extends TimedRobot {
             SmartDashboard.putNumber(kTurnToAngleIKey, sDrivetrain.getTurnProfiledPID().getI());
             SmartDashboard.putNumber(kTurnToAngleDKey, sDrivetrain.getTurnProfiledPID().getD());
         }
+
+        SmartDashboard.putNumber(kNormalScaleFactorKey, kNormalScaleFactor);
+        SmartDashboard.putNumber(kTurboScaleFactorKey, kTurboScaleFactor);
     }
 
     /**
@@ -140,7 +145,7 @@ public class Robot extends TimedRobot {
 
         AutonFlags.getInstance().setIsInAuton(true);
 
-        LimelightHelper.setLEDMode(false);
+        LimelightHelper.setLEDMode(kIsInTuningMode);
 
         // Auton routines do not work with DeepSpace robots due to subsystem requirements
         if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS
@@ -167,7 +172,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         AutonFlags.getInstance().setIsInAuton(false);
 
-        LimelightHelper.setLEDMode(false);
+        LimelightHelper.setLEDMode(true);
     }
 
     /**

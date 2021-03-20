@@ -171,7 +171,7 @@ public class ShooterCommand extends CommandBase {
             public void finish() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override
