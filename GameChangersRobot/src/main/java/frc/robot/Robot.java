@@ -101,6 +101,7 @@ public class Robot extends TimedRobot {
             SmartDashboard.putNumber(kTurnToAnglePKey, sDrivetrain.getTurnProfiledPID().getP());
             SmartDashboard.putNumber(kTurnToAngleIKey, sDrivetrain.getTurnProfiledPID().getI());
             SmartDashboard.putNumber(kTurnToAngleDKey, sDrivetrain.getTurnProfiledPID().getD());
+            SmartDashboard.putNumber(kConveyorBallCountKey, sConveyor.getConfig().kIRSensorFlickeringTimeSeconds);
         }
     }
 

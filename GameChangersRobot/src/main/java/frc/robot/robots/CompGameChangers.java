@@ -91,15 +91,15 @@ public class CompGameChangers implements WaltRobot {
 
         mShooterConfig.kMaxVoltage = 11.0;
 
-        mShooterConfig.kLimelightMountingHeight = 23;
-        mShooterConfig.kLimelightMountingAngle = 33.5;
+        mShooterConfig.kLimelightMountingHeight = 22.5;
+        mShooterConfig.kLimelightMountingAngle = 65;
 
         mShooterConfig.kShooterMap = mShooterMap;
         mShooterConfig.kShooterPolynomial = mShooterPolynomial;
 
         mIntakeConfig = new IntakeConfig();
         mIntakeConfig.kIsIntakeControllerInverted = true;
-        mIntakeConfig.kIntakeDutyCycle = 0.7;
+        mIntakeConfig.kIntakeDutyCycle = 0.6;
         mIntakeConfig.kOuttakeDutyCycle = -1.0;
         mIntakeConfig.kSettleTime = 0.5;
 
