@@ -9,7 +9,7 @@ import frc.robot.utils.DebuggingLog;
 import java.util.logging.Level;
 
 import static frc.robot.Constants.ProMicro.kSerialPortBaudRate;
-import static frc.robot.Constants.ProMicro.kUpdateRate;
+import static frc.robot.Constants.ProMicro.kUpdateRateSeconds;
 import static frc.robot.Constants.SmartDashboardKeys.kProMicroLEDWriteMessageKey;
 import static frc.robot.Constants.SmartDashboardKeys.kProMicroPixyCamReadMessageKey;
 
@@ -19,8 +19,6 @@ public class ProMicro extends SubsystemBase {
 
     private PixyCamReadMessage mCurrentPixyCamReadMessage;
     private LEDStripWriteMessage mCurrentLEDStripWriteMessage;
-
-    private Notifier mUpdateNotifier;
 
     public enum PixyCamReadMessage {
         NO_DETERMINATION((byte)0x0A),
@@ -88,8 +86,8 @@ public class ProMicro extends SubsystemBase {
         mCurrentPixyCamReadMessage = PixyCamReadMessage.NO_DETERMINATION;
         mCurrentLEDStripWriteMessage = LEDStripWriteMessage.IDLE;
 
-        mUpdateNotifier = new Notifier(this::update);
-        mUpdateNotifier.startPeriodic(kUpdateRate);
+        Notifier updateNotifier = new Notifier(this::update);
+        updateNotifier.startPeriodic(kUpdateRateSeconds);
     }
 
     @Override
@@ -111,7 +109,8 @@ public class ProMicro extends SubsystemBase {
             mSerialPort.write(new byte[] {mCurrentLEDStripWriteMessage.getMessageByte()}, 1);
 
             if (mSerialPort.getBytesReceived() > 0) {
-                System.out.println(mSerialPort.read(1)[0]);
+//                DebuggingLog.getInstance().getLogger().log(Level.FINE,
+//                        "Received byte " + mSerialPort.read(1)[0] + "" + " from Pro Micro");
                 mCurrentPixyCamReadMessage = PixyCamReadMessage.findByMessageByte(mSerialPort.read(1)[0]);
             }
         }

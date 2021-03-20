@@ -17,13 +17,12 @@ import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.SmartDashboardKeys.kShooterTuningSetpointRawUnitsKey;
-import static frc.robot.OI.sBarfButton;
-import static frc.robot.OI.sShootButton;
+import static frc.robot.OI.*;
 import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
 
-    private double mSetpointRawUnits = 12500;
+    private double mSetpointRawUnits = kDefaultVelocityRawUnits;
 
     private final IState mIdle;
     private final IState mSpinningUp;
@@ -182,6 +181,10 @@ public class ShooterCommand extends CommandBase {
         };
 
         mStateMachine = new StateMachine("Shooter", mIdle);
+
+        if (kIsInTuningMode) {
+            sToggleLimelightLEDsButton.whenPressed(LimelightHelper::toggleLimelight);
+        }
     }
 
     @Override

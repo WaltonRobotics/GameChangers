@@ -1,16 +1,19 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.config.ShooterConfig;
+import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
 import frc.robot.utils.interpolation.InterpolatingDouble;
-import frc.robot.utils.interpolation.InterpolatingTreeMap;
 import frc.robot.vision.LimelightHelper;
+
+import java.util.Arrays;
+import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
@@ -21,6 +24,8 @@ import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class Shooter extends SubsystemBase {
+
+    private final ShooterConfig mConfig = sCurrentRobot.getCurrentRobot().getShooterConfig();
 
     private final TalonFX mFlywheelMaster = new TalonFX(kFlywheelMasterID);
     private final TalonFX mFlywheelSlave = new TalonFX(kFlywheelSlaveID);
@@ -39,26 +44,38 @@ public class Shooter extends SubsystemBase {
         mFlywheelSlave.setSensorPhase(false);
         mFlywheelSlave.follow(mFlywheelMaster);
 
+        mFlywheelMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10);
+        mFlywheelMaster.configNominalOutputForward(0);
+        mFlywheelMaster.configNominalOutputReverse(0);
+        mFlywheelMaster.configPeakOutputForward(1);
+        mFlywheelMaster.configPeakOutputReverse(-1);
+
 //        TODO: Check the following two settings by scheduling the ShooterMeasurementTuning command
 //        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
 //        mFlywheelMaster.configVelocityMeasurementWindow(32);
 
-        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, 0.04934694);
-        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, 0.2);
-        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, 0.002);
-        mFlywheelMaster.config_kD(kShooterSpinningUpSlot, 0);
-        mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, 600);
+        mFlywheelMaster.config_kF(kShooterSpinningUpSlot, mConfig.kSpinningUpF);
+        mFlywheelMaster.config_kP(kShooterSpinningUpSlot, mConfig.kSpinningUpP);
+        mFlywheelMaster.config_kI(kShooterSpinningUpSlot, mConfig.kSpinningUpI);
+        mFlywheelMaster.config_kD(kShooterSpinningUpSlot, mConfig.kSpinningUpD);
+        mFlywheelMaster.configAllowableClosedloopError(kShooterSpinningUpSlot, 0);
+        mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, mConfig.kSpinningUpIZone);
+        mFlywheelMaster.configMaxIntegralAccumulator(kShooterSpinningUpSlot, mConfig.kSpinningUpMaxIntegralAccumulator);
+        mFlywheelMaster.configClosedLoopPeakOutput(kShooterSpinningUpSlot, 1.0);
 
-        mFlywheelMaster.config_kF(kShooterShootingSlot, 0.04934694);
-        mFlywheelMaster.config_kP(kShooterShootingSlot, 0.21);
-        mFlywheelMaster.config_kI(kShooterShootingSlot, 0.002);
-        mFlywheelMaster.config_kD(kShooterShootingSlot, 0);
-        mFlywheelMaster.config_IntegralZone(kShooterShootingSlot, 600);
+        mFlywheelMaster.config_kF(kShooterShootingSlot, mConfig.kShootingF);
+        mFlywheelMaster.config_kP(kShooterShootingSlot, mConfig.kShootingP);
+        mFlywheelMaster.config_kI(kShooterShootingSlot, mConfig.kShootingI);
+        mFlywheelMaster.config_kD(kShooterShootingSlot, mConfig.kShootingD);
+        mFlywheelMaster.configAllowableClosedloopError(kShooterShootingSlot, 0);
+        mFlywheelMaster.config_IntegralZone(kShooterShootingSlot, mConfig.kShootingIZone);
+        mFlywheelMaster.configMaxIntegralAccumulator(kShooterShootingSlot, mConfig.kShootingMaxIntegralAccumulator);
+        mFlywheelMaster.configClosedLoopPeakOutput(kShooterShootingSlot, 1.0);
 
         // Voltage compensation
-        mFlywheelMaster.configVoltageCompSaturation(10);
+        mFlywheelMaster.configVoltageCompSaturation(mConfig.kMaxVoltage);
         mFlywheelMaster.enableVoltageCompensation(true);
-        mFlywheelSlave.configVoltageCompSaturation(10);
+        mFlywheelSlave.configVoltageCompSaturation(mConfig.kMaxVoltage);
         mFlywheelSlave.enableVoltageCompensation(false);
     }
 
@@ -96,24 +113,26 @@ public class Shooter extends SubsystemBase {
         // If the limelight does not see a target, we use the last known "ty" value since
         // LimelightHelper uses a MovingAverage to keep track of it at all times
 
+        if (LimelightHelper.getTV() <= 0) {
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "No target found for shooter. Using last known information");
+        }
+
         double distanceFeet = LimelightHelper.getDistanceToTargetFeet();
 
-        distanceFeet = UtilMethods.limitRange(distanceFeet, kAbsoluteShootingDistanceFloor,
-                kAbsoluteShootingDistanceCeiling);
+        distanceFeet = UtilMethods.limitRange(distanceFeet, kAbsoluteShootingDistanceFloorFeet,
+                kAbsoluteShootingDistanceCeilingFeet);
 
         if (kUseInterpolationMap) {
-            InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> map
-                    = sCurrentRobot.getCurrentRobot().getShooterMap();
-
-            InterpolatingDouble result = map.getInterpolated(new InterpolatingDouble(distanceFeet));
+            InterpolatingDouble result = mConfig.kShooterMap.getInterpolated(new InterpolatingDouble(distanceFeet));
 
             if (result != null) {
                 return result.value;
             } else {
-                return map.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
+                return mConfig.kShooterMap.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
             }
         } else {
-            return sCurrentRobot.getCurrentRobot().getShooterPolynomial().predict(distanceFeet);
+            return mConfig.kShooterPolynomial.predict(distanceFeet);
         }
     }
 
@@ -133,6 +152,81 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber(kShooterErrorRPSKey, getClosedLoopErrorRevolutionsPerSec());
         SmartDashboard.putNumber(kShooterErrorInchesKey, getClosedLoopErrorInchesPerSec());
         SmartDashboard.putNumber(kShooterLimelightDistanceFeetKey, LimelightHelper.getDistanceToTargetFeet());
+    }
+
+    public ShooterConfig getConfig() {
+        return mConfig;
+    }
+
+    public boolean checkSystem() {
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,
+                "Checking Shooter Subsystem");
+
+        final double kCurrentThres = 0.5;
+        final double kRpmThres = 9000;
+
+        mFlywheelMaster.set(TalonFXControlMode.PercentOutput, 6.0 / RobotController.getBatteryVoltage());
+        Timer.delay(4.0);
+        final double currentRightMaster = mFlywheelMaster.getStatorCurrent();
+        final double rpmMaster = mFlywheelMaster.getSelectedSensorVelocity();
+        mFlywheelMaster.set(TalonFXControlMode.PercentOutput, 0.0);
+
+        Timer.delay(2.0);
+
+        mFlywheelSlave.set(TalonFXControlMode.PercentOutput, 6.0 / RobotController.getBatteryVoltage());
+        Timer.delay(4.0);
+        final double currentRightSlave = mFlywheelSlave.getStatorCurrent();
+        final double rpmFlywheelSlave = mFlywheelSlave.getSelectedSensorVelocity();
+        mFlywheelSlave.set(TalonFXControlMode.PercentOutput, 0.0);
+
+        Timer.delay(2.0);
+
+        configureFlywheelControllers();
+
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,
+                ("Shooter Flywheel Master Current: " + currentRightMaster + " Shooter Flywheel Slave Current: "
+                + currentRightSlave));
+
+        boolean failure = false;
+
+        if (currentRightMaster < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Master Current Low!");
+        }
+
+        if (currentRightSlave < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Slave Current Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(
+                currentRightMaster, currentRightSlave), currentRightMaster, 5.0)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Currents Different!");
+        }
+
+        if (rpmMaster < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Master RPM Low!");
+        }
+
+        if (rpmFlywheelSlave < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel Slave RPM Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(rpmMaster, rpmFlywheelSlave), rpmMaster, 1000)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "Shooter Flywheel RPMs Different!");
+        }
+
+        return !failure;
     }
 
 }

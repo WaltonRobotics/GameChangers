@@ -32,13 +32,13 @@ public class ConveyorCommand extends CommandBase {
             @Override
             public IState execute() {
                 if (sOverrideFrontConveyorButton.get()) {
-                    sConveyor.setFrontDutyCycle(1.0);
+                    sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
                 } else {
                     sConveyor.setFrontDutyCycle(0.0);
                 }
 
                 if (sOverrideBackConveyorButton.get()) {
-                    sConveyor.setBackDutyCycle(1.0);
+                    sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorIntakeDutyCycle);
                 } else {
                     sConveyor.setBackDutyCycle(0.0);
                 }
@@ -66,13 +66,13 @@ public class ConveyorCommand extends CommandBase {
             @Override
             public IState execute() {
                 if (sConveyor.getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity) {
-                    sConveyor.setFrontDutyCycle(1.0);
+                    sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
                 } else {
                     sConveyor.setFrontDutyCycle(0.0);
                 }
 
                 if (sOverrideBackConveyorButton.get()) {
-                    sConveyor.setBackDutyCycle(1.0);
+                    sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorIntakeDutyCycle);
                 } else {
                     sConveyor.setBackDutyCycle(0.0);
                 }
@@ -99,8 +99,8 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sConveyor.setFrontDutyCycle(-1.0);
-                sConveyor.setBackDutyCycle(-1.0);
+                sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorOuttakeDutyCycle);
+                sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorOuttakeDutyCycle);
 
                 return determineState();
             }
@@ -127,14 +127,14 @@ public class ConveyorCommand extends CommandBase {
             @Override
             public IState execute() {
                 if (sConveyor.getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity) {
-                    sConveyor.setFrontVoltage(kNudgeVoltage);
+                    sConveyor.setFrontVoltage(sConveyor.getConfig().kFrontConveyorNudgeVoltage);
                 } else {
                     sConveyor.setFrontVoltage(0.0);
                 }
 
-                sConveyor.setBackVoltage(kNudgeVoltage);
+                sConveyor.setBackVoltage(sConveyor.getConfig().kBackConveyorNudgeVoltage);
 
-                if (getFPGATimestamp() - mStartTime > kNudgeTimeSeconds) {
+                if (getFPGATimestamp() - mStartTime > sConveyor.getConfig().kNudgeTimeSeconds) {
                     return determineState();
                 }
 
@@ -160,8 +160,8 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sConveyor.setFrontVoltage(kFeedVoltage);
-                sConveyor.setBackVoltage(kFeedVoltage);
+                sConveyor.setFrontVoltage(sConveyor.getConfig().kFrontConveyorFeedVoltage);
+                sConveyor.setBackVoltage(sConveyor.getConfig().kBackConveyorFeedVoltage);
 
                 return determineState();
             }

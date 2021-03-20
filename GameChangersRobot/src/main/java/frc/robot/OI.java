@@ -16,13 +16,14 @@ public class OI {
     public static Gamepad sGamepad = new Gamepad(kGamepadPort);
 
     public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sLeftJoystick, 1);
-    public static EnhancedJoystickButton sResetBallCountButton = new EnhancedJoystickButton(sGamepad, RIGHT_DPAD_BUTTON.getIndex());
+    public static EnhancedJoystickButton sResetBallCountButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUTTON.getIndex());
 
     public static EnhancedJoystickButton sAutoAlignButton = new EnhancedJoystickButton(sRightJoystick, 1);
     public static EnhancedJoystickButton sShooterTuningBackOneFootButton = new EnhancedJoystickButton(sLeftJoystick, 2);
 
     public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamepad, RIGHT_TRIGGER.getIndex());
     public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUMPER.getIndex());
+    public static EnhancedJoystickButton sToggleLimelightLEDsButton = new EnhancedJoystickButton(sGamepad, TOP_BUTTON.getIndex());
 
     public static EnhancedJoystickButton sRetractIntakeButton = new EnhancedJoystickButton(sGamepad, POV_N);
     public static EnhancedJoystickButton sDeployIntakeButton = new EnhancedJoystickButton(sGamepad, POV_S);

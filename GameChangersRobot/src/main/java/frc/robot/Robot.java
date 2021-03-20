@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
     public static Shooter sShooter;
     public static Intake sIntake;
     public static Conveyor sConveyor;
+    public static Turret sTurret;
     public static ProMicro sProMicro;
 
     private static SendableChooser<AutonRoutine> mAutonChooser;
@@ -53,8 +54,6 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         sCurrentRobot = RobotIdentifier.findByInputs(new DigitalInput(kRobotID1).get(), new DigitalInput(kRobotID2).get());
         DebuggingLog.getInstance().getLogger().log(Level.INFO, "Current robot is " + sCurrentRobot.name());
-
-        populateShuffleboard();
 
         sDrivetrain = new Drivetrain();
         CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
@@ -72,6 +71,11 @@ public class Robot extends TimedRobot {
             sConveyor = new Conveyor();
             CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
 
+            if (sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+                sTurret = new Turret();
+                CommandScheduler.getInstance().setDefaultCommand(sTurret, new TurretCommand());
+            }
+
             sProMicro = new ProMicro();
             CommandScheduler.getInstance().setDefaultCommand(sProMicro, new ProMicroCommand());
 
@@ -81,19 +85,22 @@ public class Robot extends TimedRobot {
             SmartDashboard.putData("Auton Selector", mAutonChooser);
         }
 
+        populateShuffleboard();
+
         LimelightHelper.setLEDMode(false);
     }
 
     private void populateShuffleboard() {
         if (kIsInTuningMode) {
-            SmartDashboard.putNumber(kDrivetrainLeftVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID().getP());
-            SmartDashboard.putNumber(kDrivetrainRightVelocityPKey, sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP());
+            SmartDashboard.putNumber(kDrivetrainLeftVelocityPKey, sDrivetrain.getLeftVelocityPID().getP());
+            SmartDashboard.putNumber(kDrivetrainRightVelocityPKey, sDrivetrain.getRightVelocityPID().getP());
             SmartDashboard.putNumber(kShooterMeasurementPeriodKey, 1);
             SmartDashboard.putNumber(kShooterMeasurementWindowKey, 1);
             SmartDashboard.putNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
-            SmartDashboard.putNumber(kAutoAlignTurnPKey, sCurrentRobot.getCurrentRobot().getDrivetrainTurnPID().getP());
-            SmartDashboard.putNumber(kAutoAlignTurnIKey, sCurrentRobot.getCurrentRobot().getDrivetrainTurnPID().getI());
-            SmartDashboard.putNumber(kAutoAlignTurnDKey, sCurrentRobot.getCurrentRobot().getDrivetrainTurnPID().getD());
+            SmartDashboard.putNumber(kIntakeIntakingDutyCycleKey, sIntake.getConfig().kIntakeDutyCycle);
+            SmartDashboard.putNumber(kTurnToAnglePKey, sDrivetrain.getTurnProfiledPID().getP());
+            SmartDashboard.putNumber(kTurnToAngleIKey, sDrivetrain.getTurnProfiledPID().getI());
+            SmartDashboard.putNumber(kTurnToAngleDKey, sDrivetrain.getTurnProfiledPID().getD());
         }
     }
 

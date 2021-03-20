@@ -5,7 +5,7 @@ public final class Constants {
     public static class ContextFlags {
 
         public static boolean kIsInCompetition = false;
-        public static boolean kIsInTuningMode = false;
+        public static boolean kIsInTuningMode = true;
         public static boolean kIsInfiniteRecharge = false;
 
     }
@@ -22,6 +22,7 @@ public final class Constants {
 
         public static final double kDriveJoystickDeadband = 0.1;
         public static final boolean kUseSquareCurve = true;
+        public static final double kAutoAlignTimeout = 1.5;
 
     }
 
@@ -40,6 +41,8 @@ public final class Constants {
         public static final int kFlywheelMasterID = 9;
         public static final int kFlywheelSlaveID = 10;
 
+        public static final int kTurretID = 11;
+
     }
 
     public static class DioIDs {
@@ -47,8 +50,7 @@ public final class Constants {
         public static final int kConveyorFrontSensorID = 4;
         public static final int kConveyorBackSensorID = 5;
 
-        public static final int kLEDStripWriteLineID = 6;
-        public static final int kPixyCamReadLineID = 7;
+        public static final int kTurretLimitSwitchID = 6;
 
         public static final int kRobotID1 = 8;
         public static final int kRobotID2 = 9;
@@ -57,7 +59,8 @@ public final class Constants {
 
     public static class PneumaticsIDs {
 
-        public static final int kIntakeSolenoidID = 1;
+        public static final int kDeployIntakeSolenoidID = 1;
+        public static final int kRetractIntakeSolenoidID = 4;
 
     }
 
@@ -69,15 +72,13 @@ public final class Constants {
         public static final int kShooterSpinningUpSlot = 0;
         public static final int kShooterShootingSlot = 1;
 
+        public static final int kTurretMotionMagicSlot = 0;
+        public static final int kTurretPositionalSlot = 1;
+
     }
 
     public static class Conveyor {
 
-        // The time that the IRSensor flickers randomly after changing states
-        public static final double kIRSensorFlickeringTimeSeconds = 0.75;
-        public static final double kNudgeTimeSeconds = 0.29;
-        public static final double kNudgeVoltage = 8.0;
-        public static final double kFeedVoltage = 11.75;
         public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
         public static final int kFrontLoadingCapacity = 2;
 
@@ -103,12 +104,11 @@ public final class Constants {
         // Change to false to use polynomial interpolation instead
         public static final boolean kUseInterpolationMap = true;
 
-        public static final double kOptimalShootingDistance = 11;
-        public static final double kOptimalShootingDistanceFloor = 10;
-        public static final double kOptimalShootingDistanceCeiling = 12;
+        public static final double kOptimalShootingDistanceFloorFeet = 10;
+        public static final double kOptimalShootingDistanceCeilingFeet = 12;
 
-        public static final double kAbsoluteShootingDistanceFloor = 8.61;
-        public static final double kAbsoluteShootingDistanceCeiling = 22.38;
+        public static final double kAbsoluteShootingDistanceFloorFeet = 8.61;
+        public static final double kAbsoluteShootingDistanceCeilingFeet = 22.38;
 
         public static final int kTxWindowSize = 1;
         public static final int kTyWindowSize = 5;
@@ -129,11 +129,13 @@ public final class Constants {
     public static class ProMicro {
 
         public static final int kSerialPortBaudRate = 9600;
-        public static final double kUpdateRate = 0.2;
+        public static final double kUpdateRateSeconds = 0.2;
+
+        public static final double kAlignedTolerance = 1.5;
 
     }
 
-    public static class LimelightConstants {
+    public static class Limelight {
 
         public static final int kLEDsOff = 1;
         public static final int kLEDsOn = 3;
@@ -143,7 +145,7 @@ public final class Constants {
 
     }
 
-    public static class FieldConstants {
+    public static class Field {
 
         public static final double kTargetHeightInches = 89.75;
         public static final double kTargetFrontOffsetFeet = 0.16;
@@ -161,13 +163,25 @@ public final class Constants {
         public static final String kDrivetrainLeftVelocityKey = "Drivetrain/Left Encoder Velocity Meters/s";
         public static final String kDrivetrainRightVelocityKey = "Drivetrain/Right Encoder Velocity Meters/s";
 
-        public static final String kAutoAlignHeadingSetpointKey = "Auto Align/Heading Setpoint Deg";
-        public static final String kAutoAlignPositionErrorKey = "Auto Align/Position Error Deg";
-        public static final String kAutoAlignVelocityErrorKey = "Auto Align/Velocity Error Deg/s";
-        public static final String kAutoAlignTurnRateKey = "Auto Align/Turn Rate";
-        public static final String kAutoAlignTurnPKey = "Auto Align/Turn P";
-        public static final String kAutoAlignTurnIKey = "Auto Align/Turn I";
-        public static final String kAutoAlignTurnDKey = "Auto Align/Turn D";
+        public static final String kTurnToAngleHeadingSetpointKey = "Turn to Angle/Heading Setpoint Deg";
+        public static final String kTurnToAnglePositionErrorKey = "Turn to Angle/Position Error Deg";
+        public static final String kTurnToAngleVelocityErrorKey = "Turn to Angle/Velocity Error Deg/s";
+        public static final String kTurnToAngleRateKey = "Turn to Angle/Rate";
+        public static final String kTurnToAnglePKey = "Turn to Angle/Turn P";
+        public static final String kTurnToAngleIKey = "Turn to Angle/Turn I";
+        public static final String kTurnToAngleDKey = "Turn to Angle/Turn D";
+
+        public static final String kDriveStraightDistanceAverageKey = "Drive Straight/Distance Average";
+        public static final String kDriveStraightForwardPKey = "Drive Straight/Forward P";
+        public static final String kDriveStraightForwardIKey = "Drive Straight/Forward I";
+        public static final String kDriveStraightForwardDKey = "Drive Straight/Forward D";
+        public static final String kDriveStraightHeadingPKey = "Drive Straight/Heading P";
+        public static final String kDriveStraightHeadingIKey = "Drive Straight/Heading I";
+        public static final String kDriveStraightHeadingDKey = "Drive Straight/Heading D";
+        public static final String kDriveStraightForwardErrorKey = "Drive Straight/Forward Error";
+        public static final String kDriveStraightForwardRateKey = "Drive Straight/Forward Rate";
+        public static final String kDriveStraightHeadingErrorKey = "Drive Straight/Heading Error";
+        public static final String kDriveStraightTurnRateKey = "Drive Straight/Turn Rate";
 
         public static final String kShooterMeasurementPeriodKey = "Shooter/Measurement Period";
         public static final String kShooterMeasurementWindowKey = "Shooter/Measurement Window";
@@ -178,9 +192,18 @@ public final class Constants {
         public static final String kShooterTuningSetpointRawUnitsKey = "Shooter/Tuning Setpoint Raw Units";
         public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
 
+        public static final String kIntakeIntakingDutyCycleKey = "Intake/Intaking Duty Cycle";
+
         public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
         public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
+
+        public static final String kTurretForwardLimitStateKey = "Turret/Forward Limit State";
+        public static final String kTurretRobotRelativeHeadingRawUnitsKey = "Turret/Robot-relative Heading Raw Units";
+        public static final String kTurretRobotRelativeHeadingDegreesKey = "Turret/Robot-relative Heading Degrees";
+        public static final String kTurretFieldRelativeHeadingDegreesKey = "Turret/Field-relative Heading Degrees";
+        public static final String kTurretAngularVelocityRawUnitsKey = "Turret/Angular Velocity Raw Units";
+        public static final String kTurretControlStateKey = "Turret/Control State";
 
         public static final String kProMicroLEDWriteMessageKey = "Pro Micro/LED Write Message";
         public static final String kProMicroPixyCamReadMessageKey = "Pro Micro/PixyCam Read Message";

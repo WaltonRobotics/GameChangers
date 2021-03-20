@@ -5,58 +5,93 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Robot.sDrivetrain;
 
 public class DriveStraight extends CommandBase {
 
-    private final double desiredDistance;
+    private final double mDesiredDistance;
+    private double mInitialLeftPosition;
+    private double mInitialRightPosition;
+    private double mInitialHeading;
 
     public DriveStraight(double desiredDistance) {
         addRequirements(sDrivetrain);
 
-        this.desiredDistance = desiredDistance;
+        this.mDesiredDistance = desiredDistance;
     }
 
     @Override
     public void initialize() {
 //        drivetrain.getmDriveStraightPowerController().setP(1);
-        //System.out.println("P value set");
-        // sDrivetrain.reset();
-        sDrivetrain.getDriveStraightPowerPID().reset(new TrapezoidProfile.State(getDistanceAverage() + desiredDistance, 0));
-        sDrivetrain.getDriveStraightHeadingPID().reset(new TrapezoidProfile.State(sDrivetrain.getHeading().getDegrees(), 0));
+//        System.out.println("P value set");
+//        sDrivetrain.reset();
+        mInitialLeftPosition = sDrivetrain.getLeftPositionMeters();
+        mInitialRightPosition = sDrivetrain.getRightPositionMeters();
+        mInitialHeading = sDrivetrain.getHeading().getDegrees();
+
+        sDrivetrain.getDriveStraightPowerProfiledPID().reset(
+                new TrapezoidProfile.State(0, getVelocityAverage()));
+
+        sDrivetrain.getDriveStraightHeadingProfiledPID().reset(
+                new TrapezoidProfile.State(0, sDrivetrain.getAngularVelocityDegreesPerSec()));
+
 //        drivetrain.getmDriveStraightPowerController().setTolerance(0.09);
 //        drivetrain.getmDriveStraightHeadingPIDController().setTolerance(1);
-        System.out.println("Initialize completed!");
+//        System.out.println("Initialize completed!");
+    }
+
+    private double getVelocityAverage() {
+        return Math.abs(sDrivetrain.getLeftVelocityMetersPerSec() + sDrivetrain.getRightVelocityMetersPerSec()) / 2;
     }
 
     private double getDistanceAverage() {
-        return Math.abs(sDrivetrain.getLeftPositionMeters() + sDrivetrain.getRightPositionMeters()) / 2;
+        return Math.abs((sDrivetrain.getLeftPositionMeters() - mInitialLeftPosition)
+                + (sDrivetrain.getRightPositionMeters() - mInitialRightPosition)) / 2;
     }
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("Distance Average", getDistanceAverage());
+        SmartDashboard.putNumber(kDriveStraightDistanceAverageKey, getDistanceAverage());
 
         if (kIsInTuningMode) {
-            sDrivetrain.getDriveStraightPowerPID().setP(SmartDashboard.getNumber("Forward P", 0.8));
-            sDrivetrain.getDriveStraightHeadingPID().setP(SmartDashboard.getNumber("Drive Straight Heading P", 0.19));
+            sDrivetrain.getDriveStraightPowerProfiledPID().setP(SmartDashboard.getNumber(
+                    kDriveStraightForwardPKey, sDrivetrain.getDriveStraightPowerProfiledPID().getP()));
+            sDrivetrain.getDriveStraightPowerProfiledPID().setI(SmartDashboard.getNumber(
+                    kDriveStraightForwardIKey, sDrivetrain.getDriveStraightPowerProfiledPID().getI()));
+            sDrivetrain.getDriveStraightPowerProfiledPID().setD(SmartDashboard.getNumber(
+                    kDriveStraightForwardDKey, sDrivetrain.getDriveStraightPowerProfiledPID().getD()));
+
+            sDrivetrain.getDriveStraightHeadingProfiledPID().setP(SmartDashboard.getNumber(
+                    kDriveStraightHeadingPKey, sDrivetrain.getDriveStraightHeadingProfiledPID().getP()));
+            sDrivetrain.getDriveStraightHeadingProfiledPID().setP(SmartDashboard.getNumber(
+                    kDriveStraightHeadingIKey, sDrivetrain.getDriveStraightHeadingProfiledPID().getI()));
+            sDrivetrain.getDriveStraightHeadingProfiledPID().setP(SmartDashboard.getNumber(
+                    kDriveStraightHeadingDKey, sDrivetrain.getDriveStraightHeadingProfiledPID().getD()));
         }
 
-        double forward = sDrivetrain.getDriveStraightPowerPID().calculate(getDistanceAverage(), desiredDistance);
-        double turnRate = -sDrivetrain.getDriveStraightHeadingPID().calculate(sDrivetrain.getHeading().getDegrees(), 0);
+        double forward = sDrivetrain.getDriveStraightPowerProfiledPID().calculate(getDistanceAverage(),
+                mDesiredDistance);
 
-        SmartDashboard.putNumber("Forward rate", forward);
+        double turnRate = -sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
+                sDrivetrain.getHeading().getDegrees() - mInitialHeading, 0);
 
-        SmartDashboard.putNumber("Turn error", sDrivetrain.getDriveStraightHeadingPID().getPositionError());
-        SmartDashboard.putNumber("Turn rate", turnRate);
+        SmartDashboard.putNumber(kDriveStraightForwardErrorKey,
+                sDrivetrain.getDriveStraightPowerProfiledPID().getPositionError());
+        SmartDashboard.putNumber(kDriveStraightForwardRateKey, forward);
+
+
+        SmartDashboard.putNumber(kDriveStraightHeadingErrorKey,
+                sDrivetrain.getDriveStraightHeadingProfiledPID().getPositionError());
+        SmartDashboard.putNumber(kDriveStraightTurnRateKey, turnRate);
 
         sDrivetrain.setArcadeSpeeds(forward, turnRate);
     }
 
     @Override
     public boolean isFinished() {
-        return sDrivetrain.getDriveStraightPowerPID().atSetpoint()
-                && sDrivetrain.getDriveStraightHeadingPID().atSetpoint();
+        return sDrivetrain.getDriveStraightPowerProfiledPID().atSetpoint()
+                && sDrivetrain.getDriveStraightHeadingProfiledPID().atSetpoint();
     }
     @Override
     public void end(boolean interrupted) {

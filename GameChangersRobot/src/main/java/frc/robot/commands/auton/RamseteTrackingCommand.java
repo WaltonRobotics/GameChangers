@@ -77,7 +77,7 @@ public class RamseteTrackingCommand extends CommandBase {
 
         mKinematics = sDrivetrain.getDriveKinematics();
 
-        mFeedforward = sDrivetrain.getFeedforward();
+        mFeedforward = sDrivetrain.getLinearFeedforward();
         mSpeeds = sDrivetrain::getSpeeds;
         mLeftController = sDrivetrain.getLeftVelocityPID();
         mRightController = sDrivetrain.getRightVelocityPID();

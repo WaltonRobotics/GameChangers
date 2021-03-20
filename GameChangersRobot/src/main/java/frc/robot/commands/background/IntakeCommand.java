@@ -1,11 +1,15 @@
 package frc.robot.commands.background;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.auton.AutonFlags;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 
+import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.SmartDashboardKeys.kIntakeIntakingDutyCycleKey;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sIntake;
 
@@ -36,10 +40,10 @@ public class IntakeCommand extends CommandBase {
                     return mRetract;
                 } else if (sDeployIntakeButton.isRisingEdge()) {
                     return mDeploy;
-                } else if (sIntake.isDeployed() && (sIntakeButton.get()
-                        || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
+                } else if (sIntakeButton.get()
+                        || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake())) {
                     return mIntaking;
-                } else if (sIntake.isDeployed() && sOuttakeButton.get()) {
+                } else if (sOuttakeButton.get()) {
                     return mOuttaking;
                 }
 
@@ -58,13 +62,22 @@ public class IntakeCommand extends CommandBase {
         };
 
         mDeploy = new IState() {
+            private double mStartTime;
+
             @Override
             public void initialize() {
                 sIntake.setDeployed(true);
+                sIntake.setRetracted(false);
+
+                mStartTime = getFPGATimestamp();
             }
 
             @Override
             public IState execute() {
+                if (getFPGATimestamp() - mStartTime > sIntake.getConfig().kSettleTime) {
+                    sIntake.setDeployed(false);
+                }
+
                 return mIdle;
             }
 
@@ -83,6 +96,7 @@ public class IntakeCommand extends CommandBase {
             @Override
             public void initialize() {
                 sIntake.setDeployed(false);
+                sIntake.setRetracted(true);
             }
 
             @Override
@@ -109,7 +123,12 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sIntake.setRollerDutyCycle(0.8);
+                if (kIsInTuningMode) {
+                    sIntake.setRollerDutyCycle(sIntake.getConfig().kIntakeDutyCycle);
+                } else {
+                    sIntake.setRollerDutyCycle(SmartDashboard.getNumber(kIntakeIntakingDutyCycleKey,
+                            sIntake.getConfig().kIntakeDutyCycle));
+                }
 
                 if (!(sIntakeButton.get()
                         || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake()))) {
@@ -138,7 +157,7 @@ public class IntakeCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sIntake.setRollerDutyCycle(-0.8);
+                sIntake.setRollerDutyCycle(sIntake.getConfig().kOuttakeDutyCycle);
 
                 if (!sOuttakeButton.get()) {
                     return mIdle;

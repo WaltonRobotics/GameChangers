@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.*;
 import edu.wpi.first.wpilibj.estimator.KalmanFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -22,6 +23,12 @@ import edu.wpi.first.wpiutil.math.Nat;
 import edu.wpi.first.wpiutil.math.VecBuilder;
 import edu.wpi.first.wpiutil.math.numbers.N2;
 import frc.robot.auton.LiveDashboardHelper;
+import frc.robot.config.DrivetrainConfig;
+import frc.robot.utils.DebuggingLog;
+import frc.robot.utils.UtilMethods;
+
+import java.util.Arrays;
+import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInCompetition;
@@ -33,21 +40,27 @@ import static frc.robot.Robot.sCurrentRobot;
 
 public class Drivetrain extends SubsystemBase {
 
+    private final DrivetrainConfig mConfig = sCurrentRobot.getCurrentRobot().getDrivetrainConfig();
+
     private final CANSparkMax mLeftWheelsMaster = new CANSparkMax(kDrivetrainLeftMasterID, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax mRightWheelsMaster = new CANSparkMax(kDrivetrainRightMasterID, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax mLeftWheelsSlave = new CANSparkMax(kDrivetrainLeftSlaveID, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax mRightWheelsSlave = new CANSparkMax(kDrivetrainRightSlaveID, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final AHRS mAhrs = new AHRS(SPI.Port.kMXP);
 
-    private final SimpleMotorFeedforward mFeedforward = sCurrentRobot.getCurrentRobot().getDrivetrainFeedforward();
-    private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(sCurrentRobot.getCurrentRobot().getDrivetrainTrackWidth());
+    private final SimpleMotorFeedforward mLinearFeedforward = mConfig.linearFeedforward;
+    private final SimpleMotorFeedforward mAngularFeedforward = mConfig.angularFeedforward;
+
+    private final DifferentialDriveKinematics mDriveKinematics = new DifferentialDriveKinematics(
+            mConfig.kTrackWidthMeters
+    );
     private final DifferentialDriveOdometry mDriveOdometry = new DifferentialDriveOdometry(getHeading());
     private final RamseteController mRamseteController = new RamseteController();
 
     private final LinearSystem<N2, N2, N2> mDriveModel = LinearSystemId.identifyDrivetrainSystem(
-            mFeedforward.kv,
-            0.5,
-            1.0, 1.0
+            mLinearFeedforward.kv,
+            mLinearFeedforward.ka,
+            mAngularFeedforward.kv, mAngularFeedforward.ka
     );
     private final KalmanFilter<N2, N2, N2> mDriveObserver = new KalmanFilter<>(
             Nat.N2(), Nat.N2(),
@@ -69,17 +82,15 @@ public class Drivetrain extends SubsystemBase {
             12.0, 0.02
     );
 
-    private final PIDController mLeftVoltagePID = sCurrentRobot.getCurrentRobot().getDrivetrainLeftVoltagePID();
-    private final PIDController mRightVoltagePID = sCurrentRobot.getCurrentRobot().getDrivetrainRightVoltagePID();
-    private final PIDController mLeftVelocityPID = sCurrentRobot.getCurrentRobot().getDrivetrainLeftVelocityPID();
-    private final PIDController mRightVelocityPID = sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID();
+    private final PIDController mLeftVoltagePID = mConfig.leftVoltagePID;
+    private final PIDController mRightVoltagePID = mConfig.rightVoltagePID;
+    private final PIDController mLeftVelocityPID = mConfig.leftVelocityPID;
+    private final PIDController mRightVelocityPID = mConfig.rightVelocityPID;
 
-    private final ProfiledPIDController mTurnPID = sCurrentRobot.getCurrentRobot().getDrivetrainTurnPID();
+    private final ProfiledPIDController mTurnProfiledPID = mConfig.turnProfiledPID;
 
-    private final ProfiledPIDController mDriveStraightPowerPID
-            = sCurrentRobot.getCurrentRobot().getDrivetrainDriveStraightPowerPID();
-    private final ProfiledPIDController mDriveStraightHeadingPID
-            = sCurrentRobot.getCurrentRobot().getDrivetrainDriveStraightHeadingPID();
+    private final ProfiledPIDController mDriveStraightPowerProfiledPID = mConfig.driveStraightProfiledPowerPID;
+    private final ProfiledPIDController mDriveStraightHeadingProfiledPID = mConfig.driveStraightProfiledHeadingPID;
 
     private Pose2d mCurrentPose = new Pose2d();
 
@@ -131,15 +142,15 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.setSmartCurrentLimit(80);
         mRightWheelsSlave.setSmartCurrentLimit(80);
 
-        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainPositionFactor());
-        mLeftWheelsSlave.getEncoder().setPositionConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainPositionFactor());
-        mRightWheelsMaster.getEncoder().setPositionConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainPositionFactor());
-        mRightWheelsSlave.getEncoder().setPositionConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainPositionFactor());
+        mLeftWheelsMaster.getEncoder().setPositionConversionFactor(mConfig.kPositionFactor);
+        mLeftWheelsSlave.getEncoder().setPositionConversionFactor(mConfig.kPositionFactor);
+        mRightWheelsMaster.getEncoder().setPositionConversionFactor(mConfig.kPositionFactor);
+        mRightWheelsSlave.getEncoder().setPositionConversionFactor(mConfig.kPositionFactor);
 
-        mLeftWheelsMaster.getEncoder().setVelocityConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
-        mLeftWheelsSlave.getEncoder().setVelocityConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
-        mRightWheelsMaster.getEncoder().setVelocityConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
-        mRightWheelsSlave.getEncoder().setVelocityConversionFactor(sCurrentRobot.getCurrentRobot().getDrivetrainVelocityFactor());
+        mLeftWheelsMaster.getEncoder().setVelocityConversionFactor(mConfig.kVelocityFactor);
+        mLeftWheelsSlave.getEncoder().setVelocityConversionFactor(mConfig.kVelocityFactor);
+        mRightWheelsMaster.getEncoder().setVelocityConversionFactor(mConfig.kVelocityFactor);
+        mRightWheelsSlave.getEncoder().setVelocityConversionFactor(mConfig.kVelocityFactor);
 
         mLeftWheelsMaster.getPIDController().setP(mLeftVoltagePID.getP(), kDrivetrainVoltageSlot);
         mLeftWheelsMaster.getPIDController().setI(mLeftVoltagePID.getI(), kDrivetrainVoltageSlot);
@@ -161,6 +172,9 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.getPIDController().setD(mRightVelocityPID.getD(), kDrivetrainVelocitySlot);
         mRightWheelsMaster.getPIDController().setOutputRange(-1, 1, kDrivetrainVelocitySlot);
 
+        mLeftWheelsMaster.enableVoltageCompensation(mConfig.kLeftMaxVoltage);
+        mRightWheelsMaster.enableVoltageCompensation(mConfig.kRightMaxVoltage);
+
 //        TODO: See how this affects velocity control on Ramsete
 //        mLeftWheelsMaster.setControlFramePeriodMs(1);
 //        mRightWheelsMaster.setControlFramePeriodMs(1);
@@ -180,10 +194,10 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         if (kIsInTuningMode) {
             mLeftWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kDrivetrainLeftVelocityPKey,
-                    sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP()), kDrivetrainVelocitySlot);
+                    mLeftVelocityPID.getP()), kDrivetrainVelocitySlot);
 
             mRightWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kDrivetrainRightVelocityPKey,
-                    sCurrentRobot.getCurrentRobot().getDrivetrainRightVelocityPID().getP()), kDrivetrainVelocitySlot);
+                    mRightVelocityPID.getP()), kDrivetrainVelocitySlot);
         }
 
         SmartDashboard.putNumber(kDrivetrainAngularVelocityKey, getAngularVelocityDegreesPerSec());
@@ -221,8 +235,10 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setVelocities(double leftVelocity, double leftFeedForward, double rightVelocity, double rightFeedForward) {
-        mLeftWheelsMaster.getPIDController().setReference(leftVelocity, ControlType.kVelocity, kDrivetrainVelocitySlot, leftFeedForward, CANPIDController.ArbFFUnits.kVoltage);
-        mRightWheelsMaster.getPIDController().setReference(rightVelocity, ControlType.kVelocity, kDrivetrainVelocitySlot, rightFeedForward, CANPIDController.ArbFFUnits.kVoltage);
+        mLeftWheelsMaster.getPIDController().setReference(leftVelocity, ControlType.kVelocity, kDrivetrainVelocitySlot,
+                leftFeedForward, CANPIDController.ArbFFUnits.kVoltage);
+        mRightWheelsMaster.getPIDController().setReference(rightVelocity, ControlType.kVelocity, kDrivetrainVelocitySlot,
+                rightFeedForward, CANPIDController.ArbFFUnits.kVoltage);
     }
 
     public void reset() {
@@ -244,8 +260,12 @@ public class Drivetrain extends SubsystemBase {
         mDriveOdometry.resetPosition(startingPose, getHeading());
     }
 
-    public SimpleMotorFeedforward getFeedforward() {
-        return mFeedforward;
+    public SimpleMotorFeedforward getLinearFeedforward() {
+        return mLinearFeedforward;
+    }
+
+    public SimpleMotorFeedforward getAngularFeedforward() {
+        return mAngularFeedforward;
     }
 
     public DifferentialDriveKinematics getDriveKinematics() {
@@ -276,16 +296,16 @@ public class Drivetrain extends SubsystemBase {
         return mRightVelocityPID;
     }
 
-    public ProfiledPIDController getTurnPID() {
-        return mTurnPID;
+    public ProfiledPIDController getTurnProfiledPID() {
+        return mTurnProfiledPID;
     }
 
-    public ProfiledPIDController getDriveStraightPowerPID() {
-        return mDriveStraightPowerPID;
+    public ProfiledPIDController getDriveStraightPowerProfiledPID() {
+        return mDriveStraightPowerProfiledPID;
     }
 
-    public ProfiledPIDController getDriveStraightHeadingPID() {
-        return mDriveStraightHeadingPID;
+    public ProfiledPIDController getDriveStraightHeadingProfiledPID() {
+        return mDriveStraightHeadingProfiledPID;
     }
 
     public LinearSystemLoop<N2, N2, N2> getDriveControlLoop() {
@@ -337,6 +357,125 @@ public class Drivetrain extends SubsystemBase {
 
     public double getAngularVelocityDegreesPerSec() {
         return -mAhrs.getRate();
+    }
+
+    public DrivetrainConfig getConfig() {
+        return mConfig;
+    }
+
+    public boolean checkSystem() {
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,
+                "Testing Drive Subsystem");
+        final double kCurrentThres = 0.5;
+        final double kRpmThres = 0.5;
+
+        mRightWheelsMaster.setVoltage(0);
+        mRightWheelsSlave.setVoltage(0);
+        mLeftWheelsMaster.setVoltage(0);
+        mLeftWheelsSlave.setVoltage(0);
+
+        mRightWheelsMaster.setVoltage(-6.0f);
+        Timer.delay(4.0);
+        final double currentRightMaster = mRightWheelsMaster.getOutputCurrent();
+        final double rpmRightWheelsMaster = mRightWheelsMaster.getEncoder().getVelocity();
+        mRightWheelsMaster.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mRightWheelsSlave.setVoltage(-6.0f);
+        Timer.delay(4.0);
+        final double currentRightSlave = mRightWheelsSlave.getOutputCurrent();
+        final double rpmRightWheelsSlave = mRightWheelsMaster.getEncoder().getVelocity();
+        mRightWheelsSlave.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mLeftWheelsMaster.setVoltage(6.0f);
+        Timer.delay(4.0);
+        final double currentLeftMaster = mLeftWheelsMaster.getOutputCurrent();
+        final double rpmLeftWheelsMaster = mLeftWheelsMaster.getEncoder().getVelocity();
+        mLeftWheelsMaster.set(0.0f);
+
+        Timer.delay(2.0);
+
+        mLeftWheelsSlave.setVoltage(6.0f);
+        Timer.delay(4.0);
+        final double currentLeftSlave = mLeftWheelsSlave.getOutputCurrent();
+        final double rpmLeftWheelsSlave = mLeftWheelsMaster.getEncoder().getVelocity();
+        mLeftWheelsSlave.set(0.0);
+
+        configureControllersExcludingIdleMode();
+
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,"Drive Right Master Current: " + currentRightMaster
+                + " Drive Right Slave Current: " + currentRightSlave);
+        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Drive Left Master Current: " + currentLeftMaster
+                + " Drive Left Slave Current: " + currentLeftSlave);
+        DebuggingLog.getInstance().getLogger().log(Level.INFO,"Drive RPM RMaster: " + rpmRightWheelsMaster
+                + " RSlave: " + rpmRightWheelsSlave + " LMaster: " + rpmLeftWheelsMaster
+                + " LSlave: " + rpmLeftWheelsSlave);
+
+        boolean failure = false;
+
+        if (currentRightMaster < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,"Drive Right Master Current Low!");
+        }
+
+        if (currentRightSlave < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Slave Current Low!");
+        }
+
+        if (currentLeftMaster < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Master Current Low!");
+        }
+
+        if (currentLeftSlave < kCurrentThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Slave Current Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(currentRightMaster, currentRightSlave), currentRightMaster,
+                5.0)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Currents Different!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(currentLeftMaster, currentLeftSlave), currentLeftSlave,
+                5.0)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Currents Different!");
+        }
+
+        if (rpmRightWheelsMaster < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Master RPM Low!");
+        }
+
+        if (rpmRightWheelsSlave < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Slave RPM Low!");
+        }
+
+        if (rpmLeftWheelsMaster < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Master RPM Low!");
+        }
+
+        if (rpmLeftWheelsSlave < kRpmThres) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Left Slave RPM Low!");
+        }
+
+        if (!UtilMethods.allWithinTolerance(Arrays.asList(rpmRightWheelsMaster, rpmRightWheelsSlave,
+                rpmLeftWheelsMaster, rpmLeftWheelsSlave),
+                rpmRightWheelsMaster, 0.5)) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive RPMs different!");
+        }
+
+        return !failure;
     }
 
 }
