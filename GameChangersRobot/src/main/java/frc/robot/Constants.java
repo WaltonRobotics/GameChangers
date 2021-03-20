@@ -70,6 +70,9 @@ public final class Constants {
         public static final int kShooterSpinningUpSlot = 0;
         public static final int kShooterShootingSlot = 1;
 
+        public static final int kTurretMotionMagicSlot = 0;
+        public static final int kTurretPositionalSlot = 1;
+
     }
 
     public static class Conveyor {
@@ -130,7 +133,7 @@ public final class Constants {
 
     }
 
-    public static class LimelightConstants {
+    public static class Limelight {
 
         public static final int kLEDsOff = 1;
         public static final int kLEDsOn = 3;
@@ -140,7 +143,7 @@ public final class Constants {
 
     }
 
-    public static class FieldConstants {
+    public static class Field {
 
         public static final double kTargetHeightInches = 89.75;
         public static final double kTargetFrontOffsetFeet = 0.16;
@@ -190,6 +193,14 @@ public final class Constants {
         public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
         public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
+
+        public static final String kTurretForwardLimitStateKey = "Turret/Forward Limit State";
+        public static final String kTurretReverseLimitStateKey = "Turret/Reverse Limit State";
+        public static final String kTurretRobotRelativeHeadingRawUnitsKey = "Turret/Robot-relative Heading Raw Units";
+        public static final String kTurretRobotRelativeHeadingDegreesKey = "Turret/Robot-relative Heading Degrees";
+        public static final String kTurretFieldRelativeHeadingDegreesKey = "Turret/Field-relative Heading Degrees";
+        public static final String kTurretAngularVelocityRawUnitsKey = "Turret/Angular Velocity Raw Units";
+        public static final String kTurretControlStateKey = "Turret/Control State";
 
         public static final String kProMicroLEDWriteMessageKey = "Pro Micro/LED Write Message";
         public static final String kProMicroPixyCamReadMessageKey = "Pro Micro/PixyCam Read Message";

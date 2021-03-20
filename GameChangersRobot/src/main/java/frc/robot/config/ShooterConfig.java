@@ -13,7 +13,6 @@ public class ShooterConfig {
     public double kSpinningUpD;
     public double kSpinningUpIZone;
     public double kSpinningUpMaxIntegralAccumulator;
-    public double kSpinningUpPeakOutput;
 
     public double kShootingF;
     public double kShootingP;
@@ -21,7 +20,6 @@ public class ShooterConfig {
     public double kShootingD;
     public double kShootingIZone;
     public double kShootingMaxIntegralAccumulator;
-    public double kShootingPeakOutput;
 
     public double kMaxVoltage;
 

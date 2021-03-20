@@ -6,8 +6,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
-import static frc.robot.Constants.FieldConstants.kTargetHeightInches;
-import static frc.robot.Constants.LimelightConstants.*;
+import static frc.robot.Constants.Field.kTargetHeightInches;
+import static frc.robot.Constants.Limelight.*;
 import static frc.robot.Constants.Shooter.kTxWindowSize;
 import static frc.robot.Constants.Shooter.kTyWindowSize;
 import static frc.robot.Robot.sShooter;

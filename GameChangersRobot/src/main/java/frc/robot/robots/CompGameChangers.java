@@ -80,7 +80,6 @@ public class CompGameChangers implements WaltRobot {
         mShooterConfig.kSpinningUpD = 0;
         mShooterConfig.kSpinningUpIZone = 600;
         mShooterConfig.kSpinningUpMaxIntegralAccumulator = 1000;
-        mShooterConfig.kSpinningUpPeakOutput = 1.0;
 
         mShooterConfig.kShootingF = 0.04934694;
         mShooterConfig.kShootingP = 0.21;
@@ -88,7 +87,6 @@ public class CompGameChangers implements WaltRobot {
         mShooterConfig.kShootingD = 0;
         mShooterConfig.kShootingIZone = 600;
         mShooterConfig.kShootingMaxIntegralAccumulator = 1000;
-        mShooterConfig.kShootingPeakOutput = 1.0;
 
         mShooterConfig.kMaxVoltage = 11.0;
 

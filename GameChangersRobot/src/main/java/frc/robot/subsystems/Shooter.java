@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
@@ -47,6 +44,12 @@ public class Shooter extends SubsystemBase {
         mFlywheelSlave.setSensorPhase(false);
         mFlywheelSlave.follow(mFlywheelMaster);
 
+        mFlywheelMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10);
+        mFlywheelMaster.configNominalOutputForward(0);
+        mFlywheelMaster.configNominalOutputReverse(0);
+        mFlywheelMaster.configPeakOutputForward(1);
+        mFlywheelMaster.configPeakOutputReverse(-1);
+
 //        TODO: Check the following two settings by scheduling the ShooterMeasurementTuning command
 //        mFlywheelMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
 //        mFlywheelMaster.configVelocityMeasurementWindow(32);
@@ -58,7 +61,7 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.configAllowableClosedloopError(kShooterSpinningUpSlot, 0);
         mFlywheelMaster.config_IntegralZone(kShooterSpinningUpSlot, mConfig.kSpinningUpIZone);
         mFlywheelMaster.configMaxIntegralAccumulator(kShooterSpinningUpSlot, mConfig.kSpinningUpMaxIntegralAccumulator);
-        mFlywheelMaster.configClosedLoopPeakOutput(kShooterSpinningUpSlot, mConfig.kSpinningUpPeakOutput);
+        mFlywheelMaster.configClosedLoopPeakOutput(kShooterSpinningUpSlot, 1.0);
 
         mFlywheelMaster.config_kF(kShooterShootingSlot, mConfig.kShootingF);
         mFlywheelMaster.config_kP(kShooterShootingSlot, mConfig.kShootingP);
@@ -67,7 +70,7 @@ public class Shooter extends SubsystemBase {
         mFlywheelMaster.configAllowableClosedloopError(kShooterShootingSlot, 0);
         mFlywheelMaster.config_IntegralZone(kShooterShootingSlot, mConfig.kShootingIZone);
         mFlywheelMaster.configMaxIntegralAccumulator(kShooterShootingSlot, mConfig.kShootingMaxIntegralAccumulator);
-        mFlywheelMaster.configClosedLoopPeakOutput(kShooterShootingSlot, mConfig.kShootingPeakOutput);
+        mFlywheelMaster.configClosedLoopPeakOutput(kShooterShootingSlot, 1.0);
 
         // Voltage compensation
         mFlywheelMaster.configVoltageCompSaturation(mConfig.kMaxVoltage);
