@@ -97,11 +97,14 @@ public class PracticeGameChangers implements WaltRobot {
         mShooterConfig.kShooterPolynomial = mShooterPolynomial;
 
         mIntakeConfig = new IntakeConfig();
+        mIntakeConfig.kIsIntakeControllerInverted = false;
         mIntakeConfig.kIntakeDutyCycle = 1.0;
         mIntakeConfig.kOuttakeDutyCycle = -1.0;
         mIntakeConfig.kSettleTime = 0.5;
 
         mConveyorConfig = new ConveyorConfig();
+        mConveyorConfig.kIsFrontConveyorControllerInverted = true;
+        mConveyorConfig.kIsBackConveyorControllerInverted = false;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
         mConveyorConfig.kNudgeTimeSeconds = 0.29;
         mConveyorConfig.kFrontConveyorNudgeVoltage = 8.0;

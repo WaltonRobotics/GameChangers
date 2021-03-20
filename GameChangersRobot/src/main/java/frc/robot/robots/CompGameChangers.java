@@ -3,6 +3,7 @@ package frc.robot.robots;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.config.*;
 import frc.robot.utils.interpolation.InterpolatingDouble;
@@ -97,11 +98,14 @@ public class CompGameChangers implements WaltRobot {
         mShooterConfig.kShooterPolynomial = mShooterPolynomial;
 
         mIntakeConfig = new IntakeConfig();
-        mIntakeConfig.kIntakeDutyCycle = 1.0;
+        mIntakeConfig.kIsIntakeControllerInverted = true;
+        mIntakeConfig.kIntakeDutyCycle = 0.7;
         mIntakeConfig.kOuttakeDutyCycle = -1.0;
         mIntakeConfig.kSettleTime = 0.5;
 
         mConveyorConfig = new ConveyorConfig();
+        mConveyorConfig.kIsFrontConveyorControllerInverted = true;
+        mConveyorConfig.kIsBackConveyorControllerInverted = true;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
         mConveyorConfig.kNudgeTimeSeconds = 0.29;
         mConveyorConfig.kFrontConveyorNudgeVoltage = 8.0;
@@ -114,6 +118,12 @@ public class CompGameChangers implements WaltRobot {
         mConveyorConfig.kBackConveyorOuttakeDutyCycle = -1.0;
 
         mTurretConfig = new TurretConfig();
+        mTurretConfig.kLimitSwitchPosition = Rotation2d.fromDegrees(90);
+        mTurretConfig.kForwardSoftLimitRawUnits = 0;
+        mTurretConfig.kReverseSoftLimitRawUnits = -460;
+        final double kGearRatio = 230.0 / 30.0;
+        final double kTicksPerDriverRotation = 177;
+        mTurretConfig.kTicksPerDegree = kTicksPerDriverRotation * kGearRatio / 360.0;
     }
 
     @Override

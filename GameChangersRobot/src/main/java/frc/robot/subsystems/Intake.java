@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase {
             new Solenoid(kRetractIntakeSolenoidID) : null;
 
     public Intake() {
-        mIntakeController.setInverted(false);
+        mIntakeController.setInverted(mConfig.kIsIntakeControllerInverted);
 
         mIntakeController.setNeutralMode(NeutralMode.Coast);
     }

@@ -2,16 +2,19 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.TurretConfig;
 import frc.robot.utils.DebuggingLog;
+import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.UtilMethods;
 
 import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.kTurretID;
+import static frc.robot.Constants.DioIDs.kTurretLimitSwitchID;
 import static frc.robot.Constants.PIDSlots.kTurretMotionMagicSlot;
 import static frc.robot.Constants.PIDSlots.kTurretPositionalSlot;
 import static frc.robot.Constants.SmartDashboardKeys.*;
@@ -26,6 +29,8 @@ public class Turret extends SubsystemBase {
     private final TurretConfig mConfig = sCurrentRobot.getCurrentRobot().getTurretConfig();
 
     private final TalonSRX mTurretController = new TalonSRX(kTurretID);
+    private final DigitalInput mForwardLimit = new DigitalInput(kTurretLimitSwitchID);
+    private final EnhancedBoolean mForwardLimitBool = new EnhancedBoolean();
 
     private ControlState mControlState;
     private double mSetpoint;
@@ -49,15 +54,13 @@ public class Turret extends SubsystemBase {
         mTurretController.configPeakOutputReverse(-1);
 
         // Set up limits
-        mTurretController.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-                LimitSwitchNormal.NormallyOpen);
-        mTurretController.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
-                LimitSwitchNormal.NormallyOpen);
+//        mTurretController.configForwardLimitSwitchSource(LimitSwitchSource.RemoteCANifier,
+//                LimitSwitchNormal.NormallyOpen);
         mTurretController.configForwardSoftLimitThreshold(mConfig.kForwardSoftLimitRawUnits);
         mTurretController.configReverseSoftLimitThreshold(mConfig.kReverseSoftLimitRawUnits);
         mTurretController.configForwardSoftLimitEnable(true);
         mTurretController.configReverseSoftLimitEnable(true);
-        mTurretController.overrideLimitSwitchesEnable(true);
+        mTurretController.overrideLimitSwitchesEnable(false);
 
         // Set up positional control
         mTurretController.config_kF(kTurretPositionalSlot, 0);
@@ -94,13 +97,26 @@ public class Turret extends SubsystemBase {
             mTurretController.set(ControlMode.PercentOutput, mSetpoint);
         }
 
-        SmartDashboard.putNumber(kTurretForwardLimitStateKey, mTurretController.isFwdLimitSwitchClosed());
-        SmartDashboard.putNumber(kTurretReverseLimitStateKey, mTurretController.isRevLimitSwitchClosed());
+        mForwardLimitBool.set(!mForwardLimit.get());
+
+        SmartDashboard.putBoolean(kTurretForwardLimitStateKey, isForwardLimitClosed());
         SmartDashboard.putNumber(kTurretRobotRelativeHeadingRawUnitsKey, mTurretController.getSelectedSensorPosition());
         SmartDashboard.putNumber(kTurretRobotRelativeHeadingDegreesKey,
                 getRobotRelativeHeadingFromRawUnits(mTurretController.getSelectedSensorPosition()).getDegrees());
         SmartDashboard.putNumber(kTurretAngularVelocityRawUnitsKey, mTurretController.getSelectedSensorVelocity());
         SmartDashboard.putString(kTurretControlStateKey, mControlState.name());
+    }
+
+    public boolean isForwardLimitClosed() {
+        return mForwardLimitBool.get();
+    }
+
+    public boolean isForwardLimitRisingEdge() {
+        return mForwardLimitBool.isRisingEdge();
+    }
+
+    public void zero() {
+        mTurretController.setSelectedSensorPosition(0);
     }
 
     public void setOpenLoopDutyCycle(double targetDutyCycle) {

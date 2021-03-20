@@ -40,7 +40,8 @@ public class Conveyor extends SubsystemBase {
     private int mBallCount;
 
     public Conveyor() {
-        mFrontConveyorController.setInverted(true);
+        mFrontConveyorController.setInverted(mConfig.kIsFrontConveyorControllerInverted);
+        mBackConveyorController.setInverted(mConfig.kIsBackConveyorControllerInverted);
 
         resetBallCount();
     }

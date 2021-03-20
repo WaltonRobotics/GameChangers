@@ -5,7 +5,7 @@ public final class Constants {
     public static class ContextFlags {
 
         public static boolean kIsInCompetition = false;
-        public static boolean kIsInTuningMode = false;
+        public static boolean kIsInTuningMode = true;
         public static boolean kIsInfiniteRecharge = false;
 
     }
@@ -49,6 +49,8 @@ public final class Constants {
 
         public static final int kConveyorFrontSensorID = 4;
         public static final int kConveyorBackSensorID = 5;
+
+        public static final int kTurretLimitSwitchID = 6;
 
         public static final int kRobotID1 = 8;
         public static final int kRobotID2 = 9;
@@ -190,12 +192,13 @@ public final class Constants {
         public static final String kShooterTuningSetpointRawUnitsKey = "Shooter/Tuning Setpoint Raw Units";
         public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
 
+        public static final String kIntakeIntakingDutyCycleKey = "Intake/Intaking Duty Cycle";
+
         public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
         public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
 
         public static final String kTurretForwardLimitStateKey = "Turret/Forward Limit State";
-        public static final String kTurretReverseLimitStateKey = "Turret/Reverse Limit State";
         public static final String kTurretRobotRelativeHeadingRawUnitsKey = "Turret/Robot-relative Heading Raw Units";
         public static final String kTurretRobotRelativeHeadingDegreesKey = "Turret/Robot-relative Heading Degrees";
         public static final String kTurretFieldRelativeHeadingDegreesKey = "Turret/Field-relative Heading Degrees";

@@ -97,6 +97,7 @@ public class Robot extends TimedRobot {
             SmartDashboard.putNumber(kShooterMeasurementPeriodKey, 1);
             SmartDashboard.putNumber(kShooterMeasurementWindowKey, 1);
             SmartDashboard.putNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
+            SmartDashboard.putNumber(kIntakeIntakingDutyCycleKey, sIntake.getConfig().kIntakeDutyCycle);
             SmartDashboard.putNumber(kTurnToAnglePKey, sDrivetrain.getTurnProfiledPID().getP());
             SmartDashboard.putNumber(kTurnToAngleIKey, sDrivetrain.getTurnProfiledPID().getI());
             SmartDashboard.putNumber(kTurnToAngleDKey, sDrivetrain.getTurnProfiledPID().getD());
