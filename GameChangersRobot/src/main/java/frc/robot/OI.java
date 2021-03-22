@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.EnhancedJoystickButton;
 import frc.robot.utils.Gamepad;
@@ -20,6 +21,8 @@ public class OI {
     public static EnhancedJoystickButton sResetBallCountButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUTTON.getIndex());
 
     public static EnhancedJoystickButton sTurboButton = new EnhancedJoystickButton(sLeftJoystick, 1);
+    public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 7);
+    public static EnhancedJoystickButton sTertiaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 8);
     public static EnhancedJoystickButton sAutoAlignButton = new EnhancedJoystickButton(sRightJoystick, 1);
     public static EnhancedJoystickButton sShooterTuningBackOneFootButton = new EnhancedJoystickButton(sLeftJoystick, 2);
 
@@ -37,5 +40,7 @@ public class OI {
 
     public static EnhancedJoystickButton sAlignTurretButton = new EnhancedJoystickButton(sGamepad, DOWN_BUTTON.getIndex());
     public static EnhancedJoystickButton sHomeTurretButton = new EnhancedJoystickButton(sGamepad, LEFT_BUTTON.getIndex());
+    public static final JoystickButton quickTurnButton = new JoystickButton(sRightJoystick, 2);
+
 
 }

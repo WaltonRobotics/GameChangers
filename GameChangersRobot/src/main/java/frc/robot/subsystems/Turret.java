@@ -105,7 +105,7 @@ public class Turret extends SubsystemBase {
         SmartDashboard.putNumber(kTurretRobotRelativeHeadingDegreesKey, getCurrentRobotRelativeHeading().getDegrees());
         SmartDashboard.putNumber(kTurretAngularVelocityRawUnitsKey, mTurretController.getSelectedSensorVelocity());
         SmartDashboard.putString(kTurretControlStateKey, mControlState.name());
-        SmartDashboard.putNumber("Turret/Setpoint", mSetpoint);
+        SmartDashboard.putNumber(kTurretSetpointKey, mSetpoint);
     }
 
     public void enableSoftLimits() {
@@ -186,12 +186,9 @@ public class Turret extends SubsystemBase {
         }
     }
 
-    public double getCurrentRobotRelativeHeadingRawUnits() {
-        return mTurretController.getSelectedSensorPosition();
-    }
 
     public Rotation2d getCurrentRobotRelativeHeading() {
-        return getRobotRelativeHeadingFromRawUnits(getCurrentRobotRelativeHeadingRawUnits());
+        return getRobotRelativeHeadingFromRawUnits(getCurrentRawAngleHeadingRawUnits());
     }
 
     private double getRawUnitsFromRobotRelativeHeading(Rotation2d heading) {
@@ -204,5 +201,9 @@ public class Turret extends SubsystemBase {
 
     private Rotation2d getRobotRelativeHeadingFromRawUnits(double rawUnits) {
         return Rotation2d.fromDegrees(rawUnits / mConfig.kTicksPerDegree).plus(mConfig.kLimitSwitchPosition);
+    }
+
+    private double getCurrentRawAngleHeadingRawUnits() {
+        return mTurretController.getSelectedSensorPosition();
     }
 }

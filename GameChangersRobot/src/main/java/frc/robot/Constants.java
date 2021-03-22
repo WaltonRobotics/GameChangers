@@ -23,10 +23,12 @@ public final class Constants {
         public static final double kDriveJoystickDeadband = 0.1;
         public static final boolean kUseSquareCurve = true;
         public static final double kAutoAlignTimeout = 1.5;
-        public static final double kTurretMasterOverrideDeadband = 0.15;
+        public static final double kTurretMasterOverrideDeadband = 0.1;
         public static final double kNormalScaleFactor = 0.6;
         public static final double kTurboScaleFactor = 1.0;
         public static final double kTurretScaleFactor = 0.4;
+        public static final double kQuickStopThreshold = 0.3;
+        public static final double kQuickStopAlpha = 0.05;
 
     }
 
@@ -117,12 +119,16 @@ public final class Constants {
         public static final int kTxWindowSize = 1;
         public static final int kTyWindowSize = 5;
 
+        // Limelight NT takes up to 100ms to update at most
+        public static final double kLimelightLEDWaitTimeSeconds = 0.1;
+
     }
 
     public static class Turret {
 
         public static final double kClosedLoopErrorTolerance = 3.77 * 2.0 / 3.0;
         public static final int kWithinToleranceLoopsToSettle = 5;
+        public static final double kTimeToReverseToZero = 1.5;
 
     }
 
@@ -215,6 +221,7 @@ public final class Constants {
         public static final String kTurretFieldRelativeHeadingDegreesKey = "Turret/Field-relative Heading Degrees";
         public static final String kTurretAngularVelocityRawUnitsKey = "Turret/Angular Velocity Raw Units";
         public static final String kTurretControlStateKey = "Turret/Control State";
+        public static final String kTurretSetpointKey = "Turret/Setpoint";
 
         public static final String kProMicroLEDWriteMessageKey = "Pro Micro/LED Write Message";
         public static final String kProMicroPixyCamReadMessageKey = "Pro Micro/PixyCam Read Message";
@@ -246,4 +253,5 @@ public final class Constants {
         public static final String kRightMeasurementKey = "rightMeasurement";
 
     }
+
 }

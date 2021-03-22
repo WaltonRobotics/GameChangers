@@ -2,7 +2,6 @@ package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.Turret;
@@ -14,28 +13,15 @@ import java.util.logging.Level;
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.DriverPreferences.kTurretMasterOverrideDeadband;
 import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
-import static frc.robot.Constants.Turret.kClosedLoopErrorTolerance;
-import static frc.robot.Constants.Turret.kWithinToleranceLoopsToSettle;
+import static frc.robot.Constants.Shooter.kLimelightLEDWaitTimeSeconds;
+import static frc.robot.Constants.Turret.*;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sDrivetrain;
 import static frc.robot.Robot.sTurret;
 
 public class TurretCommand extends CommandBase {
 
-    private enum SweepingState {
-        CW(-0.3),
-        CCW(0.3);
-
-        private double mDutyCycle;
-
-        SweepingState(double dutyCycle) {
-            mDutyCycle = dutyCycle;
-        }
-
-        public double getDutyCycle() {
-            return mDutyCycle;
-        }
-    }
+    // TODO: Add timeouts on all auto-align functions
 
     private final double kZeroingDutyCycle = 0.5;
     private final double kZeroingTimeout = 2.0;
@@ -47,14 +33,13 @@ public class TurretCommand extends CommandBase {
     private final IState mZeroing;
     private final IState mHoming;
     private final IState mManual;
-    private final IState mAligningFromLimelight;
+    private final IState mAligningFromLimelightTX;
+    private final IState mAligningFromLimelightClosedLoop;
     private final IState mAligningFieldRelative;
-    private final IState mSweeping;
 
     private final StateMachine mStateMachine;
 
     private boolean mHasZeroed;
-    private boolean mIsManualControlEnabled;
 
     public TurretCommand() {
         addRequirements(sTurret);
@@ -69,6 +54,24 @@ public class TurretCommand extends CommandBase {
             public IState execute() {
                 sTurret.setOpenLoopDutyCycle(0);
 
+                if (isMasterOverride()) {
+                    return mManual;
+                }
+
+                if (sAlignTurretButton.isRisingEdge()) {
+                    if (LimelightHelper.getTV() > 0) {
+                        if (!mHasZeroed) {
+                            return mAligningFromLimelightClosedLoop;
+                        } else {
+                            return mAligningFromLimelightTX;
+                        }
+                    } else {
+                        if (mHasZeroed) {
+                            return mAligningFieldRelative;
+                        }
+                    }
+                }
+
                 if (!mHasZeroed) {
                     return mZeroing;
                 }
@@ -77,21 +80,7 @@ public class TurretCommand extends CommandBase {
                     return mHoming;
                 }
 
-                if (isMasterOverride()) {
-                    return mManual;
-                }
-
-                if (sAlignTurretButton.isRisingEdge()) {
-                    LimelightHelper.setLEDMode(true);
-
-                    if (LimelightHelper.getTV() > 0) {
-                        return mAligningFromLimelight;
-                    } else {
-                        return mAligningFieldRelative;
-                    }
-                }
-
-                return mIdle;
+                return this;
             }
 
             @Override
@@ -110,8 +99,6 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void initialize() {
-                mIsManualControlEnabled = false;
-
                 mStartTime = getFPGATimestamp();
             }
 
@@ -122,7 +109,6 @@ public class TurretCommand extends CommandBase {
                 if (getFPGATimestamp() - mStartTime > kZeroingTimeout) {
                     if (!mHasZeroed) {
                         DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Failed to zero");
-                        mHasZeroed = true;
                     }
 
                     return mIdle;
@@ -135,12 +121,12 @@ public class TurretCommand extends CommandBase {
                     return mHoming;
                 }
 
-                return mZeroing;
+                return this;
             }
 
             @Override
             public void finish() {
-                mIsManualControlEnabled = true;
+
             }
 
             @Override
@@ -154,13 +140,16 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void initialize() {
-                mIsManualControlEnabled = false;
                 mWithinThresholdLoops = 0;
             }
 
             @Override
             public IState execute() {
                 sTurret.setRobotRelativeHeading(mHomeRobotRelativeHeading, Turret.ControlState.POSITIONAL);
+
+                if (isMasterOverride()) {
+                    return mManual;
+                }
 
                 if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
                     mWithinThresholdLoops++;
@@ -172,12 +161,12 @@ public class TurretCommand extends CommandBase {
                     return mIdle;
                 }
 
-                return mHoming;
+                return this;
             }
 
             @Override
             public void finish() {
-                mIsManualControlEnabled = true;
+
             }
 
             @Override
@@ -200,7 +189,7 @@ public class TurretCommand extends CommandBase {
 
                 sTurret.setOpenLoopDutyCycle(sGamepad.getRightX() * kTurretScaleFactor);
 
-                return mManual;
+                return this;
             }
 
             @Override
@@ -214,39 +203,53 @@ public class TurretCommand extends CommandBase {
             }
         };
 
-        mAligningFromLimelight = new IState() {
+        mAligningFromLimelightTX = new IState() {
+            private double mStartTime;
+            private boolean mHasDeterminedTargetHeading;
             private Rotation2d mTargetHeading;
             private int mWithinThresholdLoops;
 
             @Override
             public void initialize() {
-                mIsManualControlEnabled = false;
-                mTargetHeading = sTurret.getCurrentRobotRelativeHeading().minus(
-                        Rotation2d.fromDegrees(LimelightHelper.getTX()));
-                mWithinThresholdLoops = 0;
+                LimelightHelper.setLEDMode(true);
+
+                mStartTime = getFPGATimestamp();
+                mHasDeterminedTargetHeading = false;
             }
 
             @Override
             public IState execute() {
-                sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.POSITIONAL);
+                if (isMasterOverride()) {
+                    return mManual;
+                }
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
-                    mWithinThresholdLoops++;
+                if (!mHasDeterminedTargetHeading) {
+                    if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
+                        mTargetHeading = sTurret.getCurrentRobotRelativeHeading().minus(
+                                Rotation2d.fromDegrees(LimelightHelper.getTX()));
+                        mWithinThresholdLoops = 0;
+                        mHasDeterminedTargetHeading = true;
+                    }
                 } else {
-                    mWithinThresholdLoops = 0;
+                    sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.POSITIONAL);
+
+                    if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
+                        mWithinThresholdLoops++;
+                    } else {
+                        mWithinThresholdLoops = 0;
+                    }
+
+                    if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                        return mIdle;
+                    }
                 }
 
-                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
-                    return mIdle;
-                }
-
-                return mAligningFromLimelight;
+                return this;
             }
 
             @Override
             public void finish() {
-//                LimelightHelper.setLEDMode(false);
-                mIsManualControlEnabled = true;
+                LimelightHelper.setLEDMode(false);
             }
 
             @Override
@@ -255,12 +258,37 @@ public class TurretCommand extends CommandBase {
             }
         };
 
+        mAligningFromLimelightClosedLoop = new IState() {
+            @Override
+            public void initialize() {
+                LimelightHelper.setLEDMode(true);
+            }
+
+            @Override
+            public IState execute() {
+                if (isMasterOverride()) {
+                    return mManual;
+                }
+
+                return this;
+            }
+
+            @Override
+            public void finish() {
+                LimelightHelper.setLEDMode(false);
+            }
+
+            @Override
+            public String getName() {
+                return "Aligning From Limelight Closed Loop";
+            }
+        };
+
         mAligningFieldRelative = new IState() {
             private int mWithinThresholdLoops;
 
             @Override
             public void initialize() {
-                mIsManualControlEnabled = false;
                 mWithinThresholdLoops = 0;
             }
 
@@ -269,6 +297,10 @@ public class TurretCommand extends CommandBase {
                 sTurret.setFieldRelativeHeading(mTargetFieldRelativeHeading,
                         sDrivetrain.getHeading(), Turret.ControlState.POSITIONAL);
 
+                if (isMasterOverride()) {
+                    return mManual;
+                }
+
                 if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
                     mWithinThresholdLoops++;
                 } else {
@@ -276,7 +308,11 @@ public class TurretCommand extends CommandBase {
                 }
 
                 if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
-                    return mIdle;
+                    if (LimelightHelper.getTX() > 0) {
+                        return mAligningFromLimelightTX;
+                    } else {
+                        return mIdle;
+                    }
                 }
 
                 return mAligningFieldRelative;
@@ -284,7 +320,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-                mIsManualControlEnabled = true;
+
             }
 
             @Override
@@ -293,36 +329,13 @@ public class TurretCommand extends CommandBase {
             }
         };
 
-        mSweeping = new IState() {
-            @Override
-            public void initialize() {
-                mIsManualControlEnabled = true;
-            }
-
-            @Override
-            public IState execute() {
-                return null;
-            }
-
-            @Override
-            public void finish() {
-
-            }
-
-            @Override
-            public String getName() {
-                return "Sweeping";
-            }
-        };
-
         mStateMachine = new StateMachine("Turret", mIdle);
 
         mHasZeroed = false;
-        mIsManualControlEnabled = false;
     }
 
     private boolean isMasterOverride() {
-        return mIsManualControlEnabled && Math.abs(sGamepad.getRightX()) > kTurretMasterOverrideDeadband;
+        return Math.abs(sGamepad.getRightX()) > kTurretMasterOverrideDeadband;
     }
 
     @Override
