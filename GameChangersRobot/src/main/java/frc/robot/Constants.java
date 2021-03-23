@@ -5,7 +5,7 @@ public final class Constants {
     public static class ContextFlags {
 
         public static boolean kIsInCompetition = false;
-        public static boolean kIsInTuningMode = false;
+        public static boolean kIsInTuningMode = true;
         public static boolean kIsInfiniteRecharge = false;
 
     }
@@ -23,10 +23,12 @@ public final class Constants {
         public static final double kDriveJoystickDeadband = 0.1;
         public static final boolean kUseSquareCurve = true;
         public static final double kAutoAlignTimeout = 1.5;
-        public static final double kTurretMasterOverrideDeadband = 0.15;
+        public static final double kTurretMasterOverrideDeadband = 0.1;
         public static final double kNormalScaleFactor = 0.6;
         public static final double kTurboScaleFactor = 1.0;
         public static final double kTurretScaleFactor = 0.4;
+        public static final double kQuickStopThreshold = 0.3;
+        public static final double kQuickStopAlpha = 0.05;
 
     }
 
@@ -65,6 +67,7 @@ public final class Constants {
 
         public static final int kDeployIntakeSolenoidID = 1;
         public static final int kRetractIntakeSolenoidID = 4;
+        public static final int kAdjustableHoodSolenoidID = 5;
 
     }
 
@@ -104,6 +107,7 @@ public final class Constants {
 
         public static final double kDefaultShootingDistanceFeet = 11.2;
         public static final double kDefaultVelocityRawUnits = 11500;
+        public static final double kBarfVelocityRawUnits = 6000;
 
         // Change to false to use polynomial interpolation instead
         public static final boolean kUseInterpolationMap = true;
@@ -117,12 +121,17 @@ public final class Constants {
         public static final int kTxWindowSize = 1;
         public static final int kTyWindowSize = 5;
 
+        // Limelight NT takes up to 100ms to update at most
+        public static final double kLimelightLEDWaitTimeSeconds = 0.1;
+
     }
 
     public static class Turret {
 
         public static final double kClosedLoopErrorTolerance = 3.77 * 2.0 / 3.0;
         public static final int kWithinToleranceLoopsToSettle = 5;
+        public static final double kZeroingDutyCycle = 0.5;
+        public static final double kZeroingTimeout = 2.0;
 
     }
 
@@ -202,6 +211,7 @@ public final class Constants {
         public static final String kShooterFlywheelVelocityKey = "Shooter/Flywheel Velocity Raw Units";
         public static final String kShooterTuningSetpointRawUnitsKey = "Shooter/Tuning Setpoint Raw Units";
         public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
+        public static final String kShooterAdjustableHoodStateKey = "Shooter/Adjustable Hood State";
 
         public static final String kIntakeIntakingDutyCycleKey = "Intake/Intaking Duty Cycle";
 
@@ -215,6 +225,7 @@ public final class Constants {
         public static final String kTurretFieldRelativeHeadingDegreesKey = "Turret/Field-relative Heading Degrees";
         public static final String kTurretAngularVelocityRawUnitsKey = "Turret/Angular Velocity Raw Units";
         public static final String kTurretControlStateKey = "Turret/Control State";
+        public static final String kTurretSetpointKey = "Turret/Setpoint";
 
         public static final String kProMicroLEDWriteMessageKey = "Pro Micro/LED Write Message";
         public static final String kProMicroPixyCamReadMessageKey = "Pro Micro/PixyCam Read Message";
@@ -246,4 +257,5 @@ public final class Constants {
         public static final String kRightMeasurementKey = "rightMeasurement";
 
     }
+
 }

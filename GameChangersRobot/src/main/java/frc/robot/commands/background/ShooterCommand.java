@@ -25,6 +25,7 @@ public class ShooterCommand extends CommandBase {
     private double mSetpointRawUnits = kDefaultVelocityRawUnits;
 
     private final IState mIdle;
+    private final IState mDeterminingSetpoint;
     private final IState mSpinningUp;
     private final IState mShooting;
     private final IState mSpinningDown;
@@ -48,15 +49,14 @@ public class ShooterCommand extends CommandBase {
                 sShooter.setOpenLoopDutyCycle(0);
 
                 if (mNeedsToShoot.getAsBoolean()) {
-                    LimelightHelper.setLEDMode(true);
-
                     if (kIsInTuningMode) {
-                        mSetpointRawUnits = SmartDashboard.getNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
-                    } else {
-                        mSetpointRawUnits = sShooter.getEstimatedVelocityFromTarget();
+                        mSetpointRawUnits =
+                                SmartDashboard.getNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
+
+                        return mSpinningUp;
                     }
 
-                    return mSpinningUp;
+                    return mDeterminingSetpoint;
                 }
 
                 if (mNeedsToBarf.getAsBoolean()) {
@@ -73,6 +73,36 @@ public class ShooterCommand extends CommandBase {
             @Override
             public String getName() {
                 return "Idle";
+            }
+        };
+
+        mDeterminingSetpoint = new IState() {
+            private double mStartTime;
+
+            @Override
+            public void initialize() {
+                LimelightHelper.setLEDMode(true);
+                mStartTime = getFPGATimestamp();
+            }
+
+            @Override
+            public IState execute() {
+                if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
+                    mSetpointRawUnits = sShooter.getEstimatedVelocityFromTarget();
+                    return mSpinningUp;
+                }
+
+                return this;
+            }
+
+            @Override
+            public void finish() {
+
+            }
+
+            @Override
+            public String getName() {
+                return "Determining Setpoint";
             }
         };
 
@@ -171,7 +201,7 @@ public class ShooterCommand extends CommandBase {
             public void finish() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
-//                LimelightHelper.setLEDMode(false);
+                LimelightHelper.setLEDMode(false);
             }
 
             @Override
@@ -182,9 +212,8 @@ public class ShooterCommand extends CommandBase {
 
         mStateMachine = new StateMachine("Shooter", mIdle);
 
-        if (kIsInTuningMode) {
-            sToggleLimelightLEDsButton.whenPressed(LimelightHelper::toggleLimelight);
-        }
+        sToggleLimelightLEDsButton.whenPressed(LimelightHelper::toggleLimelight);
+        sShooterAdjustableToggleHoodButton.whenPressed(sShooter::toggleAdjustableHood);
     }
 
     @Override

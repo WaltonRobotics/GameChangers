@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
 import frc.robot.commands.background.*;
+import frc.robot.commands.background.driveMode.ArcadeDrive;
+import frc.robot.commands.background.driveMode.CurvatureDrive;
+import frc.robot.commands.background.driveMode.DriveMode;
+import frc.robot.commands.background.driveMode.TankDrive;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
@@ -47,6 +51,7 @@ public class Robot extends TimedRobot {
     public static ProMicro sProMicro;
 
     private static SendableChooser<AutonRoutine> mAutonChooser;
+    public static SendableChooser<DriveMode> sDriveModeChooser;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -89,7 +94,7 @@ public class Robot extends TimedRobot {
 
         populateShuffleboard();
 
-        LimelightHelper.setLEDMode(true);
+        LimelightHelper.setLEDMode(kIsInTuningMode);
     }
 
     private void populateShuffleboard() {
@@ -108,6 +113,12 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putNumber(kNormalScaleFactorKey, kNormalScaleFactor);
         SmartDashboard.putNumber(kTurboScaleFactorKey, kTurboScaleFactor);
+
+        sDriveModeChooser = new SendableChooser<>();
+        sDriveModeChooser.setDefaultOption("Tank", new TankDrive());
+        sDriveModeChooser.addOption("Curvature", new CurvatureDrive());
+        sDriveModeChooser.addOption("Arcade", new ArcadeDrive());
+        SmartDashboard.putData("Drive Mode Selector", sDriveModeChooser);
     }
 
     /**
@@ -173,7 +184,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         AutonFlags.getInstance().setIsInAuton(false);
 
-        LimelightHelper.setLEDMode(true);
+        LimelightHelper.setLEDMode(kIsInTuningMode);
     }
 
     /**

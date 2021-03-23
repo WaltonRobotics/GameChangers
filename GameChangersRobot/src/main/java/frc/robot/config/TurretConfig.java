@@ -1,5 +1,6 @@
 package frc.robot.config;
 
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 
 public class TurretConfig {
@@ -28,5 +29,7 @@ public class TurretConfig {
     public double kAcceleration;
     public double kCruiseVelocity;
     public int kSCurveStrength;
+
+    ProfiledPIDController closedLoopAutoAlignProfiledPID;
 
 }

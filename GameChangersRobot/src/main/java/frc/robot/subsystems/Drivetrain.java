@@ -172,8 +172,8 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.getPIDController().setD(mRightVelocityPID.getD(), kDrivetrainVelocitySlot);
         mRightWheelsMaster.getPIDController().setOutputRange(-1, 1, kDrivetrainVelocitySlot);
 
-//        mLeftWheelsMaster.enableVoltageCompensation(mConfig.kLeftMaxVoltage);
-//        mRightWheelsMaster.enableVoltageCompensation(mConfig.kRightMaxVoltage);
+        mLeftWheelsMaster.enableVoltageCompensation(mConfig.kLeftMaxVoltage);
+        mRightWheelsMaster.enableVoltageCompensation(mConfig.kRightMaxVoltage);
 
 //        TODO: See how this affects velocity control on Ramsete
 //        mLeftWheelsMaster.setControlFramePeriodMs(1);
