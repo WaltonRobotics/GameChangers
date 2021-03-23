@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.config.*;
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
@@ -69,8 +70,8 @@ public class CompGameChangers implements WaltRobot {
         mDrivetrainConfig.kPositionFactor = 0.05984734;
         mDrivetrainConfig.kVelocityFactor = mDrivetrainConfig.kPositionFactor / 60.0;
         mDrivetrainConfig.kTrackWidthMeters = 0.6594394313930071;
-        mDrivetrainConfig.kMaxVelocityMetersPerSecond = 2.0;
-        mDrivetrainConfig.kMaxAccelerationMetersPerSecondSquared = 0.3;
+        mDrivetrainConfig.kMaxVelocityMetersPerSecond = Units.feetToMeters(10.0);
+        mDrivetrainConfig.kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(6.0);
         mDrivetrainConfig.kLeftMaxVoltage = 12.0;
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
 
