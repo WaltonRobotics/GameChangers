@@ -38,7 +38,7 @@ public class OI {
 
     public static EnhancedJoystickButton sAlignTurretButton = new EnhancedJoystickButton(sGamepad, DOWN_BUTTON.getIndex());
     public static EnhancedJoystickButton sHomeTurretButton = new EnhancedJoystickButton(sGamepad, LEFT_BUTTON.getIndex());
-    public static final JoystickButton quickTurnButton = new JoystickButton(sRightJoystick, 2);
+    public static EnhancedJoystickButton sQuickTurnButton = new EnhancedJoystickButton(sRightJoystick, 2);
 
     // Tuning buttons
     public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sLeftJoystick, 3);

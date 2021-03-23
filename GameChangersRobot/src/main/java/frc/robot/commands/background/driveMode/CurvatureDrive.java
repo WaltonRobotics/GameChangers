@@ -4,7 +4,7 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 
 import static frc.robot.Constants.DriverPreferences.kQuickStopAlpha;
 import static frc.robot.Constants.DriverPreferences.kQuickStopThreshold;
-import static frc.robot.OI.quickTurnButton;
+import static frc.robot.OI.sQuickTurnButton;
 import static frc.robot.Robot.sDrivetrain;
 
 public class CurvatureDrive extends DriveMode {
@@ -22,7 +22,7 @@ public class CurvatureDrive extends DriveMode {
         double angularPower;
         boolean overPower;
 
-        if (quickTurnButton.get()) {
+        if (sQuickTurnButton.get()) {
             if (Math.abs(xSpeed) < kQuickStopThreshold) {
                 quickStopAccumulator = (1 - kQuickStopAlpha) * quickStopAccumulator
                         + kQuickStopAlpha * MathUtil.clamp(zRotation, -1.0, 1.0) * 2;
