@@ -23,9 +23,6 @@ public class TurretCommand extends CommandBase {
 
     // TODO: Add timeouts on all auto-align functions
 
-    private final double kZeroingDutyCycle = 0.5;
-    private final double kZeroingTimeout = 2.0;
-
     private final Rotation2d mHomeRobotRelativeHeading = Rotation2d.fromDegrees(0);
     private final Rotation2d mTargetFieldRelativeHeading = Rotation2d.fromDegrees(0);
 

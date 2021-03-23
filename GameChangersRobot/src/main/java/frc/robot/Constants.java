@@ -5,7 +5,7 @@ public final class Constants {
     public static class ContextFlags {
 
         public static boolean kIsInCompetition = false;
-        public static boolean kIsInTuningMode = false;
+        public static boolean kIsInTuningMode = true;
         public static boolean kIsInfiniteRecharge = false;
 
     }
@@ -67,6 +67,7 @@ public final class Constants {
 
         public static final int kDeployIntakeSolenoidID = 1;
         public static final int kRetractIntakeSolenoidID = 4;
+        public static final int kAdjustableHoodSolenoidID = 5;
 
     }
 
@@ -106,6 +107,7 @@ public final class Constants {
 
         public static final double kDefaultShootingDistanceFeet = 11.2;
         public static final double kDefaultVelocityRawUnits = 11500;
+        public static final double kBarfVelocityRawUnits = 6000;
 
         // Change to false to use polynomial interpolation instead
         public static final boolean kUseInterpolationMap = true;
@@ -128,7 +130,8 @@ public final class Constants {
 
         public static final double kClosedLoopErrorTolerance = 3.77 * 2.0 / 3.0;
         public static final int kWithinToleranceLoopsToSettle = 5;
-        public static final double kTimeToReverseToZero = 1.5;
+        public static final double kZeroingDutyCycle = 0.5;
+        public static final double kZeroingTimeout = 2.0;
 
     }
 
@@ -208,6 +211,7 @@ public final class Constants {
         public static final String kShooterFlywheelVelocityKey = "Shooter/Flywheel Velocity Raw Units";
         public static final String kShooterTuningSetpointRawUnitsKey = "Shooter/Tuning Setpoint Raw Units";
         public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
+        public static final String kShooterAdjustableHoodStateKey = "Shooter/Adjustable Hood State";
 
         public static final String kIntakeIntakingDutyCycleKey = "Intake/Intaking Duty Cycle";
 

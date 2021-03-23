@@ -115,8 +115,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber(kTurboScaleFactorKey, kTurboScaleFactor);
 
         sDriveModeChooser = new SendableChooser<>();
-        sDriveModeChooser.setDefaultOption("Curvature", new CurvatureDrive());
-        sDriveModeChooser.addOption("Tank", new TankDrive());
+        sDriveModeChooser.setDefaultOption("Tank", new TankDrive());
+        sDriveModeChooser.addOption("Curvature", new CurvatureDrive());
         sDriveModeChooser.addOption("Arcade", new ArcadeDrive());
         SmartDashboard.putData("Drive Mode Selector", sDriveModeChooser);
     }

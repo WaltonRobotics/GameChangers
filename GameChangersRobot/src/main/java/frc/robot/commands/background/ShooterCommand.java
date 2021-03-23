@@ -213,6 +213,7 @@ public class ShooterCommand extends CommandBase {
         mStateMachine = new StateMachine("Shooter", mIdle);
 
         sToggleLimelightLEDsButton.whenPressed(LimelightHelper::toggleLimelight);
+        sShooterAdjustableToggleHoodButton.whenPressed(sShooter::toggleAdjustableHood);
     }
 
     @Override

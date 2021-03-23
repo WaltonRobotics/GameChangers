@@ -78,6 +78,8 @@ public class IntakeCommand extends CommandBase {
                     sIntake.setDeployed(false);
                 }
 
+                sIntake.setRetracted(false);
+
                 return mIdle;
             }
 
@@ -178,6 +180,12 @@ public class IntakeCommand extends CommandBase {
         };
 
         mStateMachine = new StateMachine("Intake", mIdle);
+    }
+
+    @Override
+    public void initialize() {
+        sIntake.setDeployed(false);
+        sIntake.setRetracted(true);
     }
 
     @Override

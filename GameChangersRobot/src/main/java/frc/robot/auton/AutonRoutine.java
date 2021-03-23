@@ -1,9 +1,6 @@
 package frc.robot.auton;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
@@ -15,6 +12,7 @@ import java.util.function.Supplier;
 
 import static frc.robot.Paths.GalacticSearchPaths.*;
 import static frc.robot.Robot.sDrivetrain;
+import static frc.robot.Robot.sIntake;
 
 public enum AutonRoutine {
 
@@ -23,32 +21,45 @@ public enum AutonRoutine {
     DRIVETRAIN_CHARACTERIZATION("Drivetrain Characterization", new DrivetrainCharacterizationRoutine()),
 
     GALACTIC_SEARCH("Galactic Search",
-            new ConditionalCommand(
-                    // Red A
-                    new SequentialCommandGroup(
-                            new InstantCommand(() -> sDrivetrain.reset()),
-                            new ResetPose(sRedA),
-                            new SetIntakeToggle(true, 0.5),
-                            new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
-                            new RamseteTrackingCommand(sRedA, true, false),
-                            new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(false))
-                    ),
-                    new ConditionalCommand(
-                            // Red B
-                            new SequentialCommandGroup(),
-                            new ConditionalCommand(
-                                    // Blue A
-                                    new SequentialCommandGroup(),
-                                    // Blue B
-                                    new SequentialCommandGroup(),
-                                    () -> PixyCamHelper.getGalacticSearchDetermination()
-                                            == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_BLUE_A
-                            ),
-                            () -> PixyCamHelper.getGalacticSearchDetermination()
-                                    == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_B
-                    ),
-                    () -> PixyCamHelper.getGalacticSearchDetermination()
-                            == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A
+//            new ConditionalCommand(
+////                    // Red A
+////                    new SequentialCommandGroup(
+////                            new InstantCommand(() -> sDrivetrain.reset()),
+////                            new ResetPose(sRedA),
+////                            new SetIntakeToggle(true, 0.5),
+////                            new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+////                            new RamseteTrackingCommand(sRedA, true, false),
+////                            new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(false))
+////                    ),
+////                    new ConditionalCommand(
+////                            // Red B
+////                            new SequentialCommandGroup(),
+////                            new ConditionalCommand(
+////                                    // Blue A
+////                                    new SequentialCommandGroup(),
+////                                    // Blue B
+////                                    new SequentialCommandGroup(),
+////                                    () -> PixyCamHelper.getGalacticSearchDetermination()
+////                                            == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_BLUE_A
+////                            ),
+////                            () -> PixyCamHelper.getGalacticSearchDetermination()
+////                                    == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_B
+////                    ),
+////                    () -> PixyCamHelper.getGalacticSearchDetermination()
+////                            == ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A
+////            )
+            new SequentialCommandGroup(
+                    new InstantCommand(() -> sDrivetrain.reset()),
+                    new ResetPose(sRedA),
+                    new SetIntakeToggle(true, 1.5),
+                    new ParallelDeadlineGroup(
+                            new RunCommand(() -> sIntake.setRetracted(false)),
+                            new SequentialCommandGroup(
+                                    new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+                                    new RamseteTrackingCommand(sRedA, true, false),
+                                    new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(false))
+                            )
+                    )
             )
     );
 

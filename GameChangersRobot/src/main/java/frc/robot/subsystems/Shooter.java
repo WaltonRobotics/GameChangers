@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +20,7 @@ import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
+import static frc.robot.Constants.PneumaticsIDs.kAdjustableHoodSolenoidID;
 import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Robot.sCurrentRobot;
@@ -29,6 +31,7 @@ public class Shooter extends SubsystemBase {
 
     private final TalonFX mFlywheelMaster = new TalonFX(kFlywheelMasterID);
     private final TalonFX mFlywheelSlave = new TalonFX(kFlywheelSlaveID);
+    private final Solenoid mAdjustableHoodSolenoid = new Solenoid(kAdjustableHoodSolenoidID);
 
     public Shooter() {
         configureFlywheelControllers();
@@ -136,6 +139,18 @@ public class Shooter extends SubsystemBase {
         }
     }
 
+    public boolean isAdjustableHoodUp() {
+        return mAdjustableHoodSolenoid.get();
+    }
+
+    public void setAdjustableHoodUp(boolean isUp) {
+        mAdjustableHoodSolenoid.set(isUp);
+    }
+
+    public void toggleAdjustableHood() {
+        mAdjustableHoodSolenoid.toggle();
+    }
+
     @Override
     public void periodic() {
         LimelightHelper.updateData();
@@ -152,6 +167,7 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber(kShooterErrorRPSKey, getClosedLoopErrorRevolutionsPerSec());
         SmartDashboard.putNumber(kShooterErrorInchesKey, getClosedLoopErrorInchesPerSec());
         SmartDashboard.putNumber(kShooterLimelightDistanceFeetKey, LimelightHelper.getDistanceToTargetFeet());
+        SmartDashboard.putBoolean(kShooterAdjustableHoodStateKey, mAdjustableHoodSolenoid.get());
     }
 
     public ShooterConfig getConfig() {
@@ -224,6 +240,11 @@ public class Shooter extends SubsystemBase {
             failure = true;
             DebuggingLog.getInstance().getLogger().log(Level.WARNING,
                     "Shooter Flywheel RPMs Different!");
+        }
+
+        if (mAdjustableHoodSolenoid.getPCMSolenoidVoltageFault()) {
+            failure = true;
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Adjustable hood solenoid voltage fault!");
         }
 
         return !failure;
