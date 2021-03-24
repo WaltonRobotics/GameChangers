@@ -139,8 +139,9 @@ public class Paths {
                         public static Trajectory sBounce = generateBounce();
 
                         public static Trajectory generateBounce() {
-                                TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(10.0),
-                                                Units.feetToMeters(4.0));
+                                TrajectoryConfig config = new TrajectoryConfig(
+                                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
                                 config.setKinematics(sDrivetrain.getDriveKinematics());
                                 config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
@@ -155,8 +156,9 @@ public class Paths {
                         }
 
                         public static Trajectory generateBounce2() {
-                                TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(10.0),
-                                                Units.feetToMeters(4.0));
+                                TrajectoryConfig config = new TrajectoryConfig(
+                                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
                                 config.setKinematics(sDrivetrain.getDriveKinematics());
                                 config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
@@ -171,8 +173,9 @@ public class Paths {
                         }
 
                         public static Trajectory generateBounce3() {
-                                TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(10.0),
-                                                Units.feetToMeters(4.0));
+                                TrajectoryConfig config = new TrajectoryConfig(
+                                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
                                 config.setKinematics(sDrivetrain.getDriveKinematics());
                                 config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
@@ -187,8 +190,9 @@ public class Paths {
                         }
 
                         public static Trajectory generateBounce4() {
-                                TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(10.0),
-                                                Units.feetToMeters(4.0));
+                                TrajectoryConfig config = new TrajectoryConfig(
+                                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
                                 config.setKinematics(sDrivetrain.getDriveKinematics());
                                 config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
@@ -213,8 +217,9 @@ public class Paths {
                         public static Trajectory sSlalom = generateSlalom();
                         public static Trajectory generateSlalom() {
                                 TrajectoryConfig config = new TrajectoryConfig(
-                                        Units.feetToMeters(10.0), Units.feetToMeters(4.0));
-                        
+                                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+
                                 config.setKinematics(sDrivetrain.getDriveKinematics());
                                 config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 
@@ -239,7 +244,8 @@ public class Paths {
                 public static class BarrelRacingPath {
                         public static Trajectory generateBarrelRacing() {
                                 TrajectoryConfig config = new TrajectoryConfig(
-                                        Units.feetToMeters(10.0), Units.feetToMeters(4.0));
+                                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
                         
                                 config.setKinematics(sDrivetrain.getDriveKinematics());
                                 config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);     
