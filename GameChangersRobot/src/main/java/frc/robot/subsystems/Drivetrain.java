@@ -5,6 +5,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.*;
@@ -31,11 +32,11 @@ import java.util.Arrays;
 import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
-import static frc.robot.Constants.ContextFlags.kIsInCompetition;
-import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.ContextFlags.*;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
 import static frc.robot.Constants.SmartDashboardKeys.*;
+import static frc.robot.Constants.Tuning.kDrivetrainTuningSettingsUpdateRateSeconds;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class Drivetrain extends SubsystemBase {
@@ -97,6 +98,26 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
         configureControllersTeleop();
         reset();
+
+//        NetworkTableInstance mNTInstance = NetworkTableInstance.getDefault();
+//        NetworkTableEntry mTuningOpenLoopRampRateUpdateEntry
+//                = mNTInstance.getEntry(kDrivetrainTuningOpenLoopRampRateKey);
+//
+//        mNTInstance.startClientTeam(kTeamNumber);
+//
+//        mTuningOpenLoopRampRateUpdateEntry.addListener(event -> {
+//            System.out.println("Hello World");
+//            double openLoopRampRate = mTuningOpenLoopRampRateUpdateEntry.getDouble(mConfig.kOpenLoopRampRate);
+//            mLeftWheelsMaster.setOpenLoopRampRate(openLoopRampRate);
+//            mLeftWheelsSlave.setOpenLoopRampRate(openLoopRampRate);
+//            mRightWheelsMaster.setOpenLoopRampRate(openLoopRampRate);
+//            mRightWheelsSlave.setOpenLoopRampRate(openLoopRampRate);
+//        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+        if (kIsInTuningMode) {
+            Notifier updateTuningSettingsNotifier = new Notifier(this::updateTuningSettings);
+            updateTuningSettingsNotifier.startPeriodic(kDrivetrainTuningSettingsUpdateRateSeconds);
+        }
     }
 
     public void configureControllersTeleop() {
@@ -132,10 +153,10 @@ public class Drivetrain extends SubsystemBase {
         mLeftWheelsSlave.follow(mLeftWheelsMaster);
         mRightWheelsSlave.follow(mRightWheelsMaster);
 
-        mLeftWheelsMaster.setOpenLoopRampRate(0);
-        mLeftWheelsSlave.setOpenLoopRampRate(0);
-        mRightWheelsMaster.setOpenLoopRampRate(0);
-        mRightWheelsSlave.setOpenLoopRampRate(0);
+        mLeftWheelsMaster.setOpenLoopRampRate(mConfig.kOpenLoopRampRate);
+        mLeftWheelsSlave.setOpenLoopRampRate(mConfig.kOpenLoopRampRate);
+        mRightWheelsMaster.setOpenLoopRampRate(mConfig.kOpenLoopRampRate);
+        mRightWheelsSlave.setOpenLoopRampRate(mConfig.kOpenLoopRampRate);
 
         mLeftWheelsMaster.setSmartCurrentLimit(80);
         mLeftWheelsSlave.setSmartCurrentLimit(80);
@@ -192,14 +213,6 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (kIsInTuningMode) {
-            mLeftWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kDrivetrainLeftVelocityPKey,
-                    mLeftVelocityPID.getP()), kDrivetrainVelocitySlot);
-
-            mRightWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kDrivetrainRightVelocityPKey,
-                    mRightVelocityPID.getP()), kDrivetrainVelocitySlot);
-        }
-
         SmartDashboard.putNumber(kDrivetrainAngularVelocityKey, getAngularVelocityDegreesPerSec());
         SmartDashboard.putNumber(kDrivetrainHeadingKey, getHeading().getDegrees());
         SmartDashboard.putNumber(kDrivetrainLeftPositionKey, getLeftPositionMeters());
@@ -476,6 +489,21 @@ public class Drivetrain extends SubsystemBase {
         }
 
         return !failure;
+    }
+
+    private void updateTuningSettings() {
+        mLeftWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kDrivetrainLeftVelocityPKey,
+                mLeftVelocityPID.getP()), kDrivetrainVelocitySlot);
+
+        mRightWheelsMaster.getPIDController().setP(SmartDashboard.getNumber(kDrivetrainRightVelocityPKey,
+                mRightVelocityPID.getP()), kDrivetrainVelocitySlot);
+
+        double openLoopRampRate = SmartDashboard.getNumber(kDrivetrainTuningOpenLoopRampRateKey,
+                mConfig.kOpenLoopRampRate);
+        mLeftWheelsMaster.setOpenLoopRampRate(openLoopRampRate);
+        mLeftWheelsSlave.setOpenLoopRampRate(openLoopRampRate);
+        mRightWheelsMaster.setOpenLoopRampRate(openLoopRampRate);
+        mRightWheelsSlave.setOpenLoopRampRate(openLoopRampRate);
     }
 
 }

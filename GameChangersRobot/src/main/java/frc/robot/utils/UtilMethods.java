@@ -50,4 +50,12 @@ public class UtilMethods {
         return result;
     }
 
+    public static double restrictAngle(double value, double min, double max)
+    {
+        double width = max - min;
+        double offsetValue = value - min;
+
+        return (offsetValue - (Math.floor(offsetValue / width) * width)) + min;
+    }
+
 }

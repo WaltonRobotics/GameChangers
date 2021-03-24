@@ -101,6 +101,7 @@ public class Robot extends TimedRobot {
         if (kIsInTuningMode) {
             SmartDashboard.putNumber(kDrivetrainLeftVelocityPKey, sDrivetrain.getLeftVelocityPID().getP());
             SmartDashboard.putNumber(kDrivetrainRightVelocityPKey, sDrivetrain.getRightVelocityPID().getP());
+            SmartDashboard.putNumber(kDrivetrainTuningOpenLoopRampRateKey, sDrivetrain.getConfig().kOpenLoopRampRate);
             SmartDashboard.putNumber(kShooterMeasurementPeriodKey, 1);
             SmartDashboard.putNumber(kShooterMeasurementWindowKey, 1);
             SmartDashboard.putNumber(kShooterTuningSetpointRawUnitsKey, kDefaultVelocityRawUnits);
@@ -136,9 +137,6 @@ public class Robot extends TimedRobot {
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-
-        SmartDashboard.putString("PixyCam Galactic Search Determination",
-                PixyCamHelper.getGalacticSearchDetermination().name());
     }
 
     /**

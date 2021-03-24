@@ -51,9 +51,8 @@ public enum AutonRoutine {
             new SequentialCommandGroup(
                     new InstantCommand(() -> sDrivetrain.reset()),
                     new ResetPose(sRedA),
-                    new SetIntakeToggle(true, 1.5),
+                    new SetIntakeToggle(true),
                     new ParallelDeadlineGroup(
-                            new RunCommand(() -> sIntake.setRetracted(false)),
                             new SequentialCommandGroup(
                                     new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
                                     new RamseteTrackingCommand(sRedA, true, false),

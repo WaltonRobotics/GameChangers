@@ -1,6 +1,8 @@
 package frc.robot.commands.background;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.vision.PixyCamHelper;
 
 import static frc.robot.Robot.sProMicro;
 import static frc.robot.subsystems.ProMicro.LEDStripWriteMessage.IDLE;

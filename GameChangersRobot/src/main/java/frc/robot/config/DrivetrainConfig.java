@@ -30,4 +30,6 @@ public class DrivetrainConfig {
     public double kMaxVelocityMetersPerSecond;
     public double kMaxAccelerationMetersPerSecondSquared;
 
+    public double kOpenLoopRampRate;
+
 }

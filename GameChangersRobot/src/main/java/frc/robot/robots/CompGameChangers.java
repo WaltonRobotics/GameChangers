@@ -70,10 +70,11 @@ public class CompGameChangers implements WaltRobot {
         mDrivetrainConfig.kPositionFactor = 0.05984734;
         mDrivetrainConfig.kVelocityFactor = mDrivetrainConfig.kPositionFactor / 60.0;
         mDrivetrainConfig.kTrackWidthMeters = 0.6594394313930071;
-        mDrivetrainConfig.kMaxVelocityMetersPerSecond = Units.feetToMeters(10.0);
-        mDrivetrainConfig.kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(6.0);
+        mDrivetrainConfig.kMaxVelocityMetersPerSecond = Units.feetToMeters(8.0);
+        mDrivetrainConfig.kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(2.0);
         mDrivetrainConfig.kLeftMaxVoltage = 12.0;
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
+        mDrivetrainConfig.kOpenLoopRampRate = 0.5;
 
         mShooterConfig = new ShooterConfig();
         mShooterConfig.kSpinningUpF = 0.05018491;
@@ -102,7 +103,7 @@ public class CompGameChangers implements WaltRobot {
         mIntakeConfig.kIsIntakeControllerInverted = true;
         mIntakeConfig.kIntakeDutyCycle = 0.6;
         mIntakeConfig.kOuttakeDutyCycle = -1.0;
-        mIntakeConfig.kSettleTime = 0.5;
+        mIntakeConfig.kSettleTime = 1.5;
 
         mConveyorConfig = new ConveyorConfig();
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;

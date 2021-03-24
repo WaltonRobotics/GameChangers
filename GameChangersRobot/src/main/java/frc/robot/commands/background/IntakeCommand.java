@@ -47,7 +47,7 @@ public class IntakeCommand extends CommandBase {
                     return mOuttaking;
                 }
 
-                return mIdle;
+                return this;
             }
 
             @Override
@@ -126,10 +126,10 @@ public class IntakeCommand extends CommandBase {
             @Override
             public IState execute() {
                 if (kIsInTuningMode) {
-                    sIntake.setRollerDutyCycle(sIntake.getConfig().kIntakeDutyCycle);
-                } else {
                     sIntake.setRollerDutyCycle(SmartDashboard.getNumber(kIntakeIntakingDutyCycleKey,
                             sIntake.getConfig().kIntakeDutyCycle));
+                } else {
+                    sIntake.setRollerDutyCycle(sIntake.getConfig().kIntakeDutyCycle);
                 }
 
                 if (!(sIntakeButton.get()
@@ -137,7 +137,7 @@ public class IntakeCommand extends CommandBase {
                     return mIdle;
                 }
 
-                return mIntaking;
+                return this;
             }
 
             @Override

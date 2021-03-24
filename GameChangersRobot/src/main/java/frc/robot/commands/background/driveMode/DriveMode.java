@@ -14,7 +14,7 @@ public abstract class DriveMode {
     public abstract void feed();
 
     private double getScaleFactor() {
-        return (sTurboButton.get() || sSecondaryTurboButton.get() || sTertiaryTurboButton.get())
+        return (sTurboButton.get() || sSecondaryTurboButton.get() || sTertiaryButton.get())
                 ? SmartDashboard.getNumber(kTurboScaleFactorKey, kTurboScaleFactor)
                 : SmartDashboard.getNumber(kNormalScaleFactorKey, kNormalScaleFactor);
     }

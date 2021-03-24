@@ -18,9 +18,10 @@ public class OI {
 
     public static EnhancedJoystickButton sResetBallCountButton = new EnhancedJoystickButton(sGamepad, POV_E);
 
+    public static EnhancedJoystickButton sAutoCorrectHeadingButton = new EnhancedJoystickButton(sLeftJoystick, 2);
     public static EnhancedJoystickButton sTurboButton = new EnhancedJoystickButton(sLeftJoystick, 1);
-    public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 7);
-    public static EnhancedJoystickButton sTertiaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 8);
+    public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 8);
+    public static EnhancedJoystickButton sTertiaryButton = new EnhancedJoystickButton(sLeftJoystick, 7);
     public static EnhancedJoystickButton sAutoAlignButton = new EnhancedJoystickButton(sRightJoystick, 1);
     public static EnhancedJoystickButton sShooterAdjustableToggleHoodButton = new EnhancedJoystickButton(sGamepad, TOP_BUTTON.getIndex());
 

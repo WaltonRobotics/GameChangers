@@ -4,9 +4,10 @@ public final class Constants {
 
     public static class ContextFlags {
 
-        public static boolean kIsInCompetition = false;
-        public static boolean kIsInTuningMode = true;
-        public static boolean kIsInfiniteRecharge = false;
+        public static final int kTeamNumber = 2974;
+        public static final boolean kIsInCompetition = false;
+        public static final boolean kIsInTuningMode = false;
+        public static final boolean kIsInfiniteRecharge = false;
 
     }
 
@@ -24,7 +25,7 @@ public final class Constants {
         public static final boolean kUseSquareCurve = true;
         public static final double kAutoAlignTimeout = 1.5;
         public static final double kTurretMasterOverrideDeadband = 0.1;
-        public static final double kNormalScaleFactor = 0.6;
+        public static final double kNormalScaleFactor = 0.82;
         public static final double kTurboScaleFactor = 1.0;
         public static final double kTurretScaleFactor = 0.4;
         public static final double kQuickStopThreshold = 0.3;
@@ -144,6 +145,8 @@ public final class Constants {
 
         public static final int kDrivetrainAccelerationWindow = 8;
 
+        public static final double kDrivetrainTuningSettingsUpdateRateSeconds = 1.5;
+
     }
 
     public static class ProMicro {
@@ -182,6 +185,7 @@ public final class Constants {
         public static final String kDrivetrainRightPositionKey = "Drivetrain/Right Encoder Position Meters";
         public static final String kDrivetrainLeftVelocityKey = "Drivetrain/Left Encoder Velocity Meters/s";
         public static final String kDrivetrainRightVelocityKey = "Drivetrain/Right Encoder Velocity Meters/s";
+        public static final String kDrivetrainTuningOpenLoopRampRateKey = "Drivetrain/Tuning Open Loop Ramp Rate";
 
         public static final String kTurnToAngleHeadingSetpointKey = "Turn to Angle/Heading Setpoint Deg";
         public static final String kTurnToAnglePositionErrorKey = "Turn to Angle/Position Error Deg";

@@ -166,7 +166,8 @@ public class Turret extends SubsystemBase {
 
     public void setFieldRelativeHeading(Rotation2d targetHeading, Rotation2d robotFieldRelativeHeading,
                                         ControlState controlState) {
-        Rotation2d robotRelativeHeading = targetHeading.minus(robotFieldRelativeHeading);
+        Rotation2d robotRelativeHeading = targetHeading.minus(Rotation2d.fromDegrees(UtilMethods.restrictAngle(
+                robotFieldRelativeHeading.getDegrees(), -180.0, 180.0)));
 
         setRobotRelativeHeading(robotRelativeHeading, controlState);
     }
@@ -185,7 +186,6 @@ public class Turret extends SubsystemBase {
             return mTurretController.getActiveTrajectoryPosition() - mSetpoint;
         }
     }
-
 
     public Rotation2d getCurrentRobotRelativeHeading() {
         return getRobotRelativeHeadingFromRawUnits(getCurrentRawAngleHeadingRawUnits());
