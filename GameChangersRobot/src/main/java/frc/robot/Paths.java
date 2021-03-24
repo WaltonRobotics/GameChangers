@@ -136,9 +136,9 @@ public class Paths {
                 
 
                 public static class BouncePath {
-                        public static Trajectory sBounce = generateBounce();
+                        
 
-                        public static Trajectory generateBounce() {
+                        public static Trajectory generateBounce1() {
                                 TrajectoryConfig config = new TrajectoryConfig(
                                         sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
                                         sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
