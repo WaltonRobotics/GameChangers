@@ -95,7 +95,7 @@ public class Paths {
                         config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 
                         return TrajectoryGenerator.generateTrajectory(Arrays.asList(
-                                        new Pose2d(Units.feetToMeters(4.042), Units.feetToMeters(10),
+                                        new Pose2d(Units.feetToMeters(3.146), Units.feetToMeters(10),
                                                         Rotation2d.fromDegrees(0)),
                                         new Pose2d(Units.feetToMeters(7.46), Units.feetToMeters(9.979),
                                                         Rotation2d.fromDegrees(0)),
@@ -134,9 +134,7 @@ public class Paths {
 
         public static class AutonavPaths {
                 
-
                 public static class BouncePath {
-                        
 
                         public static Trajectory generateBounce1() {
                                 TrajectoryConfig config = new TrajectoryConfig(
