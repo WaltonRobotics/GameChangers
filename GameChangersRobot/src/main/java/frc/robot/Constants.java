@@ -242,6 +242,13 @@ public final class Constants {
         public static final String kNormalScaleFactorKey = "Driver Preferences/Normal Scale Factor";
         public static final String kTurboScaleFactorKey = "Driver Preferences/Turbo Scale Factor";
 
+        public static final String kLimelightSolvePnPXInchesKey = "Limelight Solve PnP/X Inches";
+        public static final String kLimelightSolvePnPYInchesKey = "Limelight Solve PnP/Y Inches";
+        public static final String kLimelightSolvePnPZInchesKey = "Limelight Solve PnP/Z Inches";
+        public static final String kLimelightSolvePnPPitchDegreesKey = "Limelight Solve PnP/Pitch Degrees";
+        public static final String kLimelightSolvePnPYawDegreesKey = "Limelight Solve PnP/Yaw Degrees";
+        public static final String kLimelightSolvePnPRollDegreesKey = "Limelight Solve PnP/Roll Degrees";
+
     }
 
     public static class LiveDashboardKeys {
