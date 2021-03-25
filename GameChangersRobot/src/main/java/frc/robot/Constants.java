@@ -123,6 +123,7 @@ public final class Constants {
 
         public static final int kTxWindowSize = 1;
         public static final int kTyWindowSize = 5;
+        public static final int kCamtranWindowSize = 5;
 
         // Limelight NT takes up to 100ms to update at most
         public static final double kLimelightLEDWaitTimeSeconds = 0.2;

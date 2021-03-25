@@ -10,14 +10,7 @@ import static frc.robot.Robot.sTurret;
 public class PnPHelper {
 
     public static Pose2d getEstimatedPose() {
-        double[] camtran = LimelightHelper.getCamtran();
-
-        double xInches = camtran[0];
-        double yInches = camtran[1];
-        double zInches = camtran[2];
-        double pitchDegrees = camtran[3];
-        double yawDegrees = camtran[4];
-        double rollDegrees = camtran[5];
+        PnPData data = LimelightHelper.getPnPData();
 
 //        Quaternion quaternion = Quaternion.fromEulerAngles(
 //                new Vec3(Math.toRadians(roll), Math.toRadians(yaw), Math.toRadians(pitch)));
@@ -29,8 +22,8 @@ public class PnPHelper {
 
 //        SmartDashboard.putNumber("Yaw", yaw);
 
-        double limelightXInches = 30 * 12 + zInches;
-        double limelightYInches = 7.5 * 12 - xInches;
+        double limelightXInches = 30 * 12 + data.getZInches();
+        double limelightYInches = 7.5 * 12 - data.getXInches();
 
         double turretRadiusInches = 11.375 / 2.0 + 1.5;
         double turretAngleRadians = sTurret.getCurrentRobotRelativeHeading().getRadians();
@@ -38,7 +31,7 @@ public class PnPHelper {
         double dY = Math.sin(turretAngleRadians) * turretRadiusInches;
         double robotX = limelightXInches - dX;
         double robotY = limelightYInches - dY;
-        double turretRelativeHeading = yawDegrees - sTurret.getCurrentRobotRelativeHeading().getDegrees();
+        double turretRelativeHeading = data.getYawDegrees() - sTurret.getCurrentRobotRelativeHeading().getDegrees();
         double intakeRelativeHeading = 180 + turretRelativeHeading;
 
         double offsetX = 288.75 - 296.5872;

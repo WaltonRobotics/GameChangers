@@ -8,8 +8,7 @@ import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
 import static frc.robot.Constants.Field.kTargetHeightInches;
 import static frc.robot.Constants.Limelight.*;
-import static frc.robot.Constants.Shooter.kTxWindowSize;
-import static frc.robot.Constants.Shooter.kTyWindowSize;
+import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Robot.sShooter;
 
 public class LimelightHelper {
@@ -29,6 +28,7 @@ public class LimelightHelper {
 
     private static final SimpleMovingAverage mTxMovingAverage = new SimpleMovingAverage(kTxWindowSize);
     private static final SimpleMovingAverage mTyMovingAverage = new SimpleMovingAverage(kTyWindowSize);
+    private static final PnPData mPnPData = new PnPData(kCamtranWindowSize);
 
     private LimelightHelper() {
         // Update moving averages when tx and ty change
@@ -51,6 +51,15 @@ public class LimelightHelper {
             mTxMovingAverage.addData(mTx.getDouble(0.0));
             mTyMovingAverage.addData(mTy.getDouble(0.0));
         }
+
+        double[] camtran = mCamtran.getDoubleArray(new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+
+        mPnPData.xInchesMovingAverage.addData(camtran[0]);
+        mPnPData.yInchesMovingAverage.addData(camtran[1]);
+        mPnPData.zInchesMovingAverage.addData(camtran[2]);
+        mPnPData.pitchDegreesMovingAverage.addData(camtran[3]);
+        mPnPData.yawDegreesMovingAverage.addData(camtran[4]);
+        mPnPData.rollDegreesMovingAverage.addData(camtran[5]);
     }
 
     /**
@@ -81,8 +90,8 @@ public class LimelightHelper {
         return mTv.getDouble(0);
     }
 
-    public static double[] getCamtran() {
-        return mCamtran.getDoubleArray(new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+    public static PnPData getPnPData() {
+        return mPnPData;
     }
 
     public static int getLEDMode() {
