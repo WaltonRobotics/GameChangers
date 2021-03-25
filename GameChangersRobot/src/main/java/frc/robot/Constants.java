@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.util.Units;
+
 public final class Constants {
 
     public static class ContextFlags {
@@ -172,6 +174,9 @@ public final class Constants {
 
         public static final double kTargetHeightInches = 89.75;
         public static final double kTargetFrontOffsetFeet = 0.16;
+
+        public static final double kMinimumInterstellarHomingRadius = Units.feetToMeters(1.0);
+        public static final double kMaximumInterstellarHomingRadius = Units.feetToMeters(5.0);
 
     }
 
