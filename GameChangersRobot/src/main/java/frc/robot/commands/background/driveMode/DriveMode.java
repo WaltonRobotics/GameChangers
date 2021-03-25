@@ -1,10 +1,8 @@
 package frc.robot.commands.background.driveMode;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.DriverPreferences.*;
-import static frc.robot.Constants.DriverPreferences.kUseSquareCurve;
 import static frc.robot.Constants.SmartDashboardKeys.kNormalScaleFactorKey;
 import static frc.robot.Constants.SmartDashboardKeys.kTurboScaleFactorKey;
 import static frc.robot.OI.*;
@@ -19,7 +17,7 @@ public abstract class DriveMode {
                 : SmartDashboard.getNumber(kNormalScaleFactorKey, kNormalScaleFactor);
     }
 
-    protected double getLeftJoystickY() {
+    public double getLeftJoystickY() {
         double rawValue =  sLeftJoystick.getY();
         double scaleFactor = getScaleFactor();
 
@@ -29,7 +27,7 @@ public abstract class DriveMode {
         return -rawValue * scaleFactor;
     }
 
-    protected double getRightJoystickY() {
+    public double getRightJoystickY() {
         double rawValue =  sRightJoystick.getY();
         double scaleFactor = getScaleFactor();
 
@@ -44,14 +42,14 @@ public abstract class DriveMode {
     /**
      * The left joystick is used for throttle.
      */
-    protected double getThrottle() {
+    public double getThrottle() {
         return getLeftJoystickY();
     }
 
     /**
      * The right joystick is used for turning.
      */
-    protected double getTurn() {
+    public double getTurn() {
         double rawValue =  sRightJoystick.getX();
         double scaleFactor = getScaleFactor();
 
