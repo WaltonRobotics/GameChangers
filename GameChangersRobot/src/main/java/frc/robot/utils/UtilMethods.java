@@ -58,4 +58,10 @@ public class UtilMethods {
         return (offsetValue - (Math.floor(offsetValue / width) * width)) + min;
     }
 
+    public static double getDifferenceBetweenAngles(double source, double target) {
+        double a = source - target;
+        a += (a>180) ? -360 : (a<-180) ? 360 : 0;
+        return a;
+    }
+
 }
