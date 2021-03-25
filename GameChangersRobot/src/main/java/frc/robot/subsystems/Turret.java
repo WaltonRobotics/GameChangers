@@ -191,6 +191,10 @@ public class Turret extends SubsystemBase {
         return getRobotRelativeHeadingFromRawUnits(getCurrentRawAngleHeadingRawUnits());
     }
 
+    public double getCurrentAngularVelocityDegreesPerSec() {
+        return mConfig.kTicksPerDegree * mTurretController.getSelectedSensorVelocity();
+    }
+
     private double getRawUnitsFromRobotRelativeHeading(Rotation2d heading) {
         return mConfig.kTicksPerDegree * getRawAngleDegreesFromRobotRelativeHeading(heading);
     }

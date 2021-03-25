@@ -50,8 +50,9 @@ public class AutoAssistDriveStraight extends CommandBase {
         }
 
         double turnRate = (getThrottleAverage() < 0 ? 1 : -1) * sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
-                UtilMethods.getDifferenceBetweenAngles(sDrivetrain.getHeading().getDegrees(), mInitialHeading),
-                0.0);
+                sDrivetrain.getHeading().getDegrees(),
+                0.0
+        );
 
         SmartDashboard.putNumber(kDriveStraightHeadingErrorKey,
                 sDrivetrain.getDriveStraightHeadingProfiledPID().getPositionError());

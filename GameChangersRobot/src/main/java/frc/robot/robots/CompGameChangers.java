@@ -55,6 +55,7 @@ public class CompGameChangers implements WaltRobot {
                 0.2, 0, 0,
                 new TrapezoidProfile.Constraints(60, 30)
         );
+        mDrivetrainDriveStraightHeadingProfiledPID.enableContinuousInput(-180.0, 180.0);
         mDrivetrainDriveStraightHeadingProfiledPID.setTolerance(1.5);
 
         mDrivetrainConfig = new DrivetrainConfig();

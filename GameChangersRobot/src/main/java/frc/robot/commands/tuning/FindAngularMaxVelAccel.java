@@ -11,7 +11,7 @@ import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.Tuning.kDrivetrainAccelerationWindow;
 import static frc.robot.Robot.sDrivetrain;
 
-public class FindMaxVelAccel extends CommandBase {
+public class FindAngularMaxVelAccel extends CommandBase {
 
     private final Timer mTimer;
     private final double mTotalTime;
@@ -24,7 +24,7 @@ public class FindMaxVelAccel extends CommandBase {
     private double mCurrentMaxVelocity;
     private double mCurrentMaxAcceleration;
 
-    public FindMaxVelAccel(double time) {
+    public FindAngularMaxVelAccel(double time) {
         addRequirements(sDrivetrain);
 
         mTimer = new Timer();
@@ -34,7 +34,7 @@ public class FindMaxVelAccel extends CommandBase {
                 "The FindMaxVelAccel command will run the robot at its maximum velocity");
 
         mPreviousTime = getFPGATimestamp();
-        mPreviousVelocity = getInstantaneousLinearVelocity();
+        mPreviousVelocity = getInstantaneousAngularVelocity();
         mCurrentMaxVelocity = 0;
         mCurrentMaxAcceleration = 0;
     }
@@ -46,10 +46,10 @@ public class FindMaxVelAccel extends CommandBase {
 
     @Override
     public void execute() {
-        sDrivetrain.setDutyCycles(1.0, 1.0);
+        sDrivetrain.setDutyCycles(-1.0, 1.0);
 
         double mCurrentTime = getFPGATimestamp();
-        double mCurrentVelocity = getInstantaneousLinearVelocity();
+        double mCurrentVelocity = getInstantaneousAngularVelocity();
 
         double instantaneousAcceleration = (mCurrentVelocity - mPreviousVelocity) / (mCurrentTime - mPreviousTime);
 
@@ -79,7 +79,8 @@ public class FindMaxVelAccel extends CommandBase {
         return mTimer.get() > mTotalTime;
     }
 
-    private double getInstantaneousLinearVelocity() {
-        return (sDrivetrain.getLeftVelocityMetersPerSec() + sDrivetrain.getRightVelocityMetersPerSec()) / 2;
+    private double getInstantaneousAngularVelocity() {
+        return sDrivetrain.getAngularVelocityDegreesPerSec();
     }
+
 }
