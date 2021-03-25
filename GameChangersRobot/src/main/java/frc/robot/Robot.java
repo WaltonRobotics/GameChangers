@@ -20,7 +20,6 @@ import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.vision.LimelightHelper;
-import frc.robot.vision.PixyCamHelper;
 
 import java.util.Arrays;
 import java.util.logging.Level;

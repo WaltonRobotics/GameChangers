@@ -14,26 +14,6 @@ import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
 
-    public static class InterstellarAccuracyRelativePaths {
-
-        public static Trajectory generateShootingZoneOneTrajectory() {
-            TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
-
-            config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setReversed(true);
-
-            return TrajectoryGenerator.generateTrajectory(
-                    Arrays.asList(
-                            sDrivetrain.getCurrentPose(),
-                            new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180))),
-                    config
-            );
-        }
-
-    }
-
     public static class TestTrajectory {
         public static Trajectory sTestTrajectory = generateTestTrajectory();
 
@@ -273,6 +253,29 @@ public class Paths {
             }
 
         }
+    }
+
+    public static class ShootingChallengeRelativeHomingPaths {
+
+        public static final Pose2d interstellarHomingPose =
+                new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
+
+        public static Trajectory generateInterstellarAccuracyHomingTrajectory() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+            config.setReversed(true);
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            sDrivetrain.getCurrentPose(),
+                            interstellarHomingPose),
+                    config
+            );
+        }
 
     }
+
 }

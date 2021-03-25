@@ -1,16 +1,16 @@
 package frc.robot.commands.auton.shootingChallenges;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 
-import static frc.robot.Paths.InterstellarAccuracyRelativePaths.generateShootingZoneOneTrajectory;
+import static frc.robot.Paths.ShootingChallengeRelativeHomingPaths.generateInterstellarAccuracyHomingTrajectory;
 
-public class AutoHomeForInterstellarAccuracy extends CommandBase {
+public class AutoHomeForInterstellarAccuracy extends InstantCommand {
 
     @Override
     public void initialize() {
         new RamseteTrackingCommand(
-                generateShootingZoneOneTrajectory(),
+                generateInterstellarAccuracyHomingTrajectory(),
                 true, false
         ).schedule();
     }

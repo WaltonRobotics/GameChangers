@@ -6,7 +6,7 @@ public final class Constants {
 
         public static final int kTeamNumber = 2974;
         public static final boolean kIsInCompetition = false;
-        public static final boolean kIsInTuningMode = true;
+        public static final boolean kIsInTuningMode = false;
         public static final boolean kIsInfiniteRecharge = false;
 
     }

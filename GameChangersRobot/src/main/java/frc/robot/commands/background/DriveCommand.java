@@ -1,11 +1,10 @@
 package frc.robot.commands.background;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.auton.*;
 import frc.robot.commands.auton.shootingChallenges.AutoAssistDriveStraight;
 import frc.robot.commands.auton.shootingChallenges.AutoHomeForInterstellarAccuracy;
-import frc.robot.vision.PnPHelper;
+import frc.robot.commands.auton.shootingChallenges.CalibratePose;
 
 import static frc.robot.Constants.DriverPreferences.*;
 import static frc.robot.OI.*;
@@ -22,7 +21,7 @@ public class DriveCommand extends CommandBase {
         sSecondaryAutoAssistDriveStraightButton.whenPressed(new AutoAssistDriveStraight());
         sTertiaryAutoAssistDriveStraightButton.whenPressed(new AutoAssistDriveStraight());
 
-        sCalibratePoseButton.whenPressed(this::calibratePose);
+        sCalibratePoseButton.whenPressed(new CalibratePose());
         sHomeInterstellarAccuracyButton.whenPressed(new AutoHomeForInterstellarAccuracy());
     }
 
@@ -34,11 +33,6 @@ public class DriveCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
-    }
-
-    private void calibratePose() {
-        Pose2d currentPose = PnPHelper.getEstimatedPose();
-        sDrivetrain.resetPose(currentPose);
     }
 
 }
