@@ -236,6 +236,7 @@ public final class Constants {
 
         public static final String kNormalScaleFactorKey = "Driver Preferences/Normal Scale Factor";
         public static final String kTurboScaleFactorKey = "Driver Preferences/Turbo Scale Factor";
+        public static final String kCurvatureTurnSensitivityKey = "Driver Preferences/Turn Sensitivity";
 
     }
 

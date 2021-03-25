@@ -113,6 +113,7 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putNumber(kNormalScaleFactorKey, kNormalScaleFactor);
         SmartDashboard.putNumber(kTurboScaleFactorKey, kTurboScaleFactor);
+        SmartDashboard.putNumber(kCurvatureTurnSensitivityKey, kNormalScaleFactor);
 
         sDriveModeChooser = new SendableChooser<>();
         sDriveModeChooser.setDefaultOption("Tank", new TankDrive());

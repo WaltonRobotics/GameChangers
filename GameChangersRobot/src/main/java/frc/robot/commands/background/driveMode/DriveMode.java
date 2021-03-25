@@ -13,13 +13,13 @@ public abstract class DriveMode {
 
     public abstract void feed();
 
-    private double getScaleFactor() {
+    protected double getScaleFactor() {
         return (sTurboButton.get() || sSecondaryTurboButton.get() || sTertiaryButton.get())
                 ? SmartDashboard.getNumber(kTurboScaleFactorKey, kTurboScaleFactor)
                 : SmartDashboard.getNumber(kNormalScaleFactorKey, kNormalScaleFactor);
     }
 
-    public double getLeftJoystickY() {
+    protected double getLeftJoystickY() {
         double rawValue =  sLeftJoystick.getY();
         double scaleFactor = getScaleFactor();
 
@@ -29,7 +29,7 @@ public abstract class DriveMode {
         return -rawValue * scaleFactor;
     }
 
-    public double getRightJoystickY() {
+    protected double getRightJoystickY() {
         double rawValue =  sRightJoystick.getY();
         double scaleFactor = getScaleFactor();
 
@@ -44,14 +44,14 @@ public abstract class DriveMode {
     /**
      * The left joystick is used for throttle.
      */
-    double getThrottle() {
+    protected double getThrottle() {
         return getLeftJoystickY();
     }
 
     /**
      * The right joystick is used for turning.
      */
-    double getTurn() {
+    protected double getTurn() {
         double rawValue =  sRightJoystick.getX();
         double scaleFactor = getScaleFactor();
 
