@@ -106,7 +106,6 @@ public class Drivetrain extends SubsystemBase {
 //        mNTInstance.startClientTeam(kTeamNumber);
 //
 //        mTuningOpenLoopRampRateUpdateEntry.addListener(event -> {
-//            System.out.println("Hello World");
 //            double openLoopRampRate = mTuningOpenLoopRampRateUpdateEntry.getDouble(mConfig.kOpenLoopRampRate);
 //            mLeftWheelsMaster.setOpenLoopRampRate(openLoopRampRate);
 //            mLeftWheelsSlave.setOpenLoopRampRate(openLoopRampRate);

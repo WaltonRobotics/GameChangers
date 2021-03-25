@@ -58,23 +58,23 @@ public class CompGameChangers implements WaltRobot {
         mDrivetrainDriveStraightHeadingProfiledPID.setTolerance(1.5);
 
         mDrivetrainConfig = new DrivetrainConfig();
-        mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(0.204, 2.14, 0.356);
+        mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(0.237, 2.17, 0.306);
         mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(1.0, 1.0, 1.0);
         mDrivetrainConfig.leftVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.rightVoltagePID = new PIDController(1, 0, 0);
-        mDrivetrainConfig.leftVelocityPID = new PIDController(0.197, 0, 0);
-        mDrivetrainConfig.rightVelocityPID = new PIDController(0.197, 0, 0);
+        mDrivetrainConfig.leftVelocityPID = new PIDController(1.0, 0, 0);
+        mDrivetrainConfig.rightVelocityPID = new PIDController(1.0, 0, 0);
         mDrivetrainConfig.turnProfiledPID = mDrivetrainTurnProfiledPID;
         mDrivetrainConfig.driveStraightProfiledPowerPID = mDrivetrainDriveStraightPowerProfiledPID;
         mDrivetrainConfig.driveStraightProfiledHeadingPID = mDrivetrainDriveStraightHeadingProfiledPID;
-        mDrivetrainConfig.kPositionFactor = 0.05984734;
+        mDrivetrainConfig.kPositionFactor = 1.0 / 17.011875;
         mDrivetrainConfig.kVelocityFactor = mDrivetrainConfig.kPositionFactor / 60.0;
-        mDrivetrainConfig.kTrackWidthMeters = 0.6594394313930071;
+        mDrivetrainConfig.kTrackWidthMeters = 0.706142170304554;
         mDrivetrainConfig.kMaxVelocityMetersPerSecond = Units.feetToMeters(8.0);
         mDrivetrainConfig.kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(2.0);
         mDrivetrainConfig.kLeftMaxVoltage = 12.0;
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
-        mDrivetrainConfig.kOpenLoopRampRate = 0.5;
+        mDrivetrainConfig.kOpenLoopRampRate = 0.0;
 
         mShooterConfig = new ShooterConfig();
         mShooterConfig.kSpinningUpF = 0.05018491;

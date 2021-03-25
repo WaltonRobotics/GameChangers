@@ -23,8 +23,6 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
 
         sDrivetrain.configureControllersAuton();
         sDrivetrain.reset();
-
-        sIntake.setDeployed(true);
     }
 
     @Override

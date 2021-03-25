@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.ConveyorConfig;
+import frc.robot.robots.RobotIdentifier;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
@@ -99,7 +100,11 @@ public class Conveyor extends SubsystemBase {
 
     public boolean shouldNudge() {
         // TODO: Add this back!
-        return /* getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity && */ mFrontConveyorBool.get();
+        if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS) {
+            return getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity && mFrontConveyorBool.get();
+        }
+
+        return mFrontConveyorBool.get();
     }
 
     public ConveyorConfig getConfig() {

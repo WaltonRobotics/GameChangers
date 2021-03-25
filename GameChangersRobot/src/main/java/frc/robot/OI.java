@@ -18,10 +18,14 @@ public class OI {
 
     public static EnhancedJoystickButton sResetBallCountButton = new EnhancedJoystickButton(sGamepad, POV_E);
 
-    public static EnhancedJoystickButton sAutoCorrectHeadingButton = new EnhancedJoystickButton(sLeftJoystick, 2);
+    public static EnhancedJoystickButton sAutoAssistDriveStraightButton = new EnhancedJoystickButton(sRightJoystick, 3);
+    public static EnhancedJoystickButton sSecondaryAutoAssistDriveStraightButton = new EnhancedJoystickButton(sRightJoystick, 5);
+    public static EnhancedJoystickButton sTertiaryAutoAssistDriveStraightButton = new EnhancedJoystickButton(sRightJoystick, 6);
+
     public static EnhancedJoystickButton sTurboButton = new EnhancedJoystickButton(sLeftJoystick, 1);
-    public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 8);
-    public static EnhancedJoystickButton sTertiaryButton = new EnhancedJoystickButton(sLeftJoystick, 7);
+    public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 7);
+    public static EnhancedJoystickButton sTertiaryButton = new EnhancedJoystickButton(sLeftJoystick, 8);
+
     public static EnhancedJoystickButton sAutoAlignButton = new EnhancedJoystickButton(sRightJoystick, 1);
     public static EnhancedJoystickButton sShooterAdjustableToggleHoodButton = new EnhancedJoystickButton(sGamepad, TOP_BUTTON.getIndex());
 
@@ -37,13 +41,16 @@ public class OI {
     public static EnhancedJoystickButton sOverrideFrontConveyorButton = new EnhancedJoystickButton(sGamepad, BACK_BUTTON.getIndex());
     public static EnhancedJoystickButton sOverrideBackConveyorButton = new EnhancedJoystickButton(sGamepad, START_BUTTON.getIndex());
 
-    public static EnhancedJoystickButton sAlignTurretButton = new EnhancedJoystickButton(sGamepad, DOWN_BUTTON.getIndex());
-    public static EnhancedJoystickButton sHomeTurretButton = new EnhancedJoystickButton(sGamepad, LEFT_BUTTON.getIndex());
+    public static EnhancedJoystickButton sAlignTurretButton = new EnhancedJoystickButton(sGamepad, LEFT_BUTTON.getIndex());
+    public static EnhancedJoystickButton sHomeTurretButton = new EnhancedJoystickButton(sGamepad, DOWN_BUTTON.getIndex());
     public static EnhancedJoystickButton sQuickTurnButton = new EnhancedJoystickButton(sRightJoystick, 2);
+
+    // Shooting challenge buttons
+    public static EnhancedJoystickButton sCalibratePoseButton = new EnhancedJoystickButton(sLeftJoystick, 2);
+    public static EnhancedJoystickButton sHomeInterstellarAccuracyButton = new EnhancedJoystickButton(sLeftJoystick, 3);
+    public static EnhancedJoystickButton sHomePowerPortButton = new EnhancedJoystickButton(sLeftJoystick, 4);
 
     // Tuning buttons
     public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sLeftJoystick, 3);
-    public static EnhancedJoystickButton sShooterTuningBackOneFootButton = new EnhancedJoystickButton(sLeftJoystick, 2);
-
 
 }
