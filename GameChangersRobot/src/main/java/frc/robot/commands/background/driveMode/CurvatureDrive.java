@@ -2,8 +2,7 @@ package frc.robot.commands.background.driveMode;
 
 import edu.wpi.first.wpiutil.math.MathUtil;
 
-import static frc.robot.Constants.DriverPreferences.kQuickStopAlpha;
-import static frc.robot.Constants.DriverPreferences.kQuickStopThreshold;
+import static frc.robot.Constants.DriverPreferences.*;
 import static frc.robot.OI.sQuickTurnButton;
 import static frc.robot.Robot.sDrivetrain;
 
@@ -18,6 +17,11 @@ public class CurvatureDrive extends DriveMode {
 
         xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
         zRotation = MathUtil.clamp(zRotation, -1.0, 1.0);
+
+        if (kUseSquareCurve) {
+            xSpeed = Math.copySign(Math.pow(xSpeed, 2), xSpeed);
+            zRotation = Math.copySign(Math.pow(zRotation, 2), zRotation);
+        }
 
         double angularPower;
         boolean overPower;
