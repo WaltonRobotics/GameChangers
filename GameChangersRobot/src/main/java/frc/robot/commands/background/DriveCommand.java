@@ -22,7 +22,7 @@ public class DriveCommand extends CommandBase {
         sTertiaryAutoAssistDriveStraightButton.whenPressed(new AutoAssistDriveStraight());
 
         sCalibratePoseButton.whenPressed(new CalibratePose());
-        sHomeInterstellarAccuracyButton.whenPressed(new AutoHomeForInterstellarAccuracy());
+//        sHomeInterstellarAccuracyButton.whenPressed(new AutoHomeForInterstellarAccuracy());
     }
 
     @Override
