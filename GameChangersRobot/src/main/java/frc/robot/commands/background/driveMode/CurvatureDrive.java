@@ -15,7 +15,7 @@ public class CurvatureDrive extends DriveMode {
     @Override
     public double getTurn() {
         double rawValue =  sRightJoystick.getX();
-        double scaleFactor = (sTurboButton.get() || sSecondaryTurboButton.get() || sTertiaryButton.get())
+        double scaleFactor = (sTurboButton.get() || sSecondaryTurboButton.get() || sTertiaryTurboButton.get())
                 ? SmartDashboard.getNumber(kTurboScaleFactorKey, kTurboScaleFactor)
                 : SmartDashboard.getNumber(kCurvatureTurnSensitivityKey, kNormalScaleFactor);
 
