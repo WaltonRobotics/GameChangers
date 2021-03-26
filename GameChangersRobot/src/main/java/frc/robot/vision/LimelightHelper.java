@@ -10,7 +10,7 @@ import frc.robot.utils.movingAverage.SimpleMovingAverage;
 import static frc.robot.Constants.Field.kTargetHeightInches;
 import static frc.robot.Constants.Limelight.*;
 import static frc.robot.Constants.Shooter.*;
-import static frc.robot.Constants.SmartDashboardKeys.kLimelightSolvePnPXInchesKey;
+import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Robot.sShooter;
 
 public class LimelightHelper {
@@ -49,11 +49,11 @@ public class LimelightHelper {
     }
 
     public static void updateData() {
+        double[] camtran = getCamtran();
+
         if (getTV() > 0) {
             mTxMovingAverage.addData(mTx.getDouble(0.0));
             mTyMovingAverage.addData(mTy.getDouble(0.0));
-
-            double[] camtran = getCamtran();
 
             mPnPData.xInchesMovingAverage.addData(camtran[0]);
             mPnPData.yInchesMovingAverage.addData(camtran[1]);
@@ -62,6 +62,13 @@ public class LimelightHelper {
             mPnPData.yawDegreesMovingAverage.addData(camtran[4]);
             mPnPData.rollDegreesMovingAverage.addData(camtran[5]);
         }
+
+        SmartDashboard.putNumber(kLimelightSolvePnPXInchesKey, camtran[0]);
+        SmartDashboard.putNumber(kLimelightSolvePnPYInchesKey, camtran[1]);
+        SmartDashboard.putNumber(kLimelightSolvePnPZInchesKey, camtran[2]);
+        SmartDashboard.putNumber(kLimelightSolvePnPPitchDegreesKey, camtran[3]);
+        SmartDashboard.putNumber(kLimelightSolvePnPYawDegreesKey, camtran[4]);
+        SmartDashboard.putNumber(kLimelightSolvePnPRollDegreesKey, camtran[5]);
     }
     /**
      * @return tx The x angle from target in degrees
