@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,6 +35,7 @@ public class Turret extends SubsystemBase {
     private final EnhancedBoolean mForwardLimitBool = new EnhancedBoolean();
 
     private ControlState mControlState;
+    private ProfiledPIDController mClosedLoopAutoAlignProfiledPID = mConfig.closedLoopAutoAlignProfiledPID;
     private double mSetpoint;
 
     public Turret() {
@@ -192,7 +195,11 @@ public class Turret extends SubsystemBase {
     }
 
     public double getCurrentAngularVelocityDegreesPerSec() {
-        return mConfig.kTicksPerDegree * mTurretController.getSelectedSensorVelocity();
+        return mTurretController.getSelectedSensorVelocity() / mConfig.kTicksPerDegree * 10.;
+    }
+
+    public ProfiledPIDController getClosedLoopAutoAlignProfiledPID() {
+        return mClosedLoopAutoAlignProfiledPID;
     }
 
     private double getRawUnitsFromRobotRelativeHeading(Rotation2d heading) {

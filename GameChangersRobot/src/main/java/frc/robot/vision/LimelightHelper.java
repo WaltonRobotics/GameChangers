@@ -3,12 +3,14 @@ package frc.robot.vision;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
 import static frc.robot.Constants.Field.kTargetHeightInches;
 import static frc.robot.Constants.Limelight.*;
 import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.SmartDashboardKeys.kLimelightSolvePnPXInchesKey;
 import static frc.robot.Robot.sShooter;
 
 public class LimelightHelper {
@@ -50,18 +52,17 @@ public class LimelightHelper {
         if (getTV() > 0) {
             mTxMovingAverage.addData(mTx.getDouble(0.0));
             mTyMovingAverage.addData(mTy.getDouble(0.0));
+
+            double[] camtran = getCamtran();
+
+            mPnPData.xInchesMovingAverage.addData(camtran[0]);
+            mPnPData.yInchesMovingAverage.addData(camtran[1]);
+            mPnPData.zInchesMovingAverage.addData(camtran[2]);
+            mPnPData.pitchDegreesMovingAverage.addData(camtran[3]);
+            mPnPData.yawDegreesMovingAverage.addData(camtran[4]);
+            mPnPData.rollDegreesMovingAverage.addData(camtran[5]);
         }
-
-        double[] camtran = mCamtran.getDoubleArray(new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-
-        mPnPData.xInchesMovingAverage.addData(camtran[0]);
-        mPnPData.yInchesMovingAverage.addData(camtran[1]);
-        mPnPData.zInchesMovingAverage.addData(camtran[2]);
-        mPnPData.pitchDegreesMovingAverage.addData(camtran[3]);
-        mPnPData.yawDegreesMovingAverage.addData(camtran[4]);
-        mPnPData.rollDegreesMovingAverage.addData(camtran[5]);
     }
-
     /**
      * @return tx The x angle from target in degrees
      */
@@ -90,6 +91,11 @@ public class LimelightHelper {
         return mTv.getDouble(0);
     }
 
+    public static double[] getCamtran() {
+        return mCamtran.getDoubleArray(new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+    }
+
+
     public static PnPData getPnPData() {
         return mPnPData;
     }
@@ -104,6 +110,8 @@ public class LimelightHelper {
         } else {
             mLedMode.setNumber(kLEDsOff);
         }
+
+        mIsLEDOn = on;
     }
 
     public static int getCamMode() {

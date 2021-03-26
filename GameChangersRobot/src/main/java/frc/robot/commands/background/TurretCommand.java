@@ -1,6 +1,7 @@
 package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
@@ -30,6 +31,7 @@ public class TurretCommand extends CommandBase {
     private final IState mZeroing;
     private final IState mHoming;
     private final IState mManual;
+    private final IState mFindingAlignmentMethod;
     private final IState mAligningFromLimelightTX;
     private final IState mAligningFromLimelightClosedLoop;
     private final IState mAligningFieldRelative;
@@ -55,25 +57,15 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (sAlignTurretButton.isRisingEdge()) {
-                    if (LimelightHelper.getTV() > 0) {
-                        if (!mHasZeroed) {
-                            return mAligningFromLimelightClosedLoop;
-                        } else {
-                            return mAligningFromLimelightTX;
-                        }
-                    } else {
-                        if (mHasZeroed) {
-                            return mAligningFieldRelative;
-                        }
-                    }
+                if (sAlignTurretButton.get()) {
+                    return mFindingAlignmentMethod;
                 }
 
                 if (!mHasZeroed) {
                     return mZeroing;
                 }
 
-                if (sHomeTurretButton.isRisingEdge()) {
+                if (sHomeTurretButton.get()) {
                     return mHoming;
                 }
 
@@ -200,18 +192,56 @@ public class TurretCommand extends CommandBase {
             }
         };
 
-        mAligningFromLimelightTX = new IState() {
+        mFindingAlignmentMethod = new IState() {
             private double mStartTime;
-            private boolean mHasDeterminedTargetHeading;
-            private Rotation2d mTargetHeading;
-            private int mWithinThresholdLoops;
 
             @Override
             public void initialize() {
                 LimelightHelper.setLEDMode(true);
 
                 mStartTime = getFPGATimestamp();
-                mHasDeterminedTargetHeading = false;
+            }
+
+            @Override
+            public IState execute() {
+                if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
+                    if (LimelightHelper.getTV() > 0) {
+                        if (!mHasZeroed) {
+                            return mAligningFromLimelightClosedLoop;
+                        } else {
+                            return mAligningFromLimelightTX;
+                        }
+                    } else {
+                        if (mHasZeroed) {
+                            return mAligningFieldRelative;
+                        }
+                    }
+                }
+
+                return this;
+            }
+
+            @Override
+            public void finish() {
+
+            }
+
+            @Override
+            public String getName() {
+                return "Finding Alignment Method";
+            }
+        };
+
+        mAligningFromLimelightTX = new IState() {
+
+            private Rotation2d mTargetHeading;
+            private int mWithinThresholdLoops;
+
+            @Override
+            public void initialize() {
+                mTargetHeading = sTurret.getCurrentRobotRelativeHeading().minus(
+                        Rotation2d.fromDegrees(LimelightHelper.getTX()));
+                mWithinThresholdLoops = 0;
             }
 
             @Override
@@ -220,25 +250,16 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (!mHasDeterminedTargetHeading) {
-                    if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
-                        mTargetHeading = sTurret.getCurrentRobotRelativeHeading().minus(
-                                Rotation2d.fromDegrees(LimelightHelper.getTX()));
-                        mWithinThresholdLoops = 0;
-                        mHasDeterminedTargetHeading = true;
-                    }
+                sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.POSITIONAL);
+
+                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
+                    mWithinThresholdLoops++;
                 } else {
-                    sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.POSITIONAL);
+                    mWithinThresholdLoops = 0;
+                }
 
-                    if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
-                        mWithinThresholdLoops++;
-                    } else {
-                        mWithinThresholdLoops = 0;
-                    }
-
-                    if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
-                        return mIdle;
-                    }
+                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                    return mIdle;
                 }
 
                 return this;
@@ -258,7 +279,9 @@ public class TurretCommand extends CommandBase {
         mAligningFromLimelightClosedLoop = new IState() {
             @Override
             public void initialize() {
-                LimelightHelper.setLEDMode(true);
+                sTurret.getClosedLoopAutoAlignProfiledPID().reset(
+                        new TrapezoidProfile.State(sTurret.getCurrentRobotRelativeHeading().getDegrees(),
+                        sTurret.getCurrentAngularVelocityDegreesPerSec()));
             }
 
             @Override
@@ -266,6 +289,11 @@ public class TurretCommand extends CommandBase {
                 if (isMasterOverride()) {
                     return mManual;
                 }
+
+//                double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
+//                        sTurret.getCurrentRobotRelativeHeading().getDegrees(),
+//
+//                );
 
                 return this;
             }
@@ -317,7 +345,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-
+                LimelightHelper.setLEDMode(false);
             }
 
             @Override

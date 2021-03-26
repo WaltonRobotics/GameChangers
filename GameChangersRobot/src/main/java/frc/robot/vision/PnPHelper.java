@@ -32,7 +32,7 @@ public class PnPHelper {
         double robotX = limelightXInches - dX;
         double robotY = limelightYInches - dY;
         double turretRelativeHeading = data.getYawDegrees() - sTurret.getCurrentRobotRelativeHeading().getDegrees();
-        double intakeRelativeHeading = 180 + turretRelativeHeading;
+        double intakeRelativeHeading = 180.0 + turretRelativeHeading;
 
         double offsetX = 288.75 - 296.5872;
         double offsetY = 90.75 - 91.554;

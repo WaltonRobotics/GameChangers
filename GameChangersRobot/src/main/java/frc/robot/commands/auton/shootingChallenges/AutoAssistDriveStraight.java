@@ -3,7 +3,6 @@ package frc.robot.commands.auton.shootingChallenges;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.utils.UtilMethods;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.SmartDashboardKeys.*;
@@ -51,7 +50,7 @@ public class AutoAssistDriveStraight extends CommandBase {
 
         double turnRate = (getThrottleAverage() < 0 ? 1 : -1) * sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
                 sDrivetrain.getHeading().getDegrees(),
-                0.0
+                mInitialHeading
         );
 
         SmartDashboard.putNumber(kDriveStraightHeadingErrorKey,

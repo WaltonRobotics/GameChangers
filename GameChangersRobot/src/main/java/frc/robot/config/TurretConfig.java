@@ -30,6 +30,6 @@ public class TurretConfig {
     public double kCruiseVelocity;
     public int kSCurveStrength;
 
-    ProfiledPIDController closedLoopAutoAlignProfiledPID;
+    public ProfiledPIDController closedLoopAutoAlignProfiledPID;
 
 }

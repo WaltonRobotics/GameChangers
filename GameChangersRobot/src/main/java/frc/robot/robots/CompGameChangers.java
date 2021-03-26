@@ -14,13 +14,9 @@ import frc.robot.utils.interpolation.PolynomialRegression;
 public class CompGameChangers implements WaltRobot {
 
     private final double[][] mDistanceToVelocityTable = {
-            { 8.61, 13000 },
-            { 10.94, 11500 },
-            { 12.83, 11400 },
-            { 15.735, 11250 },
-            { 17.254, 11350 },
-            { 19.22, 11750 },
-            { 22.38, 12425 },
+            { 8.354, 11290 },
+            { 12.16, 10886 },
+            { 18.45, 11400 },
     };
 
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mShooterMap;
@@ -38,25 +34,25 @@ public class CompGameChangers implements WaltRobot {
 
         populateShooterInterpolationMethods();
 
-        ProfiledPIDController mDrivetrainTurnProfiledPID = new ProfiledPIDController(
+        ProfiledPIDController drivetrainTurnProfiledPID = new ProfiledPIDController(
                 0.015, 0, 0,
                 new TrapezoidProfile.Constraints(400, 400)
         );
-        mDrivetrainTurnProfiledPID.enableContinuousInput(-180.0, 180.0);
-        mDrivetrainTurnProfiledPID.setTolerance(1, 1);
+        drivetrainTurnProfiledPID.enableContinuousInput(-180.0, 180.0);
+        drivetrainTurnProfiledPID.setTolerance(1, 1);
 
-        ProfiledPIDController mDrivetrainDriveStraightPowerProfiledPID = new ProfiledPIDController(
+        ProfiledPIDController drivetrainDriveStraightPowerProfiledPID = new ProfiledPIDController(
                 0.8, 0, 0,
                 new TrapezoidProfile.Constraints(1.5, 1.5)
         );
-        mDrivetrainDriveStraightPowerProfiledPID.setTolerance(0.09);
+        drivetrainDriveStraightPowerProfiledPID.setTolerance(0.09);
 
-        ProfiledPIDController mDrivetrainDriveStraightHeadingProfiledPID = new ProfiledPIDController(
-                0.2, 0, 0,
+        ProfiledPIDController drivetrainDriveStraightHeadingProfiledPID = new ProfiledPIDController(
+                0.05, 0, 0,
                 new TrapezoidProfile.Constraints(60, 30)
         );
-        mDrivetrainDriveStraightHeadingProfiledPID.enableContinuousInput(-180.0, 180.0);
-        mDrivetrainDriveStraightHeadingProfiledPID.setTolerance(1.5);
+        drivetrainDriveStraightHeadingProfiledPID.enableContinuousInput(-180.0, 180.0);
+        drivetrainDriveStraightHeadingProfiledPID.setTolerance(1.5);
 
         mDrivetrainConfig = new DrivetrainConfig();
         mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(0.237, 2.17, 0.306);
@@ -65,9 +61,9 @@ public class CompGameChangers implements WaltRobot {
         mDrivetrainConfig.rightVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.leftVelocityPID = new PIDController(1.0, 0, 0);
         mDrivetrainConfig.rightVelocityPID = new PIDController(1.0, 0, 0);
-        mDrivetrainConfig.turnProfiledPID = mDrivetrainTurnProfiledPID;
-        mDrivetrainConfig.driveStraightProfiledPowerPID = mDrivetrainDriveStraightPowerProfiledPID;
-        mDrivetrainConfig.driveStraightProfiledHeadingPID = mDrivetrainDriveStraightHeadingProfiledPID;
+        mDrivetrainConfig.turnProfiledPID = drivetrainTurnProfiledPID;
+        mDrivetrainConfig.driveStraightProfiledPowerPID = drivetrainDriveStraightPowerProfiledPID;
+        mDrivetrainConfig.driveStraightProfiledHeadingPID = drivetrainDriveStraightHeadingProfiledPID;
         mDrivetrainConfig.kPositionFactor = 1.0 / 17.011875;
         mDrivetrainConfig.kVelocityFactor = mDrivetrainConfig.kPositionFactor / 60.0;
         mDrivetrainConfig.kTrackWidthMeters = 0.706142170304554;
@@ -132,6 +128,15 @@ public class CompGameChangers implements WaltRobot {
         mTurretConfig.kPositionalD = 0.0;
         mTurretConfig.kPositionalIZone = 100;
         mTurretConfig.kPositionalMaxIntegralAccumulator = 0;
+
+        ProfiledPIDController turretClosedLoopAutoAlignProfiledPID = new ProfiledPIDController(
+                0.2, 0, 0,
+                new TrapezoidProfile.Constraints(60, 30)
+        );
+        turretClosedLoopAutoAlignProfiledPID.enableContinuousInput(-180.0, 180.0);
+        turretClosedLoopAutoAlignProfiledPID.setTolerance(0.3);
+
+        mTurretConfig.closedLoopAutoAlignProfiledPID = turretClosedLoopAutoAlignProfiledPID;
     }
 
     @Override

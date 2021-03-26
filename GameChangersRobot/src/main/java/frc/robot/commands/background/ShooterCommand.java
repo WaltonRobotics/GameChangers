@@ -61,6 +61,8 @@ public class ShooterCommand extends CommandBase {
                 }
 
                 if (mNeedsToBarf.getAsBoolean()) {
+                    mSetpointRawUnits = kBarfVelocityRawUnits;
+
                     return mSpinningUp;
                 }
 

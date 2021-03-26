@@ -28,7 +28,7 @@ public class AutoHomeForInterstellarAccuracy extends InstantCommand {
                     true, false
             ).schedule();
         } else {
-            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Failed to calibrate pose");
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Failed to auto home");
         }
     }
 
