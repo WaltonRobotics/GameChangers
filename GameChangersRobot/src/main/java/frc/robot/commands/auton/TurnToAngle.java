@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.utils.DebuggingLog;
 
+import java.util.function.DoubleSupplier;
 import java.util.logging.Level;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
@@ -13,17 +14,25 @@ import static frc.robot.Robot.sDrivetrain;
 
 public class TurnToAngle extends CommandBase {
 
-    private final double mTargetHeading;
+    private final DoubleSupplier mTargetHeadingSupplier;
+    private double mTargetHeading;
 
-    public TurnToAngle(double targetHeading) {
+    public TurnToAngle(DoubleSupplier targetHeadingSupplier) {
         addRequirements(sDrivetrain);
 
-        this.mTargetHeading = targetHeading;
+        this.mTargetHeadingSupplier = targetHeadingSupplier;
+    }
+
+    public TurnToAngle(double targetHeading) {
+        this.mTargetHeadingSupplier = () -> targetHeading;
     }
 
     @Override
     public void initialize() {
-        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Turning to heading: " + mTargetHeading);
+        mTargetHeading = mTargetHeadingSupplier.getAsDouble();
+
+        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Turning to heading: "
+                + mTargetHeading);
 
         sDrivetrain.getTurnProfiledPID().reset(new TrapezoidProfile.State(sDrivetrain.getHeading().getDegrees(),
                 sDrivetrain.getAngularVelocityDegreesPerSec()));

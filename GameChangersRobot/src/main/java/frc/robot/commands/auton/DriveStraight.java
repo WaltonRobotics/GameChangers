@@ -73,7 +73,7 @@ public class DriveStraight extends CommandBase {
         double forward = sDrivetrain.getDriveStraightPowerProfiledPID().calculate(getDistanceAverage(),
                 mDesiredDistance);
 
-        double turnRate = -sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
+        double turnRate = -Math.signum(forward) * sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
                 sDrivetrain.getHeading().getDegrees() - mInitialHeading, 0);
 
         SmartDashboard.putNumber(kDriveStraightForwardErrorKey,

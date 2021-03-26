@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.*;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.estimator.KalmanFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -20,10 +21,12 @@ import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.LinearSystemLoop;
 import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import edu.wpi.first.wpiutil.math.Nat;
 import edu.wpi.first.wpiutil.math.VecBuilder;
 import edu.wpi.first.wpiutil.math.numbers.N2;
 import frc.robot.auton.LiveDashboardHelper;
+import frc.robot.commands.background.driveMode.ArcadeDrive;
 import frc.robot.config.DrivetrainConfig;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
@@ -33,6 +36,7 @@ import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.*;
+import static frc.robot.Constants.DriverPreferences.kUseSquareCurve;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
 import static frc.robot.Constants.SmartDashboardKeys.*;
@@ -224,21 +228,44 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setArcadeSpeeds(double xSpeed, double zRotation) {
-        xSpeed = Math.copySign(xSpeed * xSpeed, xSpeed);
-        zRotation = Math.copySign(zRotation * zRotation, zRotation);
+        xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
+
+        zRotation = MathUtil.clamp(zRotation, -1.0, 1.0);
+
         double leftMotorOutput;
         double rightMotorOutput;
-        xSpeed = Math
-                .max(-1.0 + Math.abs(zRotation),
-                        Math.min(1.0 - Math.abs(zRotation), xSpeed));
-        leftMotorOutput = xSpeed + zRotation;
-        rightMotorOutput = xSpeed - zRotation;
-        setDutyCycles(leftMotorOutput, rightMotorOutput);
+
+        double maxInput = Math.copySign(Math.max(Math.abs(xSpeed), Math.abs(zRotation)), xSpeed);
+
+        if (xSpeed >= 0.0) {
+            // First quadrant, else second quadrant
+            if (zRotation >= 0.0) {
+                leftMotorOutput = maxInput;
+                rightMotorOutput = xSpeed - zRotation;
+            } else {
+                leftMotorOutput = xSpeed + zRotation;
+                rightMotorOutput = maxInput;
+            }
+        } else {
+            // Third quadrant, else fourth quadrant
+            if (zRotation >= 0.0) {
+                leftMotorOutput = xSpeed + zRotation;
+                rightMotorOutput = maxInput;
+            } else {
+                leftMotorOutput = maxInput;
+                rightMotorOutput = xSpeed - zRotation;
+            }
+        }
+
+        double leftCommand = MathUtil.clamp(leftMotorOutput, -1.0, 1.0);
+        double rightCommand = MathUtil.clamp(rightMotorOutput, -1.0, 1.0);
+
+        setDutyCycles(leftCommand, rightCommand);
     }
 
     public void setDutyCycles(double leftDutyCycle, double rightDutyCycle) {
-        mLeftWheelsMaster.set(leftDutyCycle);
-        mRightWheelsMaster.set(rightDutyCycle);
+        mLeftWheelsMaster.set(MathUtil.clamp(leftDutyCycle, -1.0, 1.0));
+        mRightWheelsMaster.set(MathUtil.clamp(rightDutyCycle, -1.0, 1.0));
     }
 
     public void setVoltages(double leftVoltage, double rightVoltage) {

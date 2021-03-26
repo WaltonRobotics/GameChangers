@@ -1,16 +1,22 @@
 package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.vision.LimelightHelper;
 
-public class AutoAlign extends InstantCommand {
+import static frc.robot.Constants.Shooter.kLimelightLEDWaitTimeSeconds;
+import static frc.robot.Robot.sDrivetrain;
 
-    @Override
-    public void initialize() {
-//        new TurnToAngle(sDrivetrain.getHeading().getDegrees() - LimelightHelper.getTX())
-//                .beforeStarting(new SequentialCommandGroup(
-//                        new InstantCommand(() -> LimelightHelper.setLEDMode(true))
-//                ))
-//                .andThen(() -> LimelightHelper.setLEDMode(false)).schedule();
+public class AutoAlign extends SequentialCommandGroup {
+
+    public AutoAlign() {
+        addCommands(
+                new InstantCommand(() -> LimelightHelper.setLEDMode(true)),
+                new WaitCommand(kLimelightLEDWaitTimeSeconds),
+                new TurnToAngle(() -> sDrivetrain.getHeading().getDegrees() - LimelightHelper.getTX()),
+                new InstantCommand(() -> LimelightHelper.setLEDMode(false))
+        );
     }
 
 }
