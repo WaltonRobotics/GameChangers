@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.DriverPreferences.kTurretMasterOverrideDeadband;
 import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
+import static frc.robot.Constants.Field.kTargetFieldRelativeHeading;
 import static frc.robot.Constants.Shooter.kLimelightLEDWaitTimeSeconds;
 import static frc.robot.Constants.Turret.*;
 import static frc.robot.OI.*;
@@ -24,8 +25,7 @@ public class TurretCommand extends CommandBase {
 
     // TODO: Add timeouts on all auto-align functions
 
-    private final Rotation2d mHomeRobotRelativeHeading = Rotation2d.fromDegrees(0);
-    private final Rotation2d mTargetFieldRelativeHeading = Rotation2d.fromDegrees(0);
+    private final Rotation2d kHomeRobotRelativeHeading = Rotation2d.fromDegrees(0);
 
     private final IState mIdle;
     private final IState mZeroing;
@@ -134,7 +134,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sTurret.setRobotRelativeHeading(mHomeRobotRelativeHeading, Turret.ControlState.POSITIONAL);
+                sTurret.setRobotRelativeHeading(kHomeRobotRelativeHeading, Turret.ControlState.POSITIONAL);
 
                 if (isMasterOverride()) {
                     return mManual;
@@ -319,7 +319,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sTurret.setFieldRelativeHeading(mTargetFieldRelativeHeading,
+                sTurret.setFieldRelativeHeading(kTargetFieldRelativeHeading,
                         sDrivetrain.getHeading(), Turret.ControlState.POSITIONAL);
 
                 if (isMasterOverride()) {

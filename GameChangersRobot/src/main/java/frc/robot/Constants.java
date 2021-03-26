@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Units;
 
 public final class Constants {
@@ -175,6 +176,10 @@ public final class Constants {
 
         public static final double kTargetHeightInches = 89.75;
         public static final double kTargetFrontOffsetFeet = 0.16;
+        public static final Rotation2d kTargetFieldRelativeHeading = Rotation2d.fromDegrees(0);
+
+        public static final double kFieldWidth = 30.0;
+        public static final double kFieldHeight = 15.0;
 
         public static final double kMinimumInterstellarHomingRadius = Units.feetToMeters(1.0);
         public static final double kMaximumInterstellarHomingRadius = Units.feetToMeters(5.0);

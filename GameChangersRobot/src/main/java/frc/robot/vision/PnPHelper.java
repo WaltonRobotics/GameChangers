@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.utils.UtilMethods;
 
+import static frc.robot.Constants.Field.kFieldHeight;
+import static frc.robot.Constants.Field.kFieldWidth;
 import static frc.robot.Robot.sTurret;
 
 public class PnPHelper {
@@ -22,8 +24,8 @@ public class PnPHelper {
 
 //        SmartDashboard.putNumber("Yaw", yaw);
 
-        double limelightXInches = 30 * 12 + data.getZInches();
-        double limelightYInches = 7.5 * 12 - data.getXInches();
+        double limelightXInches = kFieldWidth * 12 + data.getZInches();
+        double limelightYInches = kFieldHeight / 2.0 * 12 - data.getXInches();
 
         double turretRadiusInches = 11.375 / 2.0 + 1.5;
         double turretAngleRadians = sTurret.getCurrentRobotRelativeHeading().getRadians();
