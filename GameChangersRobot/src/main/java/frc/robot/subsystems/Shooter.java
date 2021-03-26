@@ -112,33 +112,6 @@ public class Shooter extends SubsystemBase {
         return getClosedLoopErrorRevolutionsPerSec() * kFlywheelDiameterInches;
     }
 
-    public double getEstimatedVelocityFromTarget() {
-        // If the limelight does not see a target, we use the last known "ty" value since
-        // LimelightHelper uses a MovingAverage to keep track of it at all times
-
-        if (LimelightHelper.getTV() <= 0) {
-            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
-                    "No target found for shooter. Using last known information");
-        }
-
-        double distanceFeet = LimelightHelper.getDistanceToTargetFeet();
-
-        distanceFeet = UtilMethods.limitRange(distanceFeet, kAbsoluteShootingDistanceFloorFeet,
-                kAbsoluteShootingDistanceCeilingFeet);
-
-        if (kUseInterpolationMap) {
-            InterpolatingDouble result = mConfig.kShooterMap.getInterpolated(new InterpolatingDouble(distanceFeet));
-
-            if (result != null) {
-                return result.value;
-            } else {
-                return mConfig.kShooterMap.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
-            }
-        } else {
-            return mConfig.kShooterPolynomial.predict(distanceFeet);
-        }
-    }
-
     public boolean isAdjustableHoodUp() {
         return mAdjustableHoodSolenoid.get();
     }

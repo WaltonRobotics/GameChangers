@@ -6,6 +6,8 @@ import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 import frc.robot.utils.DebuggingLog;
+import frc.robot.utils.UtilMethods;
+import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.vision.LimelightHelper;
 import frc.robot.vision.PnPHelper;
 
@@ -91,7 +93,7 @@ public class ShooterCommand extends CommandBase {
             @Override
             public IState execute() {
                 if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
-                    mSetpointRawUnits = sShooter.getEstimatedVelocityFromTarget();
+                    mSetpointRawUnits = getEstimatedVelocityFromTarget();
                     return mSpinningUp;
                 }
 
@@ -227,6 +229,33 @@ public class ShooterCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
+    }
+
+    private double getEstimatedVelocityFromTarget() {
+        // If the limelight does not see a target, we use the last known "ty" value since
+        // LimelightHelper uses a MovingAverage to keep track of it at all times
+
+        if (LimelightHelper.getTV() <= 0) {
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                    "No target found for shooter. Using last known information");
+        }
+
+        double distanceFeet = LimelightHelper.getDistanceToTargetFeet();
+
+        distanceFeet = UtilMethods.limitRange(distanceFeet, kAbsoluteShootingDistanceFloorFeet,
+                kAbsoluteShootingDistanceCeilingFeet);
+
+        if (kUseInterpolationMap) {
+            InterpolatingDouble result = sShooter.getConfig().kShooterMap.getInterpolated(new InterpolatingDouble(distanceFeet));
+
+            if (result != null) {
+                return result.value;
+            } else {
+                return sShooter.getConfig().kShooterMap.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
+            }
+        } else {
+            return sShooter.getConfig().kShooterPolynomial.predict(distanceFeet);
+        }
     }
 
 }
