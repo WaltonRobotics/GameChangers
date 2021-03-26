@@ -18,7 +18,10 @@ public class OI {
 
     public static EnhancedJoystickButton sResetBallCountButton = new EnhancedJoystickButton(sGamepad, POV_E);
 
+    public static EnhancedJoystickButton sAutoAlignButton = new EnhancedJoystickButton(sRightJoystick, 1);
+    public static EnhancedJoystickButton sQuickTurnButton = new EnhancedJoystickButton(sRightJoystick, 2);
     public static EnhancedJoystickButton sAutoAssistDriveStraightButton = new EnhancedJoystickButton(sRightJoystick, 3);
+    public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sRightJoystick, 4);
     public static EnhancedJoystickButton sSecondaryAutoAssistDriveStraightButton = new EnhancedJoystickButton(sRightJoystick, 5);
     public static EnhancedJoystickButton sTertiaryAutoAssistDriveStraightButton = new EnhancedJoystickButton(sRightJoystick, 6);
 
@@ -26,7 +29,6 @@ public class OI {
     public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 7);
     public static EnhancedJoystickButton sTertiaryButton = new EnhancedJoystickButton(sLeftJoystick, 8);
 
-    public static EnhancedJoystickButton sAutoAlignButton = new EnhancedJoystickButton(sRightJoystick, 1);
     public static EnhancedJoystickButton sShooterAdjustableToggleHoodButton = new EnhancedJoystickButton(sGamepad, TOP_BUTTON.getIndex());
 
     public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamepad, RIGHT_TRIGGER.getIndex());
@@ -43,14 +45,10 @@ public class OI {
 
     public static EnhancedJoystickButton sAlignTurretButton = new EnhancedJoystickButton(sGamepad, LEFT_BUTTON.getIndex());
     public static EnhancedJoystickButton sHomeTurretButton = new EnhancedJoystickButton(sGamepad, DOWN_BUTTON.getIndex());
-    public static EnhancedJoystickButton sQuickTurnButton = new EnhancedJoystickButton(sRightJoystick, 2);
 
     // Shooting challenge buttons
     public static EnhancedJoystickButton sCalibratePoseButton = new EnhancedJoystickButton(sLeftJoystick, 2);
     public static EnhancedJoystickButton sHomeInterstellarAccuracyButton = new EnhancedJoystickButton(sLeftJoystick, 3);
     public static EnhancedJoystickButton sHomePowerPortButton = new EnhancedJoystickButton(sLeftJoystick, 4);
-
-    // Tuning buttons
-    public static EnhancedJoystickButton sResetDrivetrainButton = new EnhancedJoystickButton(sLeftJoystick, 3);
 
 }

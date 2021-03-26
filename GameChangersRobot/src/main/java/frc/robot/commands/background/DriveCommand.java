@@ -6,6 +6,7 @@ import frc.robot.commands.auton.shootingChallenges.AutoAssistDriveStraight;
 import frc.robot.commands.auton.shootingChallenges.AutoHomeForInterstellarAccuracy;
 import frc.robot.commands.auton.shootingChallenges.CalibratePose;
 
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DriverPreferences.*;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.*;
@@ -15,7 +16,10 @@ public class DriveCommand extends CommandBase {
     public DriveCommand() {
         addRequirements(sDrivetrain);
 
-        sResetDrivetrainButton.whenPressed(() -> sDrivetrain.reset());
+        if (kIsInTuningMode) {
+            sResetDrivetrainButton.whenPressed(() -> sDrivetrain.reset());
+        }
+
         sAutoAlignButton.whenPressed(new AutoAlign().withTimeout(kAutoAlignTimeout));
         sAutoAssistDriveStraightButton.whenPressed(new AutoAssistDriveStraight());
         sSecondaryAutoAssistDriveStraightButton.whenPressed(new AutoAssistDriveStraight());
