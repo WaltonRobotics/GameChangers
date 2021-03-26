@@ -7,10 +7,8 @@ import frc.robot.utils.DebuggingLog;
 
 import java.util.logging.Level;
 
-import static frc.robot.Constants.Field.kMaximumInterstellarHomingRadius;
-import static frc.robot.Constants.Field.kMinimumInterstellarHomingRadius;
+import static frc.robot.Constants.Field.*;
 import static frc.robot.Paths.ShootingChallengeRelativeHomingPaths.generateInterstellarAccuracyHomingTrajectory;
-import static frc.robot.Paths.ShootingChallengeRelativeHomingPaths.sInterstellarHomingPose;
 import static frc.robot.Robot.sDrivetrain;
 
 public class AutoHomeForInterstellarAccuracy extends InstantCommand {
@@ -18,9 +16,9 @@ public class AutoHomeForInterstellarAccuracy extends InstantCommand {
     @Override
     public void initialize() {
         Pose2d robotPose = sDrivetrain.getCurrentPose();
-        double distanceToFinalPose = robotPose.getTranslation().getDistance(sInterstellarHomingPose.getTranslation());
+        double distanceToFinalPose = robotPose.getTranslation().getDistance(kInterstellarHomingPose.getTranslation());
 
-        if (robotPose.getX() < sInterstellarHomingPose.getX()
+        if (robotPose.getX() < kInterstellarHomingPose.getX()
                 && distanceToFinalPose >= kMinimumInterstellarHomingRadius
                 && distanceToFinalPose <= kMaximumInterstellarHomingRadius) {
             new RamseteTrackingCommand(

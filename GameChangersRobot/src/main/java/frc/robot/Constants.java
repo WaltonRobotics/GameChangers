@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Units;
 
@@ -183,6 +184,9 @@ public final class Constants {
 
         public static final double kMinimumInterstellarHomingRadius = Units.feetToMeters(1.0);
         public static final double kMaximumInterstellarHomingRadius = Units.feetToMeters(5.0);
+
+        public static final Pose2d kInterstellarHomingPose =
+                new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
 
     }
 

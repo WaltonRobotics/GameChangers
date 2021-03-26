@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.util.Units;
 
 import java.util.Arrays;
 
+import static frc.robot.Constants.Field.kInterstellarHomingPose;
 import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
@@ -252,9 +253,6 @@ public class Paths {
 
     public static class ShootingChallengeRelativeHomingPaths {
 
-        public static final Pose2d sInterstellarHomingPose =
-                new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
-
         public static Trajectory generateInterstellarAccuracyHomingTrajectory() {
             TrajectoryConfig config = new TrajectoryConfig(
                     sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
@@ -266,7 +264,7 @@ public class Paths {
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                             sDrivetrain.getCurrentPose(),
-                            sInterstellarHomingPose),
+                            kInterstellarHomingPose),
                     config
             );
         }
