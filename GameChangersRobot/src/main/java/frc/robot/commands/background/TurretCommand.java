@@ -298,10 +298,12 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-//                double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
-//                        sTurret.getCurrentRobotRelativeHeading().getDegrees(),
-//
-//                );
+                double currentHeading = sTurret.getCurrentRobotRelativeHeading().getDegrees();
+
+                double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
+                        currentHeading,
+                        currentHeading - LimelightHelper.getTX()
+                );
 
                 return this;
             }

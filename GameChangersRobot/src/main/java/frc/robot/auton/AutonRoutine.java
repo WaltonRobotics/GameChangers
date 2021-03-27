@@ -101,7 +101,7 @@ public enum AutonRoutine {
 
     BARREL_RACING("Barrel Racing Path",
             new SequentialCommandGroup(
-                    new ResetPose(sBlueBTrajectory),
+                    new ResetPose(sBarrelRacingTrajectory),
                     new RamseteTrackingCommand(sBarrelRacingTrajectory, true, false)
             )
     ),
