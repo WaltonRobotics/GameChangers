@@ -54,9 +54,9 @@ public class Paths {
                     Arrays.asList(
                         new Pose2d(Units.feetToMeters(3.771), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
 			new Pose2d(Units.feetToMeters(8.691), Units.feetToMeters(6.724), Rotation2d.fromDegrees(-43.374)),
-			new Pose2d(Units.feetToMeters(11.62), Units.feetToMeters(4.125), Rotation2d.fromDegrees(35.961)),
+			new Pose2d(Units.feetToMeters(12.195), Units.feetToMeters(4.915), Rotation2d.fromDegrees(-1.673)),
 			new Pose2d(Units.feetToMeters(13.416), Units.feetToMeters(8.13), Rotation2d.fromDegrees(82.773)),
-			new Pose2d(Units.feetToMeters(14.841), Units.feetToMeters(12.447), Rotation2d.fromDegrees(0)),
+			new Pose2d(Units.feetToMeters(13.651), Units.feetToMeters(12.613), Rotation2d.fromDegrees(0)),
 			new Pose2d(Units.feetToMeters(18.526), Units.feetToMeters(12.562), Rotation2d.fromDegrees(0))),
                     config
             );
