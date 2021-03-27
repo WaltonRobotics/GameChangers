@@ -53,10 +53,11 @@ public class Paths {
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                         new Pose2d(Units.feetToMeters(3.771), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-			new Pose2d(Units.feetToMeters(8.036), Units.feetToMeters(7.244), Rotation2d.fromDegrees(-35.148)),
-			new Pose2d(Units.feetToMeters(12.373), Units.feetToMeters(4.894), Rotation2d.fromDegrees(14.611)),
-			new Pose2d(Units.feetToMeters(12.801), Units.feetToMeters(10.709), Rotation2d.fromDegrees(-0.45)),
-			new Pose2d(Units.feetToMeters(17.043), Units.feetToMeters(12.655), Rotation2d.fromDegrees(0))),
+			new Pose2d(Units.feetToMeters(8.036), Units.feetToMeters(7.244), Rotation2d.fromDegrees(-48.382)),
+			new Pose2d(Units.feetToMeters(10.251), Units.feetToMeters(4.271), Rotation2d.fromDegrees(5.236)),
+			new Pose2d(Units.feetToMeters(13.674), Units.feetToMeters(6.612), Rotation2d.fromDegrees(70.221)),
+			new Pose2d(Units.feetToMeters(14.861), Units.feetToMeters(12.281), Rotation2d.fromDegrees(0)),
+			new Pose2d(Units.feetToMeters(18.268), Units.feetToMeters(12.458), Rotation2d.fromDegrees(0))),
                     config
             );
         }
