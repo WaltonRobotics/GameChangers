@@ -127,9 +127,6 @@ public final class Constants {
         public static final int kTyWindowSize = 5;
         public static final int kCamtranWindowSize = 5;
 
-        // Limelight NT takes up to 100ms to update at most
-        public static final double kLimelightLEDWaitTimeSeconds = 0.2;
-
     }
 
     public static class Turret {
@@ -159,7 +156,7 @@ public final class Constants {
         public static final int kSerialPortBaudRate = 9600;
         public static final double kUpdateRateSeconds = 0.2;
 
-        public static final double kAlignedTolerance = 1.5;
+        public static final double kAlignedToleranceDegrees = 1.5;
 
     }
 
@@ -179,14 +176,18 @@ public final class Constants {
         public static final double kTargetFrontOffsetFeet = 0.16;
         public static final Rotation2d kTargetFieldRelativeHeading = Rotation2d.fromDegrees(0);
 
-        public static final double kFieldWidth = 30.0;
-        public static final double kFieldHeight = 15.0;
+        public static final double kFieldWidthFeet = 30.0;
+        public static final double kFieldHeightFeet = 15.0;
 
-        public static final double kMinimumInterstellarHomingRadius = Units.feetToMeters(1.0);
-        public static final double kMaximumInterstellarHomingRadius = Units.feetToMeters(5.0);
+        public static final double kBreakPlaneSafetyOffsetFeet = 0.5;
+        public static final double kGalacticSearchBreakPlaneLineMeters = Units.feetToMeters(27.5
+                + kBreakPlaneSafetyOffsetFeet);
 
-        public static final Pose2d kInterstellarHomingPose =
-                new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
+        public static final double kMinimumInterstellarHomingRadiusMeters = Units.feetToMeters(1.0);
+        public static final double kMaximumInterstellarHomingRadiusMeters = Units.feetToMeters(5.0);
+
+        public static final Pose2d kInterstellarHomingPose
+                = new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
 
     }
 

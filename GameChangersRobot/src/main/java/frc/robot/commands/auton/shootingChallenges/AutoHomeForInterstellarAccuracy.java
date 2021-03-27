@@ -23,8 +23,8 @@ public class AutoHomeForInterstellarAccuracy extends SequentialCommandGroup {
                         ),
                         new InstantCommand(() -> DebuggingLog.getInstance().getLogger().log(Level.WARNING,
                                 "Failed to auto home")),
-                        new HomingSupplier(kInterstellarHomingPose, kMinimumInterstellarHomingRadius,
-                                kMaximumInterstellarHomingRadius)
+                        new HomingSupplier(kInterstellarHomingPose, kMinimumInterstellarHomingRadiusMeters,
+                                kMaximumInterstellarHomingRadiusMeters)
                 )
         );
     }
