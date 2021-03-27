@@ -55,8 +55,8 @@ public class Paths {
                         new Pose2d(Units.feetToMeters(3.771), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
 			new Pose2d(Units.feetToMeters(8.691), Units.feetToMeters(6.724), Rotation2d.fromDegrees(-43.374)),
 			new Pose2d(Units.feetToMeters(12.195), Units.feetToMeters(4.915), Rotation2d.fromDegrees(-1.673)),
-			new Pose2d(Units.feetToMeters(13.416), Units.feetToMeters(8.13), Rotation2d.fromDegrees(82.773)),
-			new Pose2d(Units.feetToMeters(13.651), Units.feetToMeters(12.613), Rotation2d.fromDegrees(0)),
+			new Pose2d(Units.feetToMeters(14.904), Units.feetToMeters(8.234), Rotation2d.fromDegrees(89.562)),
+			new Pose2d(Units.feetToMeters(14.841), Units.feetToMeters(12.634), Rotation2d.fromDegrees(90.618)),
 			new Pose2d(Units.feetToMeters(18.526), Units.feetToMeters(12.562), Rotation2d.fromDegrees(0))),
                     config
             );
@@ -92,11 +92,12 @@ public class Paths {
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                            new Pose2d(Units.feetToMeters(3.771), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(7.46), Units.feetToMeters(9.979), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(12.476), Units.feetToMeters(4.991), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(16.73), Units.feetToMeters(9.133), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(19.199), Units.feetToMeters(10.206), Rotation2d.fromDegrees(0))),
+                        new Pose2d(Units.feetToMeters(3.771), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+			new Pose2d(Units.feetToMeters(7.619), Units.feetToMeters(10.145), Rotation2d.fromDegrees(44.03)),
+			new Pose2d(Units.feetToMeters(10.949), Units.feetToMeters(9.712), Rotation2d.fromDegrees(-79.243)),
+			new Pose2d(Units.feetToMeters(12.624), Units.feetToMeters(4.994), Rotation2d.fromDegrees(0)),
+			new Pose2d(Units.feetToMeters(17.573), Units.feetToMeters(10.164), Rotation2d.fromDegrees(0)),
+			new Pose2d(Units.feetToMeters(19.755), Units.feetToMeters(11.314), Rotation2d.fromDegrees(1.396))),
                     config
             );
         }

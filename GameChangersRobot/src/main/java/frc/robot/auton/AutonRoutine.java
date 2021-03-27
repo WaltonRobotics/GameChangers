@@ -5,7 +5,6 @@ import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
-import frc.robot.commands.tuning.FindLinearMaxVelAccel;
 import frc.robot.subsystems.ProMicro;
 import frc.robot.vision.PixyCamHelper;
 
@@ -18,13 +17,12 @@ import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
 import static frc.robot.Paths.GalacticSearchPaths.*;
 import static frc.robot.Robot.*;
 
+
 public enum AutonRoutine {
 
     DO_NOTHING("Do Nothing", new SequentialCommandGroup()),
 
     DRIVETRAIN_CHARACTERIZATION("Drivetrain Characterization", new DrivetrainCharacterizationRoutine()),
-
-    FIND_MAX_VEL_ACCELERATION("Max acceleration/velocity", new FindLinearMaxVelAccel(10)),
 
     GALACTIC_SEARCH("Galactic Search Routine",
             new SelectCommand(
@@ -97,7 +95,7 @@ public enum AutonRoutine {
                                     )
                             )
                     ),
-                    () -> ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A
+                    () -> ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_B
                     //PixyCamHelper::getGalacticSearchDetermination
             )
     ),

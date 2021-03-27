@@ -1,6 +1,7 @@
 package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -13,7 +14,10 @@ public class SetIntakeToggle extends SequentialCommandGroup {
             addCommands(
                     new InstantCommand(() -> sIntake.setDeployed(true)),
                     new InstantCommand(() -> sIntake.setRetracted(false)),
-                    new WaitCommand(sIntake.getConfig().kSettleTime),
+                    new ParallelDeadlineGroup(
+                        new WaitCommand(sIntake.getConfig().kSettleTime),
+                        new InstantCommand(() -> sIntake.setRetracted(false))
+                    ),
                     new InstantCommand(() -> sIntake.setDeployed(false)),
                     new InstantCommand(() -> sIntake.setRetracted(false))
             );
