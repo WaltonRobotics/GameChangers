@@ -10,14 +10,19 @@ public class SetIntakeToggle extends SequentialCommandGroup {
 
     public SetIntakeToggle(boolean state) {
         if (state) {
-            addCommands(new InstantCommand(() -> sIntake.setDeployed(true)));
-            addCommands(new InstantCommand(() -> sIntake.setRetracted(false)));
-            addCommands(new WaitCommand(sIntake.getConfig().kSettleTime));
-            addCommands(new InstantCommand(() -> sIntake.setDeployed(false)));
-            addCommands(new InstantCommand(() -> sIntake.setRetracted(false)));
+            addCommands(
+                    new InstantCommand(() -> sIntake.setDeployed(true)),
+                    new InstantCommand(() -> sIntake.setRetracted(false)),
+                    new WaitCommand(sIntake.getConfig().kSettleTime),
+                    new InstantCommand(() -> sIntake.setDeployed(false)),
+                    new InstantCommand(() -> sIntake.setRetracted(false))
+            );
         } else {
-            addCommands(new InstantCommand(() -> sIntake.setDeployed(false)));
-            addCommands(new InstantCommand(() -> sIntake.setRetracted(true)));
+            addCommands(
+                    new InstantCommand(() -> sIntake.setDeployed(false)),
+                    new InstantCommand(() -> sIntake.setRetracted(true))
+
+            );
         }
     }
 

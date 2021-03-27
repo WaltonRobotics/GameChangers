@@ -41,6 +41,7 @@ public class FindLinearMaxVelAccel extends CommandBase {
 
     @Override
     public void initialize() {
+        mTimer.reset();
         mTimer.start();
     }
 
