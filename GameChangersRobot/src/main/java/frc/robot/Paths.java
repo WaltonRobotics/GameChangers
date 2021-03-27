@@ -55,7 +55,7 @@ public class Paths {
                         new Pose2d(Units.feetToMeters(3.771), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
 			new Pose2d(Units.feetToMeters(8.036), Units.feetToMeters(7.244), Rotation2d.fromDegrees(-35.148)),
 			new Pose2d(Units.feetToMeters(12.373), Units.feetToMeters(4.894), Rotation2d.fromDegrees(14.611)),
-			new Pose2d(Units.feetToMeters(13.158), Units.feetToMeters(11.687), Rotation2d.fromDegrees(-0.45)),
+			new Pose2d(Units.feetToMeters(12.801), Units.feetToMeters(10.709), Rotation2d.fromDegrees(-0.45)),
 			new Pose2d(Units.feetToMeters(17.043), Units.feetToMeters(12.655), Rotation2d.fromDegrees(0))),
                     config
             );

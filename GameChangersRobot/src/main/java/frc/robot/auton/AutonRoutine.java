@@ -94,7 +94,8 @@ public enum AutonRoutine {
                                     )
                             )
                     ),
-                    PixyCamHelper::getGalacticSearchDetermination
+                    () -> ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A
+                    //PixyCamHelper::getGalacticSearchDetermination
             )
     ),
 
