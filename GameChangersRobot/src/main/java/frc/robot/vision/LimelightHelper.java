@@ -15,7 +15,7 @@ import static frc.robot.Robot.sShooter;
 
 public class LimelightHelper {
 
-    private static boolean mIsLEDOn = true;
+    private static boolean mIsLEDOn = false;
 
     private static final NetworkTable mTable = NetworkTableInstance.getDefault().getTable("limelight");
 

@@ -15,7 +15,6 @@ import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.DriverPreferences.kTurretMasterOverrideDeadband;
 import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
 import static frc.robot.Constants.Field.kTargetFieldRelativeHeading;
-import static frc.robot.Constants.Shooter.kLimelightLEDWaitTimeSeconds;
 import static frc.robot.Constants.Turret.*;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sDrivetrain;
@@ -31,7 +30,6 @@ public class TurretCommand extends CommandBase {
     private final IState mZeroing;
     private final IState mHoming;
     private final IState mManual;
-    private final IState mFindingAlignmentMethod;
     private final IState mAligningFromLimelightTX;
     private final IState mAligningFromLimelightClosedLoop;
     private final IState mAligningFieldRelative;
@@ -58,7 +56,17 @@ public class TurretCommand extends CommandBase {
                 }
 
                 if (sAlignTurretButton.get()) {
-                    return mFindingAlignmentMethod;
+                    if (LimelightHelper.getTV() > 0) {
+                        if (!mHasZeroed) {
+                            return mAligningFromLimelightClosedLoop;
+                        } else {
+                            return mAligningFromLimelightTX;
+                        }
+                    } else {
+                        if (mHasZeroed) {
+                            return mAligningFieldRelative;
+                        }
+                    }
                 }
 
                 if (!mHasZeroed) {
@@ -192,45 +200,45 @@ public class TurretCommand extends CommandBase {
             }
         };
 
-        mFindingAlignmentMethod = new IState() {
-            private double mStartTime;
-
-            @Override
-            public void initialize() {
-                LimelightHelper.setLEDMode(true);
-
-                mStartTime = getFPGATimestamp();
-            }
-
-            @Override
-            public IState execute() {
-                if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
-                    if (LimelightHelper.getTV() > 0) {
-                        if (!mHasZeroed) {
-                            return mAligningFromLimelightClosedLoop;
-                        } else {
-                            return mAligningFromLimelightTX;
-                        }
-                    } else {
-                        if (mHasZeroed) {
-                            return mAligningFieldRelative;
-                        }
-                    }
-                }
-
-                return this;
-            }
-
-            @Override
-            public void finish() {
-
-            }
-
-            @Override
-            public String getName() {
-                return "Finding Alignment Method";
-            }
-        };
+//        mFindingAlignmentMethod = new IState() {
+//            private double mStartTime;
+//
+//            @Override
+//            public void initialize() {
+//                LimelightHelper.setLEDMode(true);
+//
+//                mStartTime = getFPGATimestamp();
+//            }
+//
+//            @Override
+//            public IState execute() {
+//                if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
+//                    if (LimelightHelper.getTV() > 0) {
+//                        if (!mHasZeroed) {
+//                            return mAligningFromLimelightClosedLoop;
+//                        } else {
+//                            return mAligningFromLimelightTX;
+//                        }
+//                    } else {
+//                        if (mHasZeroed) {
+//                            return mAligningFieldRelative;
+//                        }
+//                    }
+//                }
+//
+//                return this;
+//            }
+//
+//            @Override
+//            public void finish() {
+//
+//            }
+//
+//            @Override
+//            public String getName() {
+//                return "Finding Alignment Method";
+//            }
+//        };
 
         mAligningFromLimelightTX = new IState() {
 
@@ -267,7 +275,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override
@@ -300,7 +308,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override
@@ -345,7 +353,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override

@@ -9,7 +9,6 @@ import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.vision.LimelightHelper;
-import frc.robot.vision.PnPHelper;
 
 import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
@@ -28,7 +27,6 @@ public class ShooterCommand extends CommandBase {
     private double mSetpointRawUnits = kDefaultVelocityRawUnits;
 
     private final IState mIdle;
-    private final IState mDeterminingSetpoint;
     private final IState mSpinningUp;
     private final IState mShooting;
     private final IState mSpinningDown;
@@ -59,7 +57,8 @@ public class ShooterCommand extends CommandBase {
                         return mSpinningUp;
                     }
 
-                    return mDeterminingSetpoint;
+                    mSetpointRawUnits = getEstimatedVelocityFromTarget();
+                    return mSpinningUp;
                 }
 
                 if (mNeedsToBarf.getAsBoolean()) {
@@ -81,35 +80,35 @@ public class ShooterCommand extends CommandBase {
             }
         };
 
-        mDeterminingSetpoint = new IState() {
-            private double mStartTime;
-
-            @Override
-            public void initialize() {
-                LimelightHelper.setLEDMode(true);
-                mStartTime = getFPGATimestamp();
-            }
-
-            @Override
-            public IState execute() {
-                if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
-                    mSetpointRawUnits = getEstimatedVelocityFromTarget();
-                    return mSpinningUp;
-                }
-
-                return this;
-            }
-
-            @Override
-            public void finish() {
-
-            }
-
-            @Override
-            public String getName() {
-                return "Determining Setpoint";
-            }
-        };
+//        mDeterminingSetpoint = new IState() {
+//            private double mStartTime;
+//
+//            @Override
+//            public void initialize() {
+//                LimelightHelper.setLEDMode(true);
+//                mStartTime = getFPGATimestamp();
+//            }
+//
+//            @Override
+//            public IState execute() {
+//                if (getFPGATimestamp() - mStartTime > kLimelightLEDWaitTimeSeconds) {
+//                    mSetpointRawUnits = getEstimatedVelocityFromTarget();
+//                    return mSpinningUp;
+//                }
+//
+//                return this;
+//            }
+//
+//            @Override
+//            public void finish() {
+//
+//            }
+//
+//            @Override
+//            public String getName() {
+//                return "Determining Setpoint";
+//            }
+//        };
 
         mSpinningUp = new IState() {
             @Override
@@ -206,7 +205,7 @@ public class ShooterCommand extends CommandBase {
             public void finish() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override
