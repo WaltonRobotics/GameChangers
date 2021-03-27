@@ -9,9 +9,11 @@ import frc.robot.subsystems.ProMicro;
 import frc.robot.vision.PixyCamHelper;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 import static frc.robot.Constants.Field.kGalacticSearchBreakPlaneLineMeters;
+import static frc.robot.Paths.AutonavPaths.BouncePaths.*;
+import static frc.robot.Paths.AutonavPaths.sBarrelRacingTrajectory;
+import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
 import static frc.robot.Paths.GalacticSearchPaths.*;
 import static frc.robot.Robot.*;
 
@@ -21,7 +23,7 @@ public enum AutonRoutine {
 
     DRIVETRAIN_CHARACTERIZATION("Drivetrain Characterization", new DrivetrainCharacterizationRoutine()),
 
-    GALACTIC_SEARCH("Galactic Search",
+    GALACTIC_SEARCH("Galactic Search Routine",
             new SelectCommand(
                     Map.ofEntries(
                             Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A,
@@ -30,8 +32,8 @@ public enum AutonRoutine {
                                             new InstantCommand(() ->
                                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
                                             new InstantCommand(() -> sDrivetrain.reset()),
-                                            new ResetPose(sRedA),
-                                            new RamseteTrackingCommand(sRedA, true, false),
+                                            new ResetPose(sRedATrajectory),
+                                            new RamseteTrackingCommand(sRedATrajectory, true, false),
                                             new InstantCommand(() ->
                                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
                                             new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
@@ -47,8 +49,8 @@ public enum AutonRoutine {
                                             new InstantCommand(() ->
                                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
                                             new InstantCommand(() -> sDrivetrain.reset()),
-                                            new ResetPose(sRedB),
-                                            new RamseteTrackingCommand(sRedB, true, false),
+                                            new ResetPose(sRedBTrajectory),
+                                            new RamseteTrackingCommand(sRedBTrajectory, true, false),
                                             new InstantCommand(() ->
                                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
                                             new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
@@ -64,8 +66,8 @@ public enum AutonRoutine {
                                             new InstantCommand(() ->
                                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
                                             new InstantCommand(() -> sDrivetrain.reset()),
-                                            new ResetPose(sBlueA),
-                                            new RamseteTrackingCommand(sBlueA, true, false),
+                                            new ResetPose(sBlueATrajectory),
+                                            new RamseteTrackingCommand(sBlueATrajectory, true, false),
                                             new InstantCommand(() ->
                                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
                                             new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
@@ -81,8 +83,8 @@ public enum AutonRoutine {
                                             new InstantCommand(() ->
                                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
                                             new InstantCommand(() -> sDrivetrain.reset()),
-                                            new ResetPose(sBlueB),
-                                            new RamseteTrackingCommand(sBlueB, true, false),
+                                            new ResetPose(sBlueBTrajectory),
+                                            new RamseteTrackingCommand(sBlueBTrajectory, true, false),
                                             new InstantCommand(() ->
                                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
                                             new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
@@ -93,6 +95,30 @@ public enum AutonRoutine {
                             )
                     ),
                     PixyCamHelper::getGalacticSearchDetermination
+            )
+    ),
+
+    BARREL_RACING("Barrel Racing Path",
+            new SequentialCommandGroup(
+                    new ResetPose(sBlueBTrajectory),
+                    new RamseteTrackingCommand(sBarrelRacingTrajectory, true, false)
+            )
+    ),
+
+    SLALOM("Slalom Path",
+            new SequentialCommandGroup(
+                    new ResetPose(sSlalomTrajectory),
+                    new RamseteTrackingCommand(sSlalomTrajectory, true, false)
+            )
+    ),
+
+    BOUNCE("Bounce Path",
+            new SequentialCommandGroup(
+                    new ResetPose(sBounce1Trajectory),
+                    new RamseteTrackingCommand(sBounce1Trajectory, true, false),
+                    new RamseteTrackingCommand(sBounce2Trajectory, true, false),
+                    new RamseteTrackingCommand(sBounce3Trajectory, true, false),
+                    new RamseteTrackingCommand(sBounce4Trajectory, true, false)
             )
     );
 
