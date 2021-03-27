@@ -37,7 +37,7 @@ import static frc.robot.Robot.sDrivetrain;
 public class RamseteTrackingCommand extends CommandBase {
     private final Timer mTimer = new Timer();
     private final boolean mUseSparkPID;
-    private final Trajectory mTrajectory;
+    private final Supplier<Trajectory> mTrajectorySupplier;
     private final Supplier<Pose2d> mPose;
     private final RamseteController mFollower;
     private final SimpleMotorFeedforward mFeedforward;
@@ -46,6 +46,7 @@ public class RamseteTrackingCommand extends CommandBase {
     private final PIDController mLeftController;
     private final PIDController mRightController;
     private DifferentialDriveWheelSpeeds mPrevSpeeds;
+    private Trajectory mTrajectory;
     private double mPrevTime;
 
     /**
@@ -53,14 +54,14 @@ public class RamseteTrackingCommand extends CommandBase {
      * Performs no PID control and calculates no feedforwards; outputs are the raw wheel speeds
      * in meters per second from the RAMSETE controller, and will need to be converted into a usable form by the user.
      *
-     * @param trajectory     The trajectory to follow.
+     * @param trajectorySupplier     A supplier that points to the trajectory to follow.
      * @param useSparkPID    Whether to use onboard SparkMax velocity PID or direct voltage control
      * @param disableRamsete Whether to disable the Ramsete correction (for feedforward analysis)
      */
-    public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean disableRamsete) {
+    public RamseteTrackingCommand(Supplier<Trajectory> trajectorySupplier, boolean useSparkPID, boolean disableRamsete) {
         addRequirements(sDrivetrain);
 
-        mTrajectory = requireNonNullParam(trajectory, "trajectory", "RamseteTrackingCommand");
+        mTrajectorySupplier = trajectorySupplier;
         mPose = sDrivetrain::getCurrentPose;
 
         if (disableRamsete) {
@@ -85,8 +86,23 @@ public class RamseteTrackingCommand extends CommandBase {
         mUseSparkPID = useSparkPID;
     }
 
+    /**
+     * Constructs a new RamseteTrackingCommand that, when executed, will follow the provided trajectory.
+     * Performs no PID control and calculates no feedforwards; outputs are the raw wheel speeds
+     * in meters per second from the RAMSETE controller, and will need to be converted into a usable form by the user.
+     *
+     * @param trajectory     The trajectory to follow.
+     * @param useSparkPID    Whether to use onboard SparkMax velocity PID or direct voltage control
+     * @param disableRamsete Whether to disable the Ramsete correction (for feedforward analysis)
+     */
+    public RamseteTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean disableRamsete) {
+        this(() -> trajectory, useSparkPID, disableRamsete);
+    }
+
     @Override
     public void initialize() {
+        mTrajectory = mTrajectorySupplier.get();
+
         mPrevTime = 0;
         var initialState = mTrajectory.sample(0);
         mPrevSpeeds = mKinematics.toWheelSpeeds(

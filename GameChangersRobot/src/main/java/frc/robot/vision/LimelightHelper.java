@@ -118,6 +118,8 @@ public class LimelightHelper {
             mLedMode.setNumber(kLEDsOff);
         }
 
+        NetworkTableInstance.getDefault().flush();
+
         mIsLEDOn = on;
     }
 

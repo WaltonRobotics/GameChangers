@@ -128,7 +128,7 @@ public final class Constants {
         public static final int kCamtranWindowSize = 5;
 
         // Limelight NT takes up to 100ms to update at most
-        public static final double kLimelightLEDWaitTimeSeconds = 0.25;
+        public static final double kLimelightLEDWaitTimeSeconds = 0.2;
 
     }
 

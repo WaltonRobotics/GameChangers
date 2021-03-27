@@ -24,7 +24,7 @@ public class TurnToAngle extends CommandBase {
     }
 
     public TurnToAngle(double targetHeading) {
-        this.mTargetHeadingSupplier = () -> targetHeading;
+        this(() -> targetHeading);
     }
 
     @Override
