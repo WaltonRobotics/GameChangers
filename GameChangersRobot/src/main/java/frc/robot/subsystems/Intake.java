@@ -56,7 +56,7 @@ public class Intake extends SubsystemBase {
 
     public void setRetracted(boolean isRetracted) {
         if (mRetractSolenoid != null) {
-            mRetractSolenoid.set(!isRetracted);
+            mRetractSolenoid.set(isRetracted);
         }
     }
 

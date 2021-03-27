@@ -59,8 +59,8 @@ public class CompGameChangers implements WaltRobot {
         mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(1.0, 1.0, 1.0);
         mDrivetrainConfig.leftVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.rightVoltagePID = new PIDController(1, 0, 0);
-        mDrivetrainConfig.leftVelocityPID = new PIDController(1.0, 0, 0);
-        mDrivetrainConfig.rightVelocityPID = new PIDController(1.0, 0, 0);
+        mDrivetrainConfig.leftVelocityPID = new PIDController(0.8, 0, 0);
+        mDrivetrainConfig.rightVelocityPID = new PIDController(0.8, 0, 0);
         mDrivetrainConfig.turnProfiledPID = drivetrainTurnProfiledPID;
         mDrivetrainConfig.driveStraightProfiledPowerPID = drivetrainDriveStraightPowerProfiledPID;
         mDrivetrainConfig.driveStraightProfiledHeadingPID = drivetrainDriveStraightHeadingProfiledPID;

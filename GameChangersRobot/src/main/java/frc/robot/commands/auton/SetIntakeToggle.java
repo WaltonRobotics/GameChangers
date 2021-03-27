@@ -10,22 +10,18 @@ import static frc.robot.Robot.sIntake;
 public class SetIntakeToggle extends SequentialCommandGroup {
 
     public SetIntakeToggle(boolean state) {
+        addRequirements(sIntake);
+
         if (state) {
             addCommands(
                     new InstantCommand(() -> sIntake.setDeployed(true)),
                     new InstantCommand(() -> sIntake.setRetracted(false)),
-                    new ParallelDeadlineGroup(
-                        new WaitCommand(sIntake.getConfig().kSettleTime),
-                        new InstantCommand(() -> sIntake.setRetracted(false))
-                    ),
-                    new InstantCommand(() -> sIntake.setDeployed(false)),
-                    new InstantCommand(() -> sIntake.setRetracted(false))
+                    new WaitCommand(sIntake.getConfig().kSettleTime)
             );
         } else {
             addCommands(
                     new InstantCommand(() -> sIntake.setDeployed(false)),
                     new InstantCommand(() -> sIntake.setRetracted(true))
-
             );
         }
     }

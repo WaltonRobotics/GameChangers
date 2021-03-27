@@ -62,23 +62,23 @@ public class IntakeCommand extends CommandBase {
         };
 
         mDeploy = new IState() {
-            private double mStartTime;
+//            private double mStartTime;
 
             @Override
             public void initialize() {
                 sIntake.setDeployed(true);
                 sIntake.setRetracted(false);
 
-                mStartTime = getFPGATimestamp();
+//                mStartTime = getFPGATimestamp();
             }
 
             @Override
             public IState execute() {
-                if (getFPGATimestamp() - mStartTime > sIntake.getConfig().kSettleTime) {
-                    sIntake.setDeployed(false);
-                }
-
-                sIntake.setRetracted(false);
+//                if (getFPGATimestamp() - mStartTime > sIntake.getConfig().kSettleTime) {
+//                    sIntake.setDeployed(false);
+//                }
+//
+//                sIntake.setRetracted(false);
 
                 return mIdle;
             }
@@ -184,8 +184,8 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        sIntake.setDeployed(false);
-        sIntake.setRetracted(true);
+//        sIntake.setDeployed(false);
+//        sIntake.setRetracted(true);
     }
 
     @Override
