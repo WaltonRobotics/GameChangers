@@ -253,7 +253,13 @@ public class ShooterCommand extends CommandBase {
                 kAbsoluteShootingDistanceCeilingFeet);
 
         if (kUseInterpolationMap) {
-            InterpolatingDouble result = sShooter.getConfig().kOtherZonesShooterMap.getInterpolated(new InterpolatingDouble(distanceFeet));
+            InterpolatingDouble result;
+
+            if (distanceFeet < kEndOfZoneOneFromTargetFeet) {
+                result = sShooter.getConfig().kZoneOneShooterMap.getInterpolated(new InterpolatingDouble(distanceFeet));
+            } else {
+                result = sShooter.getConfig().kOtherZonesShooterMap.getInterpolated(new InterpolatingDouble(distanceFeet));
+            }
 
             if (result != null) {
                 return result.value;
@@ -261,6 +267,10 @@ public class ShooterCommand extends CommandBase {
                 return sShooter.getConfig().kOtherZonesShooterMap.getInterpolated(new InterpolatingDouble(kDefaultShootingDistanceFeet)).value;
             }
         } else {
+            if (distanceFeet < kEndOfZoneOneFromTargetFeet) {
+                return sShooter.getConfig().kZoneOneShooterPolynomial.predict(distanceFeet);
+            }
+
             return sShooter.getConfig().kOtherZonesShooterPolynomial.predict(distanceFeet);
         }
     }
