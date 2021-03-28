@@ -95,8 +95,8 @@ public class PracticeGameChangers implements WaltRobot {
         mShooterConfig.kLimelightMountingHeight = 23;
         mShooterConfig.kLimelightMountingAngle = 33.5;
 
-        mShooterConfig.kShooterMap = mShooterMap;
-        mShooterConfig.kShooterPolynomial = mShooterPolynomial;
+        mShooterConfig.kOtherZonesShooterMap = mShooterMap;
+        mShooterConfig.kOtherZonesShooterPolynomial = mShooterPolynomial;
 
         mIntakeConfig = new IntakeConfig();
         mIntakeConfig.kIsIntakeControllerInverted = false;
