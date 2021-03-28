@@ -35,7 +35,7 @@ public class Turret extends SubsystemBase {
     private final EnhancedBoolean mForwardLimitBool = new EnhancedBoolean();
 
     private ControlState mControlState;
-    private ProfiledPIDController mClosedLoopAutoAlignProfiledPID = mConfig.closedLoopAutoAlignProfiledPID;
+    private final ProfiledPIDController mClosedLoopAutoAlignProfiledPID = mConfig.closedLoopAutoAlignProfiledPID;
     private double mSetpoint;
 
     public Turret() {
