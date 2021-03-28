@@ -6,6 +6,9 @@ import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.commands.background.IntakeCommand;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
+import frc.robot.commands.tuning.FindAngularMaxVelAccel;
+import frc.robot.commands.tuning.FindLinearMaxVelAccel;
+import frc.robot.commands.tuning.FindTurretMaxVelAccel;
 import frc.robot.subsystems.ProMicro;
 import frc.robot.vision.PixyCamHelper;
 
@@ -24,6 +27,15 @@ public enum AutonRoutine {
     DO_NOTHING("Do Nothing", new SequentialCommandGroup()),
 
     DRIVETRAIN_CHARACTERIZATION("Drivetrain Characterization", new DrivetrainCharacterizationRoutine()),
+
+    FIND_MAX_LINEAR_VEL_ACCEL("Find Maximum Drivetrain Linear Velocity and Acceleration",
+            new FindLinearMaxVelAccel(10.0)),
+
+    FIND_MAX_ANGULAR_VEL_ACCEL("Find Maximum Drivetrain Angular Velocity and Acceleration",
+            new FindAngularMaxVelAccel(10.0)),
+
+    FIND_TURRET_MAX_VEL_ACCEL("Find Maximum Turret Angular Velocity and Acceleration",
+            new FindTurretMaxVelAccel(3.0)),
 
     GALACTIC_SEARCH("Galactic Search Routine",
             new SelectCommand(
