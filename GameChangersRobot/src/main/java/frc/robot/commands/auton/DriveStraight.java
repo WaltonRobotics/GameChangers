@@ -3,6 +3,7 @@ package frc.robot.commands.auton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.utils.UtilMethods;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.SmartDashboardKeys.*;
@@ -28,7 +29,7 @@ public class DriveStraight extends CommandBase {
 //        sDrivetrain.reset();
         mInitialLeftPosition = sDrivetrain.getLeftPositionMeters();
         mInitialRightPosition = sDrivetrain.getRightPositionMeters();
-        mInitialHeading = sDrivetrain.getHeading().getDegrees();
+        mInitialHeading = getHeading();
 
         sDrivetrain.getDriveStraightPowerProfiledPID().reset(
                 new TrapezoidProfile.State(0, getVelocityAverage()));
@@ -74,7 +75,7 @@ public class DriveStraight extends CommandBase {
                 mDesiredDistance);
 
         double turnRate = -Math.signum(forward) * sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
-                sDrivetrain.getHeading().getDegrees() - mInitialHeading, 0);
+                getHeading() - mInitialHeading, 0);
 
         SmartDashboard.putNumber(kDriveStraightForwardErrorKey,
                 sDrivetrain.getDriveStraightPowerProfiledPID().getPositionError());
@@ -96,5 +97,9 @@ public class DriveStraight extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         sDrivetrain.setDutyCycles(0, 0);
+    }
+
+    private double getHeading() {
+        return UtilMethods.restrictAngle(sDrivetrain.getHeading().getDegrees(), -180.0, 180.0);
     }
 }

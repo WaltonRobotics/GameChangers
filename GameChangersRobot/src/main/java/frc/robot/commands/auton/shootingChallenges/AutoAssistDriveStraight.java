@@ -3,6 +3,7 @@ package frc.robot.commands.auton.shootingChallenges;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.utils.UtilMethods;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.SmartDashboardKeys.*;
@@ -23,7 +24,7 @@ public class AutoAssistDriveStraight extends CommandBase {
 //        drivetrain.getmDriveStraightPowerController().setP(1);
 //        System.out.println("P value set");
 //        sDrivetrain.reset();
-        mInitialHeading = sDrivetrain.getHeading().getDegrees();
+        mInitialHeading = getHeading();
 
         sDrivetrain.getDriveStraightHeadingProfiledPID().reset(
                 new TrapezoidProfile.State(
@@ -51,7 +52,7 @@ public class AutoAssistDriveStraight extends CommandBase {
         double throttle = getThrottleAverage();
 
         double turnRate = -Math.signum(throttle) * sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
-                sDrivetrain.getHeading().getDegrees(),
+                getHeading(),
                 mInitialHeading
         );
 
@@ -76,5 +77,9 @@ public class AutoAssistDriveStraight extends CommandBase {
     private double getThrottleAverage() {
         return (sDriveModeChooser.getSelected().getLeftJoystickY()
                 + sDriveModeChooser.getSelected().getRightJoystickY()) / 2;
+    }
+
+    private double getHeading() {
+        return UtilMethods.restrictAngle(sDrivetrain.getHeading().getDegrees(), -180.0, 180.0);
     }
 }
