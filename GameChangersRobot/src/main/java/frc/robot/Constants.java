@@ -123,10 +123,6 @@ public final class Constants {
         public static final double kAbsoluteShootingDistanceFloorFeet = 8.61;
         public static final double kAbsoluteShootingDistanceCeilingFeet = 22.38;
 
-        public static final int kTxWindowSize = 1;
-        public static final int kTyWindowSize = 5;
-        public static final int kCamtranWindowSize = 5;
-
     }
 
     public static class Turret {
@@ -167,6 +163,12 @@ public final class Constants {
 
         public static final int kVisionMode = 0;
         public static final int kDriverMode = 1;
+
+        public static final int kTxWindowSize = 1;
+        public static final int kTyWindowSize = 5;
+        public static final int kCamtranWindowSize = 5;
+
+        public static final double kMaximumLEDWaitTimeSeconds = 1.0;
 
     }
 
