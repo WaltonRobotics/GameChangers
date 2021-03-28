@@ -188,6 +188,8 @@ public final class Constants {
         public static final double kGalacticSearchBreakPlaneLineMeters = Units.feetToMeters(27.5
                 + kBreakPlaneSafetyOffsetFeet);
 
+        public static final double kEndOfZoneOneFromTargetFeet = 10 - 2.5;
+
         public static final double kMinimumInterstellarHomingRadiusMeters = Units.feetToMeters(1.0);
         public static final double kMaximumInterstellarHomingRadiusMeters = Units.feetToMeters(5.0);
 
