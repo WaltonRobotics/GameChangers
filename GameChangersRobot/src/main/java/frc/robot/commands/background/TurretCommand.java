@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
+import frc.robot.subsystems.SubsystemFlags;
 import frc.robot.subsystems.Turret;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
@@ -36,6 +37,7 @@ public class TurretCommand extends CommandBase {
     private final IState mAligningFromLimelightTX;
     private final IState mAligningFromLimelightClosedLoop;
     private final IState mAligningFieldRelative;
+    private final IState mLockingSetpoint;
 
     private final StateMachine mStateMachine;
 
@@ -68,6 +70,10 @@ public class TurretCommand extends CommandBase {
 
                 if (sHomeTurretButton.get()) {
                     return mHoming;
+                }
+
+                if (SubsystemFlags.getInstance().isShooting()) {
+                    return mLockingSetpoint;
                 }
 
                 return this;
@@ -393,6 +399,36 @@ public class TurretCommand extends CommandBase {
             @Override
             public String getName() {
                 return "Aligning Field Relative";
+            }
+        };
+
+        mLockingSetpoint = new IState() {
+            private Rotation2d mLockSetpoint;
+
+            @Override
+            public void initialize() {
+                mLockSetpoint = sTurret.getCurrentRobotRelativeHeading();
+            }
+
+            @Override
+            public IState execute() {
+                sTurret.setRobotRelativeHeading(mLockSetpoint, Turret.ControlState.POSITIONAL);
+
+                if (!SubsystemFlags.getInstance().isShooting()) {
+                    return mIdle;
+                }
+
+                return this;
+            }
+
+            @Override
+            public void finish() {
+
+            }
+
+            @Override
+            public String getName() {
+                return "Locking Setpoint";
             }
         };
 

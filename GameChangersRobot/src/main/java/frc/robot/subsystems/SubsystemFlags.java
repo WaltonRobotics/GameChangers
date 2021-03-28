@@ -15,6 +15,7 @@ public class SubsystemFlags {
 
     private boolean mIsIntaking = false;
     private boolean mIsOuttaking = false;
+    private boolean mIsShooting = false;
     private boolean mIsReadyToShoot = false;
 
     public static SubsystemFlags getInstance() {
@@ -43,6 +44,14 @@ public class SubsystemFlags {
 
     public void setIsReadyToShoot(boolean isReadyToShoot) {
         this.mIsReadyToShoot = isReadyToShoot;
+    }
+
+    public boolean isShooting() {
+        return mIsShooting;
+    }
+
+    public void setIsShooting(boolean isShooting) {
+        this.mIsShooting = isShooting;
     }
 
 }

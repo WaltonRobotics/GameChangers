@@ -114,6 +114,8 @@ public class ShooterCommand extends CommandBase {
         mSpinningUp = new IState() {
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setIsShooting(true);
+
                 DebuggingLog.getInstance().getLogger().log(Level.FINE, "Shooter velocity setpoint: "
                         + mSetpointRawUnits);
 
@@ -204,6 +206,7 @@ public class ShooterCommand extends CommandBase {
 
             @Override
             public void finish() {
+                SubsystemFlags.getInstance().setIsShooting(false);
                 SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
                 LimelightHelper.setLEDMode(false);
