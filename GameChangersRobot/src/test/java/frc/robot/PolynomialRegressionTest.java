@@ -1,6 +1,5 @@
 package frc.robot;
 
-import frc.robot.utils.UtilMethods;
 import frc.robot.utils.interpolation.PolynomialRegression;
 import org.junit.Assert;
 import org.junit.Test;

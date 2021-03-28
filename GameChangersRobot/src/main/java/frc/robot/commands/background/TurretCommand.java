@@ -7,6 +7,7 @@ import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.Turret;
 import frc.robot.utils.DebuggingLog;
+import frc.robot.utils.UtilMethods;
 import frc.robot.vision.LimelightHelper;
 
 import java.util.logging.Level;
@@ -140,7 +141,7 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
+                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorToleranceDegrees) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;
@@ -252,7 +253,8 @@ public class TurretCommand extends CommandBase {
 
                 sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.POSITIONAL);
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
+                if (Math.abs(sTurret.getClosedLoopErrorRawUnits())
+                        < kClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;
@@ -277,11 +279,18 @@ public class TurretCommand extends CommandBase {
         };
 
         mAligningFromLimelightClosedLoop = new IState() {
+            private int mWithinThresholdLoops;
+
             @Override
             public void initialize() {
                 sTurret.getClosedLoopAutoAlignProfiledPID().reset(
-                        new TrapezoidProfile.State(sTurret.getCurrentRobotRelativeHeading().getDegrees(),
-                        sTurret.getCurrentAngularVelocityDegreesPerSec()));
+                        new TrapezoidProfile.State(
+                                UtilMethods.restrictAngle(sTurret.getCurrentRobotRelativeHeading().getDegrees(), -180.0, 180.0),
+                                sTurret.getCurrentAngularVelocityDegreesPerSec()
+                        )
+                );
+
+                mWithinThresholdLoops = 0;
             }
 
             @Override
@@ -290,12 +299,43 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                double currentHeading = sTurret.getCurrentRobotRelativeHeading().getDegrees();
+                if (LimelightHelper.getTV() > 0) {
+                    double headingError = -LimelightHelper.getTX();
 
-                double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
-                        currentHeading,
-                        currentHeading - LimelightHelper.getTX()
-                );
+                    double currentHeading = UtilMethods.restrictAngle(
+                            sTurret.getCurrentRobotRelativeHeading().getDegrees(), -180.0, 180.0
+                    );
+
+                    double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
+                            currentHeading,
+                            currentHeading + headingError
+                    );
+
+                    sTurret.setOpenLoopDutyCycle(turnRate);
+
+//                    // Alternate alignment method
+//                    double turnRate = 0.0;
+//
+//                    if (tx >= kMinimumAimThresholdDegrees) {
+//                        turnRate = kAimingKp * headingError - kMinimumAimDutyCycle;
+//                    } else if (tx < kMinimumAimThresholdDegrees) {
+//                        turnRate = kAimingKp * headingError + kMinimumAimDutyCycle;
+//                    }
+//
+//                    sTurret.setOpenLoopDutyCycle(turnRate);
+
+                    if (Math.abs(headingError) < kClosedLoopErrorToleranceDegrees) {
+                        mWithinThresholdLoops++;
+                    } else {
+                        mWithinThresholdLoops = 0;
+                    }
+
+                    if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                        return mIdle;
+                    }
+                } else {
+                    sTurret.setOpenLoopDutyCycle(0.0);
+                }
 
                 return this;
             }
@@ -328,14 +368,14 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorTolerance) {
+                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorToleranceDegrees) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;
                 }
 
                 if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
-                    if (LimelightHelper.getTX() > 0) {
+                    if (LimelightHelper.getTV() > 0) {
                         return mAligningFromLimelightTX;
                     } else {
                         return mIdle;

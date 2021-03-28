@@ -127,10 +127,13 @@ public final class Constants {
 
     public static class Turret {
 
-        public static final double kClosedLoopErrorTolerance = 3.77 * 2.0 / 3.0;
+        public static final double kClosedLoopErrorToleranceDegrees = 2.0 / 3.0;
         public static final int kWithinToleranceLoopsToSettle = 5;
         public static final double kZeroingDutyCycle = 0.5;
         public static final double kZeroingTimeout = 2.0;
+        public static final double kAimingKp = 0.1;
+        public static final double kMinimumAimThresholdDegrees = 1.0;
+        public static final double kMinimumAimDutyCycle = 0.05;
 
     }
 

@@ -169,8 +169,7 @@ public class Turret extends SubsystemBase {
 
     public void setFieldRelativeHeading(Rotation2d targetHeading, Rotation2d robotFieldRelativeHeading,
                                         ControlState controlState) {
-        Rotation2d robotRelativeHeading = targetHeading.minus(Rotation2d.fromDegrees(UtilMethods.restrictAngle(
-                robotFieldRelativeHeading.getDegrees(), -180.0, 180.0)));
+        Rotation2d robotRelativeHeading = targetHeading.minus(robotFieldRelativeHeading);
 
         setRobotRelativeHeading(robotRelativeHeading, controlState);
     }
@@ -202,12 +201,17 @@ public class Turret extends SubsystemBase {
         return mClosedLoopAutoAlignProfiledPID;
     }
 
+    public TurretConfig getConfig() {
+        return mConfig;
+    }
+
     private double getRawUnitsFromRobotRelativeHeading(Rotation2d heading) {
         return mConfig.kTicksPerDegree * getRawAngleDegreesFromRobotRelativeHeading(heading);
     }
 
     private double getRawAngleDegreesFromRobotRelativeHeading(Rotation2d heading) {
-        return heading.getDegrees() - mConfig.kLimitSwitchPosition.getDegrees();
+        return UtilMethods.restrictAngle(heading.getDegrees(), -180.0, 180.0)
+                - mConfig.kLimitSwitchPosition.getDegrees();
     }
 
     private Rotation2d getRobotRelativeHeadingFromRawUnits(double rawUnits) {
