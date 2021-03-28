@@ -368,7 +368,7 @@ public class TurretCommand extends CommandBase {
             @Override
             public IState execute() {
                 sTurret.setFieldRelativeHeading(kTargetFieldRelativeHeading,
-                        sDrivetrain.getHeading(), Turret.ControlState.POSITIONAL);
+                        sDrivetrain.getHeading().plus(Rotation2d.fromDegrees(180.0)), Turret.ControlState.POSITIONAL);
 
                 if (isMasterOverride()) {
                     return mManual;
