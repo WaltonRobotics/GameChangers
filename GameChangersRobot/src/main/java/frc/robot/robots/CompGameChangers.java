@@ -15,7 +15,13 @@ import static frc.robot.Constants.Turret.kClosedLoopErrorToleranceDegrees;
 
 public class CompGameChangers implements WaltRobot {
 
-    private final double[][] mDistanceToVelocityTable = {
+    // Shooter LUT when the turret is facing sideways and the adjustable hood is up
+    private final double[][] mDistanceToVelocityTableZoneOne = {
+
+    };
+
+    // Shooter LUT in all other zones
+    private final double[][] mDistanceToVelocityTableOtherZones = {
             { 8.354, 11290 },
             { 12.16, 10886 },
             { 18.45, 11400 },
@@ -143,10 +149,10 @@ public class CompGameChangers implements WaltRobot {
 
     @Override
     public void populateShooterInterpolationMethods() {
-        mShooterPolynomial.fit(mDistanceToVelocityTable);
+        mShooterPolynomial.fit(mDistanceToVelocityTableOtherZones);
 
         mShooterMap.clear();
-        for (double[] pair : mDistanceToVelocityTable) {
+        for (double[] pair : mDistanceToVelocityTableOtherZones) {
             mShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
         }
     }

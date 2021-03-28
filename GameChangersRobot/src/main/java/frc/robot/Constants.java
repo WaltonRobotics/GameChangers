@@ -99,7 +99,7 @@ public final class Constants {
     public static class Shooter {
 
         // The tolerance to exit the spinning up state and enter the shooting state
-        public static final double kSpinningUpToleranceRawUnits = 300;
+        public static final double kSpinningUpToleranceRawUnits = 200;
         // The tolerance to maintain the shooting state
         public static final double kShootingToleranceRawUnits = 150;
 
