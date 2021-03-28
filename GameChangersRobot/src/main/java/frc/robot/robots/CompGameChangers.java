@@ -11,6 +11,8 @@ import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
 import frc.robot.utils.interpolation.PolynomialRegression;
 
+import static frc.robot.Constants.Turret.kClosedLoopErrorToleranceDegrees;
+
 public class CompGameChangers implements WaltRobot {
 
     private final double[][] mDistanceToVelocityTable = {
@@ -134,7 +136,7 @@ public class CompGameChangers implements WaltRobot {
                 new TrapezoidProfile.Constraints(60, 30)
         );
         turretClosedLoopAutoAlignProfiledPID.enableContinuousInput(-180.0, 180.0);
-        turretClosedLoopAutoAlignProfiledPID.setTolerance(0.3);
+        turretClosedLoopAutoAlignProfiledPID.setTolerance(kClosedLoopErrorToleranceDegrees);
 
         mTurretConfig.closedLoopAutoAlignProfiledPID = turretClosedLoopAutoAlignProfiledPID;
     }

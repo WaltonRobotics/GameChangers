@@ -374,7 +374,8 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorToleranceDegrees) {
+                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) <
+                        kClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;
