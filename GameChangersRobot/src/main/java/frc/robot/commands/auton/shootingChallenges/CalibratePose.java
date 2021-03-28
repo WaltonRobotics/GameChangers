@@ -11,6 +11,7 @@ import frc.robot.vision.PnPHelper;
 import java.util.logging.Level;
 
 import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
+import static frc.robot.Constants.Limelight.kPnPPipeline;
 import static frc.robot.Robot.sDrivetrain;
 
 public class CalibratePose extends SequentialCommandGroup {
@@ -18,6 +19,7 @@ public class CalibratePose extends SequentialCommandGroup {
     public CalibratePose() {
         addCommands(
                 new InstantCommand(() -> LimelightHelper.setLEDMode(true)),
+                new InstantCommand(() -> LimelightHelper.setPipeline(kPnPPipeline)),
                 new WaitUntilCommand(() -> LimelightHelper.getTV() > 0).withTimeout(kMaximumLEDWaitTimeSeconds),
                 new InstantCommand(this::calibratePose),
                 new InstantCommand(() -> LimelightHelper.setLEDMode(false))

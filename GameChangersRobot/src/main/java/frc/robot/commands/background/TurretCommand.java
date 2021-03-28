@@ -17,6 +17,7 @@ import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.DriverPreferences.kTurretMasterOverrideDeadband;
 import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
 import static frc.robot.Constants.Field.kTargetFieldRelativeHeading;
+import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
 import static frc.robot.Constants.Turret.*;
 import static frc.robot.OI.*;
@@ -133,10 +134,12 @@ public class TurretCommand extends CommandBase {
 
         mHoming = new IState() {
             private int mWithinThresholdLoops;
+            private double mStartTime;
 
             @Override
             public void initialize() {
                 mWithinThresholdLoops = 0;
+                mStartTime = getFPGATimestamp();
             }
 
             @Override
@@ -153,7 +156,8 @@ public class TurretCommand extends CommandBase {
                     mWithinThresholdLoops = 0;
                 }
 
-                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle ||
+                        getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
                     return mIdle;
                 }
 
@@ -205,6 +209,7 @@ public class TurretCommand extends CommandBase {
             @Override
             public void initialize() {
                 LimelightHelper.setLEDMode(true);
+                LimelightHelper.setPipeline(kAlignmentPipeline);
 
                 mStartTime = getFPGATimestamp();
             }
@@ -215,7 +220,7 @@ public class TurretCommand extends CommandBase {
                     if (!mHasZeroed) {
                         return mAligningFromLimelightClosedLoop;
                     } else {
-                        return mAligningFromLimelightTX;
+                        return mAligningFromLimelightClosedLoop;
                     }
                 } else {
                     if (getFPGATimestamp() - mStartTime > kMaximumLEDWaitTimeSeconds) {
@@ -243,12 +248,14 @@ public class TurretCommand extends CommandBase {
 
             private Rotation2d mTargetHeading;
             private int mWithinThresholdLoops;
+            private double mStartTime;
 
             @Override
             public void initialize() {
                 mTargetHeading = sTurret.getCurrentRobotRelativeHeading().minus(
                         Rotation2d.fromDegrees(LimelightHelper.getTX()));
                 mWithinThresholdLoops = 0;
+                mStartTime = getFPGATimestamp();
             }
 
             @Override
@@ -266,7 +273,8 @@ public class TurretCommand extends CommandBase {
                     mWithinThresholdLoops = 0;
                 }
 
-                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle
+                        || getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
                     return mIdle;
                 }
 
@@ -280,12 +288,13 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public String getName() {
-                return "Aligning From Limelight";
+                return "Aligning From Limelight TX";
             }
         };
 
         mAligningFromLimelightClosedLoop = new IState() {
             private int mWithinThresholdLoops;
+            private double mStartTime;
 
             @Override
             public void initialize() {
@@ -297,6 +306,7 @@ public class TurretCommand extends CommandBase {
                 );
 
                 mWithinThresholdLoops = 0;
+                mStartTime = getFPGATimestamp();
             }
 
             @Override
@@ -306,29 +316,30 @@ public class TurretCommand extends CommandBase {
                 }
 
                 if (LimelightHelper.getTV() > 0) {
-                    double headingError = -LimelightHelper.getTX();
+                    double tx = LimelightHelper.getTX();
+                    double headingError = -tx;
 
-                    double currentHeading = UtilMethods.restrictAngle(
-                            sTurret.getCurrentRobotRelativeHeading().getDegrees(), -180.0, 180.0
-                    );
-
-                    double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
-                            currentHeading,
-                            currentHeading + headingError
-                    );
-
-                    sTurret.setOpenLoopDutyCycle(turnRate);
-
-//                    // Alternate alignment method
-//                    double turnRate = 0.0;
+//                    double currentHeading = UtilMethods.restrictAngle(
+//                            sTurret.getCurrentRobotRelativeHeading().getDegrees(), -180.0, 180.0
+//                    );
 //
-//                    if (tx >= kMinimumAimThresholdDegrees) {
-//                        turnRate = kAimingKp * headingError - kMinimumAimDutyCycle;
-//                    } else if (tx < kMinimumAimThresholdDegrees) {
-//                        turnRate = kAimingKp * headingError + kMinimumAimDutyCycle;
-//                    }
+//                    double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
+//                            currentHeading,
+//                            currentHeading + headingError
+//                    );
 //
 //                    sTurret.setOpenLoopDutyCycle(turnRate);
+
+//                    // Alternate alignment method
+                    double turnRate = 0.0;
+
+                    if (tx >= kMinimumAimThresholdDegrees) {
+                        turnRate = kAimingKp * headingError - kMinimumAimDutyCycle;
+                    } else if (tx < kMinimumAimThresholdDegrees) {
+                        turnRate = kAimingKp * headingError + kMinimumAimDutyCycle;
+                    }
+
+                    sTurret.setOpenLoopDutyCycle(turnRate);
 
                     if (Math.abs(headingError) < kClosedLoopErrorToleranceDegrees) {
                         mWithinThresholdLoops++;
@@ -336,7 +347,8 @@ public class TurretCommand extends CommandBase {
                         mWithinThresholdLoops = 0;
                     }
 
-                    if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                    if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle
+                            || getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
                         return mIdle;
                     }
                 } else {
@@ -359,10 +371,12 @@ public class TurretCommand extends CommandBase {
 
         mAligningFieldRelative = new IState() {
             private int mWithinThresholdLoops;
+            private double mStartTime;
 
             @Override
             public void initialize() {
                 mWithinThresholdLoops = 0;
+                mStartTime = getFPGATimestamp();
             }
 
             @Override
@@ -381,7 +395,7 @@ public class TurretCommand extends CommandBase {
                     mWithinThresholdLoops = 0;
                 }
 
-                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle || getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
                     if (LimelightHelper.getTV() > 0) {
                         return mAligningFromLimelightTX;
                     } else {

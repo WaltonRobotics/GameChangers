@@ -24,9 +24,11 @@ public class CompGameChangers implements WaltRobot {
 
     // Shooter LUT in all other zones
     private final double[][] mOtherZonesDistanceToVelocityTable = {
-            { 8.354, 11290 },
-            { 12.16, 10886 },
-            { 18.45, 11400 },
+            { 11.196, 11250 },
+//            { 19.6, 11125 },
+            { 34.64, 11652 },
+            { 8.74, 11170 },
+            { 29.718, 11575 },
     };
 
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mZoneOneShooterMap;
@@ -90,14 +92,14 @@ public class CompGameChangers implements WaltRobot {
 
         mShooterConfig = new ShooterConfig();
         mShooterConfig.kSpinningUpF = 0.05018491;
-        mShooterConfig.kSpinningUpP = 0.24;
+        mShooterConfig.kSpinningUpP = 0.25;
         mShooterConfig.kSpinningUpI = 0.00049;
         mShooterConfig.kSpinningUpD = 0;
         mShooterConfig.kSpinningUpIZone = 800;
         mShooterConfig.kSpinningUpMaxIntegralAccumulator = 0;
 
         mShooterConfig.kShootingF = 0.05018491;
-        mShooterConfig.kShootingP = 0.25;
+        mShooterConfig.kShootingP = 0.26;
         mShooterConfig.kShootingI = 0.0005;
         mShooterConfig.kShootingD = 0;
         mShooterConfig.kShootingIZone = 800;

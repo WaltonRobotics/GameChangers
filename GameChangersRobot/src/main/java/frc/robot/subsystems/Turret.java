@@ -59,7 +59,9 @@ public class Turret extends SubsystemBase {
         mTurretController.configPeakOutputReverse(-1);
 
         // Set up limits
-        mTurretController.configForwardLimitSwitchSource(LimitSwitchSource.RemoteCANifier,
+        mTurretController.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated,
+                LimitSwitchNormal.NormallyOpen);
+        mTurretController.configReverseLimitSwitchSource(LimitSwitchSource.Deactivated,
                 LimitSwitchNormal.NormallyOpen);
         mTurretController.configForwardSoftLimitThreshold(mConfig.kForwardSoftLimitRawUnits);
         mTurretController.configReverseSoftLimitThreshold(mConfig.kReverseSoftLimitRawUnits);

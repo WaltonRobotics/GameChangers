@@ -10,7 +10,7 @@ public final class Constants {
 
         public static final int kTeamNumber = 2974;
         public static final boolean kIsInCompetition = false;
-        public static final boolean kIsInTuningMode = false;
+        public static final boolean kIsInTuningMode = true;
         public static final boolean kIsInfiniteRecharge = false;
 
     }
@@ -131,9 +131,10 @@ public final class Constants {
         public static final int kWithinToleranceLoopsToSettle = 5;
         public static final double kZeroingDutyCycle = 0.5;
         public static final double kZeroingTimeout = 2.0;
-        public static final double kAimingKp = 0.1;
+        public static final double kAimingKp = 0.013;
         public static final double kMinimumAimThresholdDegrees = 1.0;
         public static final double kMinimumAimDutyCycle = 0.05;
+        public static final double kAlignmentTimeout = 1.0;
 
     }
 
@@ -170,6 +171,9 @@ public final class Constants {
         public static final int kTxWindowSize = 1;
         public static final int kTyWindowSize = 5;
         public static final int kCamtranWindowSize = 5;
+
+        public static final int kAlignmentPipeline = 0;
+        public static final int kPnPPipeline = 1;
 
         public static final double kMaximumLEDWaitTimeSeconds = 1.0;
 
