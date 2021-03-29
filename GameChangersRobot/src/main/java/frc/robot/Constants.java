@@ -240,6 +240,7 @@ public final class Constants {
         public static final String kShooterErrorRPSKey = "Shooter/Error RPS";
         public static final String kShooterErrorInchesKey = "Shooter/Error Inches Per Sec";
         public static final String kShooterFlywheelVelocityKey = "Shooter/Flywheel Velocity Raw Units";
+        public static final String kShooterCurrentSetpointRawUnitsKey = "Shooter/Current Setpoint Raw Units";
         public static final String kShooterTuningSetpointRawUnitsKey = "Shooter/Tuning Setpoint Raw Units";
         public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
         public static final String kShooterAdjustableHoodStateKey = "Shooter/Adjustable Hood State";

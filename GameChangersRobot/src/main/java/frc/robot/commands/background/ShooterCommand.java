@@ -21,6 +21,7 @@ import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.SmartDashboardKeys.kShooterCurrentSetpointRawUnitsKey;
 import static frc.robot.Constants.SmartDashboardKeys.kShooterTuningSetpointRawUnitsKey;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sShooter;
@@ -234,6 +235,8 @@ public class ShooterCommand extends CommandBase {
     @Override
     public void execute() {
         mStateMachine.run();
+
+        SmartDashboard.putNumber(kShooterCurrentSetpointRawUnitsKey, mSetpointRawUnits);
     }
 
     @Override
