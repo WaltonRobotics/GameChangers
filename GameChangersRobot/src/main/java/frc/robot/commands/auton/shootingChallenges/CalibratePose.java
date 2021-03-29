@@ -10,8 +10,7 @@ import frc.robot.vision.PnPHelper;
 
 import java.util.logging.Level;
 
-import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
-import static frc.robot.Constants.Limelight.kPnPPipeline;
+import static frc.robot.Constants.Limelight.*;
 import static frc.robot.Robot.sDrivetrain;
 
 public class CalibratePose extends SequentialCommandGroup {
