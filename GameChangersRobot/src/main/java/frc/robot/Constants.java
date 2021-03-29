@@ -34,6 +34,7 @@ public final class Constants {
         public static final double kTurretScaleFactor = 0.4;
         public static final double kQuickStopThreshold = 0.3;
         public static final double kQuickStopAlpha = 0.05;
+        public static final double kAutoAssistDriveStraightThrottleLimit = 0.9;
 
     }
 

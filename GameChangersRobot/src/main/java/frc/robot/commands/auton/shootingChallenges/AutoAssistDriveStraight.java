@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.utils.UtilMethods;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.DriverPreferences.kAutoAssistDriveStraightThrottleLimit;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sDriveModeChooser;
@@ -75,8 +76,8 @@ public class AutoAssistDriveStraight extends CommandBase {
     }
 
     private double getThrottleAverage() {
-        return (sDriveModeChooser.getSelected().getLeftJoystickY()
-                + sDriveModeChooser.getSelected().getRightJoystickY()) / 2;
+        return UtilMethods.limitMagnitude(sDriveModeChooser.getSelected().getLeftJoystickY()
+                + sDriveModeChooser.getSelected().getRightJoystickY() / 2, kAutoAssistDriveStraightThrottleLimit);
     }
 
     private double getHeading() {
