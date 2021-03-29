@@ -120,7 +120,7 @@ public final class Constants {
         public static final double kOptimalShootingDistanceFloorFeet = 10;
         public static final double kOptimalShootingDistanceCeilingFeet = 12;
 
-        public static final double kAbsoluteShootingDistanceFloorFeet = 8.61;
+        public static final double kAbsoluteShootingDistanceFloorFeet = 5.0;
         public static final double kAbsoluteShootingDistanceCeilingFeet = 22.38;
 
     }
