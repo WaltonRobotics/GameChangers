@@ -25,7 +25,7 @@ public class CompGameChangers implements WaltRobot {
     // Shooter LUT in all other zones
     private final double[][] mOtherZonesDistanceToVelocityTable = {
             { 11.196, 11250 },
-//            { 19.6, 11125 },
+            { 19.6, 11125 },
             { 34.64, 11652 },
             { 8.74, 11170 },
             { 29.718, 11575 },
