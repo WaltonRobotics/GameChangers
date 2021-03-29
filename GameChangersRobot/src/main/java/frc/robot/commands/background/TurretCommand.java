@@ -215,11 +215,7 @@ public class TurretCommand extends CommandBase {
             @Override
             public IState execute() {
                 if (LimelightHelper.getTV() > 0) {
-                    if (!mHasZeroed) {
-                        return mAligningFromLimelightClosedLoop;
-                    } else {
-                        return mAligningFromLimelightClosedLoop;
-                    }
+                    return mAligningFromLimelightClosedLoop;
                 } else {
                     if (getFPGATimestamp() - mStartTime > kMaximumLEDWaitTimeSeconds) {
                         if (mHasZeroed) {
@@ -395,7 +391,7 @@ public class TurretCommand extends CommandBase {
 
                 if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle || getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
                     if (LimelightHelper.getTV() > 0) {
-                        return mAligningFromLimelightTX;
+                        return mAligningFromLimelightClosedLoop;
                     } else {
                         return mIdle;
                     }
