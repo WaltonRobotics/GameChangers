@@ -15,7 +15,7 @@ public class AutoAlign extends SequentialCommandGroup {
                 new InstantCommand(() -> LimelightHelper.setLEDMode(true)),
                 new WaitUntilCommand(() -> LimelightHelper.getTV() > 0).withTimeout(kMaximumLEDWaitTimeSeconds),
                 new TurnToAngle(() -> sDrivetrain.getHeading().getDegrees() - LimelightHelper.getTX()),
-                new InstantCommand(() -> LimelightHelper.setLEDMode(false))
+//                new InstantCommand(() -> LimelightHelper.setLEDMode(false))
         );
     }
 

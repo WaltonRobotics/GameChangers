@@ -26,8 +26,6 @@ import static frc.robot.Robot.sTurret;
 
 public class TurretCommand extends CommandBase {
 
-    // TODO: Add timeouts on all auto-align functions
-
     private final Rotation2d kHomeRobotRelativeHeading = Rotation2d.fromDegrees(0);
 
     private final IState mIdle;
@@ -61,7 +59,7 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (sAlignTurretButton.get()) {
+                if (sAlignTurretButton.isRisingEdge()) {
                     return mDeterminingAlignmentMethod;
                 }
 
@@ -69,7 +67,7 @@ public class TurretCommand extends CommandBase {
                     return mZeroing;
                 }
 
-                if (sHomeTurretButton.get()) {
+                if (sHomeTurretButton.isRisingEdge()) {
                     return mHoming;
                 }
 
@@ -283,7 +281,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override
@@ -360,7 +358,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override
@@ -408,7 +406,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override

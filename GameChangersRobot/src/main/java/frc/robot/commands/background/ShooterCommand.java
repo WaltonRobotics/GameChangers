@@ -126,8 +126,6 @@ public class ShooterCommand extends CommandBase {
                 DebuggingLog.getInstance().getLogger().log(Level.FINE, "Shooter velocity setpoint: "
                         + mSetpointRawUnits);
 
-                SmartDashboard.putNumber("Shooter setpoint", mSetpointRawUnits);
-
                 sShooter.setProfileSlot(kShooterSpinningUpSlot);
             }
 
@@ -218,7 +216,7 @@ public class ShooterCommand extends CommandBase {
                 SubsystemFlags.getInstance().setIsShooting(false);
                 SubsystemFlags.getInstance().setIsReadyToShoot(false);
 
-                LimelightHelper.setLEDMode(false);
+//                LimelightHelper.setLEDMode(false);
             }
 
             @Override
