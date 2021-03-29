@@ -63,7 +63,7 @@ public class TurretCommand extends CommandBase {
                     return mDeterminingAlignmentMethod;
                 }
 
-                if (!mHasZeroed) {
+                if (!mHasZeroed || sZeroTurretButton.isRisingEdge()) {
                     return mZeroing;
                 }
 

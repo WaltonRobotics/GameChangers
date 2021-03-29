@@ -43,6 +43,7 @@ public class OI {
 
     public static EnhancedJoystickButton sAlignTurretButton = new EnhancedJoystickButton(sGamepad, LEFT_BUTTON.getIndex());
     public static EnhancedJoystickButton sHomeTurretButton = new EnhancedJoystickButton(sGamepad, DOWN_BUTTON.getIndex());
+    public static EnhancedJoystickButton sZeroTurretButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUTTON.getIndex());
 
     // Shooting challenge buttons
     public static EnhancedJoystickButton sCalibratePoseButton = new EnhancedJoystickButton(sLeftJoystick, 2);
