@@ -20,7 +20,7 @@ public class InterstellarAccuracyRoutine extends SequentialCommandGroup {
             new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(true)),
             new AlignTurret(),
             new ShootAllBalls(3, 10.0),
-            new TurnToAngle(180.0).withTimeout(2.0),
+            new TurnToAngle(180.0).withTimeout(2.5),
             new AlignTurret(),
             new WaitCommand(0.5),
 //            new InstantCommand(() -> sIntake.setDeployed(true)),

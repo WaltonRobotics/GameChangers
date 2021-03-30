@@ -18,7 +18,6 @@ public class PowerPortRoutine extends SequentialCommandGroup {
                 new InstantCommand(() -> sDrivetrain.setHeading(180.0)),
                 new AlignTurret(),
                 new ShootAllBalls(3, 10.0),
-                new TurnToAngle(180.0).withTimeout(2.0),
                 new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(false))
         );
     }
