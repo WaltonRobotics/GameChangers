@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.util.Units;
 import java.util.Arrays;
 
 import static frc.robot.Constants.Field.kInterstellarHomingPose;
+import static frc.robot.Constants.Field.kPowerPortHomingPose;
 import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
@@ -267,6 +268,21 @@ public class Paths {
                     Arrays.asList(
                             sDrivetrain.getCurrentPose(),
                             kInterstellarHomingPose),
+                    config
+            );
+        }
+
+        public static Trajectory generatePowerPortHomingTrajectory() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            sDrivetrain.getCurrentPose(),
+                            kPowerPortHomingPose),
                     config
             );
         }

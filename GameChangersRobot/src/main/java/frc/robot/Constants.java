@@ -195,11 +195,17 @@ public final class Constants {
 
         public static final double kEndOfZoneOneFromTargetFeet = 10 - 2.5;
 
-        public static final double kMinimumInterstellarHomingRadiusMeters = Units.feetToMeters(1.0);
-        public static final double kMaximumInterstellarHomingRadiusMeters = Units.feetToMeters(5.0);
+        public static final double kMinimumInterstellarHomingRadiusMeters = Units.feetToMeters(1.5);
+        public static final double kMaximumInterstellarHomingRadiusMeters = Units.feetToMeters(5.5);
+
+        public static final double kMinimumPowerPortHomingRadiusMeters = Units.feetToMeters(1.0);
+        public static final double kMaximumPowerPortHomingRadiusMeters = Units.feetToMeters(5.0);
 
         public static final Pose2d kInterstellarHomingPose
                 = new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(90));
+
+        public static final Pose2d kPowerPortHomingPose
+                = new Pose2d(Units.feetToMeters(19.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
 
     }
 

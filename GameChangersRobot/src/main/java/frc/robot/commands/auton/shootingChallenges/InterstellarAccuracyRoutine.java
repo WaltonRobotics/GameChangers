@@ -9,7 +9,6 @@ import frc.robot.commands.auton.TurnToAngle;
 import frc.robot.subsystems.SubsystemFlags;
 
 import static frc.robot.Robot.sDrivetrain;
-import static frc.robot.Robot.sIntake;
 
 public class InterstellarAccuracyRoutine extends SequentialCommandGroup {
 
