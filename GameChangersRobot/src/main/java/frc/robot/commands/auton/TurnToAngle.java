@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.utils.DebuggingLog;
+import frc.robot.utils.UtilMethods;
 
 import java.util.function.DoubleSupplier;
 import java.util.logging.Level;
@@ -29,12 +30,12 @@ public class TurnToAngle extends CommandBase {
 
     @Override
     public void initialize() {
-        mTargetHeading = mTargetHeadingSupplier.getAsDouble();
+        mTargetHeading = UtilMethods.restrictAngle(mTargetHeadingSupplier.getAsDouble(), -180.0, 180.0);
 
         DebuggingLog.getInstance().getLogger().log(Level.INFO, "Turning to heading: "
                 + mTargetHeading);
 
-        sDrivetrain.getTurnProfiledPID().reset(new TrapezoidProfile.State(sDrivetrain.getHeading().getDegrees(),
+        sDrivetrain.getTurnProfiledPID().reset(new TrapezoidProfile.State(getHeading(),
                 sDrivetrain.getAngularVelocityDegreesPerSec()));
 
         SmartDashboard.putNumber(kTurnToAngleHeadingSetpointKey, mTargetHeading);
@@ -53,8 +54,7 @@ public class TurnToAngle extends CommandBase {
                     sDrivetrain.getTurnProfiledPID().getD()));
         }
 
-        double turnRate = -sDrivetrain.getTurnProfiledPID().calculate(sDrivetrain.getHeading().getDegrees(),
-                mTargetHeading);
+        double turnRate = -sDrivetrain.getTurnProfiledPID().calculate(getHeading(), mTargetHeading);
 
         SmartDashboard.putNumber(kTurnToAnglePositionErrorKey, sDrivetrain.getTurnProfiledPID().getPositionError());
         SmartDashboard.putNumber(kTurnToAngleVelocityErrorKey, sDrivetrain.getTurnProfiledPID().getVelocityError());
@@ -71,6 +71,10 @@ public class TurnToAngle extends CommandBase {
     @Override
     public boolean isFinished() {
         return sDrivetrain.getTurnProfiledPID().atSetpoint();
+    }
+
+    private double getHeading() {
+        return UtilMethods.restrictAngle(sDrivetrain.getHeading().getDegrees(), -180.0, 180.0);
     }
 
 }

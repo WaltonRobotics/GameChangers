@@ -122,7 +122,7 @@ public final class Constants {
         public static final double kOptimalShootingDistanceCeilingFeet = 12;
 
         public static final double kAbsoluteShootingDistanceFloorFeet = 5.0;
-        public static final double kAbsoluteShootingDistanceCeilingFeet = 31.0;
+        public static final double kAbsoluteShootingDistanceCeilingFeet = 35.0;
 
     }
 
@@ -132,9 +132,9 @@ public final class Constants {
         public static final int kWithinToleranceLoopsToSettle = 5;
         public static final double kZeroingDutyCycle = 0.5;
         public static final double kZeroingTimeout = 2.0;
-        public static final double kAimingKp = 0.013;
+        public static final double kAimingKp = 0.009;
         public static final double kMinimumAimThresholdDegrees = 1.0;
-        public static final double kMinimumAimDutyCycle = 0.05;
+        public static final double kMinimumAimDutyCycle = 0.04;
         public static final double kAlignmentTimeout = 1.5;
 
     }
@@ -199,7 +199,7 @@ public final class Constants {
         public static final double kMaximumInterstellarHomingRadiusMeters = Units.feetToMeters(5.0);
 
         public static final Pose2d kInterstellarHomingPose
-                = new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
+                = new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(90));
 
     }
 

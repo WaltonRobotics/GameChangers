@@ -107,6 +107,14 @@ public class Conveyor extends SubsystemBase {
         return mFrontConveyorBool.get();
     }
 
+    public EnhancedBoolean getFrontConveyorBool() {
+        return mFrontConveyorBool;
+    }
+
+    public EnhancedBoolean getBackConveyorBool() {
+        return mBackConveyorBool;
+    }
+
     public ConveyorConfig getConfig() {
         return mConfig;
     }

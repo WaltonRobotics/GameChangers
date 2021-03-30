@@ -20,7 +20,8 @@ public class CalibratePose extends SequentialCommandGroup {
                 new InstantCommand(() -> LimelightHelper.setLEDMode(true)),
                 new InstantCommand(() -> LimelightHelper.setPipeline(kPnPPipeline)),
                 new WaitUntilCommand(() -> LimelightHelper.getTV() > 0).withTimeout(kMaximumLEDWaitTimeSeconds),
-                new InstantCommand(this::calibratePose)
+                new InstantCommand(this::calibratePose),
+                new InstantCommand(() -> LimelightHelper.setPipeline(kAlignmentPipeline))
 //                new InstantCommand(() -> LimelightHelper.setLEDMode(false))
         );
     }

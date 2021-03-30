@@ -2,6 +2,7 @@ package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.auton.AutonFlags;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
@@ -38,7 +39,8 @@ public class ShooterCommand extends CommandBase {
 
     private final StateMachine mStateMachine;
 
-    private final BooleanSupplier mNeedsToShoot = () -> (sShootButton.get());
+    private final BooleanSupplier mNeedsToShoot = () -> (sShootButton.get()
+            || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToShoot()));
     private final BooleanSupplier mNeedsToBarf = () -> (sBarfButton.get());
 
     public ShooterCommand() {

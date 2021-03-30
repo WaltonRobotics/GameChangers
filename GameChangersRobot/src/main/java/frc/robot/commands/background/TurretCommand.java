@@ -3,6 +3,7 @@ package frc.robot.commands.background;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.auton.AutonFlags;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
@@ -59,7 +60,9 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (sAlignTurretButton.isRisingEdge()) {
+                if (sAlignTurretButton.isRisingEdge()
+                    || (AutonFlags.getInstance().isInAuton()
+                        && AutonFlags.getInstance().doesAutonNeedToAlignTurret())) {
                     return mDeterminingAlignmentMethod;
                 }
 
@@ -104,6 +107,7 @@ public class TurretCommand extends CommandBase {
                 if (getFPGATimestamp() - mStartTime > kZeroingTimeout) {
                     if (!mHasZeroed) {
                         DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Failed to zero");
+                        SubsystemFlags.getInstance().setTurretHasZeroed(false);
                     }
 
                     return mIdle;
@@ -113,6 +117,7 @@ public class TurretCommand extends CommandBase {
                     sTurret.zero();
                     sTurret.enableSoftLimits();
                     mHasZeroed = true;
+                    SubsystemFlags.getInstance().setTurretHasZeroed(true);
                     return mHoming;
                 }
 
@@ -376,7 +381,7 @@ public class TurretCommand extends CommandBase {
             @Override
             public IState execute() {
                 sTurret.setFieldRelativeHeading(kTargetFieldRelativeHeading,
-                        sDrivetrain.getHeading().plus(Rotation2d.fromDegrees(180.0)), Turret.ControlState.POSITIONAL);
+                        sDrivetrain.getHeading(), Turret.ControlState.POSITIONAL);
 
                 if (isMasterOverride()) {
                     return mManual;
@@ -448,6 +453,10 @@ public class TurretCommand extends CommandBase {
 
     private boolean isMasterOverride() {
         return Math.abs(sGamepad.getRightX()) > kTurretMasterOverrideDeadband;
+    }
+
+    public boolean hasZeroed() {
+        return mHasZeroed;
     }
 
     @Override

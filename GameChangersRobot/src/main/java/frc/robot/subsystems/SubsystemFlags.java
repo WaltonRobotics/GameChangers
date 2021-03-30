@@ -17,6 +17,7 @@ public class SubsystemFlags {
     private boolean mIsOuttaking = false;
     private boolean mIsShooting = false;
     private boolean mIsReadyToShoot = false;
+    private boolean mHasTurretZeroed = false;
 
     public static SubsystemFlags getInstance() {
         return sInstance;
@@ -52,6 +53,14 @@ public class SubsystemFlags {
 
     public void setIsShooting(boolean isShooting) {
         this.mIsShooting = isShooting;
+    }
+
+    public void setTurretHasZeroed(boolean hasTurretZeroed) {
+        this.mHasTurretZeroed = hasTurretZeroed;
+    }
+
+    public boolean hasTurretZeroed() {
+        return mHasTurretZeroed;
     }
 
 }

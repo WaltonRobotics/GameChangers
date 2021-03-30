@@ -24,11 +24,10 @@ public class CompGameChangers implements WaltRobot {
 
     // Shooter LUT in all other zones
     private final double[][] mOtherZonesDistanceToVelocityTable = {
-            { 11.196, 11250 },
-            { 19.6, 11125 },
-            { 34.64, 11652 },
-            { 8.74, 11170 },
-            { 29.718, 11575 },
+            {12.99, 11250},
+            {20.15, 11100},
+            {34.64, 11652},
+            {29.718, 11575},
     };
 
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mZoneOneShooterMap;
@@ -65,7 +64,7 @@ public class CompGameChangers implements WaltRobot {
         drivetrainDriveStraightPowerProfiledPID.setTolerance(0.09);
 
         ProfiledPIDController drivetrainDriveStraightHeadingProfiledPID = new ProfiledPIDController(
-                0.05, 0, 0,
+                0.035, 0, 0,
                 new TrapezoidProfile.Constraints(60, 30)
         );
         drivetrainDriveStraightHeadingProfiledPID.enableContinuousInput(-180.0, 180.0);
@@ -125,7 +124,7 @@ public class CompGameChangers implements WaltRobot {
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = true;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
-        mConveyorConfig.kNudgeTimeSeconds = 0.29;
+        mConveyorConfig.kNudgeTimeSeconds = 0.1;
         mConveyorConfig.kFrontConveyorNudgeVoltage = 8.0;
         mConveyorConfig.kBackConveyorNudgeVoltage = 8.0;
         mConveyorConfig.kFrontConveyorFeedVoltage = 11.75;

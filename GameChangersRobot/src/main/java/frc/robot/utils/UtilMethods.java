@@ -52,6 +52,9 @@ public class UtilMethods {
 
     public static double restrictAngle(double value, double min, double max)
     {
+        if (value == 180.0) return 180.0;
+        if (value == -180.0) return -180.0;
+
         double width = max - min;
         double offsetValue = value - min;
 

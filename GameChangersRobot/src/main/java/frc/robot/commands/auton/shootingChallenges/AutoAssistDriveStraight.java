@@ -52,7 +52,7 @@ public class AutoAssistDriveStraight extends CommandBase {
 
         double throttle = getThrottleAverage();
 
-        double turnRate = -Math.signum(throttle) * sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
+        double turnRate = -sDrivetrain.getDriveStraightHeadingProfiledPID().calculate(
                 getHeading(),
                 mInitialHeading
         );

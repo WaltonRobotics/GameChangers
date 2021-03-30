@@ -294,6 +294,11 @@ public class Drivetrain extends SubsystemBase {
         mAhrs.zeroYaw();
     }
 
+    public void setHeading(double desiredHeading) {
+        mAhrs.zeroYaw();
+        mAhrs.setAngleAdjustment(-desiredHeading);
+    }
+
     public void resetPose(Pose2d startingPose) {
         resetEncoders();
         mDriveOdometry.resetPosition(startingPose, getHeading());

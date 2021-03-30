@@ -171,7 +171,7 @@ public class Turret extends SubsystemBase {
 
     public void setFieldRelativeHeading(Rotation2d targetHeading, Rotation2d robotFieldRelativeHeading,
                                         ControlState controlState) {
-        Rotation2d robotRelativeHeading = targetHeading.minus(robotFieldRelativeHeading);
+        Rotation2d robotRelativeHeading = targetHeading.plus(robotFieldRelativeHeading);
 
         setRobotRelativeHeading(robotRelativeHeading, controlState);
     }
