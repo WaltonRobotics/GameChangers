@@ -11,7 +11,7 @@ import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
 import frc.robot.utils.interpolation.PolynomialRegression;
 
-import static frc.robot.Constants.Turret.kClosedLoopErrorToleranceDegrees;
+import static frc.robot.Constants.Turret.kPositionClosedLoopErrorToleranceDegrees;
 
 public class CompGameChangers implements WaltRobot {
 
@@ -152,7 +152,7 @@ public class CompGameChangers implements WaltRobot {
                 new TrapezoidProfile.Constraints(60, 30)
         );
         turretClosedLoopAutoAlignProfiledPID.enableContinuousInput(-180.0, 180.0);
-        turretClosedLoopAutoAlignProfiledPID.setTolerance(kClosedLoopErrorToleranceDegrees);
+        turretClosedLoopAutoAlignProfiledPID.setTolerance(kPositionClosedLoopErrorToleranceDegrees);
 
         mTurretConfig.closedLoopAutoAlignProfiledPID = turretClosedLoopAutoAlignProfiledPID;
     }

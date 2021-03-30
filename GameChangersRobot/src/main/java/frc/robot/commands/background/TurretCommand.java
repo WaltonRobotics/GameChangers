@@ -153,7 +153,7 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kClosedLoopErrorToleranceDegrees) {
+                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kPositionClosedLoopErrorToleranceDegrees) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;
@@ -268,7 +268,7 @@ public class TurretCommand extends CommandBase {
                 sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.POSITIONAL);
 
                 if (Math.abs(sTurret.getClosedLoopErrorRawUnits())
-                        < kClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
+                        < kPositionClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;
@@ -294,7 +294,6 @@ public class TurretCommand extends CommandBase {
         };
 
         mAligningFromLimelightClosedLoop = new IState() {
-            private int mWithinThresholdLoops;
             private double mStartTime;
 
             @Override
@@ -306,7 +305,6 @@ public class TurretCommand extends CommandBase {
                         )
                 );
 
-                mWithinThresholdLoops = 0;
                 mStartTime = getFPGATimestamp();
             }
 
@@ -342,13 +340,7 @@ public class TurretCommand extends CommandBase {
 
                     sTurret.setOpenLoopDutyCycle(turnRate);
 
-                    if (Math.abs(headingError) < kClosedLoopErrorToleranceDegrees) {
-                        mWithinThresholdLoops++;
-                    } else {
-                        mWithinThresholdLoops = 0;
-                    }
-
-                    if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle
+                    if (Math.abs(headingError) < kAlignedThresholdDegrees
                             || getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
                         return mIdle;
                     }
@@ -390,7 +382,7 @@ public class TurretCommand extends CommandBase {
                 }
 
                 if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) <
-                        kClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
+                        kPositionClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;

@@ -128,13 +128,19 @@ public final class Constants {
 
     public static class Turret {
 
-        public static final double kClosedLoopErrorToleranceDegrees = 2.0 / 3.0;
+        // Talon SRX positional PID constants
+        public static final double kPositionClosedLoopErrorToleranceDegrees = 2.0 / 3.0;
         public static final int kWithinToleranceLoopsToSettle = 5;
+
+        // Zeroing
         public static final double kZeroingDutyCycle = 0.5;
         public static final double kZeroingTimeout = 2.0;
+
+        // Closed-loop aiming with Limelight as the feedback device constants
         public static final double kAimingKp = 0.009;
         public static final double kMinimumAimThresholdDegrees = 1.0;
         public static final double kMinimumAimDutyCycle = 0.04;
+        public static final double kAlignedThresholdDegrees = 1.0 / 3.0;
         public static final double kAlignmentTimeout = 1.5;
 
     }
@@ -156,8 +162,6 @@ public final class Constants {
 
         public static final int kSerialPortBaudRate = 9600;
         public static final double kUpdateRateSeconds = 0.2;
-
-        public static final double kAlignedToleranceDegrees = 1.5;
 
     }
 
