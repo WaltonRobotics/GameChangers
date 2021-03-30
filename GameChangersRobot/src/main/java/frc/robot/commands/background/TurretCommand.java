@@ -226,6 +226,8 @@ public class TurretCommand extends CommandBase {
                         if (mHasZeroed) {
                             return mAligningFieldRelative;
                         }
+
+                        return mIdle;
                     }
                 }
 
