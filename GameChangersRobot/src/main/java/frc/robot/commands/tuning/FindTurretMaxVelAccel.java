@@ -31,9 +31,6 @@ public class FindTurretMaxVelAccel extends CommandBase {
         mTimer = new Timer();
         mTotalTime = time;
 
-        DebuggingLog.getInstance().getLogger().log(Level.WARNING,
-                "The FindTurretMaxVelAccel command will run the turret at its maximum velocity");
-
         mPreviousTime = getFPGATimestamp();
         mPreviousVelocity = getInstantaneousAngularVelocity();
         mCurrentMaxVelocity = 0;
@@ -42,6 +39,9 @@ public class FindTurretMaxVelAccel extends CommandBase {
 
     @Override
     public void initialize() {
+        DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                "The FindTurretMaxVelAccel command will run the turret at its maximum velocity");
+
         mTimer.start();
     }
 

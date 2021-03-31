@@ -30,9 +30,6 @@ public class FindAngularMaxVelAccel extends CommandBase {
         mTimer = new Timer();
         mTotalTime = time;
 
-        DebuggingLog.getInstance().getLogger().log(Level.WARNING,
-                "The FindMaxVelAccel command will run the robot at its maximum velocity");
-
         mPreviousTime = getFPGATimestamp();
         mPreviousVelocity = getInstantaneousAngularVelocity();
         mCurrentMaxVelocity = 0;
@@ -41,6 +38,9 @@ public class FindAngularMaxVelAccel extends CommandBase {
 
     @Override
     public void initialize() {
+        DebuggingLog.getInstance().getLogger().log(Level.WARNING,
+                "The FindMaxVelAccel command will run the robot at its maximum velocity");
+
         mTimer.start();
     }
 
