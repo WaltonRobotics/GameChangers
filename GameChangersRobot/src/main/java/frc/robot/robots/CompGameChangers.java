@@ -52,10 +52,10 @@ public class CompGameChangers implements WaltRobot {
 
         ProfiledPIDController drivetrainTurnProfiledPID = new ProfiledPIDController(
                 0.015, 0, 0,
-                new TrapezoidProfile.Constraints(400, 400)
+                new TrapezoidProfile.Constraints(8, 85)
         );
         drivetrainTurnProfiledPID.enableContinuousInput(-180.0, 180.0);
-        drivetrainTurnProfiledPID.setTolerance(1, 1);
+        drivetrainTurnProfiledPID.setTolerance(0.5, 1.0);
 
         ProfiledPIDController drivetrainDriveStraightPowerProfiledPID = new ProfiledPIDController(
                 0.8, 0, 0,
@@ -64,11 +64,11 @@ public class CompGameChangers implements WaltRobot {
         drivetrainDriveStraightPowerProfiledPID.setTolerance(0.09);
 
         ProfiledPIDController drivetrainDriveStraightHeadingProfiledPID = new ProfiledPIDController(
-                0.035, 0, 0,
-                new TrapezoidProfile.Constraints(60, 30)
+                0.035, 0.0002, 0,
+                new TrapezoidProfile.Constraints(8, 85)
         );
         drivetrainDriveStraightHeadingProfiledPID.enableContinuousInput(-180.0, 180.0);
-        drivetrainDriveStraightHeadingProfiledPID.setTolerance(1.5);
+        drivetrainDriveStraightHeadingProfiledPID.setTolerance(0.5);
 
         mDrivetrainConfig = new DrivetrainConfig();
         mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(0.237, 2.17, 0.306);
@@ -90,16 +90,16 @@ public class CompGameChangers implements WaltRobot {
         mDrivetrainConfig.kOpenLoopRampRate = 0.0;
 
         mShooterConfig = new ShooterConfig();
-        mShooterConfig.kSpinningUpF = 0.05018491;
-        mShooterConfig.kSpinningUpP = 0.25;
-        mShooterConfig.kSpinningUpI = 0.00049;
+        mShooterConfig.kSpinningUpF = 0.05006525;
+        mShooterConfig.kSpinningUpP = 0.36;
+        mShooterConfig.kSpinningUpI = 0.0002;
         mShooterConfig.kSpinningUpD = 0;
         mShooterConfig.kSpinningUpIZone = 800;
         mShooterConfig.kSpinningUpMaxIntegralAccumulator = 0;
 
-        mShooterConfig.kShootingF = 0.05018491;
-        mShooterConfig.kShootingP = 0.26;
-        mShooterConfig.kShootingI = 0.0005;
+        mShooterConfig.kShootingF = 0.05006525;
+        mShooterConfig.kShootingP = 0.365;
+        mShooterConfig.kShootingI = 0.0002;
         mShooterConfig.kShootingD = 0;
         mShooterConfig.kShootingIZone = 800;
         mShooterConfig.kShootingMaxIntegralAccumulator = 0;
@@ -149,7 +149,7 @@ public class CompGameChangers implements WaltRobot {
 
         ProfiledPIDController turretClosedLoopAutoAlignProfiledPID = new ProfiledPIDController(
                 0.2, 0, 0,
-                new TrapezoidProfile.Constraints(60, 30)
+                new TrapezoidProfile.Constraints(120, 850)
         );
         turretClosedLoopAutoAlignProfiledPID.enableContinuousInput(-180.0, 180.0);
         turretClosedLoopAutoAlignProfiledPID.setTolerance(kPositionClosedLoopErrorToleranceDegrees);

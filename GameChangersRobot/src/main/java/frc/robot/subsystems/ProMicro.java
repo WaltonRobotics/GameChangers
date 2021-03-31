@@ -49,13 +49,19 @@ public class ProMicro extends SubsystemBase {
     }
 
     public enum LEDStripWriteMessage {
+        // TODO: Implement more sophisticated LED codes later
+//        IDLE((byte)0x00),
+//        TURN_LEFT_RANGE_BLINKING((byte)0x1A),
+//        TURN_RIGHT_RANGE_BLINKING((byte)0x1B),
+//        TURN_LEFT((byte)0x1C),
+//        TURN_RIGHT((byte)0x1D),
+//        ALIGNED_RANGE_BLINKING((byte)0x1E),
+//        ALIGNED_AND_IN_RANGE((byte)0x1F);
+
         IDLE((byte)0x00),
-        TURN_LEFT_RANGE_BLINKING((byte)0x1A),
-        TURN_RIGHT_RANGE_BLINKING((byte)0x1B),
-        TURN_LEFT((byte)0x1C),
-        TURN_RIGHT((byte)0x1D),
-        ALIGNED_RANGE_BLINKING((byte)0x1E),
-        ALIGNED_AND_IN_RANGE((byte)0x1F);
+        TURN_LEFT((byte)0x1A),
+        TURN_RIGHT((byte)0x1B),
+        ALIGNED((byte)0x1C);
 
         private final byte mMessageByte;
 

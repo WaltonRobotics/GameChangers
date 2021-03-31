@@ -4,8 +4,16 @@
 #define LED_PIN 5
 
 DEFINE_GRADIENT_PALETTE(idlePalette) {
-  0,     255,  0,  0,   //black
-255,   0,0,0 }; //full white
+  0,     255,     0,     0,   // Red
+255,       0,     0,   255    // Blue
+};
+
+enum LEDState {
+  IDLE,
+  TURN_LEFT,
+  TURN_RIGHT,
+  ALIGNED
+};
 
 CRGBPalette16 idleGradient = idlePalette;
 
@@ -14,8 +22,13 @@ CRGB leds[NUM_LEDS];
 int leftSideIndex = NUM_LEDS / 2; // 29 -> 0
 int rightSideIndex = NUM_LEDS / 2 - 1; // 30 -> 59
 
+LEDState previousState = IDLE;
+LEDState currentState = IDLE;
+
 void setup()
 {
+  Serial.begin(9600);
+  
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
 
   rainbowCycle(10);
@@ -25,7 +38,38 @@ void setup()
 // *** REPLACE FROM HERE ***
 void loop() {
   // ---> here we call the effect function <---
-  showIdleState(20);
+
+  if (Serial.available()) {
+    byte code = Serial.read();
+
+    if (code == 0x00) {
+      currentState = IDLE;
+    } else if (code == 0x1A) {
+      currentState = TURN_LEFT;
+    } else if (code == 0x1B) {
+      currentState = TURN_RIGHT;
+    } else if (code == 0x1C) {
+      currentState = ALIGNED;
+    }
+  }
+
+  if (currentState != previousState) {
+    blackout();
+  }
+
+  if (currentState == IDLE) {
+    showIdleState();
+  } else if (currentState == TURN_LEFT) {
+    showTurnLeftState();
+  } else if (currentState == TURN_RIGHT) {
+    showTurnRightState();
+  } else if (currentState == ALIGNED) {
+    showAlignedState();
+  } else {
+    showIdleState();
+  }
+
+  previousState = currentState;
 }
 
 void rainbowCycle(int SpeedDelay) {
@@ -42,8 +86,7 @@ void rainbowCycle(int SpeedDelay) {
     }  
 }
 
-void showIdleState(int SpeedDelay) {
-
+void showIdleState() {
   for(int i = 0; i < NUM_LEDS / 2; i++) {
     if(i >= leftSideIndex) {
       leds[i] = ColorFromPalette(idleGradient, round((float)(NUM_LEDS / 2 - 1 - i) / (NUM_LEDS / 2 - 1) * 255.0f));
@@ -62,7 +105,81 @@ void showIdleState(int SpeedDelay) {
 
   showStrip();
 
-  delay(SpeedDelay);
+  delay(20);
+
+  leftSideIndex--;
+
+  if (leftSideIndex < 0) {
+    leftSideIndex = NUM_LEDS / 2 - 1;
+  }
+  
+  rightSideIndex++; 
+
+  if(rightSideIndex >= NUM_LEDS) {
+    rightSideIndex = NUM_LEDS / 2;
+  }
+}
+
+void showTurnLeftState() {
+  for(int i = 0; i < NUM_LEDS / 2; i++) {
+    if(i >= leftSideIndex) {
+      leds[i] = CRGB::OrangeRed;
+    } else {
+      leds[i] = CRGB::Black;
+    }
+  }
+
+  showStrip();
+
+  delay(20);
+
+  leftSideIndex--;
+
+  if (leftSideIndex < 0) {
+    leftSideIndex = NUM_LEDS / 2 - 1;
+  }
+}
+
+void showTurnRightState() {
+ for(int i = NUM_LEDS / 2; i < NUM_LEDS; i++) {
+    if(i <= rightSideIndex) {
+      leds[i] = CRGB::OrangeRed;
+    } else {
+      leds[i] = CRGB::Black;
+    }
+  }
+
+  showStrip();
+
+  delay(20);
+  
+  rightSideIndex++; 
+
+  if(rightSideIndex >= NUM_LEDS) {
+    rightSideIndex = NUM_LEDS / 2;
+  }
+}
+
+void showAlignedState() {
+  for(int i = 0; i < NUM_LEDS / 2; i++) {
+    if(i >= leftSideIndex) {
+      leds[i] = CRGB::Green;
+    } else {
+      leds[i] = CRGB::Black;
+    }
+  }
+
+  for(int i = NUM_LEDS / 2; i < NUM_LEDS; i++) {
+    if(i <= rightSideIndex) {
+      leds[i] = CRGB::Green;
+    } else {
+      leds[i] = CRGB::Black;
+    }
+  }
+
+  showStrip();
+
+  delay(20);
 
   leftSideIndex--;
 

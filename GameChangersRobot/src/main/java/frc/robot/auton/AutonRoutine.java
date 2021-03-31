@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
+import frc.robot.commands.auton.TurnToAngle;
 import frc.robot.commands.background.IntakeCommand;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.tuning.FindAngularMaxVelAccel;
@@ -36,6 +37,11 @@ public enum AutonRoutine {
 
     FIND_TURRET_MAX_VEL_ACCEL("Find Maximum Turret Angular Velocity and Acceleration",
             new FindTurretMaxVelAccel(3.0)),
+
+    TEST_TURN_90("Turn CCW 90 Degrees", new SequentialCommandGroup(
+            new InstantCommand(() -> sDrivetrain.reset()),
+            new TurnToAngle(90)
+    )),
 
     GALACTIC_SEARCH("Galactic Search Routine",
             new SelectCommand(

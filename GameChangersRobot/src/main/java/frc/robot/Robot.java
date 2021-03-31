@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
+import frc.robot.commands.auton.TurnToAngle;
 import frc.robot.commands.auton.shootingChallenges.InterstellarAccuracyRoutine;
 import frc.robot.commands.auton.shootingChallenges.PowerPortRoutine;
 import frc.robot.commands.background.*;
@@ -191,6 +192,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         mShootingChallengeChooser.getSelected().schedule();
+
+        sIntake.setDeployed(false);
+        sIntake.setRetracted(true);
 
         AutonFlags.getInstance().setIsInAuton(false);
 

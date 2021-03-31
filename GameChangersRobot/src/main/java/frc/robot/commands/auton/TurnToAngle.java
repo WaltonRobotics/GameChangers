@@ -37,6 +37,7 @@ public class TurnToAngle extends CommandBase {
 
         sDrivetrain.getTurnProfiledPID().reset(new TrapezoidProfile.State(getHeading(),
                 sDrivetrain.getAngularVelocityDegreesPerSec()));
+        sDrivetrain.getTurnProfiledPID().setGoal(mTargetHeading);
 
         SmartDashboard.putNumber(kTurnToAngleHeadingSetpointKey, mTargetHeading);
     }
