@@ -193,9 +193,6 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         mShootingChallengeChooser.getSelected().schedule();
 
-        sIntake.setDeployed(false);
-        sIntake.setRetracted(true);
-
         AutonFlags.getInstance().setIsInAuton(false);
 
         LimelightHelper.setLEDMode(kIsInTuningMode);
