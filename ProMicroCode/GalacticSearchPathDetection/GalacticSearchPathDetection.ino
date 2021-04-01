@@ -96,26 +96,26 @@ void setup() {
   pixy.init();
 
   galacticSearchPathIDs[GALACTIC_SEARCH_RED_A_INDEX].name = "Galactic Search Red A";
-  galacticSearchPathIDs[GALACTIC_SEARCH_RED_A_INDEX].nominalRegions[0] = Target(178, 120, 44, 38);
-  galacticSearchPathIDs[GALACTIC_SEARCH_RED_A_INDEX].nominalRegions[1] = Target(251, 38, 22, 18);
-  galacticSearchPathIDs[GALACTIC_SEARCH_RED_A_INDEX].nominalRegions[2] = Target(34, 39, 12, 10);
+  galacticSearchPathIDs[GALACTIC_SEARCH_RED_A_INDEX].nominalRegions[0] = Target(163, 163, 44, 38);
+  galacticSearchPathIDs[GALACTIC_SEARCH_RED_A_INDEX].nominalRegions[1] = Target(243, 92, 22, 18);
+  galacticSearchPathIDs[GALACTIC_SEARCH_RED_A_INDEX].nominalRegions[2] = Target(26, 76, 12, 10);
   galacticSearchPathIDs[GALACTIC_SEARCH_RED_A_INDEX].byteMessage = GALACTIC_SEARCH_RED_A_BYTE_MESSAGE;
 
   galacticSearchPathIDs[GALACTIC_SEARCH_RED_B_INDEX].name = "Galactic Search Red B";
-  galacticSearchPathIDs[GALACTIC_SEARCH_RED_B_INDEX].nominalRegions[0] = Target(251, 39, 22, 16);
-  galacticSearchPathIDs[GALACTIC_SEARCH_RED_B_INDEX].nominalRegions[1] = Target(109, 25, 14, 9);
+  galacticSearchPathIDs[GALACTIC_SEARCH_RED_B_INDEX].nominalRegions[0] = Target(243, 93, 22, 16);
+  galacticSearchPathIDs[GALACTIC_SEARCH_RED_B_INDEX].nominalRegions[1] = Target(102, 69, 14, 9);
   galacticSearchPathIDs[GALACTIC_SEARCH_RED_B_INDEX].nominalRegions[2] = Target(6, 131, 12, 8);
   galacticSearchPathIDs[GALACTIC_SEARCH_RED_B_INDEX].byteMessage = GALACTIC_SEARCH_RED_B_BYTE_MESSAGE;
 
   galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_A_INDEX].name = "Galactic Search Blue A";
-  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_A_INDEX].nominalRegions[0] = Target(297, 24, 14, 12);
-  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_A_INDEX].nominalRegions[1] = Target(108, 26, 12, 9);
-  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_A_INDEX].nominalRegions[2] = Target(160, 12, 8, 8);
+  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_A_INDEX].nominalRegions[0] = Target(280, 82, 14, 12);
+  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_A_INDEX].nominalRegions[1] = Target(102, 69, 12, 9);
+  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_A_INDEX].nominalRegions[2] = Target(151, 60, 8, 8);
   galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_A_INDEX].byteMessage = GALACTIC_SEARCH_BLUE_A_BYTE_MESSAGE;
 
   galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_B_INDEX].name = "Galactic Search Blue B";
-  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_B_INDEX].nominalRegions[0] = Target(232, 28, 16, 12);
-  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_B_INDEX].nominalRegions[1] = Target(116, 19, 12, 9);
+  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_B_INDEX].nominalRegions[0] = Target(219, 77, 16, 12);
+  galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_B_INDEX].nominalRegions[1] = Target(107, 63, 12, 9);
   galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_B_INDEX].nominalRegions[2] = Target(195, 6, 6, 7);
   galacticSearchPathIDs[GALACTIC_SEARCH_BLUE_B_INDEX].byteMessage = GALACTIC_SEARCH_BLUE_B_BYTE_MESSAGE;
 }
