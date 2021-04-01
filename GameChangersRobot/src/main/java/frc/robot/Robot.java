@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
+import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.commands.auton.TurnToAngle;
 import frc.robot.commands.auton.shootingChallenges.InterstellarAccuracyRoutine;
 import frc.robot.commands.auton.shootingChallenges.PowerPortRoutine;
@@ -32,6 +33,7 @@ import static frc.robot.Constants.DioIDs.kRobotID1;
 import static frc.robot.Constants.DioIDs.kRobotID2;
 import static frc.robot.Constants.DriverPreferences.kNormalScaleFactor;
 import static frc.robot.Constants.DriverPreferences.kTurboScaleFactor;
+import static frc.robot.Constants.Field.kPowerPortHomingPose;
 import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
@@ -95,7 +97,10 @@ public class Robot extends TimedRobot {
             SmartDashboard.putData("Auton Selector", mAutonChooser);
 
             mShootingChallengeChooser = new SendableChooser<>();
-            mShootingChallengeChooser.setDefaultOption("Do Nothing", new SequentialCommandGroup());
+            mShootingChallengeChooser.setDefaultOption("Do Nothing", new SequentialCommandGroup(
+                    new SetIntakeToggle(false),
+                    new InstantCommand(() -> sDrivetrain.resetPose(kPowerPortHomingPose))
+            ));
             mShootingChallengeChooser.addOption("Interstellar Accuracy Challenge", new InterstellarAccuracyRoutine());
             mShootingChallengeChooser.addOption("Power Port Challenge", new PowerPortRoutine());
 

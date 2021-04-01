@@ -18,7 +18,7 @@ public class AutoHomeForInterstellarAccuracy extends SequentialCommandGroup {
         addCommands(
                 new ConditionalCommand(
                         new RamseteTrackingCommand(
-                                Paths.ShootingChallengeRelativeHomingPaths::generateInterstellarAccuracyHomingTrajectory,
+                                Paths.ShootingChallengeRelativePaths::generateInterstellarAccuracyHomingTrajectory,
                                 true, false
                         ),
                         new InstantCommand(() -> DebuggingLog.getInstance().getLogger().log(Level.WARNING,

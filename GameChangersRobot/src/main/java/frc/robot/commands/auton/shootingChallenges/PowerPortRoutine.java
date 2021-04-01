@@ -1,28 +1,27 @@
 package frc.robot.commands.auton.shootingChallenges;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.auton.AutonFlags;
-import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.subsystems.SubsystemFlags;
 
+import static frc.robot.Constants.Field.kPowerPortHomingPose;
 import static frc.robot.Robot.sDrivetrain;
+import static frc.robot.Robot.sIntake;
 
 public class PowerPortRoutine extends SequentialCommandGroup {
 
     public PowerPortRoutine() {
         addCommands(
-                new ParallelCommandGroup(
-                        new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
-                        new SetIntakeToggle(false)
-                ),
+                new InstantCommand(() -> sIntake.setDeployed(false)),
+                new InstantCommand(() -> sIntake.setRetracted(true)),
                 new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(true)),
-                new InstantCommand(() -> sDrivetrain.setHeading(180.0)),
-                new AlignTurret(),
-                new ShootAllBalls(3, 10.0),
-                new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(false))
+                new InstantCommand(() -> sDrivetrain.resetPose(kPowerPortHomingPose)),
+                new InstantCommand(() -> SubsystemFlags.getInstance().setIsZeroingDisabled(true)),
+//                new AlignTurret(),
+                new ShootAllBalls(3, 5),
+                new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(false)),
+                new WaitCommand(0.5),
+                new InstantCommand(() -> SubsystemFlags.getInstance().setIsZeroingDisabled(false))
         );
     }
 

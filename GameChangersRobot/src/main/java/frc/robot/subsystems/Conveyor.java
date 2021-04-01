@@ -99,12 +99,8 @@ public class Conveyor extends SubsystemBase {
     }
 
     public boolean shouldNudge() {
-        // TODO: Add this back!
-        if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS) {
-            return getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity && mFrontConveyorBool.get();
-        }
-
-        return mFrontConveyorBool.get();
+        return /* mBallCount < kMaximumBallCapacity - kFrontLoadingCapacity && */ mFrontConveyorBool.get()
+                && !mBackConveyorBool.get();
     }
 
     public EnhancedBoolean getFrontConveyorBool() {

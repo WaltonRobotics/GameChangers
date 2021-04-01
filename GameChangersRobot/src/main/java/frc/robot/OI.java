@@ -46,7 +46,8 @@ public class OI {
     public static EnhancedJoystickButton sZeroTurretButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUTTON.getIndex());
 
     // Shooting challenge buttons
-    public static EnhancedJoystickButton sCalibratePoseButton = new EnhancedJoystickButton(sLeftJoystick, 2);
+    public static EnhancedJoystickButton sCalibratePoseButton = new EnhancedJoystickButton(sLeftJoystick, 5);
+    public static EnhancedJoystickButton sGoToReintroductionZoneButton = new EnhancedJoystickButton(sLeftJoystick, 2);
     public static EnhancedJoystickButton sHomeInterstellarAccuracyButton = new EnhancedJoystickButton(sLeftJoystick, 3);
     public static EnhancedJoystickButton sHomePowerPortButton = new EnhancedJoystickButton(sLeftJoystick, 4);
 

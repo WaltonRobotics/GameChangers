@@ -10,8 +10,7 @@ import edu.wpi.first.wpilibj.util.Units;
 
 import java.util.Arrays;
 
-import static frc.robot.Constants.Field.kInterstellarHomingPose;
-import static frc.robot.Constants.Field.kPowerPortHomingPose;
+import static frc.robot.Constants.Field.*;
 import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
@@ -45,31 +44,31 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchRedA() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                    3.0,
+                    0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
+            config.setEndVelocity(3.0);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                        new Pose2d(Units.feetToMeters(3.771), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-			new Pose2d(Units.feetToMeters(8.691), Units.feetToMeters(6.724), Rotation2d.fromDegrees(-43.374)),
-			new Pose2d(Units.feetToMeters(12.195), Units.feetToMeters(4.915), Rotation2d.fromDegrees(-1.673)),
-			new Pose2d(Units.feetToMeters(14.904), Units.feetToMeters(8.234), Rotation2d.fromDegrees(89.562)),
-			new Pose2d(Units.feetToMeters(14.841), Units.feetToMeters(12.634), Rotation2d.fromDegrees(90.618)),
-			new Pose2d(Units.feetToMeters(18.526), Units.feetToMeters(12.562), Rotation2d.fromDegrees(0))),
+                            new Pose2d(Units.feetToMeters(3.771), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(8.691), Units.feetToMeters(6.724), Rotation2d.fromDegrees(-43.374)),
+                            new Pose2d(Units.feetToMeters(12.195), Units.feetToMeters(4.915), Rotation2d.fromDegrees(-1.673)),
+                            new Pose2d(Units.feetToMeters(14.904), Units.feetToMeters(8.234), Rotation2d.fromDegrees(89.562)),
+                            new Pose2d(Units.feetToMeters(14.841), Units.feetToMeters(12.634), Rotation2d.fromDegrees(90.618)),
+                            new Pose2d(Units.feetToMeters(18.526), Units.feetToMeters(12.562), Rotation2d.fromDegrees(0))),
                     config
             );
         }
 
         public static Trajectory generateGalacticSearchBlueA() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                    3.0,
+                    0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
+            config.setEndVelocity(3.0);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -86,11 +85,11 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchRedB() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                    6.0,
+                    3.0);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
+            config.setEndVelocity(6.0);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -254,7 +253,7 @@ public class Paths {
         }
     }
 
-    public static class ShootingChallengeRelativeHomingPaths {
+    public static class ShootingChallengeRelativePaths {
 
         public static Trajectory generateInterstellarAccuracyHomingTrajectory() {
             TrajectoryConfig config = new TrajectoryConfig(
@@ -274,15 +273,31 @@ public class Paths {
 
         public static Trajectory generatePowerPortHomingTrajectory() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                    6,
+                    3);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+            config.setReversed(true);
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            sDrivetrain.getCurrentPose(),
+                            kPowerPortHomingPose),
+                    config
+            );
+        }
+
+        public static Trajectory generatePowerPortToReintroductionZoneTrajectory() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    6,
+                    3);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                             sDrivetrain.getCurrentPose(),
-                            kPowerPortHomingPose),
+                            kPowerPortReintroductionPose),
                     config
             );
         }

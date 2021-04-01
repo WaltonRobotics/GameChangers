@@ -44,98 +44,97 @@ public enum AutonRoutine {
     )),
 
     GALACTIC_SEARCH("Galactic Search Routine",
-            new SelectCommand(
-                    Map.ofEntries(
-                            Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A,
-                                    new SequentialCommandGroup(
-                                            new SetIntakeToggle(true),
-                                            new ParallelDeadlineGroup(
-                                                    new SequentialCommandGroup(
-                                                            new InstantCommand(() ->
-                                                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
-                                                            new InstantCommand(() -> sDrivetrain.reset()),
-                                                            new ResetPose(sRedATrajectory),
-                                                            new RamseteTrackingCommand(sRedATrajectory, true, false),
-                                                            new InstantCommand(() ->
-                                                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-                                                            new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
-                                                                    .withInterrupt(() -> sDrivetrain.getCurrentPose().getX()
-                                                                            >= kGalacticSearchBreakPlaneLineMeters),
-                                                            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0))
-                                                    ),
-                                                    new IntakeCommand()
+            new SequentialCommandGroup(
+                    new SetIntakeToggle(true),
+                    new SelectCommand(
+                            Map.ofEntries(
+                                    Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A,
+                                            new SequentialCommandGroup(
+                                                    new ParallelDeadlineGroup(
+                                                            new SequentialCommandGroup(
+                                                                    new InstantCommand(() ->
+                                                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+                                                                    new InstantCommand(() -> sDrivetrain.reset()),
+                                                                    new ResetPose(sRedATrajectory),
+                                                                    new RamseteTrackingCommand(sRedATrajectory, true, false),
+                                                                    new InstantCommand(() ->
+                                                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+                                                                    new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
+                                                                            .withInterrupt(() -> sDrivetrain.getCurrentPose().getX()
+                                                                                    >= kGalacticSearchBreakPlaneLineMeters),
+                                                                    new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0))
+                                                            ),
+                                                            new IntakeCommand()
+                                                    )
+                                            )
+                                    ),
+
+                                    Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_B,
+                                            new SequentialCommandGroup(
+                                                    new ParallelDeadlineGroup(
+                                                            new SequentialCommandGroup(
+                                                                    new InstantCommand(() ->
+                                                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+                                                                    new InstantCommand(() -> sDrivetrain.reset()),
+                                                                    new ResetPose(sRedBTrajectory),
+                                                                    new RamseteTrackingCommand(sRedBTrajectory, true, false),
+                                                                    new InstantCommand(() ->
+                                                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+                                                                    new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
+                                                                            .withInterrupt(() -> sDrivetrain.getCurrentPose().getX()
+                                                                                    >= kGalacticSearchBreakPlaneLineMeters),
+                                                                    new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0))
+                                                            ),
+                                                            new IntakeCommand()
+                                                    )
+                                            )
+                                    ),
+
+                                    Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_BLUE_A,
+                                            new SequentialCommandGroup(
+                                                    new ParallelDeadlineGroup(
+                                                            new SequentialCommandGroup(
+                                                                    new InstantCommand(() ->
+                                                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+                                                                    new InstantCommand(() -> sDrivetrain.reset()),
+                                                                    new ResetPose(sBlueATrajectory),
+                                                                    new RamseteTrackingCommand(sBlueATrajectory, true, false),
+                                                                    new InstantCommand(() ->
+                                                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+                                                                    new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
+                                                                            .withInterrupt(() -> sDrivetrain.getCurrentPose().getX()
+                                                                                    >= kGalacticSearchBreakPlaneLineMeters),
+                                                                    new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0))
+                                                            ),
+                                                            new IntakeCommand()
+                                                    )
+                                            )
+                                    ),
+
+                                    Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_BLUE_B,
+                                            new SequentialCommandGroup(
+                                                    new ParallelDeadlineGroup(
+                                                            new SequentialCommandGroup(
+                                                                    new InstantCommand(() ->
+                                                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+                                                                    new InstantCommand(() -> sDrivetrain.reset()),
+                                                                    new ResetPose(sBlueBTrajectory),
+                                                                    new RamseteTrackingCommand(sBlueBTrajectory, true, false),
+                                                                    new InstantCommand(() ->
+                                                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+                                                                    new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
+                                                                            .withInterrupt(() -> sDrivetrain.getCurrentPose().getX()
+                                                                                    >= kGalacticSearchBreakPlaneLineMeters),
+                                                                    new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0))
+                                                            ),
+                                                            new IntakeCommand()
+                                                    )
                                             )
                                     )
                             ),
-
-                            Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_B,
-                                    new SequentialCommandGroup(
-                                            new SetIntakeToggle(true),
-                                            new ParallelDeadlineGroup(
-                                                    new SequentialCommandGroup(
-                                                            new InstantCommand(() ->
-                                                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
-                                                            new InstantCommand(() -> sDrivetrain.reset()),
-                                                            new ResetPose(sRedBTrajectory),
-                                                            new RamseteTrackingCommand(sRedBTrajectory, true, false),
-                                                            new InstantCommand(() ->
-                                                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-                                                            new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
-                                                                    .withInterrupt(() -> sDrivetrain.getCurrentPose().getX()
-                                                                            >= kGalacticSearchBreakPlaneLineMeters),
-                                                            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0))
-                                                    ),
-                                                    new IntakeCommand()
-                                            )
-                                    )
-                            ),
-
-                            Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_BLUE_A,
-                                    new SequentialCommandGroup(
-                                            new SetIntakeToggle(true),
-                                            new ParallelDeadlineGroup(
-                                                    new SequentialCommandGroup(
-                                                            new InstantCommand(() ->
-                                                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
-                                                            new InstantCommand(() -> sDrivetrain.reset()),
-                                                            new ResetPose(sBlueATrajectory),
-                                                            new RamseteTrackingCommand(sBlueATrajectory, true, false),
-                                                            new InstantCommand(() ->
-                                                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-                                                            new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
-                                                                    .withInterrupt(() -> sDrivetrain.getCurrentPose().getX()
-                                                                            >= kGalacticSearchBreakPlaneLineMeters),
-                                                            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0))
-                                                    ),
-                                                    new IntakeCommand()
-                                            )
-                                    )
-                            ),
-
-                            Map.entry(ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_BLUE_B,
-                                    new SequentialCommandGroup(
-                                            new SetIntakeToggle(true),
-                                            new ParallelDeadlineGroup(
-                                                    new SequentialCommandGroup(
-                                                            new InstantCommand(() ->
-                                                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
-                                                            new InstantCommand(() -> sDrivetrain.reset()),
-                                                            new ResetPose(sBlueBTrajectory),
-                                                            new RamseteTrackingCommand(sBlueBTrajectory, true, false),
-                                                            new InstantCommand(() ->
-                                                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-                                                            new RunCommand(() -> sDrivetrain.setDutyCycles(1.0, 1.0))
-                                                                    .withInterrupt(() -> sDrivetrain.getCurrentPose().getX()
-                                                                            >= kGalacticSearchBreakPlaneLineMeters),
-                                                            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0))
-                                                    ),
-                                                    new IntakeCommand()
-                                            )
-                                    )
-                            )
-                    ),
-                    () -> ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_BLUE_B
-                    //PixyCamHelper::getGalacticSearchDetermination
+//                    () -> ProMicro.PixyCamReadMessage.GALACTIC_SEARCH_RED_A,
+                            PixyCamHelper::getGalacticSearchDetermination
+                    )
             )
     ),
 

@@ -75,8 +75,8 @@ public class CompGameChangers implements WaltRobot {
         mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(1.0, 1.0, 1.0);
         mDrivetrainConfig.leftVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.rightVoltagePID = new PIDController(1, 0, 0);
-        mDrivetrainConfig.leftVelocityPID = new PIDController(0.8, 0, 0);
-        mDrivetrainConfig.rightVelocityPID = new PIDController(0.8, 0, 0);
+        mDrivetrainConfig.leftVelocityPID = new PIDController(0.35, 0, 0);
+        mDrivetrainConfig.rightVelocityPID = new PIDController(0.35, 0, 0);
         mDrivetrainConfig.turnProfiledPID = drivetrainTurnProfiledPID;
         mDrivetrainConfig.driveStraightProfiledPowerPID = drivetrainDriveStraightPowerProfiledPID;
         mDrivetrainConfig.driveStraightProfiledHeadingPID = drivetrainDriveStraightHeadingProfiledPID;
@@ -124,9 +124,9 @@ public class CompGameChangers implements WaltRobot {
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = true;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
-        mConveyorConfig.kNudgeTimeSeconds = 0.1;
-        mConveyorConfig.kFrontConveyorNudgeVoltage = 8.0;
-        mConveyorConfig.kBackConveyorNudgeVoltage = 8.0;
+        mConveyorConfig.kNudgeTimeSeconds = 0.025;
+        mConveyorConfig.kFrontConveyorNudgeVoltage = 3.0;
+        mConveyorConfig.kBackConveyorNudgeVoltage = 3.0;
         mConveyorConfig.kFrontConveyorFeedVoltage = 11.75;
         mConveyorConfig.kBackConveyorFeedVoltage = 11.75;
         mConveyorConfig.kFrontConveyorIntakeDutyCycle = 1.0;

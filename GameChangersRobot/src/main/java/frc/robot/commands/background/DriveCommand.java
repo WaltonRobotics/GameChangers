@@ -2,10 +2,7 @@ package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.auton.*;
-import frc.robot.commands.auton.shootingChallenges.AutoAssistDriveStraight;
-import frc.robot.commands.auton.shootingChallenges.AutoHomeForInterstellarAccuracy;
-import frc.robot.commands.auton.shootingChallenges.AutoHomeForPowerPort;
-import frc.robot.commands.auton.shootingChallenges.CalibratePose;
+import frc.robot.commands.auton.shootingChallenges.*;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DriverPreferences.*;
@@ -29,6 +26,7 @@ public class DriveCommand extends CommandBase {
         sCalibratePoseButton.whenPressed(new CalibratePose());
         sHomeInterstellarAccuracyButton.whenPressed(new AutoHomeForInterstellarAccuracy());
         sHomePowerPortButton.whenPressed(new AutoHomeForPowerPort());
+        sGoToReintroductionZoneButton.whenPressed(new GoToReintroductionZone());
     }
 
     @Override
