@@ -85,11 +85,11 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchRedB() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    6.0,
-                    3.0);
+                    3.0,
+                    0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(6.0);
+            config.setEndVelocity(3.0);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -107,11 +107,11 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchBlueB() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                    3.0,
+                    0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
+            config.setEndVelocity(3.0);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -132,11 +132,11 @@ public class Paths {
 
         public static Trajectory generateBarrelRacing() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                    3.0,
+                    0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
+            config.setEndVelocity(3.0);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
@@ -145,10 +145,10 @@ public class Paths {
                             new Pose2d(Units.feetToMeters(12.674), Units.feetToMeters(2.454), Rotation2d.fromDegrees(169.5)),
                             new Pose2d(Units.feetToMeters(10.267), Units.feetToMeters(6.204), Rotation2d.fromDegrees(38.494)),
                             new Pose2d(Units.feetToMeters(20.489), Units.feetToMeters(7.306), Rotation2d.fromDegrees(29.703)),
-                            new Pose2d(Units.feetToMeters(21.167), Units.feetToMeters(12.464), Rotation2d.fromDegrees(149.076)),
-                            new Pose2d(Units.feetToMeters(16.899), Units.feetToMeters(9.931), Rotation2d.fromDegrees(-64.056)),
+                            new Pose2d(Units.feetToMeters(21.481), Units.feetToMeters(12.88), Rotation2d.fromDegrees(149.076)),
+                            new Pose2d(Units.feetToMeters(16.585), Units.feetToMeters(9.792), Rotation2d.fromDegrees(-64.056)),
                             new Pose2d(Units.feetToMeters(25.127), Units.feetToMeters(1.865), Rotation2d.fromDegrees(7.102)),
-                            new Pose2d(Units.feetToMeters(25.63), Units.feetToMeters(7.153), Rotation2d.fromDegrees(164.026)),
+                            new Pose2d(Units.feetToMeters(25.613), Units.feetToMeters(7.569), Rotation2d.fromDegrees(164.026)),
                             new Pose2d(Units.feetToMeters(8.767), Units.feetToMeters(8.575), Rotation2d.fromDegrees(180)),
                             new Pose2d(Units.feetToMeters(3.157), Units.feetToMeters(8.579), Rotation2d.fromDegrees(-179.723))),
                     config
@@ -157,11 +157,11 @@ public class Paths {
 
         public static Trajectory generateSlalom() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                    3.0,
+                    0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
+            config.setEndVelocity(3.0);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
