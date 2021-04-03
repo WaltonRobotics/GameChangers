@@ -8,22 +8,24 @@ import frc.robot.utils.DebuggingLog;
 
 import java.util.logging.Level;
 
-import static frc.robot.Constants.Field.kInterstellarHomingPose;
+import static frc.robot.Constants.Field.kPowerPortReintroductionZonePose;
+import static frc.robot.Constants.Field.kPowerPortScoringZonePose;
 import static frc.robot.Robot.sDrivetrain;
 
-public class GoToReintroductionZone extends SequentialCommandGroup {
+public class GoToScoringZone extends SequentialCommandGroup {
 
-    public GoToReintroductionZone() {
+    public GoToScoringZone() {
         addCommands(
                 new ConditionalCommand(
                         new AutomatedTrackingCommand(
-                                Paths.ShootingChallengeRelativePaths::generatePowerPortToReintroductionZoneTrajectory,
+                                Paths.ShootingChallengeRelativePaths::generatePowerPortToScoringZoneTrajectory,
                                 true, false
                         ),
                         new InstantCommand(() -> DebuggingLog.getInstance().getLogger().log(Level.WARNING,
-                                "Failed to go to reintroduction zone")),
-                        () -> sDrivetrain.getCurrentPose().getX() > kInterstellarHomingPose.getX()
+                                "Failed to go to scoring zone")),
+                        () -> sDrivetrain.getCurrentPose().getX() < kPowerPortScoringZonePose.getX()
                 )
+
         );
     }
 

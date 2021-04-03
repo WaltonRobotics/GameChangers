@@ -208,10 +208,10 @@ public final class Constants {
         public static final Pose2d kInterstellarHomingPose
                 = new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(90));
 
-        public static final Pose2d kPowerPortHomingPose
+        public static final Pose2d kPowerPortScoringZonePose
                 = new Pose2d(Units.feetToMeters(17.5), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
 
-        public static final Pose2d kPowerPortReintroductionPose =
+        public static final Pose2d kPowerPortReintroductionZonePose =
                 new Pose2d(Units.feetToMeters(3.5), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
 
     }

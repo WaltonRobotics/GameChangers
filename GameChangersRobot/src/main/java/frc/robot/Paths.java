@@ -15,8 +15,9 @@ import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
 
-    public static class TestTrajectory {
+    public static class MiscellaneousTrajectories {
         public static Trajectory sTestTrajectory = generateTestTrajectory();
+        public static Trajectory sShooterCalibrationTrajectory = generateBackUpTwoFeetForShooterCalibration();
 
         public static Trajectory generateTestTrajectory() {
             TrajectoryConfig config = new TrajectoryConfig(
@@ -34,6 +35,23 @@ public class Paths {
                     config
             );
         }
+
+        public static Trajectory generateBackUpTwoFeetForShooterCalibration() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+            config.setReversed(true);
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            new Pose2d(Units.feetToMeters(22), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(20), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0))),
+                    config
+            );
+        }
+
     }
 
     public static class GalacticSearchPaths {
@@ -272,7 +290,7 @@ public class Paths {
             );
         }
 
-        public static Trajectory generatePowerPortHomingTrajectory() {
+        public static Trajectory generatePowerPortToScoringZoneTrajectory() {
             TrajectoryConfig config = new TrajectoryConfig(
                     6,
                     3);
@@ -283,7 +301,7 @@ public class Paths {
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                             sDrivetrain.getCurrentPose(),
-                            kPowerPortHomingPose),
+                            kPowerPortScoringZonePose),
                     config
             );
         }
@@ -298,7 +316,7 @@ public class Paths {
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                             sDrivetrain.getCurrentPose(),
-                            kPowerPortReintroductionPose),
+                            kPowerPortReintroductionZonePose),
                     config
             );
         }

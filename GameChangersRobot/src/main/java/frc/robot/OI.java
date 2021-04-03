@@ -30,7 +30,7 @@ public class OI {
     public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamepad, RIGHT_TRIGGER.getIndex());
     public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUMPER.getIndex());
     public static EnhancedJoystickButton sToggleLimelightLEDsButton = new EnhancedJoystickButton(sGamepad, POV_W);
-    public static EnhancedJoystickButton sShooterAdjustableToggleHoodButton = new EnhancedJoystickButton(sGamepad, TOP_BUTTON.getIndex());
+    public static EnhancedJoystickButton sToggleShooterAdjustableHoodButton = new EnhancedJoystickButton(sGamepad, TOP_BUTTON.getIndex());
 
     public static EnhancedJoystickButton sRetractIntakeButton = new EnhancedJoystickButton(sGamepad, POV_N);
     public static EnhancedJoystickButton sDeployIntakeButton = new EnhancedJoystickButton(sGamepad, POV_S);
@@ -50,5 +50,6 @@ public class OI {
     public static EnhancedJoystickButton sGoToReintroductionZoneButton = new EnhancedJoystickButton(sLeftJoystick, 2);
     public static EnhancedJoystickButton sHomeInterstellarAccuracyButton = new EnhancedJoystickButton(sLeftJoystick, 3);
     public static EnhancedJoystickButton sHomePowerPortButton = new EnhancedJoystickButton(sLeftJoystick, 4);
+    public static EnhancedJoystickButton sBackUpTwoFeetForShooterCalibrationButton = new EnhancedJoystickButton(sLeftJoystick, 6);
 
 }

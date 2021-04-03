@@ -3,6 +3,7 @@ package frc.robot.commands.background;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.auton.*;
 import frc.robot.commands.auton.shootingChallenges.*;
+import frc.robot.commands.tuning.BackUpTwoFeetForShooterCalibration;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.DriverPreferences.*;
@@ -25,8 +26,9 @@ public class DriveCommand extends CommandBase {
 
         sCalibratePoseButton.whenPressed(new CalibratePose());
         sHomeInterstellarAccuracyButton.whenPressed(new AutoHomeForInterstellarAccuracy());
-        sHomePowerPortButton.whenPressed(new AutoHomeForPowerPort());
+        sHomePowerPortButton.whenPressed(new GoToScoringZone());
         sGoToReintroductionZoneButton.whenPressed(new GoToReintroductionZone());
+        sBackUpTwoFeetForShooterCalibrationButton.whenPressed(new BackUpTwoFeetForShooterCalibration());
     }
 
     @Override
