@@ -157,24 +157,25 @@ public class Paths {
 
         public static Trajectory generateSlalom() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    3.0,
+                    3.5,
                     0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(3.0);
+            config.setEndVelocity(3.5);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                             new Pose2d(Units.feetToMeters(3.146), Units.feetToMeters(2.448), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(8.997), Units.feetToMeters(6.646), Rotation2d.fromDegrees(37.109)),
-                            new Pose2d(Units.feetToMeters(21.523), Units.feetToMeters(6.697), Rotation2d.fromDegrees(-40.15)),
+                            new Pose2d(Units.feetToMeters(8.284), Units.feetToMeters(6.289), Rotation2d.fromDegrees(37.109)),
+                            new Pose2d(Units.feetToMeters(15.645), Units.feetToMeters(6.961), Rotation2d.fromDegrees(-1.792)),
+                            new Pose2d(Units.feetToMeters(21.9), Units.feetToMeters(6.172), Rotation2d.fromDegrees(-40.15)),
                             new Pose2d(Units.feetToMeters(25.253), Units.feetToMeters(2.648), Rotation2d.fromDegrees(-22.846)),
                             new Pose2d(Units.feetToMeters(27.614), Units.feetToMeters(6.018), Rotation2d.fromDegrees(105.646)),
                             new Pose2d(Units.feetToMeters(23.554), Units.feetToMeters(6.614), Rotation2d.fromDegrees(-132.818)),
                             new Pose2d(Units.feetToMeters(20.698), Units.feetToMeters(2.506), Rotation2d.fromDegrees(-151.042)),
                             new Pose2d(Units.feetToMeters(12.955), Units.feetToMeters(2.402), Rotation2d.fromDegrees(178.15)),
-                            new Pose2d(Units.feetToMeters(8.147), Units.feetToMeters(3.798), Rotation2d.fromDegrees(114.744)),
-                            new Pose2d(Units.feetToMeters(3.091), Units.feetToMeters(8.319), Rotation2d.fromDegrees(179.202))),
+                            new Pose2d(Units.feetToMeters(7.215), Units.feetToMeters(3.798), Rotation2d.fromDegrees(114.744)),
+                            new Pose2d(Units.feetToMeters(3.15), Units.feetToMeters(7.836), Rotation2d.fromDegrees(179.202))),
                     config
             );
         }
@@ -188,22 +189,22 @@ public class Paths {
 
             public static Trajectory generateBounce1() {
                 TrajectoryConfig config = new TrajectoryConfig(
-                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                        3.5,
+                        0.8);
 
                 config.setKinematics(sDrivetrain.getDriveKinematics());
 //                config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 
                 return TrajectoryGenerator.generateTrajectory(Arrays.asList(
                         new Pose2d(Units.feetToMeters(3.146), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-			new Pose2d(Units.feetToMeters(7.44), Units.feetToMeters(11.5), Rotation2d.fromDegrees(90))),
+			new Pose2d(Units.feetToMeters(7.44), Units.feetToMeters(12), Rotation2d.fromDegrees(90))),
                         config);
             }
 
             public static Trajectory generateBounce2() {
                 TrajectoryConfig config = new TrajectoryConfig(
-                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                        3.5,
+                        0.8);
 
                 config.setKinematics(sDrivetrain.getDriveKinematics());
 //                config.setStartVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
@@ -211,41 +212,41 @@ public class Paths {
                 config.setReversed(true);
 
                 return TrajectoryGenerator.generateTrajectory(Arrays.asList(
-                        new Pose2d(Units.feetToMeters(7.44), Units.feetToMeters(11.5), Rotation2d.fromDegrees(90)),
-			new Pose2d(Units.feetToMeters(9.789), Units.feetToMeters(5.357), Rotation2d.fromDegrees(119.875)),
-			new Pose2d(Units.feetToMeters(13.387), Units.feetToMeters(2.606), Rotation2d.fromDegrees(-146.2)),
-			new Pose2d(Units.feetToMeters(15.005), Units.feetToMeters(11.5), Rotation2d.fromDegrees(-90))),
+                        new Pose2d(Units.feetToMeters(7.44), Units.feetToMeters(12), Rotation2d.fromDegrees(90)),
+                        new Pose2d(Units.feetToMeters(9.789), Units.feetToMeters(5.357), Rotation2d.fromDegrees(119.875)),
+                        new Pose2d(Units.feetToMeters(13.387), Units.feetToMeters(2.606), Rotation2d.fromDegrees(-146.2)),
+                        new Pose2d(Units.feetToMeters(15.005), Units.feetToMeters(12.5), Rotation2d.fromDegrees(-90))),
                         config);
             }
 
             public static Trajectory generateBounce3() {
                 TrajectoryConfig config = new TrajectoryConfig(
-                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                        3.5,
+                        0.8);
 
                 config.setKinematics(sDrivetrain.getDriveKinematics());
 //                config.setStartVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 //                config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
 
                 return TrajectoryGenerator.generateTrajectory(Arrays.asList(
-                        new Pose2d(Units.feetToMeters(15.005), Units.feetToMeters(11.5), Rotation2d.fromDegrees(-90)),
+                        new Pose2d(Units.feetToMeters(15.005), Units.feetToMeters(12.5), Rotation2d.fromDegrees(-90)),
 			new Pose2d(Units.feetToMeters(18.903), Units.feetToMeters(2.145), Rotation2d.fromDegrees(0)),
-			new Pose2d(Units.feetToMeters(23.337), Units.feetToMeters(11.5), Rotation2d.fromDegrees(90))),
+			new Pose2d(Units.feetToMeters(23.337), Units.feetToMeters(12), Rotation2d.fromDegrees(90))),
                         config);
             }
 
             public static Trajectory generateBounce4() {
                 TrajectoryConfig config = new TrajectoryConfig(
-                        sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                        sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+                        3.5,
+                        0.8);
 
                 config.setKinematics(sDrivetrain.getDriveKinematics());
 //                config.setStartVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
-                config.setEndVelocity(sDrivetrain.getConfig().kMaxVelocityMetersPerSecond);
+                config.setEndVelocity(3.5);
                 config.setReversed(true);
 
                 return TrajectoryGenerator.generateTrajectory(Arrays.asList(
-                        new Pose2d(Units.feetToMeters(23.337), Units.feetToMeters(11.5), Rotation2d.fromDegrees(90)),
+                        new Pose2d(Units.feetToMeters(23.337), Units.feetToMeters(12), Rotation2d.fromDegrees(90)),
 			new Pose2d(Units.feetToMeters(25.199), Units.feetToMeters(7.086), Rotation2d.fromDegrees(179.856)),
 			new Pose2d(Units.feetToMeters(28.978), Units.feetToMeters(5.727), Rotation2d.fromDegrees(180))),
                         config);
