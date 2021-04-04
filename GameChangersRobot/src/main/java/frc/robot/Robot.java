@@ -35,6 +35,7 @@ import static frc.robot.Constants.DriverPreferences.kTurboScaleFactor;
 import static frc.robot.Constants.Field.kPowerPortScoringZonePose;
 import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
+import static frc.robot.OI.sRunInterstellarRoutineButton;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
 
 /**
@@ -77,7 +78,7 @@ public class Robot extends TimedRobot {
             CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
 
             sIntake = new Intake();
-            CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
+//            CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
 
             sConveyor = new Conveyor();
             CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
@@ -100,7 +101,7 @@ public class Robot extends TimedRobot {
                     new SetIntakeToggle(false),
                     new InstantCommand(() -> sDrivetrain.resetPose(kPowerPortScoringZonePose))
             ));
-            mShootingChallengeChooser.addOption("Interstellar Accuracy Challenge", new InterstellarAccuracyRoutine());
+//            mShootingChallengeChooser.addOption("Interstellar Accuracy Challenge", new InterstellarAccuracyRoutine());
             mShootingChallengeChooser.addOption("Power Port Challenge", new PowerPortRoutine());
 
             SmartDashboard.putData("Shooting Challenge Selector", mShootingChallengeChooser);
@@ -109,6 +110,8 @@ public class Robot extends TimedRobot {
         populateShuffleboard();
 
         LimelightHelper.setLEDMode(kIsInTuningMode);
+
+        sRunInterstellarRoutineButton.whenPressed(new InterstellarAccuracyRoutine());
     }
 
     private void populateShuffleboard() {

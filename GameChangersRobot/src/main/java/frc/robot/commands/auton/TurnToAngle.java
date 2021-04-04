@@ -71,7 +71,7 @@ public class TurnToAngle extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return sDrivetrain.getTurnProfiledPID().atSetpoint();
+        return UtilMethods.isWithinTolerance(getHeading(), mTargetHeading, 1.5);
     }
 
     private double getHeading() {

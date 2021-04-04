@@ -17,17 +17,15 @@ public class CompGameChangers implements WaltRobot {
 
     // Shooter LUT when the turret is facing sideways and the adjustable hood is up
     private final double[][] mZoneOneDistanceToVelocityTable = {
-            { 8.354, 11290 },
-            { 12.16, 10886 },
-            { 18.45, 11400 },
+            { 6.2, 12000 },
+            { 12.16, 12000 },
     };
 
     // Shooter LUT in all other zones
     private final double[][] mOtherZonesDistanceToVelocityTable = {
-            {12.99, 11250},
-            {20.15, 11100},
-            {34.64, 11652},
-            {29.718, 11575},
+            {11.06, 11600},
+            {18.73, 11200},
+            {30.41, 11700},
     };
 
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mZoneOneShooterMap;
@@ -51,8 +49,8 @@ public class CompGameChangers implements WaltRobot {
         populateShooterInterpolationMethods();
 
         ProfiledPIDController drivetrainTurnProfiledPID = new ProfiledPIDController(
-                0.015, 0, 0,
-                new TrapezoidProfile.Constraints(8, 85)
+                0.013, 0, 0,
+                new TrapezoidProfile.Constraints(400, 400)
         );
         drivetrainTurnProfiledPID.enableContinuousInput(-180.0, 180.0);
         drivetrainTurnProfiledPID.setTolerance(0.5, 1.0);

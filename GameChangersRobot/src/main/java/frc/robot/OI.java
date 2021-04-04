@@ -51,5 +51,6 @@ public class OI {
     public static EnhancedJoystickButton sHomeInterstellarAccuracyButton = new EnhancedJoystickButton(sLeftJoystick, 3);
     public static EnhancedJoystickButton sHomePowerPortButton = new EnhancedJoystickButton(sLeftJoystick, 4);
     public static EnhancedJoystickButton sBackUpTwoFeetForShooterCalibrationButton = new EnhancedJoystickButton(sLeftJoystick, 6);
+    public static EnhancedJoystickButton sRunInterstellarRoutineButton = new EnhancedJoystickButton(sRightJoystick, 8);
 
 }

@@ -99,8 +99,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public boolean shouldNudge() {
-        return /* mBallCount < kMaximumBallCapacity - kFrontLoadingCapacity && */ mFrontConveyorBool.get()
-                && !mBackConveyorBool.get();
+        return /* mBallCount < kMaximumBallCapacity - kFrontLoadingCapacity && */ mFrontConveyorBool.get();
     }
 
     public EnhancedBoolean getFrontConveyorBool() {

@@ -8,7 +8,6 @@ import frc.robot.utils.DebuggingLog;
 
 import java.util.logging.Level;
 
-import static frc.robot.Constants.Field.kPowerPortReintroductionZonePose;
 import static frc.robot.Constants.Field.kPowerPortScoringZonePose;
 import static frc.robot.Robot.sDrivetrain;
 

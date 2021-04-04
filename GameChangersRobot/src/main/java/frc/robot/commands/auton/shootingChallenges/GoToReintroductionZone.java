@@ -9,6 +9,7 @@ import frc.robot.utils.DebuggingLog;
 import java.util.logging.Level;
 
 import static frc.robot.Constants.Field.kInterstellarHomingPose;
+import static frc.robot.Constants.Field.kPowerPortReintroductionZonePose;
 import static frc.robot.Robot.sDrivetrain;
 
 public class GoToReintroductionZone extends SequentialCommandGroup {
@@ -22,7 +23,7 @@ public class GoToReintroductionZone extends SequentialCommandGroup {
                         ),
                         new InstantCommand(() -> DebuggingLog.getInstance().getLogger().log(Level.WARNING,
                                 "Failed to go to reintroduction zone")),
-                        () -> sDrivetrain.getCurrentPose().getX() > kInterstellarHomingPose.getX()
+                        () -> sDrivetrain.getCurrentPose().getX() > kPowerPortReintroductionZonePose.getX()
                 )
         );
     }
