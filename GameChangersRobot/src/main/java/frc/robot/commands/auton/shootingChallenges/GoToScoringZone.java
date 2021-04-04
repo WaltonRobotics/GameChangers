@@ -16,7 +16,7 @@ public class GoToScoringZone extends SequentialCommandGroup {
     public GoToScoringZone() {
         addCommands(
                 new ConditionalCommand(
-                        new AutomatedTrackingCommand(
+                        new ManualOverrideTrackingCommand(
                                 Paths.ShootingChallengeRelativePaths::generatePowerPortToScoringZoneTrajectory,
                                 true, false
                         ),

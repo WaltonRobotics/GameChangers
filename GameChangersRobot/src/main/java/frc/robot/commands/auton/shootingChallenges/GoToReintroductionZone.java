@@ -8,7 +8,6 @@ import frc.robot.utils.DebuggingLog;
 
 import java.util.logging.Level;
 
-import static frc.robot.Constants.Field.kInterstellarHomingPose;
 import static frc.robot.Constants.Field.kPowerPortReintroductionZonePose;
 import static frc.robot.Robot.sDrivetrain;
 
@@ -17,7 +16,7 @@ public class GoToReintroductionZone extends SequentialCommandGroup {
     public GoToReintroductionZone() {
         addCommands(
                 new ConditionalCommand(
-                        new AutomatedTrackingCommand(
+                        new ManualOverrideTrackingCommand(
                                 Paths.ShootingChallengeRelativePaths::generatePowerPortToReintroductionZoneTrajectory,
                                 true, false
                         ),
