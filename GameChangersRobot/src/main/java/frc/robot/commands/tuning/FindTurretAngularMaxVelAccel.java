@@ -12,7 +12,7 @@ import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
 import static frc.robot.Constants.Tuning.kDrivetrainAccelerationWindow;
 import static frc.robot.Robot.sTurret;
 
-public class FindTurretMaxVelAccel extends CommandBase {
+public class FindTurretAngularMaxVelAccel extends CommandBase {
 
     private final Timer mTimer;
     private final double mTotalTime;
@@ -25,7 +25,7 @@ public class FindTurretMaxVelAccel extends CommandBase {
     private double mCurrentMaxVelocity;
     private double mCurrentMaxAcceleration;
 
-    public FindTurretMaxVelAccel(double time) {
+    public FindTurretAngularMaxVelAccel(double time) {
         addRequirements(sTurret);
 
         mTimer = new Timer();
@@ -71,8 +71,8 @@ public class FindTurretMaxVelAccel extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         DebuggingLog.getInstance().getLogger().log(Level.INFO,
-                "Max velocity: " + mCurrentMaxVelocity + " m/s and max acceleration: "
-                        + mCurrentMaxAcceleration + " m/s^2");
+                "Max velocity: " + mCurrentMaxVelocity + " deg/s and max acceleration: "
+                        + mCurrentMaxAcceleration + " deg/s^2");
     }
 
     @Override

@@ -9,7 +9,7 @@ import frc.robot.commands.background.IntakeCommand;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.tuning.FindAngularMaxVelAccel;
 import frc.robot.commands.tuning.FindLinearMaxVelAccel;
-import frc.robot.commands.tuning.FindTurretMaxVelAccel;
+import frc.robot.commands.tuning.FindTurretAngularMaxVelAccel;
 import frc.robot.subsystems.ProMicro;
 import frc.robot.vision.PixyCamHelper;
 
@@ -36,7 +36,7 @@ public enum AutonRoutine {
             new FindAngularMaxVelAccel(10.0)),
 
     FIND_TURRET_MAX_VEL_ACCEL("Find Maximum Turret Angular Velocity and Acceleration",
-            new FindTurretMaxVelAccel(3.0)),
+            new FindTurretAngularMaxVelAccel(3.0)),
 
     TEST_TURN_90("Turn CCW 90 Degrees", new SequentialCommandGroup(
             new InstantCommand(() -> sDrivetrain.reset()),
