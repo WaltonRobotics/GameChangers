@@ -100,7 +100,7 @@ public class ShooterCommand extends CommandBase {
             @Override
             public IState execute() {
                 if (LimelightHelper.getTV() > 0 || getFPGATimestamp() - mStartTime > kMaximumLEDWaitTimeSeconds) {
-                    sShooter.setAdjustableHoodUp(LimelightHelper.getDistanceToTargetFeet() < kEndOfZoneOneFromTargetFeet);
+//                    sShooter.setAdjustableHoodUp(LimelightHelper.getDistanceToTargetFeet() < kEndOfZoneOneFromTargetFeet);
 
                     mSetpointRawUnits = getEstimatedVelocityFromTarget();
 

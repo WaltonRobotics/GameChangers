@@ -187,7 +187,6 @@ public final class Constants {
     public static class Field {
 
         public static final double kTargetHeightInches = 89.75;
-        public static final double kTargetFrontOffsetFeet = 0.16;
         public static final Rotation2d kTargetFieldRelativeHeading = Rotation2d.fromDegrees(0);
 
         public static final double kFieldWidthFeet = 30.0;
@@ -197,19 +196,16 @@ public final class Constants {
         public static final double kGalacticSearchBreakPlaneLineMeters = Units.feetToMeters(27.5
                 + kBreakPlaneSafetyOffsetFeet);
 
-        public static final double kEndOfZoneOneFromTargetFeet = 10 - 2.5;
+        public static final double kEndOfZoneOneFromTargetFeet = 9.5;
 
         public static final double kMinimumInterstellarHomingRadiusMeters = Units.feetToMeters(1.5);
         public static final double kMaximumInterstellarHomingRadiusMeters = Units.feetToMeters(5.5);
-
-        public static final double kMinimumPowerPortHomingRadiusMeters = Units.feetToMeters(1.0);
-        public static final double kMaximumPowerPortHomingRadiusMeters = Units.feetToMeters(5.0);
 
         public static final Pose2d kInterstellarHomingPose
                 = new Pose2d(Units.feetToMeters(24.0625), Units.feetToMeters(7.5), Rotation2d.fromDegrees(90));
 
         public static final Pose2d kPowerPortScoringZonePose
-                = new Pose2d(Units.feetToMeters(17.5), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
+                = new Pose2d(Units.feetToMeters(3.5 + 110/12.0), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));
 
         public static final Pose2d kPowerPortReintroductionZonePose =
                 new Pose2d(Units.feetToMeters(3.5), Units.feetToMeters(7.5), Rotation2d.fromDegrees(180));

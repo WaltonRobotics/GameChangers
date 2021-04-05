@@ -315,6 +315,10 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
+                if (!sAlignTurretButton.get()) {
+                    return mIdle;
+                }
+
                 if (LimelightHelper.getTV() > 0) {
                     double tx = LimelightHelper.getTX();
                     double headingError = -tx;
@@ -341,8 +345,7 @@ public class TurretCommand extends CommandBase {
 
                     sTurret.setOpenLoopDutyCycle(turnRate);
 
-                    if (Math.abs(headingError) < kAlignedThresholdDegrees
-                            || getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
+                    if (Math.abs(headingError) < kAlignedThresholdDegrees) {
                         return mIdle;
                     }
                 } else {
