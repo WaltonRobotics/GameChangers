@@ -150,27 +150,27 @@ public class Paths {
 
         public static Trajectory generateBarrelRacing() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    3.0,
+                    3.5,
                     0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(3.0);
+            config.setEndVelocity(3.5);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                            new Pose2d(Units.feetToMeters(3.146), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(13.507), Units.feetToMeters(7.132), Rotation2d.fromDegrees(-31.191)),
-                            new Pose2d(Units.feetToMeters(12.674), Units.feetToMeters(2.454), Rotation2d.fromDegrees(169.5)),
-                            new Pose2d(Units.feetToMeters(10.267), Units.feetToMeters(6.204), Rotation2d.fromDegrees(38.494)),
-                            new Pose2d(Units.feetToMeters(20.489), Units.feetToMeters(7.306), Rotation2d.fromDegrees(29.703)),
-                            new Pose2d(Units.feetToMeters(21.481), Units.feetToMeters(12.88), Rotation2d.fromDegrees(149.076)),
-                            new Pose2d(Units.feetToMeters(16.585), Units.feetToMeters(9.792), Rotation2d.fromDegrees(-64.056)),
-                            new Pose2d(Units.feetToMeters(25.127), Units.feetToMeters(1.865), Rotation2d.fromDegrees(7.102)),
-                            new Pose2d(Units.feetToMeters(25.613), Units.feetToMeters(7.569), Rotation2d.fromDegrees(164.026)),
-                            new Pose2d(Units.feetToMeters(8.767), Units.feetToMeters(8.575), Rotation2d.fromDegrees(180)),
-                            new Pose2d(Units.feetToMeters(3.157), Units.feetToMeters(8.579), Rotation2d.fromDegrees(-179.723))),
+			new Pose2d(Units.feetToMeters(3.146), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+			new Pose2d(Units.feetToMeters(13.567), Units.feetToMeters(7.34), Rotation2d.fromDegrees(-31.191)),
+			new Pose2d(Units.feetToMeters(12.555), Units.feetToMeters(2.288), Rotation2d.fromDegrees(-177.29)),
+			new Pose2d(Units.feetToMeters(9.454), Units.feetToMeters(6.474), Rotation2d.fromDegrees(46.489)),
+			new Pose2d(Units.feetToMeters(20.727), Units.feetToMeters(7.784), Rotation2d.fromDegrees(31.708)),
+			new Pose2d(Units.feetToMeters(20.37), Units.feetToMeters(13.566), Rotation2d.fromDegrees(-179.541)),
+			new Pose2d(Units.feetToMeters(16.268), Units.feetToMeters(10.312), Rotation2d.fromDegrees(-66.318)),
+			new Pose2d(Units.feetToMeters(25.008), Units.feetToMeters(2.177), Rotation2d.fromDegrees(13.186)),
+			new Pose2d(Units.feetToMeters(25.811), Units.feetToMeters(7.943), Rotation2d.fromDegrees(179.339)),
+			new Pose2d(Units.feetToMeters(8.767), Units.feetToMeters(8.575), Rotation2d.fromDegrees(180)),
+			new Pose2d(Units.feetToMeters(3.157), Units.feetToMeters(8.579), Rotation2d.fromDegrees(-179.723))),
                     config
-            );
+            );  
         }
 
         public static Trajectory generateSlalom() {
