@@ -150,25 +150,27 @@ public class Paths {
 
         public static Trajectory generateBarrelRacing() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    3.0,
+                    3.5,
                     0.8);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setEndVelocity(3.0);
+            config.setEndVelocity(3.5);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                             new Pose2d(Units.feetToMeters(3.146), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(13.507), Units.feetToMeters(7.132), Rotation2d.fromDegrees(-31.191)),
-                            new Pose2d(Units.feetToMeters(12.674), Units.feetToMeters(2.454), Rotation2d.fromDegrees(169.5)),
-                            new Pose2d(Units.feetToMeters(10.267), Units.feetToMeters(6.204), Rotation2d.fromDegrees(38.494)),
-                            new Pose2d(Units.feetToMeters(20.489), Units.feetToMeters(7.306), Rotation2d.fromDegrees(29.703)),
-                            new Pose2d(Units.feetToMeters(21.481), Units.feetToMeters(12.88), Rotation2d.fromDegrees(149.076)),
-                            new Pose2d(Units.feetToMeters(16.585), Units.feetToMeters(9.792), Rotation2d.fromDegrees(-64.056)),
-                            new Pose2d(Units.feetToMeters(25.127), Units.feetToMeters(1.865), Rotation2d.fromDegrees(7.102)),
-                            new Pose2d(Units.feetToMeters(25.613), Units.feetToMeters(7.569), Rotation2d.fromDegrees(164.026)),
-                            new Pose2d(Units.feetToMeters(8.767), Units.feetToMeters(8.575), Rotation2d.fromDegrees(180)),
-                            new Pose2d(Units.feetToMeters(3.157), Units.feetToMeters(8.579), Rotation2d.fromDegrees(-179.723))),
+                            new Pose2d(Units.feetToMeters(13.573), Units.feetToMeters(7.097), Rotation2d.fromDegrees(-52.544)),
+                            new Pose2d(Units.feetToMeters(12.558), Units.feetToMeters(2.315), Rotation2d.fromDegrees(169.5)),
+                            new Pose2d(Units.feetToMeters(10.333), Units.feetToMeters(6.656), Rotation2d.fromDegrees(38.494)),
+                            new Pose2d(Units.feetToMeters(17.678), Units.feetToMeters(7.93), Rotation2d.fromDegrees(12.546)),
+                            new Pose2d(Units.feetToMeters(22.703), Units.feetToMeters(9.826), Rotation2d.fromDegrees(81.637)),
+                            new Pose2d(Units.feetToMeters(19.934), Units.feetToMeters(13.27), Rotation2d.fromDegrees(175.136)),
+                            new Pose2d(Units.feetToMeters(16.932), Units.feetToMeters(9.304), Rotation2d.fromDegrees(-59.485)),
+                            new Pose2d(Units.feetToMeters(21.874), Units.feetToMeters(3.409), Rotation2d.fromDegrees(-49.081)),
+                            new Pose2d(Units.feetToMeters(26.634), Units.feetToMeters(2.087), Rotation2d.fromDegrees(33.661)),
+                            new Pose2d(Units.feetToMeters(27.181), Units.feetToMeters(6.974), Rotation2d.fromDegrees(144.162)),
+                            new Pose2d(Units.feetToMeters(21.211), Units.feetToMeters(7.53), Rotation2d.fromDegrees(179.822)),
+                            new Pose2d(Units.feetToMeters(3.101), Units.feetToMeters(8.052), Rotation2d.fromDegrees(179.895))),
                     config
             );
         }
@@ -300,7 +302,7 @@ public class Paths {
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                            sDrivetrain.getCurrentPose(),
+                            kPowerPortReintroductionZonePose,
                             kPowerPortScoringZonePose),
                     config
             );
@@ -315,7 +317,7 @@ public class Paths {
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                            sDrivetrain.getCurrentPose(),
+                            kPowerPortScoringZonePose,
                             kPowerPortReintroductionZonePose),
                     config
             );

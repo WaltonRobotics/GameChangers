@@ -23,9 +23,13 @@ public class CompGameChangers implements WaltRobot {
 
     // Shooter LUT in all other zones
     private final double[][] mOtherZonesDistanceToVelocityTable = {
-            {11.06, 11600},
-            {18.73, 11200},
-            {30.41, 11700},
+//            {11.06, 11600},
+//            {18.73, 11200},
+//            {30.41, 11700},
+
+            {10.33, 10900},
+            {19.7, 10910},
+            {30.89, 10950},
     };
 
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mZoneOneShooterMap;
@@ -122,9 +126,9 @@ public class CompGameChangers implements WaltRobot {
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = true;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
-        mConveyorConfig.kNudgeTimeSeconds = 0.025;
-        mConveyorConfig.kFrontConveyorNudgeVoltage = 3.0;
-        mConveyorConfig.kBackConveyorNudgeVoltage = 3.0;
+        mConveyorConfig.kNudgeTimeSeconds = 0.1;
+        mConveyorConfig.kFrontConveyorNudgeVoltage = 6.0;
+        mConveyorConfig.kBackConveyorNudgeVoltage = 6.0;
         mConveyorConfig.kFrontConveyorFeedVoltage = 11.75;
         mConveyorConfig.kBackConveyorFeedVoltage = 11.75;
         mConveyorConfig.kFrontConveyorIntakeDutyCycle = 1.0;
