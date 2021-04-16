@@ -23,13 +23,15 @@ public class CompGameChangers implements WaltRobot {
 
     // Shooter LUT in all other zones
     private final double[][] mOtherZonesDistanceToVelocityTable = {
-//            {11.06, 11600},
-//            {18.73, 11200},
-//            {30.41, 11700},
+            // For real power port
+            {11.06, 11600},
+            {18.73, 11200},
+            {30.41, 11700},
 
-            {10.33, 10900},
-            {19.7, 10910},
-            {30.89, 10950},
+            // For flat power port
+//            {10.33, 10900},
+//            {19.7, 10910},
+//            {30.89, 10950},
     };
 
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mZoneOneShooterMap;

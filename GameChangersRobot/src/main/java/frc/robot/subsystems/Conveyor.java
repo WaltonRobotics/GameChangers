@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.ConveyorConfig;
-import frc.robot.robots.RobotIdentifier;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
@@ -19,8 +18,6 @@ import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.kBackConveyorID;
 import static frc.robot.Constants.CANBusIDs.kFrontConveyorID;
-import static frc.robot.Constants.Conveyor.kFrontLoadingCapacity;
-import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
 import static frc.robot.Constants.DioIDs.kConveyorBackSensorID;
 import static frc.robot.Constants.DioIDs.kConveyorFrontSensorID;
 import static frc.robot.Constants.SmartDashboardKeys.*;
@@ -99,7 +96,8 @@ public class Conveyor extends SubsystemBase {
     }
 
     public boolean shouldNudge() {
-        return /* mBallCount < kMaximumBallCapacity - kFrontLoadingCapacity && */ mFrontConveyorBool.get();
+        return /* mBallCount < kMaximumBallCapacity - kFrontLoadingCapacity && */ mFrontConveyorBool.get()
+                && !SubsystemFlags.getInstance().isNudgingDisabled();
     }
 
     public EnhancedBoolean getFrontConveyorBool() {

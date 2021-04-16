@@ -19,6 +19,7 @@ public class SubsystemFlags {
     private boolean mIsReadyToShoot = false;
     private boolean mIsZeroingDisabled = false;
     private boolean mHasTurretZeroed = false;
+    private boolean mIsNudgingDisabled = false;
 
     public static SubsystemFlags getInstance() {
         return sInstance;
@@ -70,6 +71,14 @@ public class SubsystemFlags {
 
     public boolean hasTurretZeroed() {
         return mHasTurretZeroed;
+    }
+
+    public boolean isNudgingDisabled() {
+        return mIsNudgingDisabled;
+    }
+
+    public void setIsNudgingDisabled(boolean mIsNudgingDisabled) {
+        this.mIsNudgingDisabled = mIsNudgingDisabled;
     }
 
 }

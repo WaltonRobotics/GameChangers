@@ -5,21 +5,28 @@ import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.commands.auton.TurnToAngle;
+import frc.robot.commands.auton.shootingChallenges.AlignTurret;
+import frc.robot.commands.auton.shootingChallenges.ShootAllBalls;
 import frc.robot.commands.background.IntakeCommand;
+import frc.robot.commands.background.TurretCommand;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.tuning.FindAngularMaxVelAccel;
 import frc.robot.commands.tuning.FindLinearMaxVelAccel;
 import frc.robot.commands.tuning.FindTurretAngularMaxVelAccel;
 import frc.robot.subsystems.ProMicro;
+import frc.robot.subsystems.SubsystemFlags;
 import frc.robot.vision.PixyCamHelper;
 
 import java.util.Map;
 
 import static frc.robot.Constants.Field.kGalacticSearchBreakPlaneLineMeters;
+import static frc.robot.Constants.Field.kPowerPortScoringZonePose;
 import static frc.robot.Paths.AutonavPaths.BouncePaths.*;
 import static frc.robot.Paths.AutonavPaths.sBarrelRacingTrajectory;
 import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
 import static frc.robot.Paths.GalacticSearchPaths.*;
+import static frc.robot.Paths.OpenHouseDemoPaths.sToLoadingBayTrajectory;
+import static frc.robot.Paths.OpenHouseDemoPaths.sToShootTrajectory;
 import static frc.robot.Robot.*;
 
 
@@ -162,6 +169,32 @@ public enum AutonRoutine {
                     new RamseteTrackingCommand(sBounce2Trajectory, true, false),
                     new RamseteTrackingCommand(sBounce3Trajectory, true, false),
                     new RamseteTrackingCommand(sBounce4Trajectory, true, false)
+            )
+    ),
+
+    OPEN_HOUSE_DEMO("Open House Demo For Shooting 6",
+            new SequentialCommandGroup(
+                    new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(true)),
+                    new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
+                    new AlignTurret(),
+                    new InstantCommand(() -> sConveyor.resetBallCount()),
+                    new ShootAllBalls(5, 4),
+                    new InstantCommand(() -> sDrivetrain.setHeading(180.0)),
+                    new ResetPose(sToLoadingBayTrajectory),
+                    new RamseteTrackingCommand(sToLoadingBayTrajectory, true, false),
+                    new RunCommand(() -> sDrivetrain.setDutyCycles(0.1, 0.1)).withTimeout(0.5),
+                    new InstantCommand(() -> SubsystemFlags.getInstance().setIsNudgingDisabled(false)),
+                    new InstantCommand(() ->
+                            SubsystemFlags.getInstance().setIsIntaking(true)),
+                    new WaitCommand(6.0),
+                    new InstantCommand(() ->
+                            SubsystemFlags.getInstance().setIsIntaking(false)),
+                    new RamseteTrackingCommand(sToShootTrajectory, true, false),
+                    new InstantCommand(() -> sDrivetrain.setDutyCycles(0, 0)),
+                    new AlignTurret(5.0),
+                    new InstantCommand(() -> sConveyor.resetBallCount()),
+                    new ShootAllBalls(5, 4),
+                    new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(false))
             )
     );
 

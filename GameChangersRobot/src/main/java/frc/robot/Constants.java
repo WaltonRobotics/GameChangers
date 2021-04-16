@@ -117,7 +117,6 @@ public final class Constants {
 
         // Change to false to use polynomial interpolation instead
         public static final boolean kUseInterpolationMap = true;
-
         public static final double kOptimalShootingDistanceFloorFeet = 10;
         public static final double kOptimalShootingDistanceCeilingFeet = 12;
 

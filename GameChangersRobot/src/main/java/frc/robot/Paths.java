@@ -325,4 +325,43 @@ public class Paths {
 
     }
 
+    public static class OpenHouseDemoPaths {
+
+        public static Trajectory sToLoadingBayTrajectory = generateToLoadingBayTrajectory();
+        public static Trajectory sToShootTrajectory = generateToShootTrajectory();
+
+        public static Trajectory generateToLoadingBayTrajectory() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    3.5,
+                    2.5);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            new Pose2d(Units.feetToMeters(41.251), Units.feetToMeters(7.854), Rotation2d.fromDegrees(180)),
+                            new Pose2d(Units.feetToMeters(42.119), Units.feetToMeters(16.594), Rotation2d.fromDegrees(53.189)),
+                            new Pose2d(Units.feetToMeters(51.781), Units.feetToMeters(20.196), Rotation2d.fromDegrees(0))),
+                    config
+            );
+        }
+
+        public static Trajectory generateToShootTrajectory() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    3.0,
+                    2.5);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+            config.setReversed(true);
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            new Pose2d(Units.feetToMeters(51.781), Units.feetToMeters(20.196), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(42.816), Units.feetToMeters(9.794), Rotation2d.fromDegrees(152.738))),
+                    config
+            );
+        }
+
+    }
+
 }

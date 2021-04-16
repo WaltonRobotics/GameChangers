@@ -172,6 +172,7 @@ public class Robot extends TimedRobot {
         sDrivetrain.configureControllersAuton();
 
         AutonFlags.getInstance().setIsInAuton(true);
+        SubsystemFlags.getInstance().setIsNudgingDisabled(true);
 
         LimelightHelper.setLEDMode(kIsInTuningMode);
 

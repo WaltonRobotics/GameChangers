@@ -315,7 +315,7 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (!sAlignTurretButton.get()) {
+                if (!sAlignTurretButton.get() && !AutonFlags.getInstance().isInAuton()) {
                     return mIdle;
                 }
 
