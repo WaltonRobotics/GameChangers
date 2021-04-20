@@ -119,7 +119,7 @@ public class CompGameChangers implements WaltRobot {
         mIntakeConfig = new IntakeConfig();
         mIntakeConfig.kIsIntakeControllerInverted = true;
         mIntakeConfig.kIntakeDutyCycle = 0.8;
-        mIntakeConfig.kOuttakeDutyCycle = -1.0;
+        mIntakeConfig.kOuttakeDutyCycle = -0.4;
         mIntakeConfig.kSettleTime = 0.75;
 
         mConveyorConfig = new ConveyorConfig();
@@ -129,8 +129,8 @@ public class CompGameChangers implements WaltRobot {
         mConveyorConfig.kNudgeTimeSeconds = 0.1;
         mConveyorConfig.kFrontConveyorNudgeVoltage = 6.0;
         mConveyorConfig.kBackConveyorNudgeVoltage = 6.0;
-        mConveyorConfig.kFrontConveyorFeedVoltage = 11.75;
-        mConveyorConfig.kBackConveyorFeedVoltage = 11.75;
+        mConveyorConfig.kFrontConveyorFeedVoltage = 12.0;
+        mConveyorConfig.kBackConveyorFeedVoltage = 12.0;
         mConveyorConfig.kFrontConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kBackConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kFrontConveyorOuttakeDutyCycle = -1.0;
