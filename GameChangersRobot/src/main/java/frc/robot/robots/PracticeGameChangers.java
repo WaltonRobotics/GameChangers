@@ -73,7 +73,7 @@ public class PracticeGameChangers implements WaltRobot {
         mDrivetrainConfig.kMaxAccelerationMetersPerSecondSquared = 3.0;
         mDrivetrainConfig.kLeftMaxVoltage = 12.0;
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
-        mDrivetrainConfig.kOpenLoopRampRate = 2.0;
+        mDrivetrainConfig.kOpenLoopRampRate = 0.0;
 
         mShooterConfig = new ShooterConfig();
         mShooterConfig.kSpinningUpF = 0.04934694;
