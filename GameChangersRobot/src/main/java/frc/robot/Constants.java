@@ -29,7 +29,7 @@ public final class Constants {
         public static final boolean kUseSquareCurve = true;
         public static final double kAutoAlignTimeout = 1.5;
         public static final double kTurretMasterOverrideDeadband = 0.1;
-        public static final double kNormalScaleFactor = 0.82;
+        public static final double kNormalScaleFactor = 1.0;
         public static final double kTurboScaleFactor = 1.0;
         public static final double kTurretScaleFactor = 0.4;
         public static final double kQuickStopThreshold = 0.3;
