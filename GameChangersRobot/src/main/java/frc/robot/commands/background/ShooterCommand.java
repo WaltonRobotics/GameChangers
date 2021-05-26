@@ -32,19 +32,16 @@ import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
 
-    private double mSetpointRawUnits = kDefaultVelocityRawUnits;
-
     private final IState mIdle;
     private final IState mDeterminingSetpoint;
     private final IState mSpinningUp;
     private final IState mShooting;
     private final IState mSpinningDown;
-
     private final StateMachine mStateMachine;
-
     private final BooleanSupplier mNeedsToShoot = () -> (sShootButton.get()
             || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToShoot()));
     private final BooleanSupplier mNeedsToBarf = () -> (sBarfButton.get());
+    private double mSetpointRawUnits = kDefaultVelocityRawUnits;
 
     public ShooterCommand() {
         addRequirements(sShooter);
@@ -201,7 +198,7 @@ public class ShooterCommand extends CommandBase {
             @Override
             public void initialize() {
                 SubsystemFlags.getInstance().setIsReadyToShoot(true);
-                
+
                 mStartTime = getFPGATimestamp();
             }
 

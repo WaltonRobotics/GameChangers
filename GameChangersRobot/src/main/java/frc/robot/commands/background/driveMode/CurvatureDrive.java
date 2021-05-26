@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
 import static frc.robot.Constants.DriverPreferences.*;
-import static frc.robot.Constants.SmartDashboardKeys.*;
+import static frc.robot.Constants.SmartDashboardKeys.kCurvatureTurnSensitivityKey;
+import static frc.robot.Constants.SmartDashboardKeys.kTurboScaleFactorKey;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sDrivetrain;
 
@@ -14,7 +15,7 @@ public class CurvatureDrive extends DriveMode {
 
     @Override
     public double getTurn() {
-        double rawValue =  sRightJoystick.getX();
+        double rawValue = sRightJoystick.getX();
         double scaleFactor = (sTurboButton.get() || sSecondaryTurboButton.get() || sTertiaryTurboButton.get())
                 ? SmartDashboard.getNumber(kTurboScaleFactorKey, kTurboScaleFactor)
                 : SmartDashboard.getNumber(kCurvatureTurnSensitivityKey, kNormalScaleFactor);

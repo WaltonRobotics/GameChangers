@@ -94,6 +94,7 @@ public class DriveStraight extends CommandBase {
         return sDrivetrain.getDriveStraightPowerProfiledPID().atSetpoint()
                 && sDrivetrain.getDriveStraightHeadingProfiledPID().atSetpoint();
     }
+
     @Override
     public void end(boolean interrupted) {
         sDrivetrain.setDutyCycles(0, 0);

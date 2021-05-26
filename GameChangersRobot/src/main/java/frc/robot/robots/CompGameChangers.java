@@ -17,8 +17,8 @@ public class CompGameChangers implements WaltRobot {
 
     // Shooter LUT when the turret is facing sideways and the adjustable hood is up
     private final double[][] mZoneOneDistanceToVelocityTable = {
-            { 6.2, 12000 },
-            { 12.16, 12000 },
+            {6.2, 12000},
+            {12.16, 12000},
     };
 
     // Shooter LUT in all other zones

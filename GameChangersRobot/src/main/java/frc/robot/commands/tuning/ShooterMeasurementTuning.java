@@ -14,7 +14,7 @@ import static frc.robot.Robot.sShooter;
 /**
  * This command is intended to map the gamepad joystick to the shooter motor such that
  * manual control is possible to tune the measurement period and window.
- *
+ * <p>
  * Here are the recommended instructions from Phoenix Tuner:
  * The general recommended procedure is to first set these two parameters to the minimal
  * value of ‘1’ (Measure change in position per 1ms, and no rolling average). Then plot

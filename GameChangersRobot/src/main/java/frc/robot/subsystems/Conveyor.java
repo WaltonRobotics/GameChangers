@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.ConveyorConfig;
-import frc.robot.robots.RobotIdentifier;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.IRSensor;
@@ -19,8 +18,6 @@ import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.kBackConveyorID;
 import static frc.robot.Constants.CANBusIDs.kFrontConveyorID;
-import static frc.robot.Constants.Conveyor.kFrontLoadingCapacity;
-import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
 import static frc.robot.Constants.DioIDs.kConveyorBackSensorID;
 import static frc.robot.Constants.DioIDs.kConveyorFrontSensorID;
 import static frc.robot.Constants.SmartDashboardKeys.*;
@@ -90,12 +87,12 @@ public class Conveyor extends SubsystemBase {
         setBallCount(0);
     }
 
-    public void setBallCount(int ballCount) {
-        mBallCount = ballCount;
-    }
-
     public int getBallCount() {
         return mBallCount;
+    }
+
+    public void setBallCount(int ballCount) {
+        mBallCount = ballCount;
     }
 
     public boolean shouldNudge() {
@@ -137,7 +134,7 @@ public class Conveyor extends SubsystemBase {
                 / RobotController.getInputCurrent();
         mBackConveyorController.set(VictorSPXControlMode.PercentOutput, 0.0f);
 
-        DebuggingLog.getInstance().getLogger().log(Level.INFO,"Front Conveyor Current: " + frontConveyorCurrent
+        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Front Conveyor Current: " + frontConveyorCurrent
                 + " Back Conveyor Current: " + backConveyorCurrent);
 
         boolean failure = false;

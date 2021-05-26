@@ -7,7 +7,7 @@ package frc.robot.utils.interpolation;
  */
 public class InterpolatingDouble implements Interpolable<InterpolatingDouble>, InverseInterpolable<InterpolatingDouble>,
         Comparable<InterpolatingDouble> {
-    
+
     public Double value = 0.0;
 
     public InterpolatingDouble(Double val) {
@@ -47,7 +47,7 @@ public class InterpolatingDouble implements Interpolable<InterpolatingDouble>, I
 
     @Override
     public boolean equals(Object object) {
-        if(!(object instanceof InterpolatingDouble)) return false;
+        if (!(object instanceof InterpolatingDouble)) return false;
         InterpolatingDouble other = (InterpolatingDouble) object;
         return value.equals(other.value);
     }

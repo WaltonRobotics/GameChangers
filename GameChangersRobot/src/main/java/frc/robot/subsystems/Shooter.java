@@ -10,18 +10,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.ShooterConfig;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
-import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.vision.LimelightHelper;
 
 import java.util.Arrays;
 import java.util.logging.Level;
 
-import static frc.robot.Constants.CANBusIDs.*;
+import static frc.robot.Constants.CANBusIDs.kFlywheelMasterID;
+import static frc.robot.Constants.CANBusIDs.kFlywheelSlaveID;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;
 import static frc.robot.Constants.PIDSlots.kShooterSpinningUpSlot;
 import static frc.robot.Constants.PneumaticsIDs.kAdjustableHoodSolenoidID;
-import static frc.robot.Constants.Shooter.*;
+import static frc.robot.Constants.Shooter.kFlywheelDiameterInches;
+import static frc.robot.Constants.Shooter.kFlywheelEncoderPPR;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Robot.sCurrentRobot;
 
@@ -132,7 +133,7 @@ public class Shooter extends SubsystemBase {
             mFlywheelMaster.configVelocityMeasurementPeriod(
                     VelocityMeasPeriod.valueOf(SmartDashboard.getNumber(kShooterMeasurementPeriodKey, 1)));
             mFlywheelMaster.configVelocityMeasurementWindow(
-                    (int)SmartDashboard.getNumber(kShooterMeasurementWindowKey, 1));
+                    (int) SmartDashboard.getNumber(kShooterMeasurementWindowKey, 1));
         }
 
         SmartDashboard.putNumber(kShooterFlywheelVelocityKey, getVelocityRawUnits());
@@ -174,7 +175,7 @@ public class Shooter extends SubsystemBase {
 
         DebuggingLog.getInstance().getLogger().log(Level.INFO,
                 ("Shooter Flywheel Master Current: " + currentRightMaster + " Shooter Flywheel Slave Current: "
-                + currentRightSlave));
+                        + currentRightSlave));
 
         boolean failure = false;
 

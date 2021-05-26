@@ -26,48 +26,39 @@ public class Vec3 {
         this.z = z;
     }
 
-    public static Vec3 up()
-    {
+    public static Vec3 up() {
         return new Vec3(0.0f, 1.0f, 0.0f);
     }
 
-    public static Vec3 down()
-    {
+    public static Vec3 down() {
         return new Vec3(0.0f, -1.0f, 0.0f);
     }
 
-    public static Vec3 left()
-    {
+    public static Vec3 left() {
         return new Vec3(-1.0f, 0.0f, 0.0f);
     }
 
-    public static Vec3 right()
-    {
+    public static Vec3 right() {
         return new Vec3(1.0f, 1.0f, 0.0f);
     }
 
-    public static Vec3 zero()
-    {
+    public static Vec3 zero() {
         return new Vec3(0.0f, 0.0f, 0.0f);
     }
 
-    public static Vec3 xAxis()
-    {
+    public static Vec3 xAxis() {
         return new Vec3(1.0f, 0.0f, 0.0f);
     }
 
-    public static Vec3 yAxis()
-    {
+    public static Vec3 yAxis() {
         return new Vec3(0.0f, 1.0f, 0.0f);
     }
 
-    public static Vec3 zAxis()
-    {
+    public static Vec3 zAxis() {
         return new Vec3(0.0f, 0.0f, 1.0f);
     }
 
-    public Vec3 add(Vec3 other)
-    {
+    public Vec3 add(Vec3 other) {
         Vec3 result = new Vec3();
 
         result.x += other.x;
@@ -77,8 +68,7 @@ public class Vec3 {
         return result;
     }
 
-    public Vec3 subtract(Vec3 other)
-    {
+    public Vec3 subtract(Vec3 other) {
         Vec3 result = new Vec3();
 
         result.x -= other.x;
@@ -88,8 +78,7 @@ public class Vec3 {
         return result;
     }
 
-    public Vec3 multiply(Vec3 other)
-    {
+    public Vec3 multiply(Vec3 other) {
         Vec3 result = new Vec3();
 
         result.x *= other.x;
@@ -99,8 +88,7 @@ public class Vec3 {
         return result;
     }
 
-    public Vec3 divide(Vec3 other)
-    {
+    public Vec3 divide(Vec3 other) {
         Vec3 result = new Vec3();
 
         result.x /= other.x;
@@ -110,8 +98,7 @@ public class Vec3 {
         return result;
     }
 
-    public Vec3 add(double other)
-    {
+    public Vec3 add(double other) {
         Vec3 result = new Vec3();
 
         result.x += other;
@@ -121,8 +108,7 @@ public class Vec3 {
         return result;
     }
 
-    public Vec3 subtract(double other)
-    {
+    public Vec3 subtract(double other) {
         Vec3 result = new Vec3();
 
         result.x -= other;
@@ -132,8 +118,7 @@ public class Vec3 {
         return result;
     }
 
-    public Vec3 multiply(double other)
-    {
+    public Vec3 multiply(double other) {
         Vec3 result = new Vec3();
 
         result.x *= other;
@@ -143,8 +128,7 @@ public class Vec3 {
         return result;
     }
 
-    public Vec3 divide(double other)
-    {
+    public Vec3 divide(double other) {
         Vec3 result = new Vec3();
 
         result.x /= other;
@@ -154,8 +138,7 @@ public class Vec3 {
         return result;
     }
 
-    public Vec3 multiply(Mat4 transform)
-    {
+    public Vec3 multiply(Mat4 transform) {
         return new Vec3(
                 transform.getRows()[0].x * x + transform.getRows()[0].y * y
                         + transform.getRows()[0].z * z + transform.getRows()[0].w,
@@ -166,29 +149,24 @@ public class Vec3 {
         );
     }
 
-    public Vec3 cross(Vec3 other)
-    {
+    public Vec3 cross(Vec3 other) {
         return new Vec3(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x);
     }
 
-    public double dot(Vec3 other)
-    {
+    public double dot(Vec3 other) {
         return x * other.x + y * other.y + z * other.z;
     }
 
-    public double magnitude()
-    {
+    public double magnitude() {
         return StrictMath.sqrt(x * x + y * y + z * z);
     }
 
-    public Vec3 normalize()
-    {
+    public Vec3 normalize() {
         double length = magnitude();
         return new Vec3(x / length, y / length, z / length);
     }
 
-    public double distance(Vec3 other)
-    {
+    public double distance(Vec3 other) {
         double a = x - other.x;
         double b = y - other.y;
         double c = z - other.z;

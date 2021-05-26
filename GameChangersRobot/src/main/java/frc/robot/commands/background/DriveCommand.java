@@ -1,15 +1,16 @@
 package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.auton.*;
+import frc.robot.commands.auton.AutoAlign;
 import frc.robot.commands.auton.shootingChallenges.*;
 import frc.robot.commands.tuning.BackUpTwoFeetForShooterCalibration;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.ContextFlags.kIsInfiniteRecharge;
-import static frc.robot.Constants.DriverPreferences.*;
+import static frc.robot.Constants.DriverPreferences.kAutoAlignTimeout;
 import static frc.robot.OI.*;
-import static frc.robot.Robot.*;
+import static frc.robot.Robot.sDriveModeChooser;
+import static frc.robot.Robot.sDrivetrain;
 
 public class DriveCommand extends CommandBase {
 

@@ -35,7 +35,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
-import static frc.robot.Constants.ContextFlags.*;
+import static frc.robot.Constants.ContextFlags.kIsInCompetition;
+import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
 import static frc.robot.Constants.PneumaticsIDs.kDrivetrainGearShiftSolenoidID;
@@ -301,11 +302,6 @@ public class Drivetrain extends SubsystemBase {
         mAhrs.zeroYaw();
     }
 
-    public void setHeading(double desiredHeading) {
-        mAhrs.zeroYaw();
-        mAhrs.setAngleAdjustment(-desiredHeading);
-    }
-
     public void resetPose(Pose2d startingPose) {
         resetEncoders();
         mDriveOdometry.resetPosition(startingPose, getHeading());
@@ -406,6 +402,11 @@ public class Drivetrain extends SubsystemBase {
         return Rotation2d.fromDegrees(-mAhrs.getAngle());
     }
 
+    public void setHeading(double desiredHeading) {
+        mAhrs.zeroYaw();
+        mAhrs.setAngleAdjustment(-desiredHeading);
+    }
+
     public double getAngularVelocityDegreesPerSec() {
         return -mAhrs.getRate();
     }
@@ -457,11 +458,11 @@ public class Drivetrain extends SubsystemBase {
 
         configureControllersExcludingIdleMode();
 
-        DebuggingLog.getInstance().getLogger().log(Level.INFO,"Drive Right Master Current: " + currentRightMaster
+        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Drive Right Master Current: " + currentRightMaster
                 + " Drive Right Slave Current: " + currentRightSlave);
         DebuggingLog.getInstance().getLogger().log(Level.INFO, "Drive Left Master Current: " + currentLeftMaster
                 + " Drive Left Slave Current: " + currentLeftSlave);
-        DebuggingLog.getInstance().getLogger().log(Level.INFO,"Drive RPM RMaster: " + rpmRightWheelsMaster
+        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Drive RPM RMaster: " + rpmRightWheelsMaster
                 + " RSlave: " + rpmRightWheelsSlave + " LMaster: " + rpmLeftWheelsMaster
                 + " LSlave: " + rpmLeftWheelsSlave);
 
@@ -469,7 +470,7 @@ public class Drivetrain extends SubsystemBase {
 
         if (currentRightMaster < kCurrentThres) {
             failure = true;
-            DebuggingLog.getInstance().getLogger().log(Level.WARNING,"Drive Right Master Current Low!");
+            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Drive Right Master Current Low!");
         }
 
         if (currentRightSlave < kCurrentThres) {

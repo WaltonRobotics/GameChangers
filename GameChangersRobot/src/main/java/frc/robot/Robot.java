@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
-import frc.robot.commands.auton.RamseteTrackingCommand;
-import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.commands.auton.shootingChallenges.InterstellarAccuracyRoutine;
 import frc.robot.commands.auton.shootingChallenges.PowerPortRoutine;
@@ -21,7 +21,6 @@ import frc.robot.commands.background.driveMode.ArcadeDrive;
 import frc.robot.commands.background.driveMode.CurvatureDrive;
 import frc.robot.commands.background.driveMode.DriveMode;
 import frc.robot.commands.background.driveMode.TankDrive;
-import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
@@ -40,8 +39,6 @@ import static frc.robot.Constants.Field.kPowerPortScoringZonePose;
 import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.OI.sRunInterstellarRoutineButton;
-import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
-import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
 
 /**
@@ -59,10 +56,9 @@ public class Robot extends TimedRobot {
     public static Conveyor sConveyor;
     public static Turret sTurret;
     public static ProMicro sProMicro;
-
-    private static SendableChooser<AutonRoutine> mAutonChooser;
     public static SendableChooser<SequentialCommandGroup> mShootingChallengeChooser;
     public static SendableChooser<DriveMode> sDriveModeChooser;
+    private static SendableChooser<AutonRoutine> mAutonChooser;
 
     /**
      * This function is run when the robot is first started up and should be

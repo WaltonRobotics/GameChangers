@@ -61,7 +61,7 @@ public class TurretCommand extends CommandBase {
                 }
 
                 if (sAlignTurretButton.isRisingEdge()
-                    || (AutonFlags.getInstance().isInAuton()
+                        || (AutonFlags.getInstance().isInAuton()
                         && AutonFlags.getInstance().doesAutonNeedToAlignTurret())) {
                     return mDeterminingAlignmentMethod;
                 }

@@ -17,7 +17,6 @@ import frc.robot.auton.RamseteDebuggingTable;
 
 import java.util.function.Supplier;
 
-import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
 import static frc.robot.Robot.sDrivetrain;
 
 /**
@@ -54,9 +53,9 @@ public class RamseteTrackingCommand extends CommandBase {
      * Performs no PID control and calculates no feedforwards; outputs are the raw wheel speeds
      * in meters per second from the RAMSETE controller, and will need to be converted into a usable form by the user.
      *
-     * @param trajectorySupplier     A supplier that points to the trajectory to follow.
-     * @param useSparkPID    Whether to use onboard SparkMax velocity PID or direct voltage control
-     * @param disableRamsete Whether to disable the Ramsete correction (for feedforward analysis)
+     * @param trajectorySupplier A supplier that points to the trajectory to follow.
+     * @param useSparkPID        Whether to use onboard SparkMax velocity PID or direct voltage control
+     * @param disableRamsete     Whether to disable the Ramsete correction (for feedforward analysis)
      */
     public RamseteTrackingCommand(Supplier<Trajectory> trajectorySupplier, boolean useSparkPID, boolean disableRamsete) {
         addRequirements(sDrivetrain);

@@ -12,13 +12,13 @@ import frc.robot.utils.interpolation.PolynomialRegression;
 public class PracticeGameChangers implements WaltRobot {
 
     private final double[][] mDistanceToVelocityTable = {
-            { 8.61, 13000 },
-            { 10.94, 11500 },
-            { 12.83, 11400 },
-            { 15.735, 11250 },
-            { 17.254, 11350 },
-            { 19.22, 11750 },
-            { 22.38, 12425 },
+            {8.61, 13000},
+            {10.94, 11500},
+            {12.83, 11400},
+            {15.735, 11250},
+            {17.254, 11350},
+            {19.22, 11750},
+            {22.38, 12425},
     };
 
     private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mShooterMap;

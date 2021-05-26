@@ -1,7 +1,5 @@
 package frc.robot.commands.background.driveMode;
 
-import edu.wpi.first.wpiutil.math.MathUtil;
-
 import static frc.robot.Constants.DriverPreferences.kUseSquareCurve;
 import static frc.robot.Robot.sDrivetrain;
 

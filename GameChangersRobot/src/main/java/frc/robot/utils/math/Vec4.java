@@ -23,8 +23,7 @@ public class Vec4 {
         this.w = w;
     }
 
-    public Vec4 add(Vec4 other)
-    {
+    public Vec4 add(Vec4 other) {
         Vec4 result = new Vec4();
 
         result.x += other.x;
@@ -35,8 +34,7 @@ public class Vec4 {
         return result;
     }
 
-    public Vec4 subtract(Vec4 other)
-    {
+    public Vec4 subtract(Vec4 other) {
         Vec4 result = new Vec4();
 
         result.x -= other.x;
@@ -47,8 +45,7 @@ public class Vec4 {
         return result;
     }
 
-    public Vec4 multiply(Vec4 other)
-    {
+    public Vec4 multiply(Vec4 other) {
         Vec4 result = new Vec4();
 
         result.x *= other.x;
@@ -59,8 +56,7 @@ public class Vec4 {
         return result;
     }
 
-    public Vec4 divide(Vec4 other)
-    {
+    public Vec4 divide(Vec4 other) {
         Vec4 result = new Vec4();
 
         result.x /= other.x;
@@ -71,8 +67,7 @@ public class Vec4 {
         return result;
     }
 
-    public Vec4 multiply(Mat4 transform)
-    {
+    public Vec4 multiply(Mat4 transform) {
         return new Vec4(
                 transform.getRows()[0].x * x + transform.getRows()[0].y * y
                         + transform.getRows()[0].z * z + transform.getRows()[0].w * w,
@@ -85,8 +80,7 @@ public class Vec4 {
         );
     }
 
-    public double dot(Vec4 other)
-    {
+    public double dot(Vec4 other) {
         return x * other.x + y * other.y + z * other.z + w * other.w;
     }
 

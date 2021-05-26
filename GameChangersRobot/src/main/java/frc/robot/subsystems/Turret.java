@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,20 +23,13 @@ import static frc.robot.Robot.sCurrentRobot;
 
 public class Turret extends SubsystemBase {
 
-    public enum ControlState {
-        DUTY_CYCLE, POSITIONAL, MOTION_MAGIC
-    }
-
     private final TurretConfig mConfig = sCurrentRobot.getCurrentRobot().getTurretConfig();
-
     private final TalonSRX mTurretController = new TalonSRX(kTurretID);
     private final DigitalInput mForwardLimit = new DigitalInput(kTurretLimitSwitchID);
     private final EnhancedBoolean mForwardLimitBool = new EnhancedBoolean();
-
-    private ControlState mControlState;
     private final ProfiledPIDController mClosedLoopAutoAlignProfiledPID = mConfig.closedLoopAutoAlignProfiledPID;
+    private ControlState mControlState;
     private double mSetpoint;
-
     public Turret() {
         configureTurretController();
     }
@@ -222,5 +214,9 @@ public class Turret extends SubsystemBase {
 
     private double getCurrentRawAngleHeadingRawUnits() {
         return mTurretController.getSelectedSensorPosition();
+    }
+
+    public enum ControlState {
+        DUTY_CYCLE, POSITIONAL, MOTION_MAGIC
     }
 }

@@ -3,15 +3,9 @@ package frc.robot.robots;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.config.*;
-import frc.robot.utils.interpolation.InterpolatingDouble;
-import frc.robot.utils.interpolation.InterpolatingTreeMap;
-import frc.robot.utils.interpolation.PolynomialRegression;
-
-import static frc.robot.Constants.Turret.kPositionClosedLoopErrorToleranceDegrees;
 
 public class CompDeepSpace implements WaltRobot {
 

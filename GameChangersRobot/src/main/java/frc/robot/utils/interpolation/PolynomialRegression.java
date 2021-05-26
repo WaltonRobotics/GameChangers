@@ -28,9 +28,9 @@ public class PolynomialRegression {
      */
     public PolynomialRegression(double[][] xy, int degree) {
         this.mDegree = degree;
-        this.mCoef = new DMatrixRMaj(degree+1,1);
-        this.mA = new DMatrixRMaj(1,degree+1);
-        this.mY = new DMatrixRMaj(1,1);
+        this.mCoef = new DMatrixRMaj(degree + 1, 1);
+        this.mA = new DMatrixRMaj(1, degree + 1);
+        this.mY = new DMatrixRMaj(1, 1);
 
         // create a solver that allows elements to be added or removed efficiently
         this.mSolver = LinearSolverFactory_DDRM.adjustable();
@@ -40,9 +40,9 @@ public class PolynomialRegression {
 
     public PolynomialRegression(double[] x, double[] y, int degree) {
         this.mDegree = degree;
-        this.mCoef = new DMatrixRMaj(degree+1,1);
-        this.mA = new DMatrixRMaj(1,degree+1);
-        this.mY = new DMatrixRMaj(1,1);
+        this.mCoef = new DMatrixRMaj(degree + 1, 1);
+        this.mA = new DMatrixRMaj(1, degree + 1);
+        this.mY = new DMatrixRMaj(1, 1);
 
         // create a solver that allows elements to be added or removed efficiently
         this.mSolver = LinearSolverFactory_DDRM.adjustable();
@@ -82,26 +82,26 @@ public class PolynomialRegression {
      */
     public void fit(double[] samplePoints, double[] observations) {
         // Create a copy of the observations and put it into a matrix
-        mY.reshape(observations.length,1,false);
-        System.arraycopy(observations,0, mY.data,0,observations.length);
+        mY.reshape(observations.length, 1, false);
+        System.arraycopy(observations, 0, mY.data, 0, observations.length);
 
         // reshape the matrix to avoid unnecessarily declaring new memory
         // save values is set to false since its old values don't matter
-        mA.reshape(mY.numRows, mCoef.numRows,false);
+        mA.reshape(mY.numRows, mCoef.numRows, false);
 
         // set up the A matrix
-        for( int i = 0; i < observations.length; i++ ) {
+        for (int i = 0; i < observations.length; i++) {
 
             double obs = 1;
 
-            for(int j = 0; j < mCoef.numRows; j++ ) {
-                mA.set(i,j,obs);
+            for (int j = 0; j < mCoef.numRows; j++) {
+                mA.set(i, j, obs);
                 obs *= samplePoints[i];
             }
         }
 
         // process the A matrix and see if it failed
-        if( !mSolver.setA(mA) )
+        if (!mSolver.setA(mA))
             throw new RuntimeException("Solver failed");
 
         // solver the the coefficients
@@ -111,8 +111,7 @@ public class PolynomialRegression {
     /**
      * Returns the expected response {@code y} given the value of the predictor variable {@code x}.
      *
-     * @param x
-     *            the value of the predictor variable
+     * @param x the value of the predictor variable
      * @return the expected response {@code y} given the value of the predictor variable {@code x}
      */
     public double predict(double x) {
@@ -131,26 +130,26 @@ public class PolynomialRegression {
      */
     public void removeWorstFit() {
         // find the observation with the most error
-        int worstIndex=-1;
+        int worstIndex = -1;
         double worstError = -1;
 
-        for(int i = 0; i < mY.numRows; i++ ) {
+        for (int i = 0; i < mY.numRows; i++) {
             double predictedObs = 0;
 
-            for(int j = 0; j < mCoef.numRows; j++ ) {
-                predictedObs += mA.get(i,j)* mCoef.get(j,0);
+            for (int j = 0; j < mCoef.numRows; j++) {
+                predictedObs += mA.get(i, j) * mCoef.get(j, 0);
             }
 
-            double error = Math.abs(predictedObs- mY.get(i,0));
+            double error = Math.abs(predictedObs - mY.get(i, 0));
 
-            if(error > worstError) {
+            if (error > worstError) {
                 worstError = error;
                 worstIndex = i;
             }
         }
 
         // nothing left to remove, so just return
-        if( worstIndex == -1 )
+        if (worstIndex == -1)
             return;
 
         DebuggingLog.getInstance().getLogger().log(Level.FINE,
@@ -172,12 +171,12 @@ public class PolynomialRegression {
      * @param index which element is to be removed
      */
     private void removeObservation(int index) {
-        final int N = mY.numRows-1;
-        final double d[] = mY.data;
+        final int N = mY.numRows - 1;
+        final double[] d = mY.data;
 
         // shift
-        for( int i = index; i < N; i++ ) {
-            d[i] = d[i+1];
+        for (int i = index; i < N; i++) {
+            d[i] = d[i + 1];
         }
         mY.numRows--;
     }
@@ -203,14 +202,14 @@ public class PolynomialRegression {
 
         double yAverage = ySum / mY.numRows;
 
-        for(int i = 0; i < mY.numRows; i++ ) {
+        for (int i = 0; i < mY.numRows; i++) {
             double predictedObs = 0;
 
-            for(int j = 0; j < mCoef.numRows; j++ ) {
-                predictedObs += mA.get(i,j)* mCoef.get(j,0);
+            for (int j = 0; j < mCoef.numRows; j++) {
+                predictedObs += mA.get(i, j) * mCoef.get(j, 0);
             }
 
-            SSRes += Math.pow(predictedObs- mY.get(i,0), 2);
+            SSRes += Math.pow(predictedObs - mY.get(i, 0), 2);
             SSTot += Math.pow(predictedObs - yAverage, 2);
         }
 

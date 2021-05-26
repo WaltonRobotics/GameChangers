@@ -50,8 +50,7 @@ public class UtilMethods {
         return result;
     }
 
-    public static double restrictAngle(double value, double min, double max)
-    {
+    public static double restrictAngle(double value, double min, double max) {
         if (value == 180.0) return 180.0;
         if (value == -180.0) return -180.0;
 
@@ -63,7 +62,7 @@ public class UtilMethods {
 
     public static double getDifferenceBetweenAngles(double source, double target) {
         double a = source - target;
-        a += (a>180) ? -360 : (a<-180) ? 360 : 0;
+        a += (a > 180) ? -360 : (a < -180) ? 360 : 0;
         return a;
     }
 

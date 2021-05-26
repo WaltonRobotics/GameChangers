@@ -6,7 +6,8 @@ import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
-import static frc.robot.Constants.Conveyor.*;
+import static frc.robot.Constants.Conveyor.kFrontLoadingCapacity;
+import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sConveyor;
 

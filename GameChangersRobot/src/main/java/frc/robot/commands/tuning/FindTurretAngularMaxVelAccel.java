@@ -2,7 +2,6 @@ package frc.robot.commands.tuning;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.robots.RobotIdentifier;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
@@ -11,7 +10,6 @@ import java.util.logging.Level;
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
 import static frc.robot.Constants.Tuning.kDrivetrainAccelerationWindow;
-import static frc.robot.Robot.sCurrentRobot;
 import static frc.robot.Robot.sTurret;
 
 public class FindTurretAngularMaxVelAccel extends CommandBase {

@@ -9,16 +9,12 @@ import frc.robot.utils.movingAverage.SimpleMovingAverage;
 
 import static frc.robot.Constants.Field.kTargetHeightInches;
 import static frc.robot.Constants.Limelight.*;
-import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Robot.sShooter;
 
 public class LimelightHelper {
 
-    private static boolean mIsLEDOn = false;
-
     private static final NetworkTable mTable = NetworkTableInstance.getDefault().getTable("limelight");
-
     private static final NetworkTableEntry mTx = mTable.getEntry("tx");
     private static final NetworkTableEntry mTy = mTable.getEntry("ty");
     private static final NetworkTableEntry mTa = mTable.getEntry("ta");
@@ -27,10 +23,10 @@ public class LimelightHelper {
     private static final NetworkTableEntry mLedMode = mTable.getEntry("ledMode");
     private static final NetworkTableEntry mCamMode = mTable.getEntry("camMode");
     private static final NetworkTableEntry mPipeline = mTable.getEntry("pipeline");
-
     private static final SimpleMovingAverage mTxMovingAverage = new SimpleMovingAverage(kTxWindowSize);
     private static final SimpleMovingAverage mTyMovingAverage = new SimpleMovingAverage(kTyWindowSize);
     private static final PnPData mPnPData = new PnPData(kCamtranWindowSize);
+    private static boolean mIsLEDOn = false;
 
     private LimelightHelper() {
         // Update moving averages when tx and ty change
@@ -70,6 +66,7 @@ public class LimelightHelper {
         SmartDashboard.putNumber(kLimelightSolvePnPYawDegreesKey, camtran[4]);
         SmartDashboard.putNumber(kLimelightSolvePnPRollDegreesKey, camtran[5]);
     }
+
     /**
      * @return tx The x angle from target in degrees
      */

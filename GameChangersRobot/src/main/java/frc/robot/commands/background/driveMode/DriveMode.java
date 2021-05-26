@@ -18,7 +18,7 @@ public abstract class DriveMode {
     }
 
     public double getLeftJoystickY() {
-        double rawValue =  sLeftJoystick.getY();
+        double rawValue = sLeftJoystick.getY();
         double scaleFactor = getScaleFactor();
 
         if (Math.abs(rawValue) < kDriveJoystickDeadband)
@@ -28,7 +28,7 @@ public abstract class DriveMode {
     }
 
     public double getRightJoystickY() {
-        double rawValue =  sRightJoystick.getY();
+        double rawValue = sRightJoystick.getY();
         double scaleFactor = getScaleFactor();
 
         if (Math.abs(rawValue) < kDriveJoystickDeadband)
@@ -50,7 +50,7 @@ public abstract class DriveMode {
      * The right joystick is used for turning.
      */
     public double getTurn() {
-        double rawValue =  sRightJoystick.getX();
+        double rawValue = sRightJoystick.getX();
         double scaleFactor = getScaleFactor();
 
         if (Math.abs(rawValue) < kDriveJoystickDeadband)

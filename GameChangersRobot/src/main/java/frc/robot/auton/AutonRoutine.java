@@ -20,7 +20,7 @@ import static frc.robot.Paths.AutonavPaths.BouncePaths.*;
 import static frc.robot.Paths.AutonavPaths.sBarrelRacingTrajectory;
 import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
 import static frc.robot.Paths.GalacticSearchPaths.*;
-import static frc.robot.Robot.*;
+import static frc.robot.Robot.sDrivetrain;
 
 
 public enum AutonRoutine {
