@@ -7,9 +7,9 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.*;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.estimator.KalmanFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -26,8 +26,8 @@ import edu.wpi.first.wpiutil.math.Nat;
 import edu.wpi.first.wpiutil.math.VecBuilder;
 import edu.wpi.first.wpiutil.math.numbers.N2;
 import frc.robot.auton.LiveDashboardHelper;
-import frc.robot.commands.background.driveMode.ArcadeDrive;
 import frc.robot.config.DrivetrainConfig;
+import frc.robot.robots.RobotIdentifier;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.UtilMethods;
 
@@ -36,9 +36,9 @@ import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.*;
-import static frc.robot.Constants.DriverPreferences.kUseSquareCurve;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
+import static frc.robot.Constants.PneumaticsIDs.kDrivetrainGearShiftSolenoidID;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.Constants.Tuning.kDrivetrainTuningSettingsUpdateRateSeconds;
 import static frc.robot.Robot.sCurrentRobot;
@@ -52,6 +52,9 @@ public class Drivetrain extends SubsystemBase {
     private final CANSparkMax mLeftWheelsSlave = new CANSparkMax(kDrivetrainLeftSlaveID, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax mRightWheelsSlave = new CANSparkMax(kDrivetrainRightSlaveID, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final AHRS mAhrs = new AHRS(SPI.Port.kMXP);
+
+    // Only for DEEP_SPACE
+    private final Solenoid mGearShiftSolenoid = new Solenoid(kDrivetrainGearShiftSolenoidID);
 
     private final SimpleMotorFeedforward mLinearFeedforward = mConfig.linearFeedforward;
     private final SimpleMotorFeedforward mAngularFeedforward = mConfig.angularFeedforward;
@@ -70,13 +73,13 @@ public class Drivetrain extends SubsystemBase {
     private final KalmanFilter<N2, N2, N2> mDriveObserver = new KalmanFilter<>(
             Nat.N2(), Nat.N2(),
             mDriveModel,
-            VecBuilder.fill(3.0, 3.0), // Standard deviations of drivetrain model
+            VecBuilder.fill(10.0, 10.0), // Standard deviations of drivetrain model
             VecBuilder.fill(0.01, 0.01), // Standard deviations of encoder velocities
             0.02
     );
     private final LinearQuadraticRegulator<N2, N2, N2> mDriveLQRController = new LinearQuadraticRegulator<>(
             mDriveModel,
-            VecBuilder.fill(8.0, 8.0), // qelms. Velocity error tolerance, in radians per second
+            VecBuilder.fill(0.01, 0.01), // qelms. Velocity error tolerance, in radians per second
             VecBuilder.fill(12.0, 12.0), // relms. Control effort (voltage) tolerance
             0.02
     );
@@ -120,6 +123,10 @@ public class Drivetrain extends SubsystemBase {
         if (kIsInTuningMode) {
             Notifier updateTuningSettingsNotifier = new Notifier(this::updateTuningSettings);
             updateTuningSettingsNotifier.startPeriodic(kDrivetrainTuningSettingsUpdateRateSeconds);
+        }
+
+        if (sCurrentRobot == RobotIdentifier.COMP_DEEP_SPACE) {
+            mGearShiftSolenoid.set(false);
         }
     }
 

@@ -3,6 +3,7 @@ package frc.robot.commands.background;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.auton.AutonFlags;
+import frc.robot.robots.RobotIdentifier;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.ContextFlags.kIsInfiniteRecharge;
 import static frc.robot.Constants.Field.kEndOfZoneOneFromTargetFeet;
 import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
@@ -25,6 +27,7 @@ import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.SmartDashboardKeys.kShooterCurrentSetpointRawUnitsKey;
 import static frc.robot.Constants.SmartDashboardKeys.kShooterTuningSetpointRawUnitsKey;
 import static frc.robot.OI.*;
+import static frc.robot.Robot.sCurrentRobot;
 import static frc.robot.Robot.sShooter;
 
 public class ShooterCommand extends CommandBase {
@@ -231,7 +234,10 @@ public class ShooterCommand extends CommandBase {
         mStateMachine = new StateMachine("Shooter", mIdle);
 
         sToggleLimelightLEDsButton.whenPressed(LimelightHelper::toggleLimelight);
-        sToggleShooterAdjustableHoodButton.whenPressed(sShooter::toggleAdjustableHood);
+
+        if (!kIsInfiniteRecharge && sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+            sToggleShooterAdjustableHoodButton.whenPressed(sShooter::toggleAdjustableHood);
+        }
     }
 
     @Override

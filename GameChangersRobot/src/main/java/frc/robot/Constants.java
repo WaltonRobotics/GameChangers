@@ -11,7 +11,7 @@ public final class Constants {
         public static final int kTeamNumber = 2974;
         public static final boolean kIsInCompetition = false;
         public static final boolean kIsInTuningMode = false;
-        public static final boolean kIsInfiniteRecharge = false;
+        public static final boolean kIsInfiniteRecharge = true;
 
     }
 
@@ -26,7 +26,7 @@ public final class Constants {
     public static class DriverPreferences {
 
         public static final double kDriveJoystickDeadband = 0.1;
-        public static final boolean kUseSquareCurve = true;
+        public static final boolean kUseSquareCurve = false;
         public static final double kAutoAlignTimeout = 1.5;
         public static final double kTurretMasterOverrideDeadband = 0.1;
         public static final double kNormalScaleFactor = 1.0;
@@ -71,6 +71,7 @@ public final class Constants {
 
     public static class PneumaticsIDs {
 
+        public static final int kDrivetrainGearShiftSolenoidID = 0;
         public static final int kDeployIntakeSolenoidID = 1;
         public static final int kRetractIntakeSolenoidID = 4;
         public static final int kAdjustableHoodSolenoidID = 5;
@@ -213,6 +214,8 @@ public final class Constants {
     }
 
     public static class SmartDashboardKeys {
+
+        public static final String kRobotIdentifierKey = "Robot/Robot Identifier";
 
         public static final String kDrivetrainLeftVelocityPKey = "Drivetrain/Left Velocity P";
         public static final String kDrivetrainRightVelocityPKey = "Drivetrain/Right Velocity P";

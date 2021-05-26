@@ -6,8 +6,8 @@ package frc.robot.robots;
 
 public enum RobotIdentifier {
 
-    COMP_DEEP_SPACE(true, false, new CompDeepSpace()),
-    PRACTICE_GAME_CHANGERS(false, true, new PracticeGameChangers()),
+    COMP_DEEP_SPACE(false, true, new CompDeepSpace()),
+    PRACTICE_GAME_CHANGERS(true, false, new PracticeGameChangers()),
     COMP_GAME_CHANGERS(true, true, new CompGameChangers());
 
     private final boolean input1;

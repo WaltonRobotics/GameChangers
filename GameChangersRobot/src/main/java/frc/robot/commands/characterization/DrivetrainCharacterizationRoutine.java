@@ -4,10 +4,10 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.robots.RobotIdentifier;
 
 import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
-import static frc.robot.Robot.sDrivetrain;
-import static frc.robot.Robot.sIntake;
+import static frc.robot.Robot.*;
 
 public class DrivetrainCharacterizationRoutine extends CommandBase {
 
@@ -16,13 +16,21 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
     private final NetworkTableEntry mRotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
     private final Number[] mNumberArray = new Number[10];
 
-    @Override
-    public void initialize() {
+    public DrivetrainCharacterizationRoutine() {
         addRequirements(sDrivetrain);
         addRequirements(sIntake);
+    }
 
+    @Override
+    public void initialize() {
         sDrivetrain.configureControllersAuton();
         sDrivetrain.reset();
+
+        if (sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS
+                || sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS) {
+            sIntake.setRetracted(true);
+            sIntake.setDeployed(false);
+        }
     }
 
     @Override

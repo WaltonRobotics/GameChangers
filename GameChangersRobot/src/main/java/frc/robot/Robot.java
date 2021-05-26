@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
+import frc.robot.commands.auton.RamseteTrackingCommand;
+import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.commands.auton.shootingChallenges.InterstellarAccuracyRoutine;
 import frc.robot.commands.auton.shootingChallenges.PowerPortRoutine;
@@ -19,6 +21,7 @@ import frc.robot.commands.background.driveMode.ArcadeDrive;
 import frc.robot.commands.background.driveMode.CurvatureDrive;
 import frc.robot.commands.background.driveMode.DriveMode;
 import frc.robot.commands.background.driveMode.TankDrive;
+import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
@@ -28,6 +31,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
+import static frc.robot.Constants.ContextFlags.kIsInfiniteRecharge;
 import static frc.robot.Constants.DioIDs.kRobotID1;
 import static frc.robot.Constants.DioIDs.kRobotID2;
 import static frc.robot.Constants.DriverPreferences.kNormalScaleFactor;
@@ -36,6 +40,8 @@ import static frc.robot.Constants.Field.kPowerPortScoringZonePose;
 import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.OI.sRunInterstellarRoutineButton;
+import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
+import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
 
 /**
@@ -67,51 +73,54 @@ public class Robot extends TimedRobot {
         sCurrentRobot = RobotIdentifier.findByInputs(new DigitalInput(kRobotID1).get(), new DigitalInput(kRobotID2).get());
         DebuggingLog.getInstance().getLogger().log(Level.INFO, "Current robot is " + sCurrentRobot.name());
 
+        SmartDashboard.putString(kRobotIdentifierKey, sCurrentRobot.name());
+
         sDrivetrain = new Drivetrain();
+        sShooter = new Shooter();
+        sIntake = new Intake();
+        sConveyor = new Conveyor();
+        sTurret = new Turret();
+        sProMicro = new ProMicro();
+
         CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
 
         // Only instantiate subsystems/autons which require them for Infinite Recharge/Game Changers robots
         // to maintain backwards compatibility with DeepSpace
         if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS
                 || sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
-            sShooter = new Shooter();
             CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
-
-            sIntake = new Intake();
 //            CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
-
-            sConveyor = new Conveyor();
             CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
 
             if (sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
-                sTurret = new Turret();
                 CommandScheduler.getInstance().setDefaultCommand(sTurret, new TurretCommand());
             }
 
-            sProMicro = new ProMicro();
             CommandScheduler.getInstance().setDefaultCommand(sProMicro, new ProMicroCommand());
-
-            mAutonChooser = new SendableChooser<>();
-            Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));
-            mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
-            SmartDashboard.putData("Auton Selector", mAutonChooser);
-
-            mShootingChallengeChooser = new SendableChooser<>();
-            mShootingChallengeChooser.setDefaultOption("Do Nothing", new SequentialCommandGroup(
-                    new SetIntakeToggle(false),
-                    new InstantCommand(() -> sDrivetrain.resetPose(kPowerPortScoringZonePose))
-            ));
-//            mShootingChallengeChooser.addOption("Interstellar Accuracy Challenge", new InterstellarAccuracyRoutine());
-            mShootingChallengeChooser.addOption("Power Port Challenge", new PowerPortRoutine());
-
-            SmartDashboard.putData("Shooting Challenge Selector", mShootingChallengeChooser);
         }
+
+        mAutonChooser = new SendableChooser<>();
+        Arrays.stream(AutonRoutine.values()).forEach(n -> mAutonChooser.addOption(n.name(), n));
+        mAutonChooser.setDefaultOption(DO_NOTHING.name(), DO_NOTHING);
+        SmartDashboard.putData("Auton Selector", mAutonChooser);
+
+        mShootingChallengeChooser = new SendableChooser<>();
+        mShootingChallengeChooser.setDefaultOption("Do Nothing", new SequentialCommandGroup(
+                new SetIntakeToggle(false),
+                new InstantCommand(() -> sDrivetrain.resetPose(kPowerPortScoringZonePose))
+        ));
+//            mShootingChallengeChooser.addOption("Interstellar Accuracy Challenge", new InterstellarAccuracyRoutine());
+        mShootingChallengeChooser.addOption("Power Port Challenge", new PowerPortRoutine());
+
+        SmartDashboard.putData("Shooting Challenge Selector", mShootingChallengeChooser);
 
         populateShuffleboard();
 
         LimelightHelper.setLEDMode(kIsInTuningMode);
 
-        sRunInterstellarRoutineButton.whenPressed(new InterstellarAccuracyRoutine());
+        if (!kIsInfiniteRecharge) {
+            sRunInterstellarRoutineButton.whenPressed(new InterstellarAccuracyRoutine());
+        }
     }
 
     private void populateShuffleboard() {
@@ -173,16 +182,19 @@ public class Robot extends TimedRobot {
 
         AutonFlags.getInstance().setIsInAuton(true);
 
+//        new SequentialCommandGroup(
+//                new ResetPose(sTestTrajectory),
+//                new RamseteTrackingCommand(sTestTrajectory, false, true)
+//        ).schedule();
+
+//        new DrivetrainCharacterizationRoutine().schedule();
+
         LimelightHelper.setLEDMode(kIsInTuningMode);
 
-        // Auton routines do not work with DeepSpace robots due to subsystem requirements
-        if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS
-                || sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
-            DebuggingLog.getInstance().getLogger().log(Level.INFO, "Selected autonomous description: "
-                    + mAutonChooser.getSelected().getDescription());
+        DebuggingLog.getInstance().getLogger().log(Level.INFO, "Selected autonomous description: "
+                + mAutonChooser.getSelected().getDescription());
 
-            mAutonChooser.getSelected().getCommandGroup().schedule();
-        }
+        mAutonChooser.getSelected().getCommandGroup().schedule();
     }
 
     /**
@@ -198,7 +210,9 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopInit() {
-        mShootingChallengeChooser.getSelected().schedule();
+        if (!kIsInfiniteRecharge) {
+            mShootingChallengeChooser.getSelected().schedule();
+        }
 
         AutonFlags.getInstance().setIsInAuton(false);
 
@@ -210,6 +224,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+
     }
 
     /**
