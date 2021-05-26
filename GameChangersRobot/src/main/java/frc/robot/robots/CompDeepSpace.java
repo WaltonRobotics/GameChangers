@@ -10,6 +10,10 @@ import frc.robot.config.*;
 public class CompDeepSpace implements WaltRobot {
 
     private final DrivetrainConfig mDrivetrainConfig;
+    private final ShooterConfig mShooterConfig;
+    private final IntakeConfig mIntakeConfig;
+    private final ConveyorConfig mConveyorConfig;
+    private final TurretConfig mTurretConfig;
 
     public CompDeepSpace() {
         populateShooterInterpolationMethods();
@@ -52,6 +56,11 @@ public class CompDeepSpace implements WaltRobot {
         mDrivetrainConfig.kLeftMaxVoltage = 12.0;
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
         mDrivetrainConfig.kOpenLoopRampRate = 0.0;
+
+        mShooterConfig = new ShooterConfig();
+        mIntakeConfig = new IntakeConfig();
+        mConveyorConfig = new ConveyorConfig();
+        mTurretConfig = new TurretConfig();
     }
 
     @Override
@@ -66,21 +75,21 @@ public class CompDeepSpace implements WaltRobot {
 
     @Override
     public ShooterConfig getShooterConfig() {
-        return null;
+        return mShooterConfig;
     }
 
     @Override
     public IntakeConfig getIntakeConfig() {
-        return null;
+        return mIntakeConfig;
     }
 
     @Override
     public ConveyorConfig getConveyorConfig() {
-        return null;
+        return mConveyorConfig;
     }
 
     @Override
     public TurretConfig getTurretConfig() {
-        return null;
+        return mTurretConfig;
     }
 }
