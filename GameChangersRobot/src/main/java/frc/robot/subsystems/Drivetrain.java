@@ -129,6 +129,9 @@ public class Drivetrain extends SubsystemBase {
         if (sCurrentRobot == RobotIdentifier.COMP_DEEP_SPACE) {
             mGearShiftSolenoid.set(false);
         }
+
+        // Compensate for SparkMax velocity measurement delay
+//        mDriveLQRController.latencyCompensate(mDriveModel, 0.02, 0.0195);
     }
 
     public void configureControllersTeleop() {
