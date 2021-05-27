@@ -72,7 +72,9 @@ public class RamseteTrackingCommand extends CommandBase {
                 @Override
                 public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
                                                double angularVelocityRefRadiansPerSecond) {
-                    return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+                    return new ChassisSpeeds(linearVelocityRefMeters,
+                            0.0,
+                            angularVelocityRefRadiansPerSecond);
                 }
             };
         } else {
