@@ -10,7 +10,10 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpiutil.math.Matrix;
 import edu.wpi.first.wpiutil.math.VecBuilder;
+import edu.wpi.first.wpiutil.math.numbers.N1;
+import edu.wpi.first.wpiutil.math.numbers.N2;
 import frc.robot.auton.LiveDashboardHelper;
 import frc.robot.auton.LiveDashboardTable;
 import frc.robot.auton.RamseteDebuggingTable;
@@ -120,6 +123,11 @@ public class RamseteTrackingCommand extends CommandBase {
 
         LiveDashboardHelper.putRobotData(sDrivetrain.getCurrentPose());
         LiveDashboardHelper.putTrajectoryData(mTrajectory.getInitialPose());
+
+        sDrivetrain.getDriveControlLoop().reset(VecBuilder.fill(
+                mSpeeds.get().leftMetersPerSecond,
+                mSpeeds.get().rightMetersPerSecond)
+        );
     }
 
     @Override
