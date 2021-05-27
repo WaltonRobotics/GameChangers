@@ -39,8 +39,8 @@ public class CompDeepSpace implements WaltRobot {
         drivetrainDriveStraightHeadingProfiledPID.setTolerance(0.5);
 
         mDrivetrainConfig = new DrivetrainConfig();
-        mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(0.191, 4.56, 0.0295);
-        mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(0.409, 4.74, -0.11);
+        mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(.216, 4.58, 0.322);
+        mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(.449, 4.51, .22);
         mDrivetrainConfig.leftVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.rightVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.leftVelocityPID = new PIDController(0.35, 0, 0);
@@ -50,7 +50,7 @@ public class CompDeepSpace implements WaltRobot {
         mDrivetrainConfig.driveStraightProfiledHeadingPID = drivetrainDriveStraightHeadingProfiledPID;
         mDrivetrainConfig.kPositionFactor = 1.0 / 36.797;
         mDrivetrainConfig.kVelocityFactor = mDrivetrainConfig.kPositionFactor / 60.0;
-        mDrivetrainConfig.kTrackWidthMeters = 0.8206803070586121;
+        mDrivetrainConfig.kTrackWidthMeters = 0.8285293767383018;
         mDrivetrainConfig.kMaxVelocityMetersPerSecond = Units.feetToMeters(8.0);
         mDrivetrainConfig.kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(2.0);
         mDrivetrainConfig.kLeftMaxVoltage = 12.0;

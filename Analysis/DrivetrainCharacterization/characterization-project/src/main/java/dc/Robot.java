@@ -106,9 +106,9 @@ public class Robot extends TimedRobot {
 
 
                     rightEncoderPosition = ()
-                            -> encoder.getPosition() * encoderConstant;
+                            -> encoder.getPosition() * -encoderConstant;
                     rightEncoderRate = ()
-                            -> encoder.getVelocity() * encoderConstant / 60.;
+                            -> encoder.getVelocity() * -encoderConstant / 60.;
 
                     break;
                 case LEFT:
@@ -144,7 +144,7 @@ public class Robot extends TimedRobot {
         CANSparkMax leftFollowerID4 = setupCANSparkMax(4, Sides.FOLLOWER, false);
         leftFollowerID4.follow(leftWheelsMaster, false);
 
-        rightWheelsMaster = setupCANSparkMax(1, Sides.RIGHT, false);
+        rightWheelsMaster = setupCANSparkMax(1, Sides.RIGHT, true);
         CANSparkMax rightFollowerID2 = setupCANSparkMax(2, Sides.FOLLOWER, false);
         rightFollowerID2.follow(rightWheelsMaster, false);
         drive = new DifferentialDrive(leftWheelsMaster, rightWheelsMaster);
@@ -195,6 +195,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("l_encoder_rate", leftEncoderRate.get());
         SmartDashboard.putNumber("r_encoder_pos", rightEncoderPosition.get());
         SmartDashboard.putNumber("r_encoder_rate", rightEncoderRate.get());
+        SmartDashboard.putNumber("heading", gyroAngleRadians.get());
     }
 
     @Override

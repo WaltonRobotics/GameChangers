@@ -178,11 +178,6 @@ public class Robot extends TimedRobot {
 
         AutonFlags.getInstance().setIsInAuton(true);
 
-//        new SequentialCommandGroup(
-//                new ResetPose(sTestTrajectory),
-//                new RamseteTrackingCommand(sTestTrajectory, false, true)
-//        ).schedule();
-
 //        new DrivetrainCharacterizationRoutine().schedule();
 
         LimelightHelper.setLEDMode(kIsInTuningMode);

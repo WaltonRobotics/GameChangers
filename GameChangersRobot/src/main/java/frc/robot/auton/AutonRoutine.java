@@ -20,6 +20,7 @@ import static frc.robot.Paths.AutonavPaths.BouncePaths.*;
 import static frc.robot.Paths.AutonavPaths.sBarrelRacingTrajectory;
 import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
 import static frc.robot.Paths.GalacticSearchPaths.*;
+import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
 import static frc.robot.Robot.sDrivetrain;
 
 
@@ -162,6 +163,13 @@ public enum AutonRoutine {
                     new RamseteTrackingCommand(sBounce2Trajectory, true, false),
                     new RamseteTrackingCommand(sBounce3Trajectory, true, false),
                     new RamseteTrackingCommand(sBounce4Trajectory, true, false)
+            )
+    ),
+
+    TEST_TRAJECTORY("Simple Spline",
+            new SequentialCommandGroup(
+                    new ResetPose(sTestTrajectory),
+                    new RamseteTrackingCommand(sTestTrajectory, true, true)
             )
     );
 
