@@ -3,6 +3,7 @@ package frc.robot.robots;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.config.*;
 import frc.robot.utils.interpolation.InterpolatingDouble;
@@ -119,6 +120,17 @@ public class PracticeGameChangers implements WaltRobot {
         mConveyorConfig.kBackConveyorOuttakeDutyCycle = -1.0;
 
         mTurretConfig = new TurretConfig();
+        mTurretConfig.kLimitSwitchPosition = Rotation2d.fromDegrees(90);
+        mTurretConfig.kForwardSoftLimitRawUnits = 0;
+        mTurretConfig.kReverseSoftLimitRawUnits = -460;
+        final double kGearRatio = 230.0 / 30.0;
+        final double kTicksPerDriverRotation = 177;
+        mTurretConfig.kTicksPerDegree = kTicksPerDriverRotation * kGearRatio / 360.0;
+        mTurretConfig.kPositionalP = 4.0;
+        mTurretConfig.kPositionalI = 0.002;
+        mTurretConfig.kPositionalD = 0.0;
+        mTurretConfig.kPositionalIZone = 100;
+        mTurretConfig.kPositionalMaxIntegralAccumulator = 0;
     }
 
     @Override

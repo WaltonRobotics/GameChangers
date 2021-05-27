@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public class SimEnabler implements Sendable {
-    DriverStationSim sim = new DriverStationSim();
 
     public SimEnabler() {
         DriverStationSim.setAutonomous(true);
