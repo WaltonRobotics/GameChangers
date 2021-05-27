@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.LinearSystemLoop;
 import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import edu.wpi.first.wpiutil.math.Nat;
 import edu.wpi.first.wpiutil.math.VecBuilder;
@@ -91,6 +90,8 @@ public class Drivetrain extends SubsystemBase {
             mDriveObserver,
             12.0, 0.02
     );
+    private final LinearPlantInversionFeedforward<N2, N2, N2> mCrossCoupledFeedforward =
+            new LinearPlantInversionFeedforward<>(mDriveModel, 0.02);
 
     private final PIDController mLeftVoltagePID = mConfig.leftVoltagePID;
     private final PIDController mRightVoltagePID = mConfig.rightVoltagePID;
@@ -361,6 +362,10 @@ public class Drivetrain extends SubsystemBase {
 
     public LinearSystemLoop<N2, N2, N2> getDriveControlLoop() {
         return mDriveControlLoop;
+    }
+
+    public LinearPlantInversionFeedforward<N2, N2, N2> getCrossCoupledFeedforward() {
+        return mCrossCoupledFeedforward;
     }
 
     public Pose2d getCurrentPose() {

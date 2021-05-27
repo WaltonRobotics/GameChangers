@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpiutil.math.Matrix;
 import edu.wpi.first.wpiutil.math.VecBuilder;
 import edu.wpi.first.wpiutil.math.numbers.N1;
@@ -124,9 +125,12 @@ public class RamseteTrackingCommand extends CommandBase {
         LiveDashboardHelper.putRobotData(sDrivetrain.getCurrentPose());
         LiveDashboardHelper.putTrajectoryData(mTrajectory.getInitialPose());
 
-        sDrivetrain.getDriveControlLoop().reset(VecBuilder.fill(
-                mSpeeds.get().leftMetersPerSecond,
-                mSpeeds.get().rightMetersPerSecond)
+        sDrivetrain.getDriveControlLoop().reset(
+                VecBuilder.fill(mSpeeds.get().leftMetersPerSecond, mSpeeds.get().rightMetersPerSecond)
+        );
+
+        sDrivetrain.getCrossCoupledFeedforward().reset(
+                VecBuilder.fill(mSpeeds.get().leftMetersPerSecond, mSpeeds.get().rightMetersPerSecond)
         );
     }
 
@@ -170,7 +174,9 @@ public class RamseteTrackingCommand extends CommandBase {
 //            sDrivetrain.setVoltages(leftOutput, rightOutput);
 
             sDrivetrain.getDriveControlLoop().setNextR(VecBuilder.fill(leftSpeedSetpoint, rightSpeedSetpoint));
-            sDrivetrain.getDriveControlLoop().correct(VecBuilder.fill(mSpeeds.get().leftMetersPerSecond, mSpeeds.get().rightMetersPerSecond));
+            sDrivetrain.getDriveControlLoop().correct(
+                    VecBuilder.fill(mSpeeds.get().leftMetersPerSecond, mSpeeds.get().rightMetersPerSecond)
+            );
             sDrivetrain.getDriveControlLoop().predict(dt);
 
             leftOutput = sDrivetrain.getDriveControlLoop().getU(0);
@@ -185,6 +191,11 @@ public class RamseteTrackingCommand extends CommandBase {
             double rightFeedforward =
                     mFeedforward.calculate(rightSpeedSetpoint,
                             (rightSpeedSetpoint - mPrevSpeeds.rightMetersPerSecond) / dt);
+
+//            sDrivetrain.getCrossCoupledFeedforward().calculate(VecBuilder.fill(leftSpeedSetpoint, rightSpeedSetpoint));
+//
+//            double leftFeedforward = sDrivetrain.getCrossCoupledFeedforward().getUff(0);
+//            double rightFeedforward = sDrivetrain.getCrossCoupledFeedforward().getUff(1);
 
             RamseteDebuggingTable.getInstance().setLeftMeasurement(mSpeeds.get().leftMetersPerSecond);
             RamseteDebuggingTable.getInstance().setLeftReference(leftSpeedSetpoint);
