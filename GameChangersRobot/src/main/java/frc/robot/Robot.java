@@ -175,6 +175,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         sDrivetrain.configureControllersAuton();
+        sDrivetrain.reset();
 
         AutonFlags.getInstance().setIsInAuton(true);
 
