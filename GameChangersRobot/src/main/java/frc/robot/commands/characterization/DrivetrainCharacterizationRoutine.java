@@ -9,6 +9,8 @@ import frc.robot.robots.RobotIdentifier;
 import static edu.wpi.first.wpilibj.RobotController.getBatteryVoltage;
 import static frc.robot.Robot.*;
 
+// Use characterization project for faster dt and more precise data
+@Deprecated
 public class DrivetrainCharacterizationRoutine extends CommandBase {
 
     private final NetworkTableEntry mAutoSpeedEntry = NetworkTableInstance.getDefault().getEntry("/robot/autospeed");

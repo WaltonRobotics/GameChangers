@@ -28,7 +28,7 @@ public enum RobotIdentifier {
             }
         }
 
-        return PRACTICE_GAME_CHANGERS;
+        return COMP_GAME_CHANGERS;
     }
 
     public WaltRobot getCurrentRobot() {

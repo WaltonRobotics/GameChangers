@@ -1,31 +1,42 @@
 {
-    # Note: The first motor in the list of ports should be the one with an encoder
-    # Ports for the left-side motors
-    "leftMotorPorts": [3, 4],
-    # Ports for the right-side motors
+    # Set to True if the spark max will be brushed
+    # ** WARNING: Improperly setting this can break things **
+    "brushed": False,
+    # Ports for motors
+    # If doing drive test, treat this as the left side of the drivetrain
+    "motorPorts": [3, 4],
+    # Only if you are doing drive (leave empty "[]" if not)
     "rightMotorPorts": [1, 2],
-    # Note: Inversions of the slaves (i.e. any motor *after* the first on
-    # each side of the drive) are *with respect to their master*.  This is
-    # different from the other poject types!
-    # Inversions for the left-side motors
-    "leftMotorsInverted": [True, False],
-    # Inversions for the right side motors
+    # Set motors to inverted or not
+    # If doing drive test, treat this as the left side of the drivetrain
+    "motorsInverted": [True, False],
+    # Only if you are doing drive (leave empty "[]" if not)
     "rightMotorsInverted": [False, False],
-    # If your robot has only one encoder, set all right encoder fields to `None`
     # Encoder edges-per-revolution (*NOT* cycles per revolution!)
-    # This value should be the edges per revolution *of the wheels*, and so
-    # should take into account gearing between the encoder and the wheels
-    "encoderEPR": 512,
-    # Whether the left encoder is inverted
-    "leftEncoderInverted": True,
-    # Whether the right encoder is inverted:
-    "rightEncoderInverted": False,
-    # The total gear reduction between the motor and the wheels, expressed as
-    # a fraction [motor turns]/[wheel turns]
+    # **Note pass an EPR of 1 for the NEO Integrated encoder as the SparkMax
+    # already handles this conversion**
+    # For the REV Through Bore Encoder, use 8192 (2048 * 4)
+    "encoderEPR": 1,
+    # Gearing accounts for the gearing between the encoder and the output shaft
     "gearing": 1,
-    # Wheel diameter (in units of your choice - will dictate units of analysis)
-    "wheelDiameter": 0.1524,
-    # Your gyro type (one of "NavX", "Pigeon", "ADXRS450", "AnalogGyro", or "None")
+    # Set this to True if you would like to use the SparkMax Data Port
+    # Note that the Data Port is the 10 pin port on the top of the SparkMax
+    # Setting this to False indicates you want to use the 6 pin encoder port
+    # which is located in the front of the SparkMax
+    "useDataPort": False,
+    # Encoder ports (leave empty "[]" if not needed)
+    # Specifying encoder ports indicates you want to use Rio-side encoders
+    # If doing drive test, treat this as the left side of the drivetrain
+    "encoderPorts": [],
+    # Only if you are doing drive (leave empty "[]" if not)
+    "rightEncoderPorts": [],
+    # Set to True if encoders need to be inverted
+    # If doing drive test, treat this as the left side of the drivetrain
+    "encoderInverted": False,
+    # Only if you are doing drive (set to False if not needed)
+    "rightEncoderInverted": False,
+    # ** The following is only if you are using a gyro for the DriveTrain test**
+    # Gyro type (one of "NavX", "Pigeon", "ADXRS450", "AnalogGyro", or "None")
     "gyroType": "NavX",
     # Whatever you put into the constructor of your gyro
     # Could be:
@@ -37,5 +48,4 @@
     # "" (NavX using default SPI, ADXRS450 using onboard CS0, or no gyro)
     "gyroPort": "SPI.Port.kMXP",
 }
-
 
