@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 import java.util.function.IntSupplier;
@@ -26,8 +27,8 @@ public class EnhancedJoystickButton extends Button {
     public static final int POV_W = -8;
     public static final int POV_NW = -9;
 
-    private boolean current;
-    private boolean previous;
+    private boolean mIsRisingEdge;
+    private boolean mIsFallingEdge;
 
     /**
      * Create a dynamic EnhancedJoystickButton with an EnhancedButtonIndex.
@@ -37,16 +38,21 @@ public class EnhancedJoystickButton extends Button {
         // Because of this, we can use the EnhancedButtonIndex get() instead of overriding it.
         super(buttonIndex::get);
 
-        // Set up rising/falling edge detection.
-        previous = current = false;
-        whenActive(() -> {
-            previous = current;
-            current = true;
-        });
-        whenInactive(() -> {
-            previous = current;
-            current = false;
-        });
+        CommandScheduler.getInstance().addButton(
+                new Runnable() {
+                    private boolean mPreviousState = get();
+
+                    @Override
+                    public void run() {
+                        boolean currentState = get();
+
+                        mIsRisingEdge = currentState && !mPreviousState;
+                        mIsFallingEdge = !currentState && mPreviousState;
+
+                        mPreviousState = currentState;
+                    }
+                }
+        );
     }
 
     /**
@@ -60,14 +66,14 @@ public class EnhancedJoystickButton extends Button {
      * Returns true if the button has just been pressed.
      */
     public boolean isRisingEdge() {
-        return current && !previous;
+        return mIsRisingEdge;
     }
 
     /**
      * Returns true if the button has just been released.
      */
     public boolean isFallingEdge() {
-        return !current && previous;
+        return mIsFallingEdge;
     }
 
     /**

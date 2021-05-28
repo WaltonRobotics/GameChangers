@@ -2,12 +2,12 @@ package frc.robot.utils;
 
 public class EnhancedBoolean {
 
-    private boolean value;
-    private boolean previousValue;
+    private boolean mCurrentState;
+    private boolean mPreviousState;
 
-    public EnhancedBoolean(boolean value) {
-        this.value = value;
-        previousValue = value;
+    public EnhancedBoolean(boolean currentState) {
+        this.mCurrentState = currentState;
+        mPreviousState = currentState;
     }
 
     public EnhancedBoolean() {
@@ -15,31 +15,31 @@ public class EnhancedBoolean {
     }
 
     public boolean get() {
-        return value;
+        return mCurrentState;
     }
 
-    public void set(boolean newValue) {
-        previousValue = value;
-        value = newValue;
+    public void set(boolean newState) {
+        mPreviousState = mCurrentState;
+        mCurrentState = newState;
     }
 
     public boolean isRisingEdge() {
-        return value && !previousValue;
+        return mCurrentState && !mPreviousState;
     }
 
     public boolean isFallingEdge() {
-        return !value && previousValue;
+        return !mCurrentState && mPreviousState;
     }
 
     public boolean hasChanged() {
-        return value != previousValue;
+        return mCurrentState != mPreviousState;
     }
 
     @Override
     public String toString() {
         return "EnhancedBoolean{" +
-                "value=" + value +
-                ", previousValue=" + previousValue +
+                "currentState=" + mCurrentState +
+                ", previousState=" + mPreviousState +
                 '}';
     }
 }
