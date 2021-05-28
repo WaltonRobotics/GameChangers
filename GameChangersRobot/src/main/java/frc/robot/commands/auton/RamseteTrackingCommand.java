@@ -108,7 +108,7 @@ public class RamseteTrackingCommand extends CommandBase {
     public void initialize() {
         mTrajectory = mTrajectorySupplier.get();
 
-        mPrevTime = 0;
+        mPrevTime = -1;
         var initialState = mTrajectory.sample(0);
         mPrevSpeeds = mKinematics.toWheelSpeeds(
                 new ChassisSpeeds(initialState.velocityMetersPerSecond,
