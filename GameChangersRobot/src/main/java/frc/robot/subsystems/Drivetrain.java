@@ -74,13 +74,13 @@ public class Drivetrain extends SubsystemBase {
     private final KalmanFilter<N2, N2, N2> mDriveObserver = new KalmanFilter<>(
             Nat.N2(), Nat.N2(),
             mDriveModel,
-            VecBuilder.fill(10.0, 10.0), // Standard deviations of drivetrain model
+            VecBuilder.fill(0.5, 0.5), // Standard deviations of drivetrain model
             VecBuilder.fill(0.01, 0.01), // Standard deviations of encoder velocities
             0.02
     );
     private final LinearQuadraticRegulator<N2, N2, N2> mDriveLQRController = new LinearQuadraticRegulator<>(
             mDriveModel,
-            VecBuilder.fill(0.01, 0.01), // qelms. Velocity error tolerance, in meters per second
+            VecBuilder.fill(0.0000001, 0.0000001), // qelms. Velocity error tolerance, in meters per second
             VecBuilder.fill(12.0, 12.0), // relms. Control effort (voltage) tolerance
             0.02
     );
@@ -133,7 +133,7 @@ public class Drivetrain extends SubsystemBase {
         }
 
         // Compensate for SparkMax velocity measurement delay
-//        mDriveLQRController.latencyCompensate(mDriveModel, 0.02, 0.0195);
+        mDriveLQRController.latencyCompensate(mDriveModel, 0.02, 0.0195);
     }
 
     public void configureControllersTeleop() {
@@ -189,14 +189,14 @@ public class Drivetrain extends SubsystemBase {
         mRightWheelsMaster.getEncoder().setVelocityConversionFactor(mConfig.kVelocityFactor);
         mRightWheelsSlave.getEncoder().setVelocityConversionFactor(mConfig.kVelocityFactor);
 
-//        mLeftWheelsMaster.getPIDController().setP(mLeftVoltagePID.getP(), kDrivetrainVoltageSlot);
-//        mLeftWheelsMaster.getPIDController().setI(mLeftVoltagePID.getI(), kDrivetrainVoltageSlot);
-//        mLeftWheelsMaster.getPIDController().setD(mLeftVoltagePID.getD(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setP(mLeftVoltagePID.getP(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setI(mLeftVoltagePID.getI(), kDrivetrainVoltageSlot);
+        mLeftWheelsMaster.getPIDController().setD(mLeftVoltagePID.getD(), kDrivetrainVoltageSlot);
 //        mLeftWheelsMaster.getPIDController().setOutputRange(-1, 1, kDrivetrainVoltageSlot);
-//
-//        mRightWheelsMaster.getPIDController().setP(mRightVoltagePID.getP(), kDrivetrainVoltageSlot);
-//        mRightWheelsMaster.getPIDController().setI(mRightVoltagePID.getI(), kDrivetrainVoltageSlot);
-//        mRightWheelsMaster.getPIDController().setD(mRightVoltagePID.getD(), kDrivetrainVoltageSlot);
+
+        mRightWheelsMaster.getPIDController().setP(mRightVoltagePID.getP(), kDrivetrainVoltageSlot);
+        mRightWheelsMaster.getPIDController().setI(mRightVoltagePID.getI(), kDrivetrainVoltageSlot);
+        mRightWheelsMaster.getPIDController().setD(mRightVoltagePID.getD(), kDrivetrainVoltageSlot);
 //        mRightWheelsMaster.getPIDController().setOutputRange(-1, 1, kDrivetrainVoltageSlot);
 
         mLeftWheelsMaster.getPIDController().setP(mLeftVelocityPID.getP(), kDrivetrainVelocitySlot);

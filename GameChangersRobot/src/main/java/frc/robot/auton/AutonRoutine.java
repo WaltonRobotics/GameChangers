@@ -169,7 +169,7 @@ public enum AutonRoutine {
     TEST_TRAJECTORY("Simple Spline",
             new SequentialCommandGroup(
                     new ResetPose(sTestTrajectory),
-                    new RamseteTrackingCommand(sTestTrajectory, true, true)
+                    new RamseteTrackingCommand(sTestTrajectory, true, false)
             )
     );
 
