@@ -116,7 +116,7 @@ public final class Constants {
         public static final double kDefaultVelocityRawUnits = 11500;
         public static final double kBarfVelocityRawUnits = 6000;
 
-        // Change to false to use polynomial interpolation instead
+        // Change to false to use polynomial regression instead
         public static final boolean kUseInterpolationMap = true;
 
         public static final double kOptimalShootingDistanceFloorFeet = 10;

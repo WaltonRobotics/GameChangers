@@ -2,7 +2,7 @@ package frc.robot.config;
 
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
-import frc.robot.utils.interpolation.PolynomialRegression;
+import frc.robot.utils.regression.PolynomialRegression;
 
 public class ShooterConfig {
 

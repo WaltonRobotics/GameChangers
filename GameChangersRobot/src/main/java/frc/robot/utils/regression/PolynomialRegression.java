@@ -1,4 +1,4 @@
-package frc.robot.utils.interpolation;
+package frc.robot.utils.regression;
 
 import frc.robot.utils.DebuggingLog;
 import org.ejml.data.DMatrixRMaj;

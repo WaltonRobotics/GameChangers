@@ -80,7 +80,7 @@ public class Drivetrain extends SubsystemBase {
     );
     private final LinearQuadraticRegulator<N2, N2, N2> mDriveLQRController = new LinearQuadraticRegulator<>(
             mDriveModel,
-            VecBuilder.fill(0.0000001, 0.0000001), // qelms. Velocity error tolerance, in meters per second
+            VecBuilder.fill(0.00001, 0.00001), // qelms. Velocity error tolerance, in meters per second
             VecBuilder.fill(12.0, 12.0), // relms. Control effort (voltage) tolerance
             0.02
     );

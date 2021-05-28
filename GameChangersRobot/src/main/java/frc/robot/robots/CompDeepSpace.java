@@ -9,18 +9,18 @@ import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.config.*;
 import frc.robot.utils.interpolation.InterpolatingDouble;
 import frc.robot.utils.interpolation.InterpolatingTreeMap;
-import frc.robot.utils.interpolation.PolynomialRegression;
+import frc.robot.utils.regression.PolynomialRegression;
 
 public class CompDeepSpace implements WaltRobot {
 
     // Shooter LUT when the turret is facing sideways and the adjustable hood is up
-    private final double[][] mZoneOneDistanceToVelocityTable = {
+    private static final double[][] mZoneOneDistanceToVelocityTable = {
             {6.2, 12000},
             {12.16, 12000},
     };
 
     // Shooter LUT in all other zones
-    private final double[][] mOtherZonesDistanceToVelocityTable = {
+    private static final double[][] mOtherZonesDistanceToVelocityTable = {
 //            {11.06, 11600},
 //            {18.73, 11200},
 //            {30.41, 11700},
