@@ -3,13 +3,16 @@ package frc.robot.commands.background;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.auton.AutonFlags;
+import frc.robot.robots.RobotIdentifier;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 
+import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.SmartDashboardKeys.kIntakeIntakingDutyCycleKey;
 import static frc.robot.OI.*;
+import static frc.robot.Robot.sCurrentRobot;
 import static frc.robot.Robot.sIntake;
 
 public class IntakeCommand extends CommandBase {
@@ -61,23 +64,26 @@ public class IntakeCommand extends CommandBase {
         };
 
         mDeploy = new IState() {
-//            private double mStartTime;
+            private double mStartTime;
 
             @Override
             public void initialize() {
                 sIntake.setDeployed(true);
                 sIntake.setRetracted(false);
 
-//                mStartTime = getFPGATimestamp();
+                mStartTime = getFPGATimestamp();
             }
 
             @Override
             public IState execute() {
-//                if (getFPGATimestamp() - mStartTime > sIntake.getConfig().kSettleTime) {
-//                    sIntake.setDeployed(false);
-//                }
-//
-//                sIntake.setRetracted(false);
+                if (sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+                    if (getFPGATimestamp() - mStartTime > sIntake.getConfig().kSettleTime) {
+                        sIntake.setDeployed(false);
+                        return mIdle;
+                    }
+
+                    return mDeploy;
+                }
 
                 return mIdle;
             }

@@ -73,8 +73,8 @@ public class CompDeepSpace implements WaltRobot {
         mDrivetrainConfig = new DrivetrainConfig();
         mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(.216, 4.58, 0.322);
         mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(.449, 4.51, .22);
-        mDrivetrainConfig.leftVoltagePID = new PIDController(5.0, 0, 0);
-        mDrivetrainConfig.rightVoltagePID = new PIDController(5.0, 0, 0);
+        mDrivetrainConfig.leftVoltagePID = new PIDController(1.0, 0, 0);
+        mDrivetrainConfig.rightVoltagePID = new PIDController(1.0, 0, 0);
         mDrivetrainConfig.leftVelocityPID = new PIDController(0.35, 0, 0);
         mDrivetrainConfig.rightVelocityPID = new PIDController(0.35, 0, 0);
         mDrivetrainConfig.turnProfiledPID = drivetrainTurnProfiledPID;

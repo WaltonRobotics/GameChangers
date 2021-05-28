@@ -12,7 +12,18 @@ import frc.robot.utils.interpolation.PolynomialRegression;
 
 public class PracticeGameChangers implements WaltRobot {
 
-    private final double[][] mDistanceToVelocityTable = {
+    // Shooter LUT when the turret is facing sideways and the adjustable hood is up
+    private final double[][] mZoneOneDistanceToVelocityTable = {
+            {6.2, 12000},
+            {12.16, 12000},
+    };
+
+    // Shooter LUT in all other zones
+    private final double[][] mOtherZonesDistanceToVelocityTable = {
+//            {11.06, 11600},
+//            {18.73, 11200},
+//            {30.41, 11700},
+
             {8.61, 13000},
             {10.94, 11500},
             {12.83, 11400},
@@ -22,8 +33,10 @@ public class PracticeGameChangers implements WaltRobot {
             {22.38, 12425},
     };
 
-    private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mShooterMap;
-    private final PolynomialRegression mShooterPolynomial;
+    private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mZoneOneShooterMap;
+    private final PolynomialRegression mZoneOneShooterPolynomial;
+    private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mOtherZonesShooterMap;
+    private final PolynomialRegression mOtherZonesShooterPolynomial;
 
     private final DrivetrainConfig mDrivetrainConfig;
     private final ShooterConfig mShooterConfig;
@@ -32,8 +45,11 @@ public class PracticeGameChangers implements WaltRobot {
     private final TurretConfig mTurretConfig;
 
     public PracticeGameChangers() {
-        mShooterMap = new InterpolatingTreeMap<>();
-        mShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
+        mZoneOneShooterMap = new InterpolatingTreeMap<>();
+        mZoneOneShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
+
+        mOtherZonesShooterMap = new InterpolatingTreeMap<>();
+        mOtherZonesShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
 
         populateShooterInterpolationMethods();
 
@@ -96,8 +112,10 @@ public class PracticeGameChangers implements WaltRobot {
         mShooterConfig.kLimelightMountingHeight = 23;
         mShooterConfig.kLimelightMountingAngle = 33.5;
 
-        mShooterConfig.kOtherZonesShooterMap = mShooterMap;
-        mShooterConfig.kOtherZonesShooterPolynomial = mShooterPolynomial;
+        mShooterConfig.kZoneOneShooterMap = mZoneOneShooterMap;
+        mShooterConfig.kZoneOneShooterPolynomial = mZoneOneShooterPolynomial;
+        mShooterConfig.kOtherZonesShooterMap = mOtherZonesShooterMap;
+        mShooterConfig.kOtherZonesShooterPolynomial = mOtherZonesShooterPolynomial;
 
         mIntakeConfig = new IntakeConfig();
         mIntakeConfig.kIsIntakeControllerInverted = false;
@@ -109,10 +127,10 @@ public class PracticeGameChangers implements WaltRobot {
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = false;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
-        mConveyorConfig.kNudgeTimeSeconds = 0.29;
-        mConveyorConfig.kFrontConveyorNudgeVoltage = 8.0;
-        mConveyorConfig.kBackConveyorNudgeVoltage = 8.0;
-        mConveyorConfig.kFrontConveyorFeedVoltage = 12.0;
+        mConveyorConfig.kNudgeTimeSeconds = 0.25;
+        mConveyorConfig.kFrontConveyorNudgeVoltage = 12.0;
+        mConveyorConfig.kBackConveyorNudgeVoltage = 10.0;
+        mConveyorConfig.kFrontConveyorFeedVoltage = 10.0;
         mConveyorConfig.kBackConveyorFeedVoltage = 12.0;
         mConveyorConfig.kFrontConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kBackConveyorIntakeDutyCycle = 1.0;
@@ -135,11 +153,18 @@ public class PracticeGameChangers implements WaltRobot {
 
     @Override
     public void populateShooterInterpolationMethods() {
-        mShooterPolynomial.fit(mDistanceToVelocityTable);
+        mZoneOneShooterPolynomial.fit(mZoneOneDistanceToVelocityTable);
 
-        mShooterMap.clear();
-        for (double[] pair : mDistanceToVelocityTable) {
-            mShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
+        mZoneOneShooterMap.clear();
+        for (double[] pair : mZoneOneDistanceToVelocityTable) {
+            mZoneOneShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
+        }
+
+        mOtherZonesShooterPolynomial.fit(mOtherZonesDistanceToVelocityTable);
+
+        mOtherZonesShooterMap.clear();
+        for (double[] pair : mOtherZonesDistanceToVelocityTable) {
+            mOtherZonesShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
         }
     }
 

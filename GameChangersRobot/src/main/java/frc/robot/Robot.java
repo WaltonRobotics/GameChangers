@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
         if (sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS
                 || sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
             CommandScheduler.getInstance().setDefaultCommand(sShooter, new ShooterCommand());
-//            CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
+            CommandScheduler.getInstance().setDefaultCommand(sIntake, new IntakeCommand());
             CommandScheduler.getInstance().setDefaultCommand(sConveyor, new ConveyorCommand());
 
             if (sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
