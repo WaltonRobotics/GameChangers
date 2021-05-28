@@ -232,7 +232,7 @@ public class ShooterCommand extends CommandBase {
 
         sToggleLimelightLEDsButton.whenPressed(LimelightHelper::toggleLimelight);
 
-        if (!kIsInfiniteRecharge && sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
+        if (!kIsInfiniteRecharge && sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS) {
             sToggleShooterAdjustableHoodButton.whenPressed(sShooter::toggleAdjustableHood);
         }
     }
