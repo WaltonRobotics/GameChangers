@@ -181,8 +181,13 @@ public class RamseteTrackingCommand extends CommandBase {
             );
             sDrivetrain.getDriveControlLoop().predict(dt);
 
-            leftOutput = sDrivetrain.getDriveControlLoop().getU(0);
-            rightOutput = sDrivetrain.getDriveControlLoop().getU(1);
+            sDrivetrain.getCrossCoupledFeedforward().calculate(VecBuilder.fill(leftSpeedSetpoint, rightSpeedSetpoint));
+
+            double leftFeedforward = sDrivetrain.getCrossCoupledFeedforward().getUff(0);
+            double rightFeedforward = sDrivetrain.getCrossCoupledFeedforward().getUff(1);
+
+            leftOutput = leftFeedforward + sDrivetrain.getDriveControlLoop().getU(0);
+            rightOutput = rightFeedforward + sDrivetrain.getDriveControlLoop().getU(1);
 
             sDrivetrain.setVoltages(leftOutput, rightOutput);
         } else {
