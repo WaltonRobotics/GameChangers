@@ -80,7 +80,6 @@ public class Robot extends TimedRobot {
 
         LiveWindow.disableAllTelemetry();
     }
-
     // methods to create and setup motors (reduce redundancy)
     public CANSparkMax setupCANSparkMax(int port, Sides side, boolean inverted) {
         // create new motor and set neutral modes (if needed)
