@@ -1,6 +1,10 @@
 # Ignore user-specific idea files
 .idea/
 
+### Gradle ###
+.gradle/
+/build/
+
 # Compiled source #
 ###################
 *.com
