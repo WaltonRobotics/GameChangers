@@ -137,7 +137,7 @@ public class ShooterCommand extends CommandBase {
                 sShooter.setClosedLoopVelocityRawUnits(mSetpointRawUnits);
 
                 if (!mNeedsToShoot.getAsBoolean() && !mNeedsToBarf.getAsBoolean()) {
-                    return mSpinningDown;
+                    return mIdle;
                 }
 
                 if (Math.abs(sShooter.getClosedLoopErrorRawUnits()) <= kSpinningUpToleranceRawUnits) {

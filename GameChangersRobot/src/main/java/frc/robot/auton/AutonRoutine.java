@@ -1,10 +1,13 @@
 package frc.robot.auton;
 
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.Paths;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.commands.auton.TurnToAngle;
+import frc.robot.commands.auton.shootingChallenges.AlignTurret;
+import frc.robot.commands.auton.shootingChallenges.ShootAllBalls;
 import frc.robot.commands.background.IntakeCommand;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.tuning.FindAngularMaxVelAccel;
@@ -21,12 +24,62 @@ import static frc.robot.Paths.AutonavPaths.sBarrelRacingTrajectory;
 import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
 import static frc.robot.Paths.GalacticSearchPaths.*;
 import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
+import static frc.robot.Paths.RoutineOne.sBackupToShoot;
+import static frc.robot.Paths.RoutineOne.sPickupThreeFromTrench;
+import static frc.robot.Paths.RoutineZero.sBackwards;
+import static frc.robot.Paths.RoutineZero.sForwards;
 import static frc.robot.Robot.sDrivetrain;
 
 
 public enum AutonRoutine {
 
     DO_NOTHING("Do Nothing", new SequentialCommandGroup()),
+
+    ZERO_A("Cross Baseline Forwards", new SequentialCommandGroup(
+            new ResetPose(sForwards),
+            new RamseteTrackingCommand(sForwards, true, false)
+    )),
+
+    ZERO_B("Cross Baseline Backwards", new SequentialCommandGroup(
+            new ResetPose(sBackwards),
+            new RamseteTrackingCommand(sBackwards, true, false)
+    )),
+
+    ZERO_C("Shoot 3 Cross Baseline Forwards", new SequentialCommandGroup(
+            new AlignTurret(),
+            new ShootAllBalls(3, 7.5),
+            new ResetPose(sForwards),
+            new RamseteTrackingCommand(sForwards, true, false)
+    )),
+
+    ZERO_D("Shoot 3 Cross Baseline Backwards", new SequentialCommandGroup(
+            new AlignTurret(),
+            new ShootAllBalls(3, 7.5),
+            new ResetPose(sBackwards),
+            new RamseteTrackingCommand(sBackwards, true, false)
+    )),
+
+    // 13
+    // 18
+    ROUTINE_ONE("Shoot 3, Pickup 3, Shoot 3 for 6", new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                    new SetIntakeToggle(true),
+                    new SequentialCommandGroup(
+                            new AlignTurret(),
+                            new ShootAllBalls(3, 4)
+                    )
+            ),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+            new ResetPose(sPickupThreeFromTrench),
+            new RamseteTrackingCommand(sPickupThreeFromTrench, true, false),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+            new RamseteTrackingCommand(sBackupToShoot, true, false),
+            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
+            new AlignTurret(),
+            new ShootAllBalls(3, 4)
+    )),
 
     DRIVETRAIN_CHARACTERIZATION("Drivetrain Characterization", new DrivetrainCharacterizationRoutine()),
 

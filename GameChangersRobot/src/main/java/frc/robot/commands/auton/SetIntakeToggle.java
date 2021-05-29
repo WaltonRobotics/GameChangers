@@ -9,8 +9,6 @@ import static frc.robot.Robot.sIntake;
 public class SetIntakeToggle extends SequentialCommandGroup {
 
     public SetIntakeToggle(boolean state) {
-        addRequirements(sIntake);
-
         if (state) {
             addCommands(
                     new InstantCommand(() -> sIntake.setDeployed(true)),
