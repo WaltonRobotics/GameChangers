@@ -224,6 +224,10 @@ public class RamseteTrackingCommand extends CommandBase {
     public void end(boolean interrupted) {
         mTimer.stop();
         LiveDashboardTable.getInstance().setFollowingPath(false);
+
+        if (interrupted) {
+            sDrivetrain.setVelocities(0.0, 0.0, 0.0, 0.0);
+        }
     }
 
     @Override

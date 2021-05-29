@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.auton.AutonFlags;
 import frc.robot.config.ConveyorConfig;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.EnhancedBoolean;
