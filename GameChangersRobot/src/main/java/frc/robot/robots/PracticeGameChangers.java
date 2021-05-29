@@ -75,7 +75,7 @@ public class PracticeGameChangers implements WaltRobot {
 
         mDrivetrainConfig = new DrivetrainConfig();
         mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
-        mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(1, 1, 1);
+        mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(0.839, 2.02, 0.196);
         mDrivetrainConfig.leftVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.rightVoltagePID = new PIDController(1, 0, 0);
         mDrivetrainConfig.leftVelocityPID = new PIDController(0.197, 0, 0);
