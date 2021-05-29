@@ -1,8 +1,0 @@
-dc/Main.java
- dc.Main
-dc/Robot.java
- dc.Robot
- dc.Robot$1
- dc.Robot$Sides
-dc/SimEnabler.java
- dc.SimEnabler
