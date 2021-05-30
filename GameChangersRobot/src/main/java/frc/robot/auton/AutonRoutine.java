@@ -1,7 +1,6 @@
 package frc.robot.auton;
 
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.Paths;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
@@ -24,7 +23,7 @@ import static frc.robot.Paths.AutonavPaths.sBarrelRacingTrajectory;
 import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
 import static frc.robot.Paths.GalacticSearchPaths.*;
 import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
-import static frc.robot.Paths.RoutineOne.sBackupToShoot;
+import static frc.robot.Paths.RoutineOne.sBackupToShootThree;
 import static frc.robot.Paths.RoutineOne.sPickupThreeFromTrench;
 import static frc.robot.Paths.RoutineZero.sBackwards;
 import static frc.robot.Paths.RoutineZero.sForwards;
@@ -45,14 +44,14 @@ public enum AutonRoutine {
             new RamseteTrackingCommand(sBackwards, true, false)
     )),
 
-    ZERO_C("Shoot 3 Cross Baseline Forwards", new SequentialCommandGroup(
+    ZERO_C("Shoot 3, Cross Baseline Forwards", new SequentialCommandGroup(
             new AlignTurret(),
             new ShootAllBalls(3, 7.5),
             new ResetPose(sForwards),
             new RamseteTrackingCommand(sForwards, true, false)
     )),
 
-    ZERO_D("Shoot 3 Cross Baseline Backwards", new SequentialCommandGroup(
+    ZERO_D("Shoot 3, Cross Baseline Backwards", new SequentialCommandGroup(
             new AlignTurret(),
             new ShootAllBalls(3, 7.5),
             new ResetPose(sBackwards),
@@ -75,7 +74,7 @@ public enum AutonRoutine {
             new RamseteTrackingCommand(sPickupThreeFromTrench, true, false),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-            new RamseteTrackingCommand(sBackupToShoot, true, false),
+            new RamseteTrackingCommand(sBackupToShootThree, true, false),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
             new AlignTurret(),
             new ShootAllBalls(3, 4)

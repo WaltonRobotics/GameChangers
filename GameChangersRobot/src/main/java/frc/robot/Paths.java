@@ -95,7 +95,7 @@ public class Paths {
     public static class RoutineOne {
 
         public static Trajectory sPickupThreeFromTrench = generatePickupThreeFromTrench();
-        public static Trajectory sBackupToShoot = generateBackupToShoot();
+        public static Trajectory sBackupToShootThree = generateBackupToShootThree();
 
         public static Trajectory generatePickupThreeFromTrench() {
             TrajectoryConfig config = new TrajectoryConfig(
@@ -113,7 +113,7 @@ public class Paths {
             );
         }
 
-        public static Trajectory generateBackupToShoot() {
+        public static Trajectory generateBackupToShootThree() {
             TrajectoryConfig config = new TrajectoryConfig(
                     Units.feetToMeters(9.5), Units.feetToMeters(4.0));
 
