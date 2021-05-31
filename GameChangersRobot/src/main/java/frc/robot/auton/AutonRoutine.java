@@ -64,7 +64,7 @@ public enum AutonRoutine {
 
     // 13
     // 18
-    ROUTINE_ONE("Shoot 3, Pickup 3, Shoot 3 for 6", new SequentialCommandGroup(
+    ROUTINE_ONE("Shoot 3, Pickup 3 From Our Trench, Shoot 3 (6pt)", new SequentialCommandGroup(
             new ParallelCommandGroup(
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
@@ -84,7 +84,7 @@ public enum AutonRoutine {
             new ShootAllBalls(3, 4)
     )),
 
-    ROUTINE_TWO_A("Pickup 2 from Enemy Trench, Shoot 5 for 6", new SequentialCommandGroup(
+    ROUTINE_TWO_A("Pickup 2 from Enemy Trench, Shoot 5 (6pt)", new SequentialCommandGroup(
             new SetIntakeToggle(true),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
@@ -97,7 +97,7 @@ public enum AutonRoutine {
             new ShootAllBalls(5, 4)
     )),
 
-    ROUTINE_TWO_B("Pickup 2 from Enemy Trench, Shoot 5 for 6", new SequentialCommandGroup(
+    ROUTINE_TWO_B("Pickup 2 from Enemy Trench, Shoot 5 (4pt)", new SequentialCommandGroup(
             new SetIntakeToggle(true),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
@@ -110,7 +110,7 @@ public enum AutonRoutine {
             new ShootAllBalls(5, 4)
     )),
 
-    ROUTINE_THREE("Shoot 3, Pickup 5, Shoot 5 for 8", new SequentialCommandGroup(
+    ROUTINE_THREE("Shoot 3, Pickup 5 From Our Trench, Shoot 5 (6pt)", new SequentialCommandGroup(
             new ParallelCommandGroup(
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
@@ -130,31 +130,33 @@ public enum AutonRoutine {
             new ShootAllBalls(5, 4)
     )),
 
-    ROUTINE_FOUR("Shoot 3, Pickup 3, Pickup 2, Shoot 5 for 8", new SequentialCommandGroup(
-            new ParallelCommandGroup(
-                    new SetIntakeToggle(true),
-                    new SequentialCommandGroup(
-                            new AlignTurret(),
-                            new ShootAllBalls(3, 4)
-                    )
-            ),
-            new InstantCommand(() ->
-                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
-            new ResetPose(sPickupThreeFromTrench),
-            new RamseteTrackingCommand(sPickupThreeFromTrench, true, false),
-            new InstantCommand(() ->
-                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-            new RamseteTrackingCommand(sBackupToAlignIntake, true, false),
-            new InstantCommand(() ->
-                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
-            new RamseteTrackingCommand(sGoIntoRendezvousForTwo, true, false),
-            new InstantCommand(() ->
-                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-            new RamseteTrackingCommand(sBackupToShoot, true, false),
-            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new AlignTurret(),
-            new ShootAllBalls(5, 4)
-    )),
+    ROUTINE_FOUR("Shoot 3, Pickup 3 From Our Trench, Pickup 2 From Rendezvous, Shoot 5 (6pt)",
+            new SequentialCommandGroup(
+                    new ParallelCommandGroup(
+                            new SetIntakeToggle(true),
+                            new SequentialCommandGroup(
+                                    new AlignTurret(),
+                                    new ShootAllBalls(3, 4)
+                            )
+                    ),
+                    new InstantCommand(() ->
+                            AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+                    new ResetPose(sPickupThreeFromTrench),
+                    new RamseteTrackingCommand(sPickupThreeFromTrench, true, false),
+                    new InstantCommand(() ->
+                            AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+                    new RamseteTrackingCommand(sBackupToAlignIntake, true, false),
+                    new InstantCommand(() ->
+                            AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+                    new RamseteTrackingCommand(sGoIntoRendezvousForTwo, true, false),
+                    new InstantCommand(() ->
+                            AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+                    new RamseteTrackingCommand(sBackupToShoot, true, false),
+                    new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
+                    new AlignTurret(),
+                    new ShootAllBalls(5, 4)
+            )
+    ),
 
     DRIVETRAIN_CHARACTERIZATION("Drivetrain Characterization", new DrivetrainCharacterizationRoutine()),
 
