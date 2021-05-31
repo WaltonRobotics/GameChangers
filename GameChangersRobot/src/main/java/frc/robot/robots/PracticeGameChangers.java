@@ -127,8 +127,8 @@ public class PracticeGameChangers implements WaltRobot {
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = false;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
-        mConveyorConfig.kNudgeTimeSeconds = 0.25;
-        mConveyorConfig.kFrontConveyorNudgeVoltage = 12.0;
+        mConveyorConfig.kNudgeTimeSeconds = 0.3;
+        mConveyorConfig.kFrontConveyorNudgeVoltage = 10.0;
         mConveyorConfig.kBackConveyorNudgeVoltage = 10.0;
         mConveyorConfig.kFrontConveyorFeedVoltage = 10.0;
         mConveyorConfig.kBackConveyorFeedVoltage = 12.0;

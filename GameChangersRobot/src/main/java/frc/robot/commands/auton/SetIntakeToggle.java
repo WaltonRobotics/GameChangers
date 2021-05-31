@@ -18,7 +18,8 @@ public class SetIntakeToggle extends SequentialCommandGroup {
         } else {
             addCommands(
                     new InstantCommand(() -> sIntake.setDeployed(false)),
-                    new InstantCommand(() -> sIntake.setRetracted(true))
+                    new InstantCommand(() -> sIntake.setRetracted(true)),
+                    new WaitCommand(sIntake.getConfig().kSettleTime)
             );
         }
     }

@@ -191,18 +191,18 @@ public class RamseteTrackingCommand extends CommandBase {
 
             sDrivetrain.setVoltages(leftOutput, rightOutput);
         } else {
-//            double leftFeedforward =
-//                    mFeedforward.calculate(leftSpeedSetpoint,
-//                            (leftSpeedSetpoint - mPrevSpeeds.leftMetersPerSecond) / dt);
+            double leftFeedforward =
+                    mFeedforward.calculate(leftSpeedSetpoint,
+                            (leftSpeedSetpoint - mPrevSpeeds.leftMetersPerSecond) / dt);
+
+            double rightFeedforward =
+                    mFeedforward.calculate(rightSpeedSetpoint,
+                            (rightSpeedSetpoint - mPrevSpeeds.rightMetersPerSecond) / dt);
+
+//            sDrivetrain.getCrossCoupledFeedforward().calculate(VecBuilder.fill(leftSpeedSetpoint, rightSpeedSetpoint));
 //
-//            double rightFeedforward =
-//                    mFeedforward.calculate(rightSpeedSetpoint,
-//                            (rightSpeedSetpoint - mPrevSpeeds.rightMetersPerSecond) / dt);
-
-            sDrivetrain.getCrossCoupledFeedforward().calculate(VecBuilder.fill(leftSpeedSetpoint, rightSpeedSetpoint));
-
-            double leftFeedforward = sDrivetrain.getCrossCoupledFeedforward().getUff(0);
-            double rightFeedforward = sDrivetrain.getCrossCoupledFeedforward().getUff(1);
+//            double leftFeedforward = sDrivetrain.getCrossCoupledFeedforward().getUff(0);
+//            double rightFeedforward = sDrivetrain.getCrossCoupledFeedforward().getUff(1);
 
             RamseteDebuggingTable.getInstance().setLeftMeasurement(mSpeeds.get().leftMetersPerSecond);
             RamseteDebuggingTable.getInstance().setLeftReference(leftSpeedSetpoint);
