@@ -23,6 +23,7 @@ import static frc.robot.Paths.AutonavPaths.sBarrelRacingTrajectory;
 import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
 import static frc.robot.Paths.GalacticSearchPaths.*;
 import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
+import static frc.robot.Paths.RoutineFive.*;
 import static frc.robot.Paths.RoutineFour.*;
 import static frc.robot.Paths.RoutineOne.sBackupToShootThree;
 import static frc.robot.Paths.RoutineOne.sPickupThreeFromTrench;
@@ -157,6 +158,20 @@ public enum AutonRoutine {
                     new ShootAllBalls(5, 4)
             )
     ),
+
+    ROUTINE_FIVE_A("Shoot 3, Pickup 2 From Rendezvous, Shoot 5 for 6pt", new SequentialCommandGroup(
+            new SetIntakeToggle(true),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+            new ResetPose(sPickupTwoInRendezvous),
+            new RamseteTrackingCommand(sPickupTwoInRendezvous, true, false),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+            new RamseteTrackingCommand(sBackupToShootToShootFive, true, false),
+            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
+            new AlignTurret(),
+            new ShootAllBalls(5, 4)
+    )),
 
     DRIVETRAIN_CHARACTERIZATION("Drivetrain Characterization", new DrivetrainCharacterizationRoutine()),
 

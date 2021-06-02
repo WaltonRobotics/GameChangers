@@ -260,7 +260,7 @@ public class Paths {
 
         public static Trajectory generateBackupToShoot() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(10.0), Units.feetToMeters(4.0));
+                    Units.feetToMeters(6.0), Units.feetToMeters(3.0));
 
             config.setReversed(true);
             config.setKinematics(sDrivetrain.getDriveKinematics());
@@ -269,6 +269,43 @@ public class Paths {
                     Arrays.asList(
                             new Pose2d(Units.feetToMeters(22.433), Units.feetToMeters(17.906), Rotation2d.fromDegrees(-70)),
                             new Pose2d(Units.feetToMeters(16.283), Units.feetToMeters(19.77), Rotation2d.fromDegrees(30))),
+                    config
+            );
+        }
+
+    }
+
+    public static class RoutineFive {
+
+        public static Trajectory sPickupTwoInRendezvous = generatePickupTwoInRendezvous();
+        public static Trajectory sBackupToShootToShootFive = generateBackupToShootFive();
+
+        public static Trajectory generatePickupTwoInRendezvous() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    Units.feetToMeters(6.0), Units.feetToMeters(3.0));
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            new Pose2d(Units.feetToMeters(11.671), Units.feetToMeters(13.948), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(22.74), Units.feetToMeters(15.278), Rotation2d.fromDegrees(20.215))),
+                    config
+            );
+        }
+
+        public static Trajectory generateBackupToShootFive() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    Units.feetToMeters(6.0), Units.feetToMeters(3.0));
+
+            config.setReversed(true);
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            new Pose2d(Units.feetToMeters(22.74), Units.feetToMeters(15.278), Rotation2d.fromDegrees(20.215)),
+                            new Pose2d(Units.feetToMeters(16.302), Units.feetToMeters(14.523), Rotation2d.fromDegrees(-52.296)),
+                            new Pose2d(Units.feetToMeters(14.192), Units.feetToMeters(16.784), Rotation2d.fromDegrees(-35))),
                     config
             );
         }
