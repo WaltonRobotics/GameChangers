@@ -1,6 +1,7 @@
 package frc.robot.auton;
 
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.Paths;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
 import frc.robot.commands.auton.SetIntakeToggle;
@@ -159,7 +160,7 @@ public enum AutonRoutine {
             )
     ),
 
-    ROUTINE_FIVE_A("Shoot 3, Pickup 2 From Rendezvous, Shoot 5 for 6pt", new SequentialCommandGroup(
+    ROUTINE_FIVE_A("Pickup 2 From Rendezvous, Shoot 5 for 6pt", new SequentialCommandGroup(
             new SetIntakeToggle(true),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
@@ -167,7 +168,72 @@ public enum AutonRoutine {
             new RamseteTrackingCommand(sPickupTwoInRendezvous, true, false),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-            new RamseteTrackingCommand(sBackupToShootToShootFive, true, false),
+            new RamseteTrackingCommand(Paths.RoutineFive.sBackupToShootFive, true, false),
+            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
+            new AlignTurret(),
+            new ShootAllBalls(5, 4)
+    )),
+
+    ROUTINE_FIVE_B("Shoot 3, Pickup 4 From Rendezvous, Shoot 4 for 6pt", new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                    new SetIntakeToggle(true),
+                    new SequentialCommandGroup(
+                            new AlignTurret(),
+                            new ShootAllBalls(3, 4)
+                    )
+            ),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+            new ResetPose(sPickupFourInRendezvous),
+            new RamseteTrackingCommand(sPickupFourInRendezvous, true, false),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+            new RamseteTrackingCommand(sBackupToShootFour, true, false),
+            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
+            new AlignTurret(),
+            new ShootAllBalls(4, 4)
+    )),
+
+    ROUTINE_SIX("Pickup 2 in Enemy Trench, Shoot 5, Pickup 2 in Rendezvous, Shoot 2", new SequentialCommandGroup(
+            new SetIntakeToggle(true),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+            new ResetPose(sPickupTwoFromEnemyTrench),
+            new RamseteTrackingCommand(sPickupTwoFromEnemyTrench, true, false),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+            new RamseteTrackingCommand(sBackupToShootForSix, true, false),
+            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
+            new AlignTurret(),
+            new ShootAllBalls(5, 4),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+            new RamseteTrackingCommand(Paths.RoutineSix.sPickupTwoInRendezvous, true, false),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+            new RamseteTrackingCommand(Paths.RoutineFive.sBackupToShootFive, true, false), // Actually shooting 2
+            new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
+            new AlignTurret(),
+            new ShootAllBalls(2, 4)
+    )),
+
+    ROUTINE_SEVEN("Shoot 3, Pickup 5 From Enemy Trench, Shoot 5", new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                    new SetIntakeToggle(true),
+                    new SequentialCommandGroup(
+                            new AlignTurret(),
+                            new ShootAllBalls(3, 4)
+                    )
+            ),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
+            new ResetPose(Paths.RoutineSeven.sPickupTwoInEnemyTrench),
+            new RamseteTrackingCommand(Paths.RoutineSeven.sPickupTwoInEnemyTrench, true, false),
+            new RamseteTrackingCommand(Paths.RoutineSeven.sPickupExtraThreeInEnemyTrench, true, false),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+            new RamseteTrackingCommand(Paths.RoutineSeven.sBackoutFromTrench, true, false),
+            new RamseteTrackingCommand(Paths.RoutineSeven.sBackupToShootFive, true, false),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
             new AlignTurret(),
             new ShootAllBalls(5, 4)
