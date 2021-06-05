@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.util.Units;
 import java.util.Arrays;
 
 import static frc.robot.Constants.Field.*;
-import static frc.robot.Robot.*;
+import static frc.robot.Robot.sDrivetrain;
 
 public class Paths {
 

@@ -30,6 +30,7 @@ public class Turret extends SubsystemBase {
     private final ProfiledPIDController mClosedLoopAutoAlignProfiledPID = mConfig.closedLoopAutoAlignProfiledPID;
     private ControlState mControlState;
     private double mSetpoint;
+
     public Turret() {
         configureTurretController();
     }
