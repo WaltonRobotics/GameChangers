@@ -439,6 +439,58 @@ public class Paths {
 
     }
 
+    public static class ShootingChallengeRelativePaths {
+
+        public static Trajectory generateInterstellarAccuracyHomingTrajectory() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
+                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+            config.setReversed(true);
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            sDrivetrain.getCurrentPose(),
+                            kInterstellarHomingPose),
+                    config
+            );
+        }
+
+        public static Trajectory generatePowerPortToScoringZoneTrajectory() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    6,
+                    3);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+            config.setReversed(true);
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            kPowerPortReintroductionZonePose,
+                            kPowerPortScoringZonePose),
+                    config
+            );
+        }
+
+        public static Trajectory generatePowerPortToReintroductionZoneTrajectory() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    6,
+                    3);
+
+            config.setKinematics(sDrivetrain.getDriveKinematics());
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(
+                            kPowerPortScoringZonePose,
+                            kPowerPortReintroductionZonePose),
+                    config
+            );
+        }
+
+    }
+
+    /*
     public static class GalacticSearchPaths {
         public static Trajectory sRedATrajectory = generateGalacticSearchRedA();
         public static Trajectory sRedBTrajectory = generateGalacticSearchRedB();
@@ -658,56 +710,6 @@ public class Paths {
             }
         }
     }
-
-    public static class ShootingChallengeRelativePaths {
-
-        public static Trajectory generateInterstellarAccuracyHomingTrajectory() {
-            TrajectoryConfig config = new TrajectoryConfig(
-                    sDrivetrain.getConfig().kMaxVelocityMetersPerSecond,
-                    sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
-
-            config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setReversed(true);
-
-            return TrajectoryGenerator.generateTrajectory(
-                    Arrays.asList(
-                            sDrivetrain.getCurrentPose(),
-                            kInterstellarHomingPose),
-                    config
-            );
-        }
-
-        public static Trajectory generatePowerPortToScoringZoneTrajectory() {
-            TrajectoryConfig config = new TrajectoryConfig(
-                    6,
-                    3);
-
-            config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setReversed(true);
-
-            return TrajectoryGenerator.generateTrajectory(
-                    Arrays.asList(
-                            kPowerPortReintroductionZonePose,
-                            kPowerPortScoringZonePose),
-                    config
-            );
-        }
-
-        public static Trajectory generatePowerPortToReintroductionZoneTrajectory() {
-            TrajectoryConfig config = new TrajectoryConfig(
-                    6,
-                    3);
-
-            config.setKinematics(sDrivetrain.getDriveKinematics());
-
-            return TrajectoryGenerator.generateTrajectory(
-                    Arrays.asList(
-                            kPowerPortScoringZonePose,
-                            kPowerPortReintroductionZonePose),
-                    config
-            );
-        }
-
-    }
+     */
 
 }

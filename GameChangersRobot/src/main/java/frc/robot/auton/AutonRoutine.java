@@ -8,21 +8,11 @@ import frc.robot.commands.auton.SetIntakeToggle;
 import frc.robot.commands.auton.TurnToAngle;
 import frc.robot.commands.auton.shootingChallenges.AlignTurret;
 import frc.robot.commands.auton.shootingChallenges.ShootAllBalls;
-import frc.robot.commands.background.IntakeCommand;
 import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.tuning.FindAngularMaxVelAccel;
 import frc.robot.commands.tuning.FindLinearMaxVelAccel;
 import frc.robot.commands.tuning.FindTurretAngularMaxVelAccel;
-import frc.robot.subsystems.ProMicro;
-import frc.robot.vision.PixyCamHelper;
 
-import java.util.Map;
-
-import static frc.robot.Constants.Field.kGalacticSearchBreakPlaneLineMeters;
-import static frc.robot.Paths.AutonavPaths.BouncePaths.*;
-import static frc.robot.Paths.AutonavPaths.sBarrelRacingTrajectory;
-import static frc.robot.Paths.AutonavPaths.sSlalomTrajectory;
-import static frc.robot.Paths.GalacticSearchPaths.*;
 import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
 import static frc.robot.Paths.RoutineFive.*;
 import static frc.robot.Paths.RoutineFour.*;
@@ -40,24 +30,24 @@ public enum AutonRoutine {
 
     DO_NOTHING("Do Nothing", new SequentialCommandGroup()),
 
-    ZERO_A("Cross Baseline Forwards", new SequentialCommandGroup(
+    ROUTINE_ZERO_A("Cross Baseline Forwards", new SequentialCommandGroup(
             new ResetPose(sForwards),
             new RamseteTrackingCommand(sForwards, true, false)
     )),
 
-    ZERO_B("Cross Baseline Backwards", new SequentialCommandGroup(
+    ROUTINE_ZERO_B("Cross Baseline Backwards", new SequentialCommandGroup(
             new ResetPose(sBackwards),
             new RamseteTrackingCommand(sBackwards, true, false)
     )),
 
-    ZERO_C("Shoot 3, Cross Baseline Forwards", new SequentialCommandGroup(
+    ROUTINE_ZERO_C("Shoot 3, Cross Baseline Forwards", new SequentialCommandGroup(
             new AlignTurret(),
             new ShootAllBalls(3, 7.5),
             new ResetPose(sForwards),
             new RamseteTrackingCommand(sForwards, true, false)
     )),
 
-    ZERO_D("Shoot 3, Cross Baseline Backwards", new SequentialCommandGroup(
+    ROUTINE_ZERO_D("Shoot 3, Cross Baseline Backwards", new SequentialCommandGroup(
             new AlignTurret(),
             new ShootAllBalls(3, 7.5),
             new ResetPose(sBackwards),
@@ -255,6 +245,14 @@ public enum AutonRoutine {
             new TurnToAngle(90)
     )),
 
+    TEST_TRAJECTORY("Simple Spline",
+            new SequentialCommandGroup(
+                    new ResetPose(sTestTrajectory),
+                    new RamseteTrackingCommand(sTestTrajectory, true, false)
+            )
+    );
+
+    /*
     GALACTIC_SEARCH("Galactic Search Routine",
             new SequentialCommandGroup(
                     new SetIntakeToggle(true),
@@ -375,14 +373,8 @@ public enum AutonRoutine {
                     new RamseteTrackingCommand(sBounce3Trajectory, true, false),
                     new RamseteTrackingCommand(sBounce4Trajectory, true, false)
             )
-    ),
-
-    TEST_TRAJECTORY("Simple Spline",
-            new SequentialCommandGroup(
-                    new ResetPose(sTestTrajectory),
-                    new RamseteTrackingCommand(sTestTrajectory, true, false)
-            )
     );
+     */
 
     private final String mDescription;
     private final CommandBase mCommandGroup;
