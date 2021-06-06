@@ -5,25 +5,10 @@ import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-import frc.robot.config.*;
-import frc.robot.utils.interpolation.InterpolatingDouble;
-import frc.robot.utils.interpolation.InterpolatingTreeMap;
-import frc.robot.utils.regression.PolynomialRegression;
 
-public class PracticeGameChangers implements WaltRobot {
+public class PracticeGameChangers extends WaltRobot {
 
-    // Shooter LUT when the turret is facing sideways and the adjustable hood is up
-    private static final double[][] mZoneOneDistanceToVelocityTable = {
-            {6.2, 12000},
-            {12.16, 12000},
-    };
-
-    // Shooter LUT in all other zones
-    private static final double[][] mOtherZonesDistanceToVelocityTable = {
-//            {11.06, 11600},
-//            {18.73, 11200},
-//            {30.41, 11700},
-
+    private static final double[][] mShooterDistanceToVelocityTable = {
             {8.61, 13000},
             {10.94, 11500},
             {12.83, 11400},
@@ -33,25 +18,8 @@ public class PracticeGameChangers implements WaltRobot {
             {22.38, 12425},
     };
 
-    private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mZoneOneShooterMap;
-    private final PolynomialRegression mZoneOneShooterPolynomial;
-    private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mOtherZonesShooterMap;
-    private final PolynomialRegression mOtherZonesShooterPolynomial;
-
-    private final DrivetrainConfig mDrivetrainConfig;
-    private final ShooterConfig mShooterConfig;
-    private final IntakeConfig mIntakeConfig;
-    private final ConveyorConfig mConveyorConfig;
-    private final TurretConfig mTurretConfig;
-
     public PracticeGameChangers() {
-        mZoneOneShooterMap = new InterpolatingTreeMap<>();
-        mZoneOneShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
-
-        mOtherZonesShooterMap = new InterpolatingTreeMap<>();
-        mOtherZonesShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
-
-        populateShooterInterpolationMethods();
+        super(mShooterDistanceToVelocityTable, 2);
 
         ProfiledPIDController mDrivetrainTurnProfiledPID = new ProfiledPIDController(
                 0.015, 0, 0,
@@ -73,7 +41,6 @@ public class PracticeGameChangers implements WaltRobot {
         mDrivetrainDriveStraightHeadingProfiledPID.enableContinuousInput(-180.0, 180.0);
         mDrivetrainDriveStraightHeadingProfiledPID.setTolerance(1.5);
 
-        mDrivetrainConfig = new DrivetrainConfig();
         mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(0.144, 2.09, 0.558);
         mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(0.839, 2.02, 0.196);
         mDrivetrainConfig.leftVoltagePID = new PIDController(1, 0, 0);
@@ -92,7 +59,6 @@ public class PracticeGameChangers implements WaltRobot {
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
         mDrivetrainConfig.kOpenLoopRampRate = 0.0;
 
-        mShooterConfig = new ShooterConfig();
         mShooterConfig.kSpinningUpF = 0.04934694;
         mShooterConfig.kSpinningUpP = 0.2;
         mShooterConfig.kSpinningUpI = 0.002;
@@ -112,18 +78,11 @@ public class PracticeGameChangers implements WaltRobot {
         mShooterConfig.kLimelightMountingHeight = 23;
         mShooterConfig.kLimelightMountingAngle = 33.5;
 
-        mShooterConfig.kZoneOneShooterMap = mZoneOneShooterMap;
-        mShooterConfig.kZoneOneShooterPolynomial = mZoneOneShooterPolynomial;
-        mShooterConfig.kOtherZonesShooterMap = mOtherZonesShooterMap;
-        mShooterConfig.kOtherZonesShooterPolynomial = mOtherZonesShooterPolynomial;
-
-        mIntakeConfig = new IntakeConfig();
         mIntakeConfig.kIsIntakeControllerInverted = false;
         mIntakeConfig.kIntakeDutyCycle = 0.8;
         mIntakeConfig.kOuttakeDutyCycle = -0.4;
         mIntakeConfig.kSettleTime = 0.5;
 
-        mConveyorConfig = new ConveyorConfig();
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = false;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
@@ -137,7 +96,6 @@ public class PracticeGameChangers implements WaltRobot {
         mConveyorConfig.kFrontConveyorOuttakeDutyCycle = -1.0;
         mConveyorConfig.kBackConveyorOuttakeDutyCycle = -1.0;
 
-        mTurretConfig = new TurretConfig();
         mTurretConfig.kLimitSwitchPosition = Rotation2d.fromDegrees(90);
         mTurretConfig.kForwardSoftLimitRawUnits = 0;
         mTurretConfig.kReverseSoftLimitRawUnits = -460;
@@ -151,45 +109,4 @@ public class PracticeGameChangers implements WaltRobot {
         mTurretConfig.kPositionalMaxIntegralAccumulator = 0;
     }
 
-    @Override
-    public void populateShooterInterpolationMethods() {
-        mZoneOneShooterPolynomial.fit(mZoneOneDistanceToVelocityTable);
-
-        mZoneOneShooterMap.clear();
-        for (double[] pair : mZoneOneDistanceToVelocityTable) {
-            mZoneOneShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
-        }
-
-        mOtherZonesShooterPolynomial.fit(mOtherZonesDistanceToVelocityTable);
-
-        mOtherZonesShooterMap.clear();
-        for (double[] pair : mOtherZonesDistanceToVelocityTable) {
-            mOtherZonesShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
-        }
-    }
-
-    @Override
-    public DrivetrainConfig getDrivetrainConfig() {
-        return mDrivetrainConfig;
-    }
-
-    @Override
-    public ShooterConfig getShooterConfig() {
-        return mShooterConfig;
-    }
-
-    @Override
-    public IntakeConfig getIntakeConfig() {
-        return mIntakeConfig;
-    }
-
-    @Override
-    public ConveyorConfig getConveyorConfig() {
-        return mConveyorConfig;
-    }
-
-    @Override
-    public TurretConfig getTurretConfig() {
-        return mTurretConfig;
-    }
 }

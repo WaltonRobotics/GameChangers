@@ -6,49 +6,17 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.util.Units;
-import frc.robot.config.*;
-import frc.robot.utils.interpolation.InterpolatingDouble;
-import frc.robot.utils.interpolation.InterpolatingTreeMap;
-import frc.robot.utils.regression.PolynomialRegression;
 
-public class CompDeepSpace implements WaltRobot {
+public class CompDeepSpace extends WaltRobot {
 
-    // Shooter LUT when the turret is facing sideways and the adjustable hood is up
-    private static final double[][] mZoneOneDistanceToVelocityTable = {
-            {6.2, 12000},
-            {12.16, 12000},
-    };
-
-    // Shooter LUT in all other zones
-    private static final double[][] mOtherZonesDistanceToVelocityTable = {
-//            {11.06, 11600},
-//            {18.73, 11200},
-//            {30.41, 11700},
-
+    private static final double[][] mShooterDistanceToVelocityTable = {
             {10.33, 10900},
             {19.7, 10910},
             {30.89, 10950},
     };
 
-    private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mZoneOneShooterMap;
-    private final PolynomialRegression mZoneOneShooterPolynomial;
-    private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> mOtherZonesShooterMap;
-    private final PolynomialRegression mOtherZonesShooterPolynomial;
-
-    private final DrivetrainConfig mDrivetrainConfig;
-    private final ShooterConfig mShooterConfig;
-    private final IntakeConfig mIntakeConfig;
-    private final ConveyorConfig mConveyorConfig;
-    private final TurretConfig mTurretConfig;
-
     public CompDeepSpace() {
-        mZoneOneShooterMap = new InterpolatingTreeMap<>();
-        mZoneOneShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
-
-        mOtherZonesShooterMap = new InterpolatingTreeMap<>();
-        mOtherZonesShooterPolynomial = new PolynomialRegression(new double[][]{}, 2);
-
-        populateShooterInterpolationMethods();
+        super(mShooterDistanceToVelocityTable, 2);
 
         ProfiledPIDController drivetrainTurnProfiledPID = new ProfiledPIDController(
                 0.05, 0, 0,
@@ -70,7 +38,6 @@ public class CompDeepSpace implements WaltRobot {
         drivetrainDriveStraightHeadingProfiledPID.enableContinuousInput(-180.0, 180.0);
         drivetrainDriveStraightHeadingProfiledPID.setTolerance(0.5);
 
-        mDrivetrainConfig = new DrivetrainConfig();
         mDrivetrainConfig.linearFeedforward = new SimpleMotorFeedforward(.216, 4.58, 0.322);
         mDrivetrainConfig.angularFeedforward = new SimpleMotorFeedforward(.449, 4.51, .22);
         mDrivetrainConfig.leftVoltagePID = new PIDController(1.0, 0, 0);
@@ -89,7 +56,6 @@ public class CompDeepSpace implements WaltRobot {
         mDrivetrainConfig.kRightMaxVoltage = 12.0;
         mDrivetrainConfig.kOpenLoopRampRate = 0.0;
 
-        mShooterConfig = new ShooterConfig();
         mShooterConfig.kSpinningUpF = 0.05006525;
         mShooterConfig.kSpinningUpP = 0.36;
         mShooterConfig.kSpinningUpI = 0.0002;
@@ -109,18 +75,11 @@ public class CompDeepSpace implements WaltRobot {
         mShooterConfig.kLimelightMountingHeight = 22.5;
         mShooterConfig.kLimelightMountingAngle = 30;
 
-        mShooterConfig.kZoneOneShooterMap = mZoneOneShooterMap;
-        mShooterConfig.kZoneOneShooterPolynomial = mZoneOneShooterPolynomial;
-        mShooterConfig.kOtherZonesShooterMap = mOtherZonesShooterMap;
-        mShooterConfig.kOtherZonesShooterPolynomial = mOtherZonesShooterPolynomial;
-
-        mIntakeConfig = new IntakeConfig();
         mIntakeConfig.kIsIntakeControllerInverted = true;
         mIntakeConfig.kIntakeDutyCycle = 0.8;
         mIntakeConfig.kOuttakeDutyCycle = -0.4;
-        mIntakeConfig.kSettleTime = 0.75;
+        mIntakeConfig.kSettleTime = 0.5;
 
-        mConveyorConfig = new ConveyorConfig();
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = true;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
@@ -134,7 +93,6 @@ public class CompDeepSpace implements WaltRobot {
         mConveyorConfig.kFrontConveyorOuttakeDutyCycle = -1.0;
         mConveyorConfig.kBackConveyorOuttakeDutyCycle = -1.0;
 
-        mTurretConfig = new TurretConfig();
         mTurretConfig.kLimitSwitchPosition = Rotation2d.fromDegrees(90);
         mTurretConfig.kForwardSoftLimitRawUnits = 0;
         mTurretConfig.kReverseSoftLimitRawUnits = -460;
@@ -148,45 +106,4 @@ public class CompDeepSpace implements WaltRobot {
         mTurretConfig.kPositionalMaxIntegralAccumulator = 0;
     }
 
-    @Override
-    public void populateShooterInterpolationMethods() {
-        mZoneOneShooterPolynomial.fit(mZoneOneDistanceToVelocityTable);
-
-        mZoneOneShooterMap.clear();
-        for (double[] pair : mZoneOneDistanceToVelocityTable) {
-            mZoneOneShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
-        }
-
-        mOtherZonesShooterPolynomial.fit(mOtherZonesDistanceToVelocityTable);
-
-        mOtherZonesShooterMap.clear();
-        for (double[] pair : mOtherZonesDistanceToVelocityTable) {
-            mOtherZonesShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
-        }
-    }
-
-    @Override
-    public DrivetrainConfig getDrivetrainConfig() {
-        return mDrivetrainConfig;
-    }
-
-    @Override
-    public ShooterConfig getShooterConfig() {
-        return mShooterConfig;
-    }
-
-    @Override
-    public IntakeConfig getIntakeConfig() {
-        return mIntakeConfig;
-    }
-
-    @Override
-    public ConveyorConfig getConveyorConfig() {
-        return mConveyorConfig;
-    }
-
-    @Override
-    public TurretConfig getTurretConfig() {
-        return mTurretConfig;
-    }
 }

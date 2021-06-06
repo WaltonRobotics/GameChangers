@@ -323,6 +323,10 @@ public class TurretCommand extends CommandBase {
                     double tx = LimelightHelper.getTX();
                     double headingError = -tx;
 
+                    if (Math.abs(headingError) < kAlignedThresholdDegrees) {
+                        return mIdle;
+                    }
+
 //                    double currentHeading = UtilMethods.restrictAngle(
 //                            sTurret.getCurrentRobotRelativeHeading().getDegrees(), -180.0, 180.0
 //                    );
@@ -344,10 +348,6 @@ public class TurretCommand extends CommandBase {
                     }
 
                     sTurret.setOpenLoopDutyCycle(turnRate);
-
-                    if (Math.abs(headingError) < kAlignedThresholdDegrees) {
-                        return mIdle;
-                    }
                 } else {
                     sTurret.setOpenLoopDutyCycle(0.0);
                 }

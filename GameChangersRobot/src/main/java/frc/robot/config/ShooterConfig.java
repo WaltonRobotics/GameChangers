@@ -27,9 +27,7 @@ public class ShooterConfig {
     public double kLimelightMountingHeight;
     public double kLimelightMountingAngle;
 
-    public InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kOtherZonesShooterMap;
-    public PolynomialRegression kOtherZonesShooterPolynomial;
-    public InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kZoneOneShooterMap;
-    public PolynomialRegression kZoneOneShooterPolynomial;
+    public InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kShooterMap;
+    public PolynomialRegression kShooterPolynomial;
 
 }
