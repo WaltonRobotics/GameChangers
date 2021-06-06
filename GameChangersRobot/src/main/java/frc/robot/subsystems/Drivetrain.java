@@ -123,10 +123,10 @@ public class Drivetrain extends SubsystemBase {
 //            mRightWheelsSlave.setOpenLoopRampRate(openLoopRampRate);
 //        }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
-        if (kIsInTuningMode) {
-            Notifier updateTuningSettingsNotifier = new Notifier(this::updateTuningSettings);
-            updateTuningSettingsNotifier.startPeriodic(kDrivetrainTuningSettingsUpdateRateSeconds);
-        }
+//        if (kIsInTuningMode) {
+//            Notifier updateTuningSettingsNotifier = new Notifier(this::updateTuningSettings);
+//            updateTuningSettingsNotifier.startPeriodic(kDrivetrainTuningSettingsUpdateRateSeconds);
+//        }
 
         if (sCurrentRobot == RobotIdentifier.COMP_DEEP_SPACE) {
             mGearShiftSolenoid.set(false);
