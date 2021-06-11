@@ -140,7 +140,7 @@ public final class Constants {
 
         // Zeroing
         public static final double kZeroingDutyCycle = 0.5;
-        public static final double kZeroingTimeout = 2.0;
+        public static final double kZeroingTimeout = 1.5;
 
         // Homing
         public static final double kHomingTimeout = 2.0;
