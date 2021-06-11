@@ -44,22 +44,6 @@ public class Conveyor extends SubsystemBase {
         resetBallCount();
     }
 
-    public void setFrontDutyCycle(double targetDutyCycle) {
-        mFrontConveyorController.set(ControlMode.PercentOutput, targetDutyCycle);
-    }
-
-    public void setFrontVoltage(double targetVoltage) {
-        setFrontDutyCycle(targetVoltage / RobotController.getBatteryVoltage());
-    }
-
-    public void setBackDutyCycle(double targetDutyCycle) {
-        mBackConveyorController.set(ControlMode.PercentOutput, targetDutyCycle);
-    }
-
-    public void setBackVoltage(double targetVoltage) {
-        setBackDutyCycle(targetVoltage / RobotController.getBatteryVoltage());
-    }
-
     @Override
     public void periodic() {
         mFrontConveyorSensor.update();
@@ -81,6 +65,22 @@ public class Conveyor extends SubsystemBase {
         SmartDashboard.putBoolean(kConveyorFrontSensorStateKey, mFrontConveyorBool.get());
         SmartDashboard.putBoolean(kConveyorBackSensorStateKey, mBackConveyorBool.get());
         SmartDashboard.putNumber(kConveyorBallCountKey, mBallCount);
+    }
+
+    public void setFrontDutyCycle(double targetDutyCycle) {
+        mFrontConveyorController.set(ControlMode.PercentOutput, targetDutyCycle);
+    }
+
+    public void setFrontVoltage(double targetVoltage) {
+        setFrontDutyCycle(targetVoltage / RobotController.getBatteryVoltage());
+    }
+
+    public void setBackDutyCycle(double targetDutyCycle) {
+        mBackConveyorController.set(ControlMode.PercentOutput, targetDutyCycle);
+    }
+
+    public void setBackVoltage(double targetVoltage) {
+        setBackDutyCycle(targetVoltage / RobotController.getBatteryVoltage());
     }
 
     public void resetBallCount() {

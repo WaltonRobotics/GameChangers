@@ -30,7 +30,6 @@ public class DrivetrainCharacterizationRoutine extends CommandBase {
 
         if (sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS
                 || sCurrentRobot == RobotIdentifier.PRACTICE_GAME_CHANGERS) {
-            sIntake.setRetracted(true);
             sIntake.setDeployed(false);
         }
     }

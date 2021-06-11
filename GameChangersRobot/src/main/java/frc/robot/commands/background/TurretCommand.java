@@ -1,6 +1,7 @@
 package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.auton.AutonFlags;
@@ -20,6 +21,7 @@ import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
 import static frc.robot.Constants.Field.kTargetFieldRelativeHeading;
 import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
+import static frc.robot.Constants.SmartDashboardKeys.kTurretIsHomedForClimbing;
 import static frc.robot.Constants.Turret.*;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sDrivetrain;
@@ -56,27 +58,29 @@ public class TurretCommand extends CommandBase {
             public IState execute() {
                 sTurret.setOpenLoopDutyCycle(0);
 
-                if (isMasterOverride()) {
-                    return mManual;
-                }
+                if (!SubsystemFlags.getInstance().isClimberDeployed()) {
+                    if (isMasterOverride()) {
+                        return mManual;
+                    }
 
-                if (sAlignTurretButton.isRisingEdge()
-                        || (AutonFlags.getInstance().isInAuton()
-                        && AutonFlags.getInstance().doesAutonNeedToAlignTurret())) {
-                    return mDeterminingAlignmentMethod;
-                }
+                    if (sAlignTurretButton.isRisingEdge()
+                            || (AutonFlags.getInstance().isInAuton()
+                            && AutonFlags.getInstance().doesAutonNeedToAlignTurret())) {
+                        return mDeterminingAlignmentMethod;
+                    }
 
-                if (!mHasZeroed || sZeroTurretButton.isRisingEdge() &&
-                        !SubsystemFlags.getInstance().isZeroingDisabled()) {
-                    return mZeroing;
-                }
+                    if (!mHasZeroed || sZeroTurretButton.isRisingEdge() &&
+                            !SubsystemFlags.getInstance().isZeroingDisabled()) {
+                        return mZeroing;
+                    }
 
-                if (sHomeTurretButton.isRisingEdge()) {
-                    return mHoming;
-                }
+                    if (sHomeTurretButton.isRisingEdge() || SubsystemFlags.getInstance().doesTurretNeedToHomeForClimbing()) {
+                        return mHoming;
+                    }
 
-                if (SubsystemFlags.getInstance().isShooting()) {
-                    return mLockingSetpoint;
+                    if (SubsystemFlags.getInstance().isShooting()) {
+                        return mLockingSetpoint;
+                    }
                 }
 
                 return this;
@@ -154,14 +158,23 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) < kPositionClosedLoopErrorToleranceDegrees) {
+                if (Math.abs(sTurret.getClosedLoopErrorDegrees()) < kPositionClosedLoopErrorToleranceDegrees) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;
                 }
 
-                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle ||
-                        getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
+                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                    return mIdle;
+                }
+
+                if (!SubsystemFlags.getInstance().doesTurretNeedToHomeForClimbing()
+                        && getFPGATimestamp() - mStartTime > kHomingTimeout) {
+                    return mIdle;
+                }
+
+                if (SubsystemFlags.getInstance().doesTurretNeedToHomeForClimbing()
+                        && SubsystemFlags.getInstance().isTurretHomedForClimbing()) {
                     return mIdle;
                 }
 
@@ -170,7 +183,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-
+                SubsystemFlags.getInstance().setIsTurretHomedForClimbing(true);
             }
 
             @Override
@@ -268,7 +281,7 @@ public class TurretCommand extends CommandBase {
 
                 sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.POSITIONAL);
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits())
+                if (Math.abs(sTurret.getClosedLoopErrorDegrees())
                         < kPositionClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
                     mWithinThresholdLoops++;
                 } else {
@@ -385,7 +398,7 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (Math.abs(sTurret.getClosedLoopErrorRawUnits()) <
+                if (Math.abs(sTurret.getClosedLoopErrorDegrees()) <
                         kPositionClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
                     mWithinThresholdLoops++;
                 } else {
@@ -459,6 +472,13 @@ public class TurretCommand extends CommandBase {
 
     @Override
     public void execute() {
+        boolean isHomedForClimbing = Math.abs(kHomeRobotRelativeHeading.minus(
+                sTurret.getCurrentRobotRelativeHeading()).getDegrees()) < kClimbingHomedToleranceDegrees;
+
+        SubsystemFlags.getInstance().setIsTurretHomedForClimbing(isHomedForClimbing);
+
+        SmartDashboard.putBoolean(kTurretIsHomedForClimbing, isHomedForClimbing);
+
         mStateMachine.run();
     }
 }

@@ -69,23 +69,17 @@ public class IntakeCommand extends CommandBase {
             @Override
             public void initialize() {
                 sIntake.setDeployed(true);
-                sIntake.setRetracted(false);
 
                 mStartTime = getFPGATimestamp();
             }
 
             @Override
             public IState execute() {
-                if (sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS) {
-                    if (getFPGATimestamp() - mStartTime > sIntake.getConfig().kSettleTime) {
-                        sIntake.setDeployed(false);
-                        return mIdle;
-                    }
-
-                    return mDeploy;
+                if (getFPGATimestamp() - mStartTime > sIntake.getConfig().kSettleTime) {
+                    return mIdle;
                 }
 
-                return mIdle;
+                return mDeploy;
             }
 
             @Override
@@ -100,15 +94,22 @@ public class IntakeCommand extends CommandBase {
         };
 
         mRetract = new IState() {
+            private double mStartTime;
+
             @Override
             public void initialize() {
                 sIntake.setDeployed(false);
-                sIntake.setRetracted(true);
+
+                mStartTime = getFPGATimestamp();
             }
 
             @Override
             public IState execute() {
-                return mIdle;
+                if (getFPGATimestamp() - mStartTime > sIntake.getConfig().kSettleTime) {
+                    return mIdle;
+                }
+
+                return mRetract;
             }
 
             @Override

@@ -19,6 +19,9 @@ public class SubsystemFlags {
     private boolean mIsReadyToShoot = false;
     private boolean mIsZeroingDisabled = false;
     private boolean mHasTurretZeroed = false;
+    private boolean mIsClimberDeployed = false;
+    private boolean mDoesTurretNeedToHomeForClimbing = false;
+    private boolean mIsTurretHomedForClimbing = false;
 
     public static SubsystemFlags getInstance() {
         return sInstance;
@@ -70,6 +73,30 @@ public class SubsystemFlags {
 
     public boolean hasTurretZeroed() {
         return mHasTurretZeroed;
+    }
+
+    public boolean isClimberDeployed() {
+        return mIsClimberDeployed;
+    }
+
+    public void setIsClimberDeployed(boolean isClimberDeployed) {
+        this.mIsClimberDeployed = isClimberDeployed;
+    }
+
+    public boolean doesTurretNeedToHomeForClimbing() {
+        return mDoesTurretNeedToHomeForClimbing;
+    }
+
+    public void setDoesTurretNeedToHomeForClimbing(boolean doesTurretNeedToHomeForClimbing) {
+        this.mDoesTurretNeedToHomeForClimbing = doesTurretNeedToHomeForClimbing;
+    }
+
+    public boolean isTurretHomedForClimbing() {
+        return mIsTurretHomedForClimbing;
+    }
+
+    public void setIsTurretHomedForClimbing(boolean isTurretHomedForClimbing) {
+        this.mIsTurretHomedForClimbing = isTurretHomedForClimbing;
     }
 
 }

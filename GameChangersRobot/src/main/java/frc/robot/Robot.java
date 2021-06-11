@@ -21,6 +21,7 @@ import frc.robot.commands.background.driveMode.ArcadeDrive;
 import frc.robot.commands.background.driveMode.CurvatureDrive;
 import frc.robot.commands.background.driveMode.DriveMode;
 import frc.robot.commands.background.driveMode.TankDrive;
+import frc.robot.commands.teleop.UnlockClimberCommand;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
 import frc.robot.utils.DebuggingLog;
@@ -55,6 +56,7 @@ public class Robot extends TimedRobot {
     public static Intake sIntake;
     public static Conveyor sConveyor;
     public static Turret sTurret;
+    public static Climber sClimber;
     public static ProMicro sProMicro;
     public static SendableChooser<SequentialCommandGroup> mShootingChallengeChooser;
     public static SendableChooser<DriveMode> sDriveModeChooser;
@@ -76,6 +78,7 @@ public class Robot extends TimedRobot {
         sIntake = new Intake();
         sConveyor = new Conveyor();
         sTurret = new Turret();
+        sClimber = new Climber();
         sProMicro = new ProMicro();
 
         CommandScheduler.getInstance().setDefaultCommand(sDrivetrain, new DriveCommand());
@@ -92,6 +95,7 @@ public class Robot extends TimedRobot {
                 CommandScheduler.getInstance().setDefaultCommand(sTurret, new TurretCommand());
             }
 
+            CommandScheduler.getInstance().setDefaultCommand(sClimber, new ClimberCommand());
             CommandScheduler.getInstance().setDefaultCommand(sProMicro, new ProMicroCommand());
         }
 
@@ -209,6 +213,8 @@ public class Robot extends TimedRobot {
         AutonFlags.getInstance().setIsInAuton(false);
 
         LimelightHelper.setLEDMode(kIsInTuningMode);
+
+        CommandScheduler.getInstance().schedule(new UnlockClimberCommand());
     }
 
     /**
@@ -224,7 +230,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-
+        AutonFlags.getInstance().setIsInAuton(false);
     }
 
     /**
@@ -239,7 +245,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void testInit() {
-
+        AutonFlags.getInstance().setIsInAuton(false);
     }
 
     /**

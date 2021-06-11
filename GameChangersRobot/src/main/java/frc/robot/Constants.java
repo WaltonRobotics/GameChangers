@@ -55,6 +55,8 @@ public final class Constants {
 
         public static final int kTurretID = 11;
 
+        public static final int kClimberID = 12;
+
     }
 
     public static class DioIDs {
@@ -73,6 +75,8 @@ public final class Constants {
 
         public static final int kDrivetrainGearShiftSolenoidID = 0;
         public static final int kDeployIntakeSolenoidID = 1;
+        public static final int kClimberLockSolenoidID = 2;
+        public static final int kClimberDeploySolenoidID = 3;
         public static final int kRetractIntakeSolenoidID = 4;
         public static final int kAdjustableHoodSolenoidID = 5;
 
@@ -131,11 +135,15 @@ public final class Constants {
 
         // Talon SRX positional PID constants
         public static final double kPositionClosedLoopErrorToleranceDegrees = 2.0 / 3.0;
+        public static final double kClimbingHomedToleranceDegrees = 5.0;
         public static final int kWithinToleranceLoopsToSettle = 5;
 
         // Zeroing
         public static final double kZeroingDutyCycle = 0.5;
         public static final double kZeroingTimeout = 2.0;
+
+        // Homing
+        public static final double kHomingTimeout = 2.0;
 
         // Closed-loop aiming with Limelight as the feedback device constants
         public static final double kAimingKp = 0.009;
@@ -256,7 +264,7 @@ public final class Constants {
         public static final String kShooterCurrentSetpointRawUnitsKey = "Shooter/Current Setpoint Raw Units";
         public static final String kShooterTuningSetpointRawUnitsKey = "Shooter/Tuning Setpoint Raw Units";
         public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
-        public static final String kShooterAdjustableHoodStateKey = "Shooter/Adjustable Hood State";
+        public static final String kShooterIsAdjustableHoodUpKey = "Shooter/Is Adjustable Hood Up";
 
         public static final String kIntakeIntakingDutyCycleKey = "Intake/Intaking Duty Cycle";
 
@@ -271,6 +279,11 @@ public final class Constants {
         public static final String kTurretAngularVelocityRawUnitsKey = "Turret/Angular Velocity Raw Units";
         public static final String kTurretControlStateKey = "Turret/Control State";
         public static final String kTurretSetpointKey = "Turret/Setpoint";
+        public static final String kTurretClosedLoopErrorDegreesKey = "Turret/Closed Loop Error Degrees";
+        public static final String kTurretIsHomedForClimbing = "Turret/Is Homed For Climbing";
+
+        public static final String kClimberIsUnlockedKey = "Climber/Is Unlocked";
+        public static final String kClimberIsDeployedKey = "Climber/Is Deployed";
 
         public static final String kProMicroLEDWriteMessageKey = "Pro Micro/LED Write Message";
         public static final String kProMicroPixyCamReadMessageKey = "Pro Micro/PixyCam Read Message";

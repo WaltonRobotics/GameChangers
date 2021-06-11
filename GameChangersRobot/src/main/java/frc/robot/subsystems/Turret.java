@@ -104,6 +104,7 @@ public class Turret extends SubsystemBase {
         SmartDashboard.putNumber(kTurretAngularVelocityRawUnitsKey, mTurretController.getSelectedSensorVelocity());
         SmartDashboard.putString(kTurretControlStateKey, mControlState.name());
         SmartDashboard.putNumber(kTurretSetpointKey, mSetpoint);
+        SmartDashboard.putNumber(kTurretClosedLoopErrorDegreesKey, getClosedLoopErrorDegrees());
     }
 
     public void enableSoftLimits() {
@@ -169,18 +170,18 @@ public class Turret extends SubsystemBase {
         setRobotRelativeHeading(robotRelativeHeading, controlState);
     }
 
-    public double getClosedLoopErrorRawUnits() {
-        return mTurretController.getClosedLoopError();
+    public double getClosedLoopErrorDegrees() {
+        return mTurretController.getClosedLoopError() * (1.0 / mConfig.kTicksPerDegree);
     }
 
-    public double getMotionMagicErrorRawUnits() {
+    public double getMotionMagicErrorDegrees() {
         if (mControlState != ControlState.MOTION_MAGIC) {
             DebuggingLog.getInstance().getLogger().log(Level.WARNING,
                     "Attempted to retrieve Motion Magic error while not in its control state");
 
             return 0.0;
         } else {
-            return mTurretController.getActiveTrajectoryPosition() - mSetpoint;
+            return (mTurretController.getActiveTrajectoryPosition() - mSetpoint) * (1.0 / mConfig.kTicksPerDegree);
         }
     }
 

@@ -29,8 +29,6 @@ public class Intake extends SubsystemBase {
     // On Practice Game Changers, there is only one solenoid that manages both actions, so we just use
     // mDeploySolenoid as an alias and set mRetractSolenoid to null in that case
     private final Solenoid mDeploySolenoid = new Solenoid(kDeployIntakeSolenoidID);
-    private final Solenoid mRetractSolenoid = sCurrentRobot == RobotIdentifier.COMP_GAME_CHANGERS ?
-            new Solenoid(kRetractIntakeSolenoidID) : null;
 
     public Intake() {
         mIntakeController.setInverted(mConfig.kIsIntakeControllerInverted);
@@ -44,20 +42,6 @@ public class Intake extends SubsystemBase {
 
     public void setDeployed(boolean isDeployed) {
         mDeploySolenoid.set(isDeployed);
-    }
-
-    public boolean isRetracted() {
-        if (mRetractSolenoid != null) {
-            return !mRetractSolenoid.get();
-        }
-
-        return false;
-    }
-
-    public void setRetracted(boolean isRetracted) {
-        if (mRetractSolenoid != null) {
-            mRetractSolenoid.set(isRetracted);
-        }
     }
 
     public void setRollerDutyCycle(double targetDutyCycle) {
@@ -95,11 +79,6 @@ public class Intake extends SubsystemBase {
         if (mDeploySolenoid.getPCMSolenoidVoltageFault()) {
             failure = true;
             DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Deploy solenoid voltage fault!");
-        }
-
-        if (mRetractSolenoid != null && mRetractSolenoid.getPCMSolenoidVoltageFault()) {
-            failure = true;
-            DebuggingLog.getInstance().getLogger().log(Level.WARNING, "Retract solenoid voltage fault!");
         }
 
         return !failure;

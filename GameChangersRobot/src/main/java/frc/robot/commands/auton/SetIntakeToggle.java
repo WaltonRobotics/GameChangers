@@ -12,13 +12,11 @@ public class SetIntakeToggle extends SequentialCommandGroup {
         if (state) {
             addCommands(
                     new InstantCommand(() -> sIntake.setDeployed(true)),
-                    new InstantCommand(() -> sIntake.setRetracted(false)),
                     new WaitCommand(sIntake.getConfig().kSettleTime)
             );
         } else {
             addCommands(
                     new InstantCommand(() -> sIntake.setDeployed(false)),
-                    new InstantCommand(() -> sIntake.setRetracted(true)),
                     new WaitCommand(sIntake.getConfig().kSettleTime)
             );
         }

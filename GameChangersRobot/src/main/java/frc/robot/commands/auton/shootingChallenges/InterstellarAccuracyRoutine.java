@@ -14,7 +14,6 @@ public class InterstellarAccuracyRoutine extends SequentialCommandGroup {
     public InterstellarAccuracyRoutine() {
         addCommands(
                 new InstantCommand(() -> sIntake.setDeployed(false)),
-                new InstantCommand(() -> sIntake.setRetracted(true)),
                 new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(true)),
                 new InstantCommand(() -> SubsystemFlags.getInstance().setIsZeroingDisabled(true)),
                 new InstantCommand(() -> sDrivetrain.setHeading(90.0)),

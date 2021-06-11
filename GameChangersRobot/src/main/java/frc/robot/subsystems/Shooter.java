@@ -83,6 +83,25 @@ public class Shooter extends SubsystemBase {
         mFlywheelSlave.enableVoltageCompensation(false);
     }
 
+    @Override
+    public void periodic() {
+        LimelightHelper.updateData();
+
+        if (kIsInTuningMode) {
+            mFlywheelMaster.configVelocityMeasurementPeriod(
+                    VelocityMeasPeriod.valueOf(SmartDashboard.getNumber(kShooterMeasurementPeriodKey, 1)));
+            mFlywheelMaster.configVelocityMeasurementWindow(
+                    (int) SmartDashboard.getNumber(kShooterMeasurementWindowKey, 1));
+        }
+
+        SmartDashboard.putNumber(kShooterFlywheelVelocityKey, getVelocityRawUnits());
+        SmartDashboard.putNumber(kShooterErrorRawUnitsKey, getClosedLoopErrorRawUnits());
+        SmartDashboard.putNumber(kShooterErrorRPSKey, getClosedLoopErrorRevolutionsPerSec());
+        SmartDashboard.putNumber(kShooterErrorInchesKey, getClosedLoopErrorInchesPerSec());
+        SmartDashboard.putNumber(kShooterLimelightDistanceFeetKey, LimelightHelper.getDistanceToTargetFeet());
+        SmartDashboard.putBoolean(kShooterIsAdjustableHoodUpKey, isAdjustableHoodUp());
+    }
+
     public void setProfileSlot(int profileSlot) {
         mFlywheelMaster.selectProfileSlot(profileSlot, 0);
     }
@@ -123,25 +142,6 @@ public class Shooter extends SubsystemBase {
 
     public void toggleAdjustableHood() {
         mAdjustableHoodSolenoid.toggle();
-    }
-
-    @Override
-    public void periodic() {
-        LimelightHelper.updateData();
-
-        if (kIsInTuningMode) {
-            mFlywheelMaster.configVelocityMeasurementPeriod(
-                    VelocityMeasPeriod.valueOf(SmartDashboard.getNumber(kShooterMeasurementPeriodKey, 1)));
-            mFlywheelMaster.configVelocityMeasurementWindow(
-                    (int) SmartDashboard.getNumber(kShooterMeasurementWindowKey, 1));
-        }
-
-        SmartDashboard.putNumber(kShooterFlywheelVelocityKey, getVelocityRawUnits());
-        SmartDashboard.putNumber(kShooterErrorRawUnitsKey, getClosedLoopErrorRawUnits());
-        SmartDashboard.putNumber(kShooterErrorRPSKey, getClosedLoopErrorRevolutionsPerSec());
-        SmartDashboard.putNumber(kShooterErrorInchesKey, getClosedLoopErrorInchesPerSec());
-        SmartDashboard.putNumber(kShooterLimelightDistanceFeetKey, LimelightHelper.getDistanceToTargetFeet());
-        SmartDashboard.putBoolean(kShooterAdjustableHoodStateKey, mAdjustableHoodSolenoid.get());
     }
 
     public ShooterConfig getConfig() {

@@ -21,9 +21,8 @@ public class OI {
     public static EnhancedJoystickButton sSecondaryAutoAssistDriveStraightButton = new EnhancedJoystickButton(sRightJoystick, 5);
     public static EnhancedJoystickButton sTertiaryAutoAssistDriveStraightButton = new EnhancedJoystickButton(sRightJoystick, 6);
 
-    public static EnhancedJoystickButton sTurboButton = new EnhancedJoystickButton(sLeftJoystick, 1);
-    public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 7);
-    public static EnhancedJoystickButton sTertiaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 8);
+    public static EnhancedJoystickButton sTurboButton = new EnhancedJoystickButton(sLeftJoystick, 7);
+    public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sLeftJoystick, 8);
 
     public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sGamepad, RIGHT_TRIGGER.getIndex());
     public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUMPER.getIndex());
@@ -42,6 +41,9 @@ public class OI {
     public static EnhancedJoystickButton sAlignTurretButton = new EnhancedJoystickButton(sGamepad, LEFT_BUTTON.getIndex());
     public static EnhancedJoystickButton sHomeTurretButton = new EnhancedJoystickButton(sGamepad, DOWN_BUTTON.getIndex());
     public static EnhancedJoystickButton sZeroTurretButton = new EnhancedJoystickButton(sGamepad, RIGHT_BUTTON.getIndex());
+
+    public static EnhancedJoystickButton sToggleClimberDeployButton = new EnhancedJoystickButton(sLeftJoystick, 1);
+    public static EnhancedJoystickButton sLockClimberButton = new EnhancedJoystickButton(sGamepad, LEFT_STICK_BUTTON.getIndex());
 
     // Shooting challenge buttons
     public static EnhancedJoystickButton sCalibratePoseButton = new EnhancedJoystickButton(sLeftJoystick, 5);

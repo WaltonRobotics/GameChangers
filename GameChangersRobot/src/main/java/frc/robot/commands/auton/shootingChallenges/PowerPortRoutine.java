@@ -15,7 +15,6 @@ public class PowerPortRoutine extends SequentialCommandGroup {
     public PowerPortRoutine() {
         addCommands(
                 new InstantCommand(() -> sIntake.setDeployed(false)),
-                new InstantCommand(() -> sIntake.setRetracted(true)),
                 new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(true)),
                 new InstantCommand(() -> sDrivetrain.resetPose(kPowerPortScoringZonePose)),
                 new InstantCommand(() -> SubsystemFlags.getInstance().setIsZeroingDisabled(true)),
