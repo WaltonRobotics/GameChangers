@@ -183,7 +183,7 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public void finish() {
-                SubsystemFlags.getInstance().setIsTurretHomedForClimbing(true);
+
             }
 
             @Override
