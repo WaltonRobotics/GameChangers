@@ -280,7 +280,7 @@ public final class Constants {
         public static final String kTurretControlStateKey = "Turret/Control State";
         public static final String kTurretSetpointKey = "Turret/Setpoint";
         public static final String kTurretClosedLoopErrorDegreesKey = "Turret/Closed Loop Error Degrees";
-        public static final String kTurretIsHomedForClimbing = "Turret/Is Homed For Climbing";
+        public static final String kTurretIsHomedForClimbingKey = "Turret/Is Homed For Climbing";
 
         public static final String kClimberIsUnlockedKey = "Climber/Is Unlocked";
         public static final String kClimberIsDeployedKey = "Climber/Is Deployed";

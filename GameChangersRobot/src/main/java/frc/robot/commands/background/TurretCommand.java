@@ -21,7 +21,7 @@ import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
 import static frc.robot.Constants.Field.kTargetFieldRelativeHeading;
 import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
-import static frc.robot.Constants.SmartDashboardKeys.kTurretIsHomedForClimbing;
+import static frc.robot.Constants.SmartDashboardKeys.kTurretIsHomedForClimbingKey;
 import static frc.robot.Constants.Turret.*;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sDrivetrain;
@@ -477,7 +477,7 @@ public class TurretCommand extends CommandBase {
 
         SubsystemFlags.getInstance().setIsTurretHomedForClimbing(isHomedForClimbing);
 
-        SmartDashboard.putBoolean(kTurretIsHomedForClimbing, isHomedForClimbing);
+        SmartDashboard.putBoolean(kTurretIsHomedForClimbingKey, isHomedForClimbing);
 
         mStateMachine.run();
     }
