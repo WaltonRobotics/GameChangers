@@ -1,6 +1,7 @@
 package frc.robot.auton;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Units;
 
 public class LiveDashboardHelper {
@@ -9,6 +10,10 @@ public class LiveDashboardHelper {
         LiveDashboardTable.getInstance().setRobotX(Units.metersToFeet(currentPose.getTranslation().getX()));
         LiveDashboardTable.getInstance().setRobotY(Units.metersToFeet(currentPose.getTranslation().getY()));
         LiveDashboardTable.getInstance().setRobotHeading(currentPose.getRotation().getRadians());
+    }
+
+    public static void putTurretData(Rotation2d currentHeading) {
+        LiveDashboardTable.getInstance().setTurretRobotRelativeHeading(currentHeading.getRadians());
     }
 
     public static void putTrajectoryData(Pose2d trajectoryPose) {

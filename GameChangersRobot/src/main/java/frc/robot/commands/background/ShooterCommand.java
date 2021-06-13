@@ -49,6 +49,8 @@ public class ShooterCommand extends CommandBase {
         mIdle = new IState() {
             @Override
             public void initialize() {
+                SubsystemFlags.getInstance().setIsShooting(false);
+
                 sShooter.setOpenLoopDutyCycle(0);
             }
 

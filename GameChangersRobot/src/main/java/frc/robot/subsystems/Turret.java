@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.auton.LiveDashboardHelper;
 import frc.robot.config.TurretConfig;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.EnhancedBoolean;
@@ -47,7 +48,7 @@ public class Turret extends SubsystemBase {
         mTurretController.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10);
 
         mTurretController.enableVoltageCompensation(true);
-        mTurretController.configVoltageCompSaturation(10.0);
+        mTurretController.configVoltageCompSaturation(8.0);
 
         mTurretController.configNominalOutputForward(0);
         mTurretController.configNominalOutputReverse(0);
@@ -108,7 +109,9 @@ public class Turret extends SubsystemBase {
         SmartDashboard.putString(kTurretControlStateKey, mControlState.name());
         SmartDashboard.putNumber(kTurretSetpointKey, mSetpoint);
         SmartDashboard.putNumber(kTurretClosedLoopErrorDegreesKey, getClosedLoopErrorDegrees());
-        SmartDashboard.putNumber("Turret/Output Voltage", mTurretController.getMotorOutputVoltage());
+//        SmartDashboard.putNumber("Turret/Output Voltage", mTurretController.getMotorOutputVoltage());
+
+        LiveDashboardHelper.putTurretData(getCurrentRobotRelativeHeading());
     }
 
     public void enableSoftLimits() {

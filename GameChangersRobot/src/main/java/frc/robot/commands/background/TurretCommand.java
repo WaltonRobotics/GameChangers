@@ -476,9 +476,10 @@ public class TurretCommand extends CommandBase {
                 sTurret.getCurrentRobotRelativeHeading()).getDegrees()) < kClimbingHomedToleranceDegrees;
 
         SubsystemFlags.getInstance().setIsTurretHomedForClimbing(isHomedForClimbing);
-
+        
         SmartDashboard.putBoolean(kTurretIsHomedForClimbingKey, isHomedForClimbing);
 
         mStateMachine.run();
     }
+
 }

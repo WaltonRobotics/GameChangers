@@ -38,6 +38,14 @@ public class LiveDashboardTable {
         mLiveDashboardTable.getEntry(kRobotHeadingKey).setDouble(robotHeading);
     }
 
+    public double getTurretRobotRelativeHeading() {
+        return mLiveDashboardTable.getEntry(kTurretRobotRelativeHeadingKey).getDouble(0.0);
+    }
+
+    public void setTurretRobotRelativeHeading(double turretRobotRelativeHeading) {
+        mLiveDashboardTable.getEntry(kTurretRobotRelativeHeadingKey).setDouble(turretRobotRelativeHeading);
+    }
+
     public boolean isFollowingPath() {
         return mLiveDashboardTable.getEntry(kIsFollowingPathKey).getBoolean(false);
     }

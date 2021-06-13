@@ -78,7 +78,7 @@ public class CompGameChangers extends WaltRobot {
         mShooterConfig.kLimelightMountingAngle = 30;
 
         mIntakeConfig.kIsIntakeControllerInverted = false;
-        mIntakeConfig.kIntakeDutyCycle = 0.8;
+        mIntakeConfig.kIntakeDutyCycle = 0.6;
         mIntakeConfig.kOuttakeDutyCycle = -0.4;
         mIntakeConfig.kSettleTime = 0.5;
 

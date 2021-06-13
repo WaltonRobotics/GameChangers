@@ -307,6 +307,7 @@ public final class Constants {
         public static final String kRobotXKey = "robotX";
         public static final String kRobotYKey = "robotY";
         public static final String kRobotHeadingKey = "robotHeading";
+        public static final String kTurretRobotRelativeHeadingKey = "turretRobotRelativeHeading";
         public static final String kIsFollowingPathKey = "isFollowingPath";
         public static final String kPathXKey = "pathX";
         public static final String kPathYKey = "pathY";
