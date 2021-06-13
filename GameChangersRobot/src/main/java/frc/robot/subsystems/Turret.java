@@ -46,6 +46,9 @@ public class Turret extends SubsystemBase {
         mTurretController.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10);
         mTurretController.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10);
 
+        mTurretController.enableVoltageCompensation(true);
+        mTurretController.configVoltageCompSaturation(10.0);
+
         mTurretController.configNominalOutputForward(0);
         mTurretController.configNominalOutputReverse(0);
         mTurretController.configPeakOutputForward(1);
@@ -105,6 +108,7 @@ public class Turret extends SubsystemBase {
         SmartDashboard.putString(kTurretControlStateKey, mControlState.name());
         SmartDashboard.putNumber(kTurretSetpointKey, mSetpoint);
         SmartDashboard.putNumber(kTurretClosedLoopErrorDegreesKey, getClosedLoopErrorDegrees());
+        SmartDashboard.putNumber("Turret/Output Voltage", mTurretController.getMotorOutputVoltage());
     }
 
     public void enableSoftLimits() {

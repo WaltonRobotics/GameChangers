@@ -1,2 +1,2 @@
 PracticeGameChangers: 10.29.74.11
-CompGameChangers: 10.29.74.89
+CompGameChangers: 10.29.74.85
