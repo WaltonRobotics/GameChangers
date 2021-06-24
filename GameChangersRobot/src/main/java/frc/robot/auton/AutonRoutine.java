@@ -1,9 +1,6 @@
 package frc.robot.auton;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Paths;
 import frc.robot.commands.auton.RamseteTrackingCommand;
 import frc.robot.commands.auton.ResetPose;
@@ -85,9 +82,15 @@ public enum AutonRoutine {
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
             new ResetPose(sPickupTwoFromEnemyTrench),
             new RamseteTrackingCommand(sPickupTwoFromEnemyTrench, true, false),
-            new InstantCommand(() ->
-                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-            new RamseteTrackingCommand(sBackupToShootForSix, true, false),
+            new ParallelDeadlineGroup(
+                    new RamseteTrackingCommand(sBackupToShootForSix, true, false),
+                    new SequentialCommandGroup(
+                            new WaitCommand(3.0),
+                            new InstantCommand(() ->
+                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+                            new SetIntakeToggle(false)
+                    )
+            ),
             new AlignTurret(),
             new ShootAllBalls(5, 4)
     )),
@@ -98,9 +101,15 @@ public enum AutonRoutine {
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
             new ResetPose(sPickupTwoFromEnemyTrench),
             new RamseteTrackingCommand(sPickupTwoFromEnemyTrench, true, false),
-            new InstantCommand(() ->
-                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-            new RamseteTrackingCommand(sBackupToShootForFour, true, false),
+            new ParallelDeadlineGroup(
+                    new RamseteTrackingCommand(sBackupToShootForFour, true, false),
+                    new SequentialCommandGroup(
+                            new WaitCommand(3.0),
+                            new InstantCommand(() ->
+                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
+                            new SetIntakeToggle(false)
+                    )
+            ),
             new AlignTurret(),
             new ShootAllBalls(5, 4)
     )),

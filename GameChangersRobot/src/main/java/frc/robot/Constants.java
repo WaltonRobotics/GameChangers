@@ -98,7 +98,7 @@ public final class Constants {
     public static class Conveyor {
 
         public static final int kMaximumBallCapacity = (ContextFlags.kIsInfiniteRecharge ? 5 : 3);
-        public static final int kFrontLoadingCapacity = (ContextFlags.kIsInfiniteRecharge ? 2 : 0);
+        public static final int kFrontLoadingCapacity = (ContextFlags.kIsInfiniteRecharge ? 1 : 0);
 
     }
 
@@ -189,14 +189,14 @@ public final class Constants {
         public static final int kAlignmentPipeline = 0;
         public static final int kPnPPipeline = 1;
 
-        public static final double kMaximumLEDWaitTimeSeconds = 0.75;
+        public static final double kMaximumLEDWaitTimeSeconds = 0.5;
 
     }
 
     public static class Field {
 
         public static final double kTargetHeightInches = 89.75;
-        public static final Rotation2d kTargetFieldRelativeHeading = Rotation2d.fromDegrees(0);
+        public static final Rotation2d kTargetFieldRelativeHeading = Rotation2d.fromDegrees(180);
 
         public static final double kFieldWidthFeet = 30.0;
         public static final double kFieldHeightFeet = 15.0;

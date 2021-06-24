@@ -12,6 +12,7 @@ import frc.robot.config.TurretConfig;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.UtilMethods;
+import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 
 import java.util.logging.Level;
 
@@ -172,9 +173,13 @@ public class Turret extends SubsystemBase {
 
     public void setFieldRelativeHeading(Rotation2d targetHeading, Rotation2d robotFieldRelativeHeading,
                                         ControlState controlState) {
-        Rotation2d robotRelativeHeading = targetHeading.plus(robotFieldRelativeHeading);
+        Rotation2d robotRelativeHeading = targetHeading.minus(robotFieldRelativeHeading);
 
         setRobotRelativeHeading(robotRelativeHeading, controlState);
+    }
+
+    public Rotation2d getLimelightFieldRelativeHeading(Rotation2d robotFieldRelativeHeading) {
+        return Rotation2d.fromDegrees(0.0);
     }
 
     public double getClosedLoopErrorDegrees() {

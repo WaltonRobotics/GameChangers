@@ -74,7 +74,8 @@ public class TurretCommand extends CommandBase {
                         return mZeroing;
                     }
 
-                    if (sHomeTurretButton.isRisingEdge() || SubsystemFlags.getInstance().doesTurretNeedToHomeForClimbing()) {
+                    if (sHomeTurretButton.isRisingEdge()
+                            || SubsystemFlags.getInstance().doesTurretNeedToHomeForClimbing()) {
                         return mHoming;
                     }
 

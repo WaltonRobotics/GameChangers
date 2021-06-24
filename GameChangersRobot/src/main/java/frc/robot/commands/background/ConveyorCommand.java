@@ -66,14 +66,11 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                // TODO: Add back!
-//                if (sConveyor.getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity) {
-//                    sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
-//                } else {
-//                    sConveyor.setFrontDutyCycle(0.0);
-//                }
-
-                sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
+                if (sConveyor.getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity) {
+                    sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
+                } else {
+                    sConveyor.setFrontDutyCycle(0.0);
+                }
 
                 if (sOverrideBackConveyorButton.get()) {
                     sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorIntakeDutyCycle);
