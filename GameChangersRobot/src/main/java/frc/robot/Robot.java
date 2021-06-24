@@ -182,6 +182,8 @@ public class Robot extends TimedRobot {
         sDrivetrain.configureControllersAuton();
         sDrivetrain.reset();
 
+        sConveyor.setBallCount(3);
+
         AutonFlags.getInstance().setIsInAuton(true);
 
         LimelightHelper.setPipeline(kAlignmentPipeline);
