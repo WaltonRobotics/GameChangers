@@ -15,7 +15,7 @@ public class InterstellarAccuracyRoutine extends SequentialCommandGroup {
         addCommands(
                 new InstantCommand(() -> sIntake.setDeployed(false)),
                 new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(true)),
-                new InstantCommand(() -> SubsystemFlags.getInstance().setIsZeroingDisabled(true)),
+                new InstantCommand(() -> SubsystemFlags.getInstance().setIsTurretZeroingDisabled(true)),
                 new InstantCommand(() -> sDrivetrain.setHeading(90.0)),
                 new AlignTurret(),
                 new ShootAllBalls(3, 5.0),
@@ -24,7 +24,7 @@ public class InterstellarAccuracyRoutine extends SequentialCommandGroup {
 //            new InstantCommand(() -> sIntake.setDeployed(true)),
                 new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(false)),
                 new WaitCommand(0.5),
-                new InstantCommand(() -> SubsystemFlags.getInstance().setIsZeroingDisabled(false))
+                new InstantCommand(() -> SubsystemFlags.getInstance().setIsTurretZeroingDisabled(false))
         );
     }
 

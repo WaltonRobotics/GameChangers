@@ -39,6 +39,7 @@ public class TurretCommand extends CommandBase {
     private final IState mAligningFromLimelightTX;
     private final IState mAligningFromLimelightClosedLoop;
     private final IState mAligningFieldRelative;
+    private final IState mAutonAligningFieldRelative;
     private final IState mLockingSetpoint;
 
     private final StateMachine mStateMachine;
@@ -56,8 +57,6 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sTurret.setOpenLoopDutyCycle(0);
-
                 if (!SubsystemFlags.getInstance().isClimberDeployed()) {
                     if (isMasterOverride()) {
                         return mManual;
@@ -69,9 +68,20 @@ public class TurretCommand extends CommandBase {
                         return mDeterminingAlignmentMethod;
                     }
 
-                    if (!mHasZeroed || sZeroTurretButton.isRisingEdge() &&
-                            !SubsystemFlags.getInstance().isZeroingDisabled()) {
-                        return mZeroing;
+                    if (AutonFlags.getInstance().isInAuton()) {
+                        if (!mHasZeroed && AutonFlags.getInstance().isAutonTurretZeroingEnabled()) {
+                            return mZeroing;
+                        }
+                    } else {
+                        if (!mHasZeroed || sZeroTurretButton.isRisingEdge() &&
+                                !SubsystemFlags.getInstance().isTurretZeroingDisabled()) {
+                            return mZeroing;
+                        }
+                    }
+
+                    if (AutonFlags.getInstance().isInAuton()
+                            && AutonFlags.getInstance().doesAutonNeedToAlignTurretFieldRelative()) {
+                        return mAutonAligningFieldRelative;
                     }
 
                     if (sHomeTurretButton.isRisingEdge()
@@ -83,6 +93,8 @@ public class TurretCommand extends CommandBase {
                         return mLockingSetpoint;
                     }
                 }
+
+                sTurret.setOpenLoopDutyCycle(0);
 
                 return this;
             }
@@ -425,6 +437,36 @@ public class TurretCommand extends CommandBase {
             @Override
             public String getName() {
                 return "Aligning Field Relative";
+            }
+        };
+
+        mAutonAligningFieldRelative = new IState() {
+            @Override
+            public void initialize() {
+
+            }
+
+            @Override
+            public IState execute() {
+                sTurret.setFieldRelativeHeading(kTargetFieldRelativeHeading,
+                        sDrivetrain.getHeading(), Turret.ControlState.POSITIONAL);
+
+                if (!(AutonFlags.getInstance().isInAuton()
+                        && AutonFlags.getInstance().doesAutonNeedToAlignTurretFieldRelative())) {
+                    return mIdle;
+                }
+
+                return this;
+            }
+
+            @Override
+            public void finish() {
+
+            }
+
+            @Override
+            public String getName() {
+                return "Auton Aligning Field Relative";
             }
         };
 

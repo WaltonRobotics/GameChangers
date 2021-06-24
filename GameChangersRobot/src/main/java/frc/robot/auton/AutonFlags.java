@@ -5,8 +5,10 @@ public class AutonFlags {
     private static final AutonFlags sInstance = new AutonFlags();
 
     private boolean mIsInAuton = false;
+    private boolean mIsAutonTurretZeroingEnabled = false;
     private boolean mDoesAutonNeedToIntake = false;
     private boolean mDoesAutonNeedToShoot = false;
+    private boolean mDoesAutonNeedToAlignTurretFieldRelative = false;
     private boolean mDoesAutonNeedToAlignTurret = false;
 
     public static AutonFlags getInstance() {
@@ -19,6 +21,14 @@ public class AutonFlags {
 
     public void setIsInAuton(boolean isInAuton) {
         this.mIsInAuton = isInAuton;
+    }
+
+    public void setIsAutonTurretZeroingEnabled(boolean isAutonTurretZeroingEnabled) {
+        this.mIsAutonTurretZeroingEnabled = isAutonTurretZeroingEnabled;
+    }
+
+    public boolean isAutonTurretZeroingEnabled() {
+        return mIsAutonTurretZeroingEnabled;
     }
 
     public boolean doesAutonNeedToIntake() {
@@ -35,6 +45,14 @@ public class AutonFlags {
 
     public boolean doesAutonNeedToShoot() {
         return mDoesAutonNeedToShoot;
+    }
+
+    public boolean doesAutonNeedToAlignTurretFieldRelative() {
+        return mDoesAutonNeedToAlignTurretFieldRelative;
+    }
+
+    public void setDoesAutonNeedToAlignTurretFieldRelative(boolean doesAutonNeedToAlignTurretFieldRelative) {
+        this.mDoesAutonNeedToAlignTurretFieldRelative = doesAutonNeedToAlignTurretFieldRelative;
     }
 
     public void setDoesAutonNeedToAlignTurret(boolean doesAutonNeedToAlignTurret) {

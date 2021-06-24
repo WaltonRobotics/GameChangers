@@ -37,6 +37,7 @@ import static frc.robot.Constants.DioIDs.kRobotID2;
 import static frc.robot.Constants.DriverPreferences.kNormalScaleFactor;
 import static frc.robot.Constants.DriverPreferences.kTurboScaleFactor;
 import static frc.robot.Constants.Field.kPowerPortScoringZonePose;
+import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.OI.sRunInterstellarRoutineButton;
@@ -183,9 +184,8 @@ public class Robot extends TimedRobot {
 
         AutonFlags.getInstance().setIsInAuton(true);
 
-//        new DrivetrainCharacterizationRoutine().schedule();
-
-        LimelightHelper.setLEDMode(kIsInTuningMode);
+        LimelightHelper.setPipeline(kAlignmentPipeline);
+        LimelightHelper.setLEDMode(true);
 
         DebuggingLog.getInstance().getLogger().log(Level.INFO, "Selected autonomous description: "
                 + mAutonChooser.getSelected().getDescription());
@@ -212,6 +212,7 @@ public class Robot extends TimedRobot {
 
         AutonFlags.getInstance().setIsInAuton(false);
 
+        LimelightHelper.setPipeline(kAlignmentPipeline);
         LimelightHelper.setLEDMode(kIsInTuningMode);
 
         CommandScheduler.getInstance().schedule(new UnlockClimberCommand());

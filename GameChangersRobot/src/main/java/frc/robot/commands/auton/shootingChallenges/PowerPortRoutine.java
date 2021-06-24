@@ -17,12 +17,12 @@ public class PowerPortRoutine extends SequentialCommandGroup {
                 new InstantCommand(() -> sIntake.setDeployed(false)),
                 new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(true)),
                 new InstantCommand(() -> sDrivetrain.resetPose(kPowerPortScoringZonePose)),
-                new InstantCommand(() -> SubsystemFlags.getInstance().setIsZeroingDisabled(true)),
+                new InstantCommand(() -> SubsystemFlags.getInstance().setIsTurretZeroingDisabled(true)),
 //                new AlignTurret(),
                 new ShootAllBalls(3, 5),
                 new InstantCommand(() -> AutonFlags.getInstance().setIsInAuton(false)),
                 new WaitCommand(0.5),
-                new InstantCommand(() -> SubsystemFlags.getInstance().setIsZeroingDisabled(false))
+                new InstantCommand(() -> SubsystemFlags.getInstance().setIsTurretZeroingDisabled(false))
         );
     }
 

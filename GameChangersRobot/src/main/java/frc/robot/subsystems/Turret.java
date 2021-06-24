@@ -173,13 +173,17 @@ public class Turret extends SubsystemBase {
 
     public void setFieldRelativeHeading(Rotation2d targetHeading, Rotation2d robotFieldRelativeHeading,
                                         ControlState controlState) {
-        Rotation2d robotRelativeHeading = targetHeading.minus(robotFieldRelativeHeading);
+        Rotation2d robotRelativeHeading = targetHeading.minus(
+                robotFieldRelativeHeading.plus(Rotation2d.fromDegrees(180))
+        );
 
         setRobotRelativeHeading(robotRelativeHeading, controlState);
     }
 
     public Rotation2d getLimelightFieldRelativeHeading(Rotation2d robotFieldRelativeHeading) {
-        return Rotation2d.fromDegrees(0.0);
+        return getCurrentRobotRelativeHeading().plus(
+                robotFieldRelativeHeading.plus(Rotation2d.fromDegrees(180))
+        );
     }
 
     public double getClosedLoopErrorDegrees() {

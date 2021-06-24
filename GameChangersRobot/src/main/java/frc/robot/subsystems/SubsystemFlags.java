@@ -17,7 +17,7 @@ public class SubsystemFlags {
     private boolean mIsOuttaking = false;
     private boolean mIsShooting = false;
     private boolean mIsReadyToShoot = false;
-    private boolean mIsZeroingDisabled = false;
+    private boolean mIsTurretZeroingDisabled = false;
     private boolean mHasTurretZeroed = false;
     private boolean mIsClimberDeployed = false;
     private boolean mDoesTurretNeedToHomeForClimbing = false;
@@ -59,12 +59,12 @@ public class SubsystemFlags {
         this.mIsShooting = isShooting;
     }
 
-    public void setIsZeroingDisabled(boolean isZeroingDisabled) {
-        this.mIsZeroingDisabled = isZeroingDisabled;
+    public void setIsTurretZeroingDisabled(boolean isTurretZeroingDisabled) {
+        this.mIsTurretZeroingDisabled = isTurretZeroingDisabled;
     }
 
-    public boolean isZeroingDisabled() {
-        return mIsZeroingDisabled;
+    public boolean isTurretZeroingDisabled() {
+        return mIsTurretZeroingDisabled;
     }
 
     public void setTurretHasZeroed(boolean hasTurretZeroed) {
