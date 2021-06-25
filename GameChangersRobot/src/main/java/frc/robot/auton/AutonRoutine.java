@@ -12,6 +12,7 @@ import frc.robot.commands.characterization.DrivetrainCharacterizationRoutine;
 import frc.robot.commands.tuning.FindAngularMaxVelAccel;
 import frc.robot.commands.tuning.FindLinearMaxVelAccel;
 import frc.robot.commands.tuning.FindTurretAngularMaxVelAccel;
+import frc.robot.subsystems.SubsystemFlags;
 
 import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
 import static frc.robot.Paths.RoutineFive.*;
@@ -61,22 +62,33 @@ public enum AutonRoutine {
     // 13
     // 18
     ROUTINE_ONE("Shoot 3, Pickup 3 From Our Trench, Shoot 3 (6pt)", new SequentialCommandGroup(
+            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ParallelCommandGroup(
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
                             new AlignTurret(),
                             new ShootAllBalls(3, 4)
                     )
             ),
-            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
             new ResetPose(sPickupThreeFromTrench),
             new RamseteTrackingCommand(sPickupThreeFromTrench, true, false),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-            new RamseteTrackingCommand(sBackupToShootThree, true, false),
+            new ParallelDeadlineGroup(
+                    new RamseteTrackingCommand(sBackupToShootThree, true, false),
+                    new SequentialCommandGroup(
+                            new WaitCommand(sBackupToShootThree.getTotalTimeSeconds() * 0.7),
+                            new InstantCommand(()
+                                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(true))
+                    )
+            ),
+            new InstantCommand(()
+                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(false)),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
+            new SetIntakeToggle(false),
             new AlignTurret(),
             new ShootAllBalls(3, 4)
     )),
@@ -122,14 +134,15 @@ public enum AutonRoutine {
     )),
 
     ROUTINE_THREE("Shoot 3, Pickup 5 From Our Trench, Shoot 5 (6pt)", new SequentialCommandGroup(
+            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ParallelCommandGroup(
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
                             new AlignTurret(),
                             new ShootAllBalls(3, 4)
                     )
             ),
-            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
             new ResetPose(sPickupFiveFromTrench),
@@ -144,14 +157,15 @@ public enum AutonRoutine {
 
     ROUTINE_FOUR("Shoot 3, Pickup 3 From Our Trench, Pickup 2 From Rendezvous, Shoot 5 (6pt)",
             new SequentialCommandGroup(
+                    new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
                     new ParallelCommandGroup(
                             new SetIntakeToggle(true),
                             new SequentialCommandGroup(
+                                    new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
                                     new AlignTurret(),
                                     new ShootAllBalls(3, 4)
                             )
                     ),
-                    new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
                     new InstantCommand(() ->
                             AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
                     new ResetPose(sPickupThreeFromTrench),
@@ -187,14 +201,15 @@ public enum AutonRoutine {
     )),
 
     ROUTINE_FIVE_B("Shoot 3, Pickup 4 From Rendezvous, Shoot 4 for 6pt", new SequentialCommandGroup(
+            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ParallelCommandGroup(
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
                             new AlignTurret(),
                             new ShootAllBalls(3, 4)
                     )
             ),
-            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
             new ResetPose(sPickupFourInRendezvous),
@@ -232,14 +247,15 @@ public enum AutonRoutine {
     )),
 
     ROUTINE_SEVEN("Shoot 3, Pickup 5 From Enemy Trench, Shoot 5", new SequentialCommandGroup(
+            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ParallelCommandGroup(
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
                             new AlignTurret(),
                             new ShootAllBalls(3, 4)
                     )
             ),
-            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
             new ResetPose(Paths.RoutineSeven.sPickupTwoInEnemyTrench),

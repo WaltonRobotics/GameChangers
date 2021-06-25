@@ -367,11 +367,29 @@ public class TurretCommand extends CommandBase {
 //                    // Alternate alignment method
                     double turnRate = 0.0;
 
-                    if (tx >= kMinimumAimThresholdDegrees) {
+                    if (tx > kMinimumAimThresholdDegrees) {
                         turnRate = kAimingKp * headingError - kMinimumAimDutyCycle;
                     } else if (tx < kMinimumAimThresholdDegrees) {
                         turnRate = kAimingKp * headingError + kMinimumAimDutyCycle;
                     }
+
+//                    if (tx > 0 && tx < kMinimumAimThresholdDegrees) {
+//                        turnRate = kAimingKp * headingError - kMinimumAimDutyCycle;
+//                    } else if (tx < 0 && tx > kMinimumAimThresholdDegrees) {
+//                        turnRate = kAimingKp * headingError + kMinimumAimDutyCycle;
+//                    } else {
+//                        turnRate = kAimingKp * headingError;
+//                    }
+
+//                    turnRate = kAimingKp * headingError;
+//
+//                    if (Math.abs(turnRate) < kMinimumAimDutyCycle) {
+//                        if (turnRate < 0) {
+//                            turnRate -= kMinimumAimDutyCycle;
+//                        } else {
+//                            turnRate += kMinimumAimDutyCycle;
+//                        }
+//                    }
 
                     sTurret.setOpenLoopDutyCycle(turnRate);
                 } else {

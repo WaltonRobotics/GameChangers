@@ -12,9 +12,13 @@ import static frc.robot.Constants.Turret.kPositionClosedLoopErrorToleranceDegree
 public class CompGameChangers extends WaltRobot {
 
     private static final double[][] mShooterDistanceToVelocityTable = {
-            {10.33, 10900},
-            {19.7, 10910},
-            {30.89, 10950},
+            {8.61, 13000},
+            {10.94, 11400},
+            {12.83, 11400},
+            {15.735, 11250},
+            {17.254, 11350},
+            {19.22, 11750},
+            {22.38, 12425},
     };
 
     public CompGameChangers() {
@@ -101,7 +105,7 @@ public class CompGameChangers extends WaltRobot {
         final double kGearRatio = 230.0 / 30.0;
         final double kTicksPerDriverRotation = 177;
         mTurretConfig.kTicksPerDegree = kTicksPerDriverRotation * kGearRatio / 360.0;
-        mTurretConfig.kPositionalP = 4.0;
+        mTurretConfig.kPositionalP = 7.0;
         mTurretConfig.kPositionalI = 0.002;
         mTurretConfig.kPositionalD = 0.0;
         mTurretConfig.kPositionalIZone = 100;

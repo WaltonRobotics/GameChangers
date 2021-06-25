@@ -122,8 +122,8 @@ public class Paths {
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
                             new Pose2d(Units.feetToMeters(27.074), Units.feetToMeters(24.487), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(21.094), Units.feetToMeters(21.922), Rotation2d.fromDegrees(30)),
-                            new Pose2d(Units.feetToMeters(16.25), Units.feetToMeters(19.146), Rotation2d.fromDegrees(30))),
+                            new Pose2d(Units.feetToMeters(18.585), Units.feetToMeters(22.958), Rotation2d.fromDegrees(32.381)),
+                            new Pose2d(Units.feetToMeters(11.671), Units.feetToMeters(19.146), Rotation2d.fromDegrees(0))),
                     config
             );
         }

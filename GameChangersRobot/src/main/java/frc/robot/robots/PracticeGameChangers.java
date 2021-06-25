@@ -9,13 +9,9 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 public class PracticeGameChangers extends WaltRobot {
 
     private static final double[][] mShooterDistanceToVelocityTable = {
-            {8.61, 13000},
-            {10.94, 11500},
-            {12.83, 11400},
-            {15.735, 11250},
-            {17.254, 11350},
-            {19.22, 11750},
-            {22.38, 12425},
+            {10.33, 10900},
+            {19.7, 10910},
+            {30.89, 10950},
     };
 
     public PracticeGameChangers() {

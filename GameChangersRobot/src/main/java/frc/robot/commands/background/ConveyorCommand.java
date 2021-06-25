@@ -66,11 +66,13 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                if (sConveyor.getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity) {
-                    sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
-                } else {
-                    sConveyor.setFrontDutyCycle(0.0);
-                }
+//                if (sConveyor.getBallCount() < 4) {
+//                    sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
+//                } else {
+//                    sConveyor.setFrontDutyCycle(0.0);
+//                }
+
+                sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
 
                 if (sOverrideBackConveyorButton.get()) {
                     sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorIntakeDutyCycle);
@@ -127,12 +129,13 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                if (sConveyor.getBallCount() < kMaximumBallCapacity - kFrontLoadingCapacity) {
-                    sConveyor.setFrontVoltage(sConveyor.getConfig().kFrontConveyorNudgeVoltage);
-                } else {
-                    sConveyor.setFrontVoltage(0.0);
-                }
+//                if (sConveyor.getBallCount() < 4) {
+//                    sConveyor.setFrontVoltage(sConveyor.getConfig().kFrontConveyorNudgeVoltage);
+//                } else {
+//                    sConveyor.setFrontVoltage(0.0);
+//                }
 
+                sConveyor.setFrontVoltage(sConveyor.getConfig().kFrontConveyorNudgeVoltage);
                 sConveyor.setBackVoltage(sConveyor.getConfig().kBackConveyorNudgeVoltage);
 
                 if (getFPGATimestamp() - mStartTime > sConveyor.getConfig().kNudgeTimeSeconds) {
