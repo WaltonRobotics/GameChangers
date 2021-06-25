@@ -88,9 +88,13 @@ public enum AutonRoutine {
             new InstantCommand(()
                     -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(false)),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new SetIntakeToggle(false),
-            new AlignTurret(),
-            new ShootAllBalls(3, 4)
+            new ParallelCommandGroup(
+                    new SetIntakeToggle(false),
+                    new SequentialCommandGroup(
+                            new AlignTurret(),
+                            new ShootAllBalls(3, 4)
+                    )
+            )
     )),
 
     ROUTINE_TWO_A("Pickup 2 from Enemy Trench, Shoot 5 (6pt)", new SequentialCommandGroup(
