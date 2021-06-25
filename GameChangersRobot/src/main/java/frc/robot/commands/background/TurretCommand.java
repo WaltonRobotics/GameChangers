@@ -341,8 +341,14 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                if (!sAlignTurretButton.get()) {
-                    return mIdle;
+                if (AutonFlags.getInstance().isInAuton()) {
+                    if (!AutonFlags.getInstance().doesAutonNeedToAlignTurret()) {
+                        return mIdle;
+                    }
+                } else {
+                    if (!sAlignTurretButton.get()) {
+                        return mIdle;
+                    }
                 }
 
                 if (LimelightHelper.getTV() > 0) {
