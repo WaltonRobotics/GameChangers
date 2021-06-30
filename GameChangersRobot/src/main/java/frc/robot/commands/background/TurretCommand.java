@@ -442,7 +442,7 @@ public class TurretCommand extends CommandBase {
                     mWithinThresholdLoops = 0;
                 }
 
-                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle || getFPGATimestamp() - mStartTime > kAlignmentTimeout) {
+                if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle || getFPGATimestamp() - mStartTime > kAlignmentFieldRelativeTimeout) {
                     if (LimelightHelper.getTV() > 0) {
                         return mAligningFromLimelightClosedLoop;
                     } else {
@@ -535,6 +535,10 @@ public class TurretCommand extends CommandBase {
 
     public boolean hasZeroed() {
         return mHasZeroed;
+    }
+
+    public void setHasZeroed(boolean hasZeroed) {
+        this.mHasZeroed = hasZeroed;
     }
 
     @Override

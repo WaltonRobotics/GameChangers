@@ -139,6 +139,7 @@ public class Robot extends TimedRobot {
             SmartDashboard.putNumber(kConveyorBallCountKey, sConveyor.getConfig().kIRSensorFlickeringTimeSeconds);
         }
 
+        SmartDashboard.putNumber("Nudge time seconds", 0.058);
         SmartDashboard.putNumber(kNormalScaleFactorKey, kNormalScaleFactor);
         SmartDashboard.putNumber(kTurboScaleFactorKey, kTurboScaleFactor);
         SmartDashboard.putNumber(kCurvatureTurnSensitivityKey, kNormalScaleFactor);

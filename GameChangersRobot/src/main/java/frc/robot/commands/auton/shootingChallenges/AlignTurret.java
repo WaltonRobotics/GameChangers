@@ -11,11 +11,11 @@ import static frc.robot.Constants.Turret.kAlignmentTimeout;
 
 public class AlignTurret extends SequentialCommandGroup {
 
-    public AlignTurret() {
+    public AlignTurret(double timeout) {
         addCommands(
                 new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurret(true)),
                 new WaitUntilCommand(() -> LimelightHelper.getTX() < kAlignedThresholdDegrees)
-                        .withTimeout(kAlignmentTimeout),
+                        .withTimeout(timeout),
                 new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurret(false))
         );
     }

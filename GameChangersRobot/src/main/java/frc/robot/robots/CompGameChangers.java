@@ -89,15 +89,17 @@ public class CompGameChangers extends WaltRobot {
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = true;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
-        mConveyorConfig.kNudgeTimeSeconds = 0.06;
-        mConveyorConfig.kFrontConveyorNudgeVoltage = 6.0;
-        mConveyorConfig.kBackConveyorNudgeVoltage = 6.0;
-        mConveyorConfig.kFrontConveyorFeedVoltage = 12.0;
-        mConveyorConfig.kBackConveyorFeedVoltage = 12.0;
+        mConveyorConfig.kNudgeTimeSeconds = 0.058;
+        mConveyorConfig.kFrontConveyorNudgeDutyCycle = 0.5;
+        mConveyorConfig.kBackConveyorNudgeDutyCycle = 0.5;
+        mConveyorConfig.kFrontConveyorFeedDutyCycle = 1.0;
+        mConveyorConfig.kBackConveyorFeedDutyCycle = 1.0;
         mConveyorConfig.kFrontConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kBackConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kFrontConveyorOuttakeDutyCycle = -1.0;
         mConveyorConfig.kBackConveyorOuttakeDutyCycle = -1.0;
+        mConveyorConfig.kFrontConveyorMaxVoltage = 12.0;
+        mConveyorConfig.kBackConveyorMaxVoltage = 12.0;
 
         mTurretConfig.kLimitSwitchPosition = Rotation2d.fromDegrees(90);
         mTurretConfig.kForwardSoftLimitRawUnits = 0;

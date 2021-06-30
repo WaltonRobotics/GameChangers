@@ -1,5 +1,6 @@
 package frc.robot.auton;
 
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Paths;
 import frc.robot.commands.auton.RamseteTrackingCommand;
@@ -13,6 +14,7 @@ import frc.robot.commands.tuning.FindAngularMaxVelAccel;
 import frc.robot.commands.tuning.FindLinearMaxVelAccel;
 import frc.robot.commands.tuning.FindTurretAngularMaxVelAccel;
 import frc.robot.subsystems.SubsystemFlags;
+import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 
 import static frc.robot.Paths.MiscellaneousTrajectories.sTestTrajectory;
 import static frc.robot.Paths.RoutineFive.*;
@@ -25,6 +27,7 @@ import static frc.robot.Paths.RoutineTwo.*;
 import static frc.robot.Paths.RoutineZero.sBackwards;
 import static frc.robot.Paths.RoutineZero.sForwards;
 import static frc.robot.Robot.sDrivetrain;
+import static frc.robot.Robot.sTurret;
 
 
 public enum AutonRoutine {
@@ -44,7 +47,7 @@ public enum AutonRoutine {
     )),
 
     ROUTINE_ZERO_C("Shoot 3, Cross Baseline Forwards", new SequentialCommandGroup(
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(3, 7.5),
             new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ResetPose(sForwards),
@@ -52,7 +55,7 @@ public enum AutonRoutine {
     )),
 
     ROUTINE_ZERO_D("Shoot 3, Cross Baseline Backwards", new SequentialCommandGroup(
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(3, 7.5),
             new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ResetPose(sBackwards),
@@ -66,8 +69,8 @@ public enum AutonRoutine {
             new ParallelCommandGroup(
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
-                            new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
-                            new AlignTurret(),
+                            new WaitUntilCommand(() -> Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 5),
+                            new AlignTurret(1.75),
                             new ShootAllBalls(3, 4)
                     )
             ),
@@ -91,7 +94,7 @@ public enum AutonRoutine {
             new ParallelCommandGroup(
                     new SetIntakeToggle(false),
                     new SequentialCommandGroup(
-                            new AlignTurret(),
+                            new AlignTurret(1.5),
                             new ShootAllBalls(3, 4)
                     )
             )
@@ -99,21 +102,29 @@ public enum AutonRoutine {
 
     ROUTINE_TWO_A("Pickup 2 from Enemy Trench, Shoot 5 (6pt)", new SequentialCommandGroup(
             new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
-            new SetIntakeToggle(true),
-            new InstantCommand(() ->
-                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
             new ResetPose(sPickupTwoFromEnemyTrench),
-            new RamseteTrackingCommand(sPickupTwoFromEnemyTrench, true, false),
+            new ParallelCommandGroup(
+                    new RamseteTrackingCommand(sPickupTwoFromEnemyTrench, true, false),
+                    new SequentialCommandGroup(
+                            new SetIntakeToggle(true),
+                            new InstantCommand(() ->
+                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(true))
+                    )
+            ),
             new ParallelDeadlineGroup(
                     new RamseteTrackingCommand(sBackupToShootForSix, true, false),
                     new SequentialCommandGroup(
-                            new WaitCommand(3.0),
+                            new WaitCommand(sBackupToShootForSix.getTotalTimeSeconds() * 0.5),
+                            new InstantCommand(()
+                                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(true)),
                             new InstantCommand(() ->
                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
                             new SetIntakeToggle(false)
                     )
             ),
-            new AlignTurret(),
+            new InstantCommand(()
+                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(false)),
+            new AlignTurret(1.5),
             new ShootAllBalls(5, 4)
     )),
 
@@ -133,7 +144,7 @@ public enum AutonRoutine {
                             new SetIntakeToggle(false)
                     )
             ),
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(5, 4)
     )),
 
@@ -143,7 +154,7 @@ public enum AutonRoutine {
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
                             new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
-                            new AlignTurret(),
+                            new AlignTurret(1.5),
                             new ShootAllBalls(3, 4)
                     )
             ),
@@ -155,7 +166,7 @@ public enum AutonRoutine {
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
             new RamseteTrackingCommand(sBackupToShootFive, true, false),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(5, 4)
     )),
 
@@ -166,7 +177,7 @@ public enum AutonRoutine {
                             new SetIntakeToggle(true),
                             new SequentialCommandGroup(
                                     new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
-                                    new AlignTurret(),
+                                    new AlignTurret(1.5),
                                     new ShootAllBalls(3, 4)
                             )
                     ),
@@ -184,7 +195,7 @@ public enum AutonRoutine {
                             AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
                     new RamseteTrackingCommand(sBackupToShoot, true, false),
                     new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-                    new AlignTurret(),
+                    new AlignTurret(1.5),
                     new ShootAllBalls(5, 4)
             )
     ),
@@ -200,7 +211,7 @@ public enum AutonRoutine {
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
             new RamseteTrackingCommand(Paths.RoutineFive.sBackupToShootFive, true, false),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(5, 4)
     )),
 
@@ -210,7 +221,7 @@ public enum AutonRoutine {
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
                             new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
-                            new AlignTurret(),
+                            new AlignTurret(1.5),
                             new ShootAllBalls(3, 4)
                     )
             ),
@@ -222,7 +233,7 @@ public enum AutonRoutine {
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
             new RamseteTrackingCommand(sBackupToShootFour, true, false),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(4, 4)
     )),
 
@@ -237,7 +248,7 @@ public enum AutonRoutine {
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
             new RamseteTrackingCommand(sBackupToShootForSix, true, false),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(5, 4),
             new InstantCommand(() ->
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true)),
@@ -246,7 +257,7 @@ public enum AutonRoutine {
                     AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
             new RamseteTrackingCommand(Paths.RoutineFive.sBackupToShootFive, true, false), // Actually shooting 2
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(2, 4)
     )),
 
@@ -256,7 +267,7 @@ public enum AutonRoutine {
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
                             new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
-                            new AlignTurret(),
+                            new AlignTurret(1.5),
                             new ShootAllBalls(3, 4)
                     )
             ),
@@ -270,7 +281,7 @@ public enum AutonRoutine {
             new RamseteTrackingCommand(Paths.RoutineSeven.sBackoutFromTrench, true, false),
             new RamseteTrackingCommand(Paths.RoutineSeven.sBackupToShootFive, true, false),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new AlignTurret(),
+            new AlignTurret(1.5),
             new ShootAllBalls(5, 4)
     )),
 

@@ -1,13 +1,12 @@
 package frc.robot.commands.background;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
-import static frc.robot.Constants.Conveyor.kFrontLoadingCapacity;
-import static frc.robot.Constants.Conveyor.kMaximumBallCapacity;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sConveyor;
 
@@ -66,13 +65,11 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-//                if (sConveyor.getBallCount() < 4) {
-//                    sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
-//                } else {
-//                    sConveyor.setFrontDutyCycle(0.0);
-//                }
-
-                sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
+                if (sConveyor.getBallCount() < 4) {
+                    sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorIntakeDutyCycle);
+                } else {
+                    sConveyor.setFrontDutyCycle(0.0);
+                }
 
                 if (sOverrideBackConveyorButton.get()) {
                     sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorIntakeDutyCycle);
@@ -135,10 +132,15 @@ public class ConveyorCommand extends CommandBase {
 //                    sConveyor.setFrontVoltage(0.0);
 //                }
 
-                sConveyor.setFrontVoltage(sConveyor.getConfig().kFrontConveyorNudgeVoltage);
-                sConveyor.setBackVoltage(sConveyor.getConfig().kBackConveyorNudgeVoltage);
+                if (sConveyor.getBallCount() > 3) {
+                    return mIdle;
+                }
 
-                if (getFPGATimestamp() - mStartTime > sConveyor.getConfig().kNudgeTimeSeconds) {
+                sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorNudgeDutyCycle);
+                sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorNudgeDutyCycle);
+
+                if (getFPGATimestamp() - mStartTime > SmartDashboard.getNumber("Nudge time seconds", 0.058)) {
+//                if (getFPGATimestamp() - mStartTime > sConveyor.getConfig().kNudgeTimeSeconds)
                     return determineState();
                 }
 
@@ -164,8 +166,8 @@ public class ConveyorCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sConveyor.setFrontVoltage(sConveyor.getConfig().kFrontConveyorFeedVoltage);
-                sConveyor.setBackVoltage(sConveyor.getConfig().kBackConveyorFeedVoltage);
+                sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorFeedDutyCycle);
+                sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorFeedDutyCycle);
 
                 return determineState();
             }
@@ -195,7 +197,7 @@ public class ConveyorCommand extends CommandBase {
             return mOuttaking;
         }
 
-        if (sConveyor.shouldNudge()) {
+        if (sConveyor.shouldNudge() && sConveyor.getBallCount() <= 3) {
             return mNudging;
         }
 

@@ -41,6 +41,11 @@ public class Conveyor extends SubsystemBase {
         mFrontConveyorController.setInverted(mConfig.kIsFrontConveyorControllerInverted);
         mBackConveyorController.setInverted(mConfig.kIsBackConveyorControllerInverted);
 
+        mFrontConveyorController.enableVoltageCompensation(true);
+        mFrontConveyorController.configVoltageCompSaturation(mConfig.kFrontConveyorMaxVoltage);
+        mBackConveyorController.enableVoltageCompensation(true);
+        mBackConveyorController.configVoltageCompSaturation(mConfig.kBackConveyorMaxVoltage);
+
         resetBallCount();
     }
 
@@ -71,16 +76,8 @@ public class Conveyor extends SubsystemBase {
         mFrontConveyorController.set(ControlMode.PercentOutput, targetDutyCycle);
     }
 
-    public void setFrontVoltage(double targetVoltage) {
-        setFrontDutyCycle(targetVoltage / RobotController.getBatteryVoltage());
-    }
-
     public void setBackDutyCycle(double targetDutyCycle) {
         mBackConveyorController.set(ControlMode.PercentOutput, targetDutyCycle);
-    }
-
-    public void setBackVoltage(double targetVoltage) {
-        setBackDutyCycle(targetVoltage / RobotController.getBatteryVoltage());
     }
 
     public void resetBallCount() {

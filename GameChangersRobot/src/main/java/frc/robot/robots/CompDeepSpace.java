@@ -84,10 +84,10 @@ public class CompDeepSpace extends WaltRobot {
         mConveyorConfig.kIsBackConveyorControllerInverted = true;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
         mConveyorConfig.kNudgeTimeSeconds = 0.1;
-        mConveyorConfig.kFrontConveyorNudgeVoltage = 6.0;
-        mConveyorConfig.kBackConveyorNudgeVoltage = 6.0;
-        mConveyorConfig.kFrontConveyorFeedVoltage = 12.0;
-        mConveyorConfig.kBackConveyorFeedVoltage = 12.0;
+        mConveyorConfig.kFrontConveyorNudgeDutyCycle = 6.0;
+        mConveyorConfig.kBackConveyorNudgeDutyCycle = 6.0;
+        mConveyorConfig.kFrontConveyorFeedDutyCycle = 12.0;
+        mConveyorConfig.kBackConveyorFeedDutyCycle = 12.0;
         mConveyorConfig.kFrontConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kBackConveyorIntakeDutyCycle = 1.0;
         mConveyorConfig.kFrontConveyorOuttakeDutyCycle = -1.0;
