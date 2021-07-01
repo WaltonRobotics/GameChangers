@@ -143,7 +143,7 @@ public final class Constants {
         public static final double kZeroingTimeout = 1.5;
 
         // Homing
-        public static final double kHomingTimeout = 2.0;
+        public static final double kHomingTimeout = 1.25;
 
         // Closed-loop aiming with Limelight as the feedback device constants
         public static final double kAimingKp = 0.011;

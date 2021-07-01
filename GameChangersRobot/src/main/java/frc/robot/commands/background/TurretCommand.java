@@ -537,10 +537,6 @@ public class TurretCommand extends CommandBase {
         return mHasZeroed;
     }
 
-    public void setHasZeroed(boolean hasZeroed) {
-        this.mHasZeroed = hasZeroed;
-    }
-
     @Override
     public void execute() {
         boolean isHomedForClimbing = Math.abs(kHomeRobotRelativeHeading.minus(
