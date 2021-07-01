@@ -7,7 +7,6 @@ import frc.robot.auton.AutonFlags;
 import frc.robot.vision.LimelightHelper;
 
 import static frc.robot.Constants.Turret.kAlignedThresholdDegrees;
-import static frc.robot.Constants.Turret.kAlignmentTimeout;
 
 public class AlignTurret extends SequentialCommandGroup {
 

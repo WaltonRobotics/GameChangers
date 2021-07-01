@@ -149,7 +149,7 @@ public final class Constants {
         public static final double kAimingKp = 0.011;
         public static final double kMinimumAimThresholdDegrees = 1.0;
         public static final double kMinimumAimDutyCycle = 0.13;
-        public static final double kAlignedThresholdDegrees = 1.0 / 3.0;
+        public static final double kAlignedThresholdDegrees = 0.5;
         public static final double kAlignmentTimeout = 2.0;
         public static final double kAlignmentFieldRelativeTimeout = 1.0;
 
