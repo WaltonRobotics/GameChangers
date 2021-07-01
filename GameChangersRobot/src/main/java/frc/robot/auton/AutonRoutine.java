@@ -74,7 +74,7 @@ public enum AutonRoutine {
                             new WaitUntilCommand(() -> Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 5),
                             new InstantCommand(()
                                     -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(false)),
-                            new AlignTurret(1.75),
+                            new AlignTurret(1.25),
                             new ShootAllBalls(3, 4)
                     )
             ),
