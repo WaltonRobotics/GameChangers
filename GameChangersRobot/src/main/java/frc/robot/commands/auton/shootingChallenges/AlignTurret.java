@@ -13,7 +13,7 @@ public class AlignTurret extends SequentialCommandGroup {
     public AlignTurret(double timeout) {
         addCommands(
                 new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurret(true)),
-                new WaitUntilCommand(() -> LimelightHelper.getTX() < kAlignedThresholdDegrees)
+                new WaitUntilCommand(() -> Math.abs(LimelightHelper.getTX()) < kAlignedThresholdDegrees)
                         .withTimeout(timeout),
                 new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurret(false))
         );

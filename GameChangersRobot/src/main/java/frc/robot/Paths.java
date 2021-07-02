@@ -42,12 +42,11 @@ public class Paths {
                     sDrivetrain.getConfig().kMaxAccelerationMetersPerSecondSquared);
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
-            config.setReversed(true);
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(
-                            new Pose2d(Units.feetToMeters(22), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
-                            new Pose2d(Units.feetToMeters(20), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0))),
+                            new Pose2d(Units.feetToMeters(20), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(22), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0))),
                     config
             );
         }
@@ -99,7 +98,7 @@ public class Paths {
 
         public static Trajectory generatePickupThreeFromTrench() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(6), Units.feetToMeters(3));
+                    Units.feetToMeters(8), Units.feetToMeters(4));
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
 
@@ -114,7 +113,7 @@ public class Paths {
 
         public static Trajectory generateBackupToShootThree() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(6), Units.feetToMeters(3));
+                    Units.feetToMeters(8), Units.feetToMeters(4));
 
             config.setKinematics(sDrivetrain.getDriveKinematics());
             config.setReversed(true);

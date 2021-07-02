@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.DriverPreferences.kTurretMasterOverrideDeadband;
 import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
+import static frc.robot.Constants.Field.kMinimumInterstellarHomingRadiusMeters;
 import static frc.robot.Constants.Field.kTargetFieldRelativeHeading;
 import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
@@ -178,6 +179,10 @@ public class TurretCommand extends CommandBase {
                 }
 
                 if (mWithinThresholdLoops > kWithinToleranceLoopsToSettle) {
+                    return mIdle;
+                }
+
+                if (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToAlignTurret()) {
                     return mIdle;
                 }
 
@@ -374,9 +379,9 @@ public class TurretCommand extends CommandBase {
                     double turnRate = 0.0;
 
                     if (tx > kMinimumAimThresholdDegrees) {
-                        turnRate = kAimingKp * headingError - kMinimumAimDutyCycle;
+                        turnRate = kAimingKp * headingError - kMinimumAimDutyCycleTxPositive;
                     } else if (tx < kMinimumAimThresholdDegrees) {
-                        turnRate = kAimingKp * headingError + kMinimumAimDutyCycle;
+                        turnRate = kAimingKp * headingError + kMinimumAimDutyCycleTxNegative;
                     }
 
 //                    if (tx > 0 && tx < kMinimumAimThresholdDegrees) {

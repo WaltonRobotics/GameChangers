@@ -34,17 +34,23 @@ public enum AutonRoutine {
     )),
 
     ROUTINE_ZERO_C("Shoot 3, Cross Baseline Forwards", new SequentialCommandGroup(
+            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
+            new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
+            new WaitUntilCommand(() ->
+                    Math.abs(sTurret.getCurrentRobotRelativeHeading().minus(sDrivetrain.getHeading()).getDegrees()) < 8),
             new AlignTurret(1.5),
             new ShootAllBalls(3, 7.5),
-            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ResetPose(Paths.RoutineZero.sForwards),
             new RamseteTrackingCommand(Paths.RoutineZero.sForwards, true, false)
     )),
 
     ROUTINE_ZERO_D("Shoot 3, Cross Baseline Backwards", new SequentialCommandGroup(
+            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
+            new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
+            new WaitUntilCommand(() ->
+                    Math.abs(sTurret.getCurrentRobotRelativeHeading().minus(sDrivetrain.getHeading()).getDegrees()) < 8),
             new AlignTurret(1.5),
             new ShootAllBalls(3, 7.5),
-            new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ResetPose(Paths.RoutineZero.sBackwards),
             new RamseteTrackingCommand(Paths.RoutineZero.sBackwards, true, false)
     )),
@@ -56,12 +62,10 @@ public enum AutonRoutine {
             new ParallelCommandGroup(
                     new SetIntakeToggle(true),
                     new SequentialCommandGroup(
-                            new InstantCommand(()
-                                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(true)),
-                            new WaitUntilCommand(() -> Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 5),
-                            new InstantCommand(()
-                                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(false)),
-                            new AlignTurret(1.25),
+                            new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
+                            new WaitUntilCommand(() ->
+                                    Math.abs(sTurret.getCurrentRobotRelativeHeading().minus(sDrivetrain.getHeading()).getDegrees()) < 8),
+                            new AlignTurret(1.5),
                             new ShootAllBalls(3, 4)
                     )
             ),

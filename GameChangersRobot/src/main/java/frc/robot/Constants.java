@@ -148,7 +148,9 @@ public final class Constants {
         // Closed-loop aiming with Limelight as the feedback device constants
         public static final double kAimingKp = 0.011;
         public static final double kMinimumAimThresholdDegrees = 1.0;
-        public static final double kMinimumAimDutyCycle = 0.13;
+        // Static friction is different when rotating CW vs CCW
+        public static final double kMinimumAimDutyCycleTxNegative = 0.13;
+        public static final double kMinimumAimDutyCycleTxPositive = 0.20;
         public static final double kAlignedThresholdDegrees = 0.5;
         public static final double kAlignmentTimeout = 2.0;
         public static final double kAlignmentFieldRelativeTimeout = 1.0;

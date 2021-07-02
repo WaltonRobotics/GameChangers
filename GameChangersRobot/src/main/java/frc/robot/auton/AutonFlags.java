@@ -15,6 +15,15 @@ public class AutonFlags {
         return sInstance;
     }
 
+    public void resetAllStaticFlags() {
+        setIsInAuton(false);
+        setIsAutonTurretZeroingEnabled(false);
+        setDoesAutonNeedToIntake(false);
+        setDoesAutonNeedToShoot(false);
+        setDoesAutonNeedToAlignTurretFieldRelative(false);
+        setDoesAutonNeedToAlignTurret(false);
+    }
+
     public boolean isInAuton() {
         return mIsInAuton;
     }

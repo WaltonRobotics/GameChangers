@@ -122,6 +122,8 @@ public class Robot extends TimedRobot {
         if (!kIsInfiniteRecharge) {
             sRunInterstellarRoutineButton.whenPressed(new InterstellarAccuracyRoutine());
         }
+
+        SubsystemFlags.getInstance().resetAllStaticFlags();
     }
 
     private void populateShuffleboard() {
@@ -180,6 +182,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        AutonFlags.getInstance().resetAllStaticFlags();
+
         sDrivetrain.configureControllersAuton();
         sDrivetrain.reset();
 

@@ -27,6 +27,18 @@ public class SubsystemFlags {
         return sInstance;
     }
 
+    public void resetAllStaticFlags() {
+        setIsIntaking(false);
+        setIsOuttaking(false);
+        setIsShooting(false);
+        setIsReadyToShoot(false);
+        setIsTurretZeroingDisabled(false);
+        setTurretHasZeroed(false);
+        setIsClimberDeployed(false);
+        setDoesTurretNeedToHomeForClimbing(false);
+        setIsTurretHomedForClimbing(false);
+    }
+
     public boolean isIntaking() {
         return mIsIntaking;
     }
