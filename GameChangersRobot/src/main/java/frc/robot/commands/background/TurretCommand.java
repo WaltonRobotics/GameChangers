@@ -132,7 +132,7 @@ public class TurretCommand extends CommandBase {
                     return mIdle;
                 }
 
-                if (sTurret.isForwardLimitRisingEdge()) {
+                if (sTurret.isForwardLimitClosed()) {
                     sTurret.zero();
                     sTurret.enableSoftLimits();
                     mHasZeroed = true;

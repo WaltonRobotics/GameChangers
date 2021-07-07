@@ -65,7 +65,7 @@ public class Conveyor extends SubsystemBase {
             mBallCount--;
         }
 
-        mBallCount = Math.max(mBallCount, 0);
+        mBallCount = UtilMethods.limitRange(mBallCount, 0, 5);
 
         SmartDashboard.putBoolean(kConveyorFrontSensorStateKey, mFrontConveyorBool.get());
         SmartDashboard.putBoolean(kConveyorBackSensorStateKey, mBackConveyorBool.get());

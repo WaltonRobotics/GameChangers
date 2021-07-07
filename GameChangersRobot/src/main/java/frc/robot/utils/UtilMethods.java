@@ -9,6 +9,10 @@ public class UtilMethods {
         return limitRange(value, -maxMagnitude, maxMagnitude);
     }
 
+    public static int limitRange(int value, int min, int max) {
+        return Math.min(max, Math.max(min, value));
+    }
+
     public static double limitRange(double value, double min, double max) {
         return Math.min(max, Math.max(min, value));
     }
