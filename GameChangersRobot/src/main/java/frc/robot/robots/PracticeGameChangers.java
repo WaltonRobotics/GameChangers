@@ -71,8 +71,8 @@ public class PracticeGameChangers extends WaltRobot {
 
         mShooterConfig.kMaxVoltage = 11.0;
 
-        mShooterConfig.kLimelightMountingHeight = 23;
-        mShooterConfig.kLimelightMountingAngle = 33.5;
+        mShooterConfig.kLimelightMountingHeightInches = 23;
+        mShooterConfig.kLimelightMountingAngleDegrees = 33.5;
 
         mIntakeConfig.kIsIntakeControllerInverted = false;
         mIntakeConfig.kIntakeDutyCycle = 0.8;

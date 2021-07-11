@@ -153,9 +153,9 @@ public class LimelightHelper {
     }
 
     public static double getDistanceToTargetFeet() {
-        return ((kTargetHeightInches - sShooter.getConfig().kLimelightMountingHeight) /
-                (Math.tan(Units.degreesToRadians(sShooter.getConfig().kLimelightMountingAngle + getTY()))))
-                / 12.0;
+        return ((kTargetHeightInches - sShooter.getConfig().kLimelightMountingHeightInches) /
+                (Math.tan(Units.degreesToRadians(sShooter.getConfig().kLimelightMountingAngleDegrees + getTY()))
+                        * Math.cos(Units.degreesToRadians(getTX())))) / 12.0;
     }
 
 }

@@ -72,8 +72,8 @@ public class CompDeepSpace extends WaltRobot {
 
         mShooterConfig.kMaxVoltage = 11.0;
 
-        mShooterConfig.kLimelightMountingHeight = 22.5;
-        mShooterConfig.kLimelightMountingAngle = 30;
+        mShooterConfig.kLimelightMountingHeightInches = 22.5;
+        mShooterConfig.kLimelightMountingAngleDegrees = 30;
 
         mIntakeConfig.kIsIntakeControllerInverted = true;
         mIntakeConfig.kIntakeDutyCycle = 0.8;

@@ -24,8 +24,8 @@ public class ShooterConfig {
     public double kMaxVoltage;
 
     // Limelight
-    public double kLimelightMountingHeight;
-    public double kLimelightMountingAngle;
+    public double kLimelightMountingHeightInches;
+    public double kLimelightMountingAngleDegrees;
 
     public InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kShooterMap;
     public PolynomialRegression kShooterPolynomial;
