@@ -1,137 +1,154 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.ControlType;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.controller.*;
-import edu.wpi.first.wpilibj.estimator.KalmanFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.system.LinearSystem;
-import edu.wpi.first.wpilibj.system.LinearSystemLoop;
-import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpiutil.math.MathUtil;
-import edu.wpi.first.wpiutil.math.Nat;
-import edu.wpi.first.wpiutil.math.VecBuilder;
-import edu.wpi.first.wpiutil.math.numbers.N2;
-import frc.robot.auton.LiveDashboardHelper;
 import frc.robot.config.DrivetrainConfig;
-import frc.robot.robots.RobotIdentifier;
-import frc.robot.utils.DebuggingLog;
-import frc.robot.utils.UtilMethods;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import java.util.Arrays;
-import java.util.logging.Level;
+import org.strykeforce.swerve.SwerveDrive;
+import org.strykeforce.swerve.SwerveModule;
+import org.strykeforce.swerve.TalonSwerveModule;
 
-import static frc.robot.Constants.CANBusIDs.*;
-import static frc.robot.Constants.ContextFlags.kIsInCompetition;
-import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
-import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
-import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
-import static frc.robot.Constants.PneumaticsIDs.kDrivetrainGearShiftSolenoidID;
-import static frc.robot.Constants.SmartDashboardKeys.*;
-import static frc.robot.Constants.Tuning.kDrivetrainTuningSettingsUpdateRateSeconds;
+
 import static frc.robot.Robot.sCurrentRobot;
+import static frc.robot.config.SwerveDriveConfig.kTalonConfigTimeout;
 
 public class SwerveDrivetrain extends SubsystemBase {
+    private final SwerveDrive swerveDrive;
 
-    private final DrivetrainConfig mConfig = sCurrentRobot.getCurrentRobot().getDrivetrainConfig();
+    public SwerveDrivetrain() {
+        var moduleBuilder =
+                new TalonSwerveModule.Builder()
+                        .driveGearRatio(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().kDriveGearRatio)
+                        .wheelDiameterInches(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().kWheelDiameterInches)
+                        .driveMaximumMetersPerSecond(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().kMaxSpeedMetersPerSecond);
 
-    // create telemetry first
-    private final TelemetryService telemetryService = RobotContainer.TELEMETRY;
-    private final SwerveDrive swerve = getSwerve();
+        TalonSwerveModule[] swerveModules = new TalonSwerveModule[4];
+        Translation2d[] wheelLocations = sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().getWheelLocationMeters();
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    public DriveSubsystem() {
-        swerve.setFieldOriented(true);
-        zeroAzimuths();
-    }
-
-    public void zeroAzimuths() {
-        swerve.zeroAzimuthEncoders();
-    }
-
-    public void drive(double forward, double strafe, double yaw) {
-        swerve.drive(forward, strafe, yaw);
-    }
-
-    public void zeroGyro() {
-        AHRS gyro = swerve.getGyro();
-        gyro.setAngleAdjustment(0);
-        double adj = gyro.getAngle() % 360;
-        gyro.setAngleAdjustment(-adj);
-        logger.info("resetting gyro: ({})", adj);
-    }
-
-    // Swerve configuration
-
-    private SwerveDrive getSwerve() {
-        SwerveDriveConfig config = new SwerveDriveConfig();
-        config.wheels = getWheels();
-        config.gyro = new AHRS(SPI.Port.kMXP);
-        config.length = ROBOT_LENGTH;
-        config.width = ROBOT_WIDTH;
-        config.gyroLoggingEnabled = true;
-        config.summarizeTalonErrors = false;
-
-        return new SwerveDrive(config);
-    }
-
-    private Wheel[] getWheels() {
-        TalonSRXConfiguration azimuthConfig = new TalonSRXConfiguration();
-        // NOTE: ensure encoders are in-phase with motor direction. Encoders should increase
-        // when azimuth motor runs in forward direction.
-        azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
-        azimuthConfig.continuousCurrentLimit = 10;
-        azimuthConfig.peakCurrentDuration = 0;
-        azimuthConfig.peakCurrentLimit = 0;
-        azimuthConfig.slot0.kP = 20;
-        azimuthConfig.slot0.kI = 0.0;
-        azimuthConfig.slot0.kD = 300.0;
-        azimuthConfig.slot0.kF = 0.0;
-        azimuthConfig.slot0.integralZone = 0;
-        azimuthConfig.slot0.allowableClosedloopError = 0;
-        azimuthConfig.motionAcceleration = 10_000;
-        azimuthConfig.motionCruiseVelocity = 800;
-        azimuthConfig.peakOutputForward = 0.75;
-        azimuthConfig.peakOutputReverse = -0.75;
-
-        TalonSRXConfiguration driveConfig = new TalonSRXConfiguration();
-        driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
-        driveConfig.continuousCurrentLimit = 40;
-        driveConfig.peakCurrentDuration = 0;
-        driveConfig.peakCurrentLimit = 0;
-
-        Wheel[] wheels = new Wheel[4];
 
         for (int i = 0; i < 4; i++) {
-            TalonSRX azimuthTalon = new TalonSRX(i);
-            azimuthTalon.configAllSettings(azimuthConfig);
+            var azimuthTalon = new TalonSRX(i);
+            azimuthTalon.configFactoryDefault(kTalonConfigTimeout);
+            azimuthTalon.configAllSettings(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().getAzimuthTalonConfig(), kTalonConfigTimeout);
+            azimuthTalon.enableCurrentLimit(true);
+            azimuthTalon.enableVoltageCompensation(true);
+            azimuthTalon.setNeutralMode(NeutralMode.Coast);
 
-            telemetryService.register(azimuthTalon);
-
-            TalonSRX driveTalon = new TalonSRX(i + 10);
-            driveTalon.configAllSettings(driveConfig);
+            var driveTalon = new TalonFX(i + 10);
+            driveTalon.configFactoryDefault(kTalonConfigTimeout);
+            driveTalon.configAllSettings(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().getDriveTalonConfig(), kTalonConfigTimeout);
+            driveTalon.enableVoltageCompensation(true);
             driveTalon.setNeutralMode(NeutralMode.Brake);
 
-            telemetryService.register(driveTalon);
+            swerveModules[i] =
+                    moduleBuilder
+                            .azimuthTalon(azimuthTalon)
+                            .driveTalon(driveTalon)
+                            .wheelLocationMeters(wheelLocations[i])
+                            .build();
 
-            Wheel wheel = new Wheel(azimuthTalon, driveTalon, DRIVE_SETPOINT_MAX);
-            wheels[i] = wheel;
+            swerveModules[i].loadAndSetAzimuthZeroReference();
         }
 
-        return wheels;
+        swerveDrive = new SwerveDrive(swerveModules);
+        swerveDrive.resetGyro();
+        swerveDrive.setGyroOffset(Rotation2d.fromDegrees(180));
+    }
+
+    /**
+     * Returns the swerve drive kinematics object for use during trajectory configuration.
+     *
+     * @return the configured kinemetics object
+     */
+    public SwerveDriveKinematics getSwerveDriveKinematics() {
+        return swerveDrive.getKinematics();
+    }
+
+    /**
+     * Returns the configured swerve drive modules.
+     */
+    public SwerveModule[] getSwerveModules() {
+        return swerveDrive.getSwerveModules();
+    }
+
+    /**
+     * Resets the robot's position on the field.
+     *
+     * @param pose the current pose
+     */
+    public void resetOdometry(Pose2d pose) {
+        swerveDrive.resetOdometry(pose);
+    }
+
+    /**
+     * Returns the position of the robot on the field.
+     *
+     * @return the pose of the robot (x and y ane in meters)
+     */
+    public Pose2d getPoseMeters() {
+        return swerveDrive.getPoseMeters();
+    }
+
+    /**
+     * Perform periodic swerve drive odometry update.
+     */
+    @Override
+    public void periodic() {
+        swerveDrive.periodic();
+    }
+
+    /**
+     * Drive the robot with given x, y, and rotational velocities with open-loop velocity control.
+     */
+    public void drive(
+            double vxMetersPerSecond, double vyMetersPerSecond, double omegaRadiansPerSecond) {
+        swerveDrive.drive(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond, true);
+    }
+
+    /**
+     * Move the robot with given x, y, and rotational velocities with closed-loop velocity control.
+     */
+    public void move(
+            double vxMetersPerSecond,
+            double vyMetersPerSecond,
+            double omegaRadiansPerSecond,
+            boolean isFieldOriented) {
+        swerveDrive.move(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond, isFieldOriented);
+    }
+
+    public void resetGyro() {
+        swerveDrive.resetGyro();
+    }
+
+    public void setGyroOffset(Rotation2d offsetRads) {
+        swerveDrive.setGyroOffset(offsetRads);
+    }
+
+    public Rotation2d getHeading() {
+        return swerveDrive.getHeading();
+    }
+
+    public void xLockSwerveDrive() {
+        ((TalonSwerveModule) swerveDrive.getSwerveModules()[0])
+                .setAzimuthRotation2d(Rotation2d.fromDegrees(45));
+        ((TalonSwerveModule) swerveDrive.getSwerveModules()[1])
+                .setAzimuthRotation2d(Rotation2d.fromDegrees(-45));
+        ((TalonSwerveModule) swerveDrive.getSwerveModules()[2])
+                .setAzimuthRotation2d(Rotation2d.fromDegrees(-45));
+        ((TalonSwerveModule) swerveDrive.getSwerveModules()[3])
+                .setAzimuthRotation2d(Rotation2d.fromDegrees(45));
     }
 }

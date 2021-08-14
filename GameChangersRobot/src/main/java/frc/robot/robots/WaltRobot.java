@@ -7,7 +7,7 @@ import frc.robot.utils.regression.PolynomialRegression;
 
 /* Generic superclass for all Walton robots and their characteristics. */
 public abstract class WaltRobot {
-
+    protected final SwerveDriveConfig mSwerveDriveConfig;
     protected final DrivetrainConfig mDrivetrainConfig;
     protected final ShooterConfig mShooterConfig;
     protected final IntakeConfig mIntakeConfig;
@@ -36,6 +36,7 @@ public abstract class WaltRobot {
         for (double[] pair : distanceToVelocityTable) {
             mShooterMap.put(new InterpolatingDouble(pair[0]), new InterpolatingDouble(pair[1]));
         }
+        mSwerveDriveConfig = new SwerveDriveConfig();
     }
 
     public DrivetrainConfig getDrivetrainConfig() {
@@ -58,4 +59,5 @@ public abstract class WaltRobot {
         return mTurretConfig;
     }
 
+    public SwerveDriveConfig getSwerveDriveConfig(){return mSwerveDriveConfig;}
 }
