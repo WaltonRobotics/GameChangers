@@ -62,6 +62,7 @@ public class Robot extends TimedRobot {
     public static SendableChooser<SequentialCommandGroup> mShootingChallengeChooser;
     public static SendableChooser<DriveMode> sDriveModeChooser;
     private static SendableChooser<AutonRoutine> mAutonChooser;
+    public static SwerveDrivetrain sSwerveDriveTrain;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString(kRobotIdentifierKey, sCurrentRobot.name());
 
         sDrivetrain = new Drivetrain();
+        sSwerveDriveTrain = new SwerveDrivetrain();
         sShooter = new Shooter();
         sIntake = new Intake();
         sConveyor = new Conveyor();
