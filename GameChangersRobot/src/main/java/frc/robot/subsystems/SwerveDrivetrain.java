@@ -1,28 +1,22 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
+
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.config.DrivetrainConfig;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
+import frc.robot.config.SwerveDriveConfig;
 import org.strykeforce.swerve.SwerveDrive;
 import org.strykeforce.swerve.SwerveModule;
 import org.strykeforce.swerve.TalonSwerveModule;
 
-
-import static frc.robot.Robot.sCurrentRobot;
 import static frc.robot.config.SwerveDriveConfig.kTalonConfigTimeout;
 
 public class SwerveDrivetrain extends SubsystemBase {
@@ -31,25 +25,25 @@ public class SwerveDrivetrain extends SubsystemBase {
     public SwerveDrivetrain() {
         var moduleBuilder =
                 new TalonSwerveModule.Builder()
-                        .driveGearRatio(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().kDriveGearRatio)
-                        .wheelDiameterInches(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().kWheelDiameterInches)
-                        .driveMaximumMetersPerSecond(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().kMaxSpeedMetersPerSecond);
+                        .driveGearRatio(SwerveDriveConfig.kDriveGearRatio)
+                        .wheelDiameterInches(SwerveDriveConfig.kWheelDiameterInches)
+                        .driveMaximumMetersPerSecond(SwerveDriveConfig.kMaxSpeedMetersPerSecond);
 
         TalonSwerveModule[] swerveModules = new TalonSwerveModule[4];
-        Translation2d[] wheelLocations = sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().getWheelLocationMeters();
+        Translation2d[] wheelLocations = SwerveDriveConfig.getWheelLocationMeters();
 
 
         for (int i = 0; i < 4; i++) {
             var azimuthTalon = new TalonSRX(i);
             azimuthTalon.configFactoryDefault(kTalonConfigTimeout);
-            azimuthTalon.configAllSettings(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().getAzimuthTalonConfig(), kTalonConfigTimeout);
+            azimuthTalon.configAllSettings(SwerveDriveConfig.getAzimuthTalonConfig(), kTalonConfigTimeout);
             azimuthTalon.enableCurrentLimit(true);
             azimuthTalon.enableVoltageCompensation(true);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
 
             var driveTalon = new TalonFX(i + 10);
             driveTalon.configFactoryDefault(kTalonConfigTimeout);
-            driveTalon.configAllSettings(sCurrentRobot.getCurrentRobot().getSwerveDriveConfig().getDriveTalonConfig(), kTalonConfigTimeout);
+            driveTalon.configAllSettings(SwerveDriveConfig.getDriveTalonConfig(), kTalonConfigTimeout);
             driveTalon.enableVoltageCompensation(true);
             driveTalon.setNeutralMode(NeutralMode.Brake);
 
