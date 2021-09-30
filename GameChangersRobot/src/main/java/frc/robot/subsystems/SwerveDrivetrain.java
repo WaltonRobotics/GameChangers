@@ -20,7 +20,7 @@ import org.strykeforce.swerve.TalonSwerveModule;
 import static frc.robot.config.SwerveDriveConfig.kTalonConfigTimeout;
 
 public class SwerveDrivetrain extends SubsystemBase {
-    private final SwerveDrive swerveDrive;
+    private static SwerveDrive swerveDrive;
 
     public SwerveDrivetrain() {
         var moduleBuilder =
