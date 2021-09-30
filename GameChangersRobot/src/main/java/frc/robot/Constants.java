@@ -328,4 +328,26 @@ public final class Constants {
 
     }
 
+    public static class SwerveDrive{    //dummy values From: https://github.com/strykeforce/infiniterecharge
+        public static final double kDeadbandXLock = 0.2;
+
+        // 500 cm calibration = actual / odometry
+        public static final double kWheelDiameterInches = 3.0 * (584.0 / 501.0);
+
+        // From: https://github.com/strykeforce/axis-config/
+        public static final double kMaxSpeedMetersPerSecond = 3.889;
+
+        public static final double kMaxOmega =
+                (kMaxSpeedMetersPerSecond / Math.hypot(0.5461 / 2.0, 0.6477 / 2.0))
+                        / 2.0; // wheel locations below
+
+        // From: https://github.com/strykeforce/axis-config/
+        static final double kDriveMotorOutputGear = 22;
+        static final double kDriveInputGear = 48;
+        static final double kBevelInputGear = 15;
+        static final double kBevelOutputGear = 45;
+        public static final double kDriveGearRatio =
+                (kDriveMotorOutputGear / kDriveInputGear) * (kBevelInputGear / kBevelOutputGear);
+    }
+
 }

@@ -31,7 +31,7 @@ public class SwerveDriveCommand extends CommandBase {
     }
 
     @Override
-    public void execute() {
+    public void execute(){
         double forward = forwardScale.apply(sLeftJoystick.getY());
         double strafe = strafeScale.apply(sLeftJoystick.getX());
         double yaw = yawScale.apply(sRightJoystick.getX());

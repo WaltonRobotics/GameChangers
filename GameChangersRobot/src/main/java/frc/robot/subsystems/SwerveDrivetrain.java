@@ -107,7 +107,7 @@ public class SwerveDrivetrain extends SubsystemBase {
     /**
      * Drive the robot with given x, y, and rotational velocities with open-loop velocity control.
      */
-    public void drive(
+    public static void drive(
             double vxMetersPerSecond, double vyMetersPerSecond, double omegaRadiansPerSecond) {
         swerveDrive.drive(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond, true);
     }
