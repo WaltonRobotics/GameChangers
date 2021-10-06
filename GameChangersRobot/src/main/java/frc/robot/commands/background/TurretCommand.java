@@ -166,13 +166,13 @@ public class TurretCommand extends CommandBase {
 
             @Override
             public IState execute() {
-                sTurret.setRobotRelativeHeading(kHomeRobotRelativeHeading, Turret.ControlState.POSITIONAL);
+                sTurret.setRobotRelativeHeading(kHomeRobotRelativeHeading, Turret.ControlState.MOTION_MAGIC);
 
                 if (isMasterOverride()) {
                     return mManual;
                 }
 
-                if (Math.abs(sTurret.getClosedLoopErrorDegrees()) < kPositionClosedLoopErrorToleranceDegrees) {
+                if (Math.abs(sTurret.getMotionMagicErrorDegrees()) < kPositionClosedLoopErrorToleranceDegrees) {
                     mWithinThresholdLoops++;
                 } else {
                     mWithinThresholdLoops = 0;
@@ -297,9 +297,9 @@ public class TurretCommand extends CommandBase {
                     return mManual;
                 }
 
-                sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.POSITIONAL);
+                sTurret.setRobotRelativeHeading(mTargetHeading, Turret.ControlState.MOTION_MAGIC);
 
-                if (Math.abs(sTurret.getClosedLoopErrorDegrees())
+                if (Math.abs(sTurret.getMotionMagicErrorDegrees())
                         < kPositionClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
                     mWithinThresholdLoops++;
                 } else {
@@ -434,13 +434,13 @@ public class TurretCommand extends CommandBase {
             @Override
             public IState execute() {
                 sTurret.setFieldRelativeHeading(kTargetFieldRelativeHeading,
-                        sDrivetrain.getHeading(), Turret.ControlState.POSITIONAL);
+                        sDrivetrain.getHeading(), Turret.ControlState.MOTION_MAGIC);
 
                 if (isMasterOverride()) {
                     return mManual;
                 }
 
-                if (Math.abs(sTurret.getClosedLoopErrorDegrees()) <
+                if (Math.abs(sTurret.getMotionMagicErrorDegrees()) <
                         kPositionClosedLoopErrorToleranceDegrees * sTurret.getConfig().kTicksPerDegree) {
                     mWithinThresholdLoops++;
                 } else {
@@ -478,7 +478,7 @@ public class TurretCommand extends CommandBase {
             @Override
             public IState execute() {
                 sTurret.setFieldRelativeHeading(kTargetFieldRelativeHeading,
-                        sDrivetrain.getHeading(), Turret.ControlState.POSITIONAL);
+                        sDrivetrain.getHeading(), Turret.ControlState.MOTION_MAGIC);
 
                 if (!(AutonFlags.getInstance().isInAuton()
                         && AutonFlags.getInstance().doesAutonNeedToAlignTurretFieldRelative())) {

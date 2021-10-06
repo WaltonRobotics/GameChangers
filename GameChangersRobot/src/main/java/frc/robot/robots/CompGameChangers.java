@@ -109,7 +109,17 @@ public class CompGameChangers extends WaltRobot {
         mTurretConfig.kPositionalI = 0.002;
         mTurretConfig.kPositionalD = 0.0;
         mTurretConfig.kPositionalIZone = 100;
-        mTurretConfig.kPositionalMaxIntegralAccumulator = 0;
+        mTurretConfig.kPositionalMaxIntegralAccumulator = 50;
+
+        mTurretConfig.kMotionMagicF = 1023.0 * 0.4 / 50.0;
+        mTurretConfig.kMotionMagicP = 7;
+        mTurretConfig.kMotionMagicI = 0.002;
+        mTurretConfig.kMotionMagicD = 0.0;
+        mTurretConfig.kMotionMagicIZone = 100;
+        mTurretConfig.kMotionMagicMaxIntegralAccumulator = 0;
+        mTurretConfig.kAcceleration = 225.0;
+        mTurretConfig.kCruiseVelocity = 50.0;
+        mTurretConfig.kSCurveStrength = 3;
 
         ProfiledPIDController turretClosedLoopAutoAlignProfiledPID = new ProfiledPIDController(
                 0.2, 0, 0,

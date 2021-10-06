@@ -49,7 +49,7 @@ public class Turret extends SubsystemBase {
         mTurretController.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10);
 
         mTurretController.enableVoltageCompensation(true);
-        mTurretController.configVoltageCompSaturation(8.0);
+        mTurretController.configVoltageCompSaturation(11.0);
 
         mTurretController.configNominalOutputForward(0);
         mTurretController.configNominalOutputReverse(0);
