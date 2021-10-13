@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.util.Units;
 
+import static frc.robot.Constants.Turret.kAlignedThresholdDegrees;
 import static frc.robot.Constants.Turret.kPositionClosedLoopErrorToleranceDegrees;
 
 public class CompGameChangers extends WaltRobot {
@@ -23,7 +24,7 @@ public class CompGameChangers extends WaltRobot {
         super(mShooterDistanceToVelocityTable, 2);
 
         ProfiledPIDController drivetrainTurnProfiledPID = new ProfiledPIDController(
-                0.013, 0, 0,
+                0.015, 0, 0,
                 new TrapezoidProfile.Constraints(400, 400)
         );
         drivetrainTurnProfiledPID.enableContinuousInput(-180.0, 180.0);
@@ -80,7 +81,7 @@ public class CompGameChangers extends WaltRobot {
         mShooterConfig.kLimelightMountingAngleDegrees = 30;
 
         mIntakeConfig.kIsIntakeControllerInverted = false;
-        mIntakeConfig.kIntakeDutyCycle = 0.6;
+        mIntakeConfig.kIntakeDutyCycle = 0.5;
         mIntakeConfig.kOuttakeDutyCycle = -0.4;
         mIntakeConfig.kSettleTime = 0.5;
 
@@ -122,11 +123,11 @@ public class CompGameChangers extends WaltRobot {
         mTurretConfig.kSCurveStrength = 3;
 
         ProfiledPIDController turretClosedLoopAutoAlignProfiledPID = new ProfiledPIDController(
-                0.2, 0, 0,
-                new TrapezoidProfile.Constraints(120, 850)
+                0.013, 0, 0,
+                new TrapezoidProfile.Constraints(60, 360)
         );
-        turretClosedLoopAutoAlignProfiledPID.enableContinuousInput(-180.0, 180.0);
-        turretClosedLoopAutoAlignProfiledPID.setTolerance(kPositionClosedLoopErrorToleranceDegrees);
+        turretClosedLoopAutoAlignProfiledPID.setTolerance(kAlignedThresholdDegrees);
+        turretClosedLoopAutoAlignProfiledPID.setGoal(0.0);
 
         mTurretConfig.closedLoopAutoAlignProfiledPID = turretClosedLoopAutoAlignProfiledPID;
     }

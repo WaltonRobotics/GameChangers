@@ -1,5 +1,6 @@
 package frc.robot.commands.background;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
@@ -18,7 +19,6 @@ import java.util.logging.Level;
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.DriverPreferences.kTurretMasterOverrideDeadband;
 import static frc.robot.Constants.DriverPreferences.kTurretScaleFactor;
-import static frc.robot.Constants.Field.kMinimumInterstellarHomingRadiusMeters;
 import static frc.robot.Constants.Field.kTargetFieldRelativeHeading;
 import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
@@ -211,6 +211,9 @@ public class TurretCommand extends CommandBase {
         };
 
         mManual = new IState() {
+            private double lastTx;
+            private double lastTime;
+
             @Override
             public void initialize() {
 
@@ -221,6 +224,14 @@ public class TurretCommand extends CommandBase {
                 if (!isMasterOverride()) {
                     return mIdle;
                 }
+
+                double currentTx = LimelightHelper.getTX();
+                double currentTime = Timer.getFPGATimestamp();
+
+                SmartDashboard.putNumber("Turret velocity", (currentTx - lastTx) / (currentTime - lastTime));
+
+                lastTime = currentTime;
+                lastTx = currentTx;
 
                 sTurret.setOpenLoopDutyCycle(sGamepad.getRightX() * kTurretScaleFactor);
 
@@ -358,32 +369,32 @@ public class TurretCommand extends CommandBase {
 
                 if (LimelightHelper.getTV() > 0) {
                     double tx = LimelightHelper.getTX();
-                    double headingError = -tx;
+                    double headingError = tx;
 
                     if (Math.abs(headingError) < kAlignedThresholdDegrees) {
                         return mIdle;
                     }
 
-//                    double currentHeading = UtilMethods.restrictAngle(
-//                            sTurret.getCurrentRobotRelativeHeading().getDegrees(), -180.0, 180.0
-//                    );
-//
-//                    double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
-//                            currentHeading,
-//                            currentHeading + headingError
-//                    );
-//
-//                    sTurret.setOpenLoopDutyCycle(turnRate);
+                    double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
+                            headingError,
+                            0.0
+                    );
 
-//                    // Alternate alignment method
-                    double turnRate = 0.0;
-
-                    if (tx > kMinimumAimThresholdDegrees) {
-                        turnRate = kAimingKp * headingError - kMinimumAimDutyCycleTxPositive;
-                    } else if (tx < kMinimumAimThresholdDegrees) {
-                        turnRate = kAimingKp * headingError + kMinimumAimDutyCycleTxNegative;
+                    if (Math.abs(headingError) > kMinimumAimThresholdDegrees) {
+                        // Turret is to the left of the target
+                        if (turnRate > 0) {
+                            turnRate += kMinimumAimDutyCycleCW;
+                        } else {
+                            // Turret is to the right of the target
+                            turnRate -= kMinimumAimDutyCycleCCW;
+                        }
                     }
 
+                    sTurret.setOpenLoopDutyCycle(turnRate);
+
+//                    // Alternate alignment method
+//                    double turnRate = 0.0;
+//
 //                    if (tx > 0 && tx < kMinimumAimThresholdDegrees) {
 //                        turnRate = kAimingKp * headingError - kMinimumAimDutyCycle;
 //                    } else if (tx < 0 && tx > kMinimumAimThresholdDegrees) {
@@ -391,7 +402,7 @@ public class TurretCommand extends CommandBase {
 //                    } else {
 //                        turnRate = kAimingKp * headingError;
 //                    }
-
+//
 //                    turnRate = kAimingKp * headingError;
 //
 //                    if (Math.abs(turnRate) < kMinimumAimDutyCycle) {
@@ -401,8 +412,8 @@ public class TurretCommand extends CommandBase {
 //                            turnRate += kMinimumAimDutyCycle;
 //                        }
 //                    }
-
-                    sTurret.setOpenLoopDutyCycle(turnRate);
+//
+//                    sTurret.setOpenLoopDutyCycle(turnRate);
                 } else {
                     sTurret.setOpenLoopDutyCycle(0.0);
                 }
