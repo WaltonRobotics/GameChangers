@@ -19,13 +19,14 @@ public final class Constants {
 
         public static final int kLeftJoystickPort = 0;
         public static final int kRightJoystickPort = 1;
-        public static final int kGamepadPort = 2;
+        public static final int kDriveGamepadPort = 2;
+        public static final int kManipulationGamepadPort = 3;
 
     }
 
     public static class DriverPreferences {
 
-        public static final double kDriveJoystickDeadband = 0.1;
+        public static final double kDriveDeadband = 0.1;
         public static final boolean kUseSquareCurve = false;
         public static final double kAutoAlignTimeout = 1.5;
         public static final double kTurretMasterOverrideDeadband = 0.1;
@@ -139,7 +140,7 @@ public final class Constants {
         public static final int kWithinToleranceLoopsToSettle = 5;
 
         // Zeroing
-        public static final double kZeroingDutyCycle = 0.5;
+        public static final double kZeroingDutyCycle = 0.3;
         public static final double kZeroingTimeout = 1.0;
 
         // Homing
@@ -269,7 +270,7 @@ public final class Constants {
         public static final String kShooterLimelightDistanceFeetKey = "Shooter/Limelight Distance Feet";
         public static final String kShooterIsAdjustableHoodUpKey = "Shooter/Is Adjustable Hood Up";
 
-        public static final String kIntakeIntakingDutyCycleKey = "Intake/Intaking Duty Cycle";
+        public static final String kIntakeIntakingDutyCycleKey = "Intake/Tuning Intaking Duty Cycle";
 
         public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";

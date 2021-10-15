@@ -7,14 +7,14 @@ import frc.robot.commands.auton.RamseteTrackingCommand;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import static frc.robot.Constants.DriverPreferences.kDriveJoystickDeadband;
+import static frc.robot.Constants.DriverPreferences.kDriveDeadband;
 import static frc.robot.OI.sLeftJoystick;
 import static frc.robot.OI.sRightJoystick;
 
 public class ManualOverrideTrackingCommand extends SequentialCommandGroup {
 
     private final BooleanSupplier manualOverrideSupplier =
-            () -> (Math.abs(sLeftJoystick.getY()) + Math.abs(sRightJoystick.getY())) / 2 > kDriveJoystickDeadband;
+            () -> (Math.abs(sLeftJoystick.getY()) + Math.abs(sRightJoystick.getY())) / 2 > kDriveDeadband;
 
     public ManualOverrideTrackingCommand(Trajectory trajectory, boolean useSparkPID, boolean disableRamsete) {
         addCommands(

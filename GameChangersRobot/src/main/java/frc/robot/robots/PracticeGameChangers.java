@@ -10,7 +10,7 @@ public class PracticeGameChangers extends WaltRobot {
 
     private static final double[][] mShooterDistanceToVelocityTable = {
             {10.33, 10900},
-            {19.7, 10910},
+            {19.7, 9500},
             {30.89, 10950},
     };
 

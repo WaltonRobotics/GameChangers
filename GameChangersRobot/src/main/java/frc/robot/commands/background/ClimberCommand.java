@@ -25,7 +25,7 @@ public class ClimberCommand extends CommandBase {
     public void execute() {
         SubsystemFlags.getInstance().setIsClimberDeployed(sClimber.isClimberDeployed());
 
-        double climbCommand = -sGamepad.getLeftY();
+        double climbCommand = -sManipulationGamepad.getLeftY();
 
         if (sClimber.isClimberUnlocked()) {
             if (sClimber.isClimberDeployed() && Math.abs(climbCommand) > DEADBAND) {

@@ -6,35 +6,34 @@ import static frc.robot.Constants.DriverPreferences.*;
 import static frc.robot.Constants.SmartDashboardKeys.kNormalScaleFactorKey;
 import static frc.robot.Constants.SmartDashboardKeys.kTurboScaleFactorKey;
 import static frc.robot.OI.*;
+import static frc.robot.Robot.driveInputDeviceChooser;
 
 public abstract class DriveMode {
 
     public abstract void feed();
 
-    protected double getScaleFactor() {
-        return (sTurboButton.get() || sSecondaryTurboButton.get())
-                ? SmartDashboard.getNumber(kTurboScaleFactorKey, kTurboScaleFactor)
-                : SmartDashboard.getNumber(kNormalScaleFactorKey, kNormalScaleFactor);
+    public double applyDeadband(double rawValue, double deadband) {
+        if (Math.abs(rawValue) < deadband) {
+            return 0;
+        }
+
+        return rawValue;
     }
 
     public double getLeftJoystickY() {
-        double rawValue = sLeftJoystick.getY();
-        double scaleFactor = getScaleFactor();
-
-        if (Math.abs(rawValue) < kDriveJoystickDeadband)
-            return 0;
-
-        return -rawValue * scaleFactor;
+        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
+            return -sLeftJoystick.getY();
+        } else {
+            return -sDriveGamepad.getLeftY();
+        }
     }
 
     public double getRightJoystickY() {
-        double rawValue = sRightJoystick.getY();
-        double scaleFactor = getScaleFactor();
-
-        if (Math.abs(rawValue) < kDriveJoystickDeadband)
-            return 0;
-
-        return -rawValue * scaleFactor;
+        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
+            return -sRightJoystick.getY();
+        } else {
+            return -sDriveGamepad.getRawAxis(3);
+        }
     }
 
     /* The following methods are for drive modes with separated turn and throttle commands (i.e. Curvature/Arcade). */
@@ -50,13 +49,11 @@ public abstract class DriveMode {
      * The right joystick is used for turning.
      */
     public double getTurn() {
-        double rawValue = sRightJoystick.getX();
-        double scaleFactor = getScaleFactor();
-
-        if (Math.abs(rawValue) < kDriveJoystickDeadband)
-            return 0;
-
-        return rawValue * scaleFactor;
+        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
+            return sRightJoystick.getX();
+        } else {
+            return sDriveGamepad.getRightX();
+        }
     }
 
 }

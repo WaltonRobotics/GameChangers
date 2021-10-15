@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
     public static ProMicro sProMicro;
     public static SendableChooser<SequentialCommandGroup> mShootingChallengeChooser;
     public static SendableChooser<DriveMode> sDriveModeChooser;
+    public static SendableChooser<String> driveInputDeviceChooser;
     private static SendableChooser<AutonRoutine> mAutonChooser;
 
     /**
@@ -114,6 +115,12 @@ public class Robot extends TimedRobot {
         mShootingChallengeChooser.addOption("Power Port Challenge", new PowerPortRoutine());
 
         SmartDashboard.putData("Shooting Challenge Selector", mShootingChallengeChooser);
+
+        driveInputDeviceChooser = new SendableChooser<>();
+        driveInputDeviceChooser.setDefaultOption("Joysticks", "Joysticks");
+        driveInputDeviceChooser.setDefaultOption("Gamepad", "Gamepad");
+        driveInputDeviceChooser.setDefaultOption("Xbox", "Xbox");
+        SmartDashboard.putData("Drive Input Device Chooser", driveInputDeviceChooser);
 
         populateShuffleboard();
 

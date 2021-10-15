@@ -14,19 +14,6 @@ public class CurvatureDrive extends DriveMode {
     private double quickStopAccumulator;
 
     @Override
-    public double getTurn() {
-        double rawValue = sRightJoystick.getX();
-        double scaleFactor = (sTurboButton.get() || sSecondaryTurboButton.get())
-                ? SmartDashboard.getNumber(kTurboScaleFactorKey, kTurboScaleFactor)
-                : SmartDashboard.getNumber(kCurvatureTurnSensitivityKey, kNormalScaleFactor);
-
-        if (Math.abs(rawValue) < kDriveJoystickDeadband)
-            return 0;
-
-        return rawValue * scaleFactor;
-    }
-
-    @Override
     public void feed() {
         double xSpeed = getThrottle();
         double zRotation = getTurn();

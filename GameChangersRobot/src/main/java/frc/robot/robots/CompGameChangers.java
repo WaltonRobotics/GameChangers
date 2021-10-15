@@ -13,11 +13,12 @@ import static frc.robot.Constants.Turret.kPositionClosedLoopErrorToleranceDegree
 public class CompGameChangers extends WaltRobot {
 
     private static final double[][] mShooterDistanceToVelocityTable = {
-            { 9.26, 12250 },
-            { 12.86, 11250 },
-            { 16.04, 11000 },
-            { 20.04, 9975 },
-            { 24.03, 10900 }
+            { 9.49, 12500 },
+            { 10.32, 11975 },
+            { 10.91, 11975 },
+            { 12.03, 11475 },
+            { 16.33, 11000 },
+            { 25.85, 11075 },
     };
 
     public CompGameChangers() {
@@ -81,7 +82,7 @@ public class CompGameChangers extends WaltRobot {
         mShooterConfig.kLimelightMountingAngleDegrees = 30;
 
         mIntakeConfig.kIsIntakeControllerInverted = false;
-        mIntakeConfig.kIntakeDutyCycle = 0.5;
+        mIntakeConfig.kIntakeDutyCycle = 0.6;
         mIntakeConfig.kOuttakeDutyCycle = -0.4;
         mIntakeConfig.kSettleTime = 0.5;
 
@@ -128,6 +129,7 @@ public class CompGameChangers extends WaltRobot {
         );
         turretClosedLoopAutoAlignProfiledPID.setTolerance(kAlignedThresholdDegrees);
         turretClosedLoopAutoAlignProfiledPID.setGoal(0.0);
+        turretClosedLoopAutoAlignProfiledPID.enableContinuousInput(-180.0, 180.0);
 
         mTurretConfig.closedLoopAutoAlignProfiledPID = turretClosedLoopAutoAlignProfiledPID;
     }

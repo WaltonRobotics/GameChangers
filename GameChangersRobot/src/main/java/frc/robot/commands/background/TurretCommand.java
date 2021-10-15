@@ -1,5 +1,6 @@
 package frc.robot.commands.background;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -233,7 +234,7 @@ public class TurretCommand extends CommandBase {
                 lastTime = currentTime;
                 lastTx = currentTx;
 
-                sTurret.setOpenLoopDutyCycle(sGamepad.getRightX() * kTurretScaleFactor);
+                sTurret.setOpenLoopDutyCycle(sManipulationGamepad.getRightX() * kTurretScaleFactor);
 
                 return this;
             }
@@ -343,8 +344,8 @@ public class TurretCommand extends CommandBase {
             public void initialize() {
                 sTurret.getClosedLoopAutoAlignProfiledPID().reset(
                         new TrapezoidProfile.State(
-                                UtilMethods.restrictAngle(sTurret.getCurrentRobotRelativeHeading().getDegrees(), -180.0, 180.0),
-                                sTurret.getCurrentAngularVelocityDegreesPerSec()
+                                LimelightHelper.getTX(),
+                                0.0
                         )
                 );
 
@@ -371,14 +372,13 @@ public class TurretCommand extends CommandBase {
                     double tx = LimelightHelper.getTX();
                     double headingError = tx;
 
+                    SmartDashboard.putNumber("Heading error", headingError);
+
                     if (Math.abs(headingError) < kAlignedThresholdDegrees) {
                         return mIdle;
                     }
 
-                    double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(
-                            headingError,
-                            0.0
-                    );
+                    double turnRate = sTurret.getClosedLoopAutoAlignProfiledPID().calculate(headingError);
 
                     if (Math.abs(headingError) > kMinimumAimThresholdDegrees) {
                         // Turret is to the left of the target
@@ -546,7 +546,7 @@ public class TurretCommand extends CommandBase {
     }
 
     private boolean isMasterOverride() {
-        return Math.abs(sGamepad.getRightX()) > kTurretMasterOverrideDeadband;
+        return Math.abs(sManipulationGamepad.getRightX()) > kTurretMasterOverrideDeadband;
     }
 
     public boolean hasZeroed() {
