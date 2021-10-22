@@ -46,7 +46,11 @@ public class TurretCommand extends CommandBase {
 
     private final StateMachine mStateMachine;
 
-    private boolean mHasZeroed;
+    private static boolean mHasZeroed;
+
+    public static void setHasZeroed(boolean flag) {
+        mHasZeroed = flag;
+    }
 
     public TurretCommand() {
         addRequirements(sTurret);
@@ -234,7 +238,7 @@ public class TurretCommand extends CommandBase {
                 lastTime = currentTime;
                 lastTx = currentTx;
 
-                sTurret.setOpenLoopDutyCycle(sManipulationGamepad.getRightX() * kTurretScaleFactor);
+                sTurret.setOpenLoopDutyCycle(-sManipulationGamepad.getRightX() * kTurretScaleFactor);
 
                 return this;
             }

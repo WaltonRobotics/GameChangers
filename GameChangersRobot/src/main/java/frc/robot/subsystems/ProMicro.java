@@ -58,6 +58,7 @@ public class ProMicro extends SubsystemBase {
 
     private void update() {
         if (mSerialPort != null) {
+            SmartDashboard.putBoolean("Serial port exists", true);
             mSerialPort.write(new byte[]{mCurrentLEDStripWriteMessage.getMessageByte()}, 1);
 
             if (mSerialPort.getBytesReceived() > 0) {
@@ -65,6 +66,8 @@ public class ProMicro extends SubsystemBase {
 //                        "Received byte " + mSerialPort.read(1)[0] + "" + " from Pro Micro");
                 mCurrentPixyCamReadMessage = PixyCamReadMessage.findByMessageByte(mSerialPort.read(1)[0]);
             }
+        } else {
+            SmartDashboard.putBoolean("Serial port exists", false);
         }
     }
 

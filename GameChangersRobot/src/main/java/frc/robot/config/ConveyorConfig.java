@@ -7,6 +7,7 @@ public class ConveyorConfig {
     public boolean kIsBackConveyorControllerInverted;
     public double kIRSensorFlickeringTimeSeconds;
     public double kNudgeTimeSeconds;
+    public double kNudgingDownTimeSeconds;
     public double kFrontConveyorNudgeDutyCycle;
     public double kBackConveyorNudgeDutyCycle;
     public double kFrontConveyorFeedDutyCycle;

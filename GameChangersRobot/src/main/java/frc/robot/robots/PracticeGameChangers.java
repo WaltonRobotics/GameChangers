@@ -83,6 +83,7 @@ public class PracticeGameChangers extends WaltRobot {
         mConveyorConfig.kIsBackConveyorControllerInverted = false;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
         mConveyorConfig.kNudgeTimeSeconds = 0.3;
+        mConveyorConfig.kNudgingDownTimeSeconds = 0.1;
         mConveyorConfig.kFrontConveyorNudgeDutyCycle = 10.0;
         mConveyorConfig.kBackConveyorNudgeDutyCycle = 10.0;
         mConveyorConfig.kFrontConveyorFeedDutyCycle = 10.0;

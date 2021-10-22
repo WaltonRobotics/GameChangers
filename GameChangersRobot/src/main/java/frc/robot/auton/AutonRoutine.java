@@ -13,6 +13,7 @@ import frc.robot.commands.tuning.FindAngularMaxVelAccel;
 import frc.robot.commands.tuning.FindLinearMaxVelAccel;
 import frc.robot.commands.tuning.FindTurretAngularMaxVelAccel;
 import frc.robot.subsystems.SubsystemFlags;
+import frc.robot.vision.LimelightHelper;
 
 import static frc.robot.Robot.sDrivetrain;
 import static frc.robot.Robot.sTurret;
@@ -64,7 +65,7 @@ public enum AutonRoutine {
                     new SequentialCommandGroup(
                             new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
                             new WaitUntilCommand(() ->
-                                    Math.abs(sTurret.getCurrentRobotRelativeHeading().minus(sDrivetrain.getHeading()).getDegrees()) < 8),
+                                    Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 8),
                             new AlignTurret(1.5),
                             new ShootAllBalls(3, 4)
                     )
@@ -78,6 +79,7 @@ public enum AutonRoutine {
             new ParallelDeadlineGroup(
                     new RamseteTrackingCommand(Paths.RoutineOne.sBackupToShootThree, true, false),
                     new SequentialCommandGroup(
+                            new SetIntakeToggle(false),
                             new WaitCommand(Paths.RoutineOne.sBackupToShootThree.getTotalTimeSeconds() * 0.7),
                             new InstantCommand(()
                                     -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(true))
@@ -86,12 +88,15 @@ public enum AutonRoutine {
             new InstantCommand(()
                     -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(false)),
             new InstantCommand(() -> sDrivetrain.setDutyCycles(0.0, 0.0)),
-            new ParallelCommandGroup(
-                    new SetIntakeToggle(false),
-                    new SequentialCommandGroup(
-                            new AlignTurret(1.5),
-                            new ShootAllBalls(3, 4)
-                    )
+            new SequentialCommandGroup(
+                    new ParallelCommandGroup(
+                            new SequentialCommandGroup(
+                                    new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToNudgeDown(true)),
+                                    new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToNudgeDown(false))
+                            ),
+                            new AlignTurret(1.5)
+                    ),
+                    new ShootAllBalls(3, 4)
             )
     )),
 
@@ -106,20 +111,26 @@ public enum AutonRoutine {
                                     AutonFlags.getInstance().setDoesAutonNeedToIntake(true))
                     )
             ),
+            new SetIntakeToggle(false),
             new ParallelDeadlineGroup(
                     new RamseteTrackingCommand(Paths.RoutineTwo.sBackupToShootForSix, true, false),
                     new SequentialCommandGroup(
                             new WaitCommand(Paths.RoutineTwo.sBackupToShootForSix.getTotalTimeSeconds() * 0.5),
                             new InstantCommand(()
-                                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(true)),
-                            new InstantCommand(() ->
-                                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
-                            new SetIntakeToggle(false)
+                                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(true))
                     )
             ),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
             new InstantCommand(()
                     -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(false)),
-            new AlignTurret(1.5),
+            new ParallelCommandGroup(
+                    new SequentialCommandGroup(
+                            new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToNudgeDown(true)),
+                            new InstantCommand(() -> AutonFlags.getInstance().setDoesAutonNeedToNudgeDown(false))
+                    ),
+                    new AlignTurret(1.5)
+            ),
             new ShootAllBalls(5, 4)
     )),
 

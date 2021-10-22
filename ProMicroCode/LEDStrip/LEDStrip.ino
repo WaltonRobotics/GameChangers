@@ -3,19 +3,12 @@
 #define NUM_LEDS 60
 #define LED_PIN 5
 
-DEFINE_GRADIENT_PALETTE(idlePalette) {
-  0,     255,     0,     0,   // Red
-255,       0,     0,   255    // Blue
-};
-
 enum LEDState {
   IDLE,
   TURN_LEFT,
   TURN_RIGHT,
   ALIGNED
 };
-
-CRGBPalette16 idleGradient = idlePalette;
 
 CRGB leds[NUM_LEDS];
 
@@ -89,7 +82,7 @@ void rainbowCycle(int SpeedDelay) {
 void showIdleState() {
   for(int i = 0; i < NUM_LEDS / 2; i++) {
     if(i >= leftSideIndex) {
-      leds[i] = ColorFromPalette(idleGradient, round((float)(NUM_LEDS / 2 - 1 - i) / (NUM_LEDS / 2 - 1) * 255.0f));
+      leds[i] = CRGB::Red;
     } else {
       leds[i] = CRGB::Black;
     }
@@ -97,7 +90,7 @@ void showIdleState() {
 
   for(int i = NUM_LEDS / 2; i < NUM_LEDS; i++) {
     if(i <= rightSideIndex) {
-      leds[i] = ColorFromPalette(idleGradient, round((float)(i - NUM_LEDS / 2) / (NUM_LEDS / 2 - 1) * 255.0f));
+      leds[i] = CRGB::Red;
     } else {
       leds[i] = CRGB::Black;
     }
@@ -123,7 +116,7 @@ void showIdleState() {
 void showTurnLeftState() {
   for(int i = 0; i < NUM_LEDS / 2; i++) {
     if(i >= leftSideIndex) {
-      leds[i] = CRGB::OrangeRed;
+      leds[i] = CRGB::Yellow;
     } else {
       leds[i] = CRGB::Black;
     }
@@ -143,7 +136,7 @@ void showTurnLeftState() {
 void showTurnRightState() {
  for(int i = NUM_LEDS / 2; i < NUM_LEDS; i++) {
     if(i <= rightSideIndex) {
-      leds[i] = CRGB::OrangeRed;
+      leds[i] = CRGB::Blue;
     } else {
       leds[i] = CRGB::Black;
     }

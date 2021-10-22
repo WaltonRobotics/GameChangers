@@ -40,8 +40,9 @@ import static frc.robot.Constants.Field.kPowerPortScoringZonePose;
 import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
-import static frc.robot.OI.sRunInterstellarRoutineButton;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
+import static frc.robot.subsystems.ProMicro.LEDStripWriteMessage.*;
+import static frc.robot.subsystems.ProMicro.LEDStripWriteMessage.IDLE;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -126,9 +127,9 @@ public class Robot extends TimedRobot {
 
         LimelightHelper.setLEDMode(kIsInTuningMode);
 
-        if (!kIsInfiniteRecharge) {
-            sRunInterstellarRoutineButton.whenPressed(new InterstellarAccuracyRoutine());
-        }
+//        if (!kIsInfiniteRecharge) {
+//            sRunInterstellarRoutineButton.whenPressed(new InterstellarAccuracyRoutine());
+//        }
 
         SubsystemFlags.getInstance().resetAllStaticFlags();
     }
@@ -148,10 +149,13 @@ public class Robot extends TimedRobot {
             SmartDashboard.putNumber(kConveyorBallCountKey, sConveyor.getConfig().kIRSensorFlickeringTimeSeconds);
         }
 
-        SmartDashboard.putNumber("Nudge time seconds", 0.058);
+        SmartDashboard.putNumber(kConveyorTuningNudgeTime, sConveyor.getConfig().kNudgeTimeSeconds);
         SmartDashboard.putNumber(kNormalScaleFactorKey, kNormalScaleFactor);
         SmartDashboard.putNumber(kTurboScaleFactorKey, kTurboScaleFactor);
         SmartDashboard.putNumber(kCurvatureTurnSensitivityKey, kNormalScaleFactor);
+        SmartDashboard.putBoolean(kTurretIsAlignedKey, false);
+        SmartDashboard.putBoolean(kClimberIsUnlockedKey, true);
+        SmartDashboard.putBoolean(kClimberIsDeployedKey, false);
 
         sDriveModeChooser = new SendableChooser<>();
         sDriveModeChooser.setDefaultOption("Tank", new TankDrive());
@@ -189,6 +193,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        TurretCommand.setHasZeroed(false);
         AutonFlags.getInstance().resetAllStaticFlags();
 
         sDrivetrain.configureControllersAuton();

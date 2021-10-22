@@ -26,7 +26,7 @@ public final class Constants {
 
     public static class DriverPreferences {
 
-        public static final double kDriveDeadband = 0.1;
+        public static final double kDriveDeadband = 0.05;
         public static final boolean kUseSquareCurve = false;
         public static final double kAutoAlignTimeout = 1.5;
         public static final double kTurretMasterOverrideDeadband = 0.1;
@@ -136,7 +136,7 @@ public final class Constants {
 
         // Talon SRX positional PID constants
         public static final double kPositionClosedLoopErrorToleranceDegrees = 2.0 / 3.0;
-        public static final double kClimbingHomedToleranceDegrees = 5.0;
+        public static final double kClimbingHomedToleranceDegrees = 10.0;
         public static final int kWithinToleranceLoopsToSettle = 5;
 
         // Zeroing
@@ -275,6 +275,7 @@ public final class Constants {
         public static final String kConveyorFrontSensorStateKey = "Conveyor/Front Sensor State";
         public static final String kConveyorBackSensorStateKey = "Conveyor/Back Sensor State";
         public static final String kConveyorBallCountKey = "Conveyor/Ball Count";
+        public static final String kConveyorTuningNudgeTime = "Conveyor/Tuning Nudge Time Seconds";
 
         public static final String kTurretForwardLimitStateKey = "Turret/Forward Limit State";
         public static final String kTurretRobotRelativeHeadingRawUnitsKey = "Turret/Robot-relative Heading Raw Units";
@@ -285,6 +286,7 @@ public final class Constants {
         public static final String kTurretSetpointKey = "Turret/Setpoint";
         public static final String kTurretClosedLoopErrorDegreesKey = "Turret/Closed Loop Error Degrees";
         public static final String kTurretIsHomedForClimbingKey = "Turret/Is Homed For Climbing";
+        public static final String kTurretIsAlignedKey = "Turret/Is Aligned";
 
         public static final String kClimberIsUnlockedKey = "Climber/Is Unlocked";
         public static final String kClimberIsDeployedKey = "Climber/Is Deployed";

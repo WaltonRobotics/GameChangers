@@ -2,11 +2,13 @@ package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.auton.AutonFlags;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
+import static frc.robot.Constants.SmartDashboardKeys.kConveyorTuningNudgeTime;
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sConveyor;
 
@@ -16,9 +18,12 @@ public class ConveyorCommand extends CommandBase {
     private final IState mIntaking;
     private final IState mOuttaking;
     private final IState mNudging;
+    private final IState mNudgingDown;
     private final IState mFeeding;
 
     private final StateMachine mStateMachine;
+
+    private double nudgeStart;
 
     public ConveyorCommand() {
         addRequirements(sConveyor);
@@ -117,11 +122,9 @@ public class ConveyorCommand extends CommandBase {
         };
 
         mNudging = new IState() {
-            private double mStartTime;
-
             @Override
             public void initialize() {
-                mStartTime = getFPGATimestamp();
+                nudgeStart = getFPGATimestamp();
             }
 
             @Override
@@ -139,12 +142,7 @@ public class ConveyorCommand extends CommandBase {
                 sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorNudgeDutyCycle);
                 sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorNudgeDutyCycle);
 
-                if (getFPGATimestamp() - mStartTime > SmartDashboard.getNumber("Nudge time seconds", 0.058)) {
-//                if (getFPGATimestamp() - mStartTime > sConveyor.getConfig().kNudgeTimeSeconds)
-                    return determineState();
-                }
-
-                return mNudging;
+                return determineState();
             }
 
             @Override
@@ -155,6 +153,37 @@ public class ConveyorCommand extends CommandBase {
             @Override
             public String getName() {
                 return "Nudging";
+            }
+        };
+
+        mNudgingDown = new IState() {
+            private double mStartTime;
+
+            @Override
+            public void initialize() {
+                mStartTime = getFPGATimestamp();
+            }
+
+            @Override
+            public IState execute() {
+                sConveyor.setFrontDutyCycle(sConveyor.getConfig().kFrontConveyorOuttakeDutyCycle);
+                sConveyor.setBackDutyCycle(sConveyor.getConfig().kBackConveyorOuttakeDutyCycle);
+
+                if (getFPGATimestamp() - mStartTime > sConveyor.getConfig().kNudgingDownTimeSeconds) {
+                    return determineState();
+                }
+
+                return this;
+            }
+
+            @Override
+            public void finish() {
+
+            }
+
+            @Override
+            public String getName() {
+                return "Nudging Down";
             }
         };
 
@@ -197,8 +226,15 @@ public class ConveyorCommand extends CommandBase {
             return mOuttaking;
         }
 
-        if (sConveyor.shouldNudge() && sConveyor.getBallCount() <= 3) {
+        if (((getFPGATimestamp() - nudgeStart < sConveyor.getConfig().kNudgeTimeSeconds
+                && getFPGATimestamp() - nudgeStart > 0.02)
+                || sConveyor.shouldNudge()) && sConveyor.getBallCount() <= 3) {
             return mNudging;
+        }
+
+        if (sNudgeDownButton.isRisingEdge()
+                || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToNudgeDown())) {
+            return mNudgingDown;
         }
 
         if (SubsystemFlags.getInstance().isIntaking()) {

@@ -82,14 +82,15 @@ public class CompGameChangers extends WaltRobot {
         mShooterConfig.kLimelightMountingAngleDegrees = 30;
 
         mIntakeConfig.kIsIntakeControllerInverted = false;
-        mIntakeConfig.kIntakeDutyCycle = 0.6;
+        mIntakeConfig.kIntakeDutyCycle = 0.7;
         mIntakeConfig.kOuttakeDutyCycle = -0.4;
         mIntakeConfig.kSettleTime = 0.5;
 
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = true;
-        mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.75;
-        mConveyorConfig.kNudgeTimeSeconds = 0.058;
+        mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.35;
+        mConveyorConfig.kNudgeTimeSeconds = 0.1;
+        mConveyorConfig.kNudgingDownTimeSeconds = 0.1;
         mConveyorConfig.kFrontConveyorNudgeDutyCycle = 0.5;
         mConveyorConfig.kBackConveyorNudgeDutyCycle = 0.5;
         mConveyorConfig.kFrontConveyorFeedDutyCycle = 1.0;
@@ -120,7 +121,7 @@ public class CompGameChangers extends WaltRobot {
         mTurretConfig.kMotionMagicIZone = 100;
         mTurretConfig.kMotionMagicMaxIntegralAccumulator = 0;
         mTurretConfig.kAcceleration = 225.0;
-        mTurretConfig.kCruiseVelocity = 50.0;
+        mTurretConfig.kCruiseVelocity = 65.0;
         mTurretConfig.kSCurveStrength = 3;
 
         ProfiledPIDController turretClosedLoopAutoAlignProfiledPID = new ProfiledPIDController(

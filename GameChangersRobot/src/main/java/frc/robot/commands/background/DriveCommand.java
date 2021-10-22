@@ -25,14 +25,14 @@ public class DriveCommand extends CommandBase {
             sSecondaryAutoAssistDriveStraightButton.whenPressed(new AutoAssistDriveStraight());
             sTertiaryAutoAssistDriveStraightButton.whenPressed(new AutoAssistDriveStraight());
 
-            sCalibratePoseButton.whenPressed(new CalibratePose());
-            sHomeInterstellarAccuracyButton.whenPressed(new AutoHomeForInterstellarAccuracy());
-            sHomePowerPortButton.whenPressed(new GoToScoringZone());
-            sGoToReintroductionZoneButton.whenPressed(new GoToReintroductionZone());
+//            sCalibratePoseButton.whenPressed(new CalibratePose());
+//            sHomeInterstellarAccuracyButton.whenPressed(new AutoHomeForInterstellarAccuracy());
+//            sHomePowerPortButton.whenPressed(new GoToScoringZone());
+//            sGoToReintroductionZoneButton.whenPressed(new GoToReintroductionZone());
         }
 
         if (kIsInTuningMode) {
-            sBackUpTwoFeetForShooterCalibrationButton.whenPressed(new BackUpTwoFeetForShooterCalibration());
+//            sBackUpTwoFeetForShooterCalibrationButton.whenPressed(new BackUpTwoFeetForShooterCalibration());
         }
     }
 
