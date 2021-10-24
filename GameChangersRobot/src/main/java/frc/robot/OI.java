@@ -39,11 +39,11 @@ public class OI {
 
     public static EnhancedJoystickButton sAlignTurretButton = new EnhancedJoystickButton(sManipulationGamepad, LEFT_BUTTON.getIndex());
     public static EnhancedJoystickButton sHomeTurretButton = new EnhancedJoystickButton(sManipulationGamepad, DOWN_BUTTON.getIndex());
-    public static EnhancedJoystickButton sZeroTurretButton = new EnhancedJoystickButton(sManipulationGamepad, RIGHT_BUTTON.getIndex());
+    public static EnhancedJoystickButton sZeroTurretButton = new EnhancedJoystickButton(sManipulationGamepad, RIGHT_STICK_BUTTON.getIndex());
     public static EnhancedJoystickButton sNudgeDownButton = new EnhancedJoystickButton(sManipulationGamepad, UP_BUTTON.getIndex());
 
     public static EnhancedJoystickButton sToggleClimberDeployButton = new EnhancedJoystickButton(sDriveGamepad, START_BUTTON.getIndex());
-    public static EnhancedJoystickButton sLockClimberButton = new EnhancedJoystickButton(sManipulationGamepad, LEFT_STICK_BUTTON.getIndex());
+    public static EnhancedJoystickButton sToggleClimberLockButton = new EnhancedJoystickButton(sManipulationGamepad, RIGHT_BUTTON.getIndex());
 
     // Shooting challenge buttons
 //    public static EnhancedJoystickButton sCalibratePoseButton = new EnhancedJoystickButton(sLeftJoystick, 5);

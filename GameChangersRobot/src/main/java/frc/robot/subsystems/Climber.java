@@ -43,6 +43,10 @@ public class Climber extends SubsystemBase {
         mLockSolenoid.set(isUnlocked);
     }
 
+    public void toggleClimberLock() {
+        mLockSolenoid.toggle();
+    }
+
     public boolean isClimberDeployed() {
         return mDeploySolenoid.get();
     }

@@ -45,7 +45,8 @@ public class IntakeCommand extends CommandBase {
                 } else if (sIntakeButton.get()
                         || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToIntake())) {
                     return mIntaking;
-                } else if (sOuttakeButton.get()) {
+                } else if (sOuttakeButton.get()
+                        || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToOuttake())) {
                     return mOuttaking;
                 }
 
@@ -167,7 +168,8 @@ public class IntakeCommand extends CommandBase {
             public IState execute() {
                 sIntake.setRollerDutyCycle(sIntake.getConfig().kOuttakeDutyCycle);
 
-                if (!sOuttakeButton.get()) {
+                if (!(sOuttakeButton.get()
+                        || (AutonFlags.getInstance().isInAuton() && AutonFlags.getInstance().doesAutonNeedToOuttake()))) {
                     return mIdle;
                 }
 

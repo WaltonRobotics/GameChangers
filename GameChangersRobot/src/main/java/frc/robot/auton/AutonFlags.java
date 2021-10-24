@@ -7,6 +7,7 @@ public class AutonFlags {
     private boolean mIsInAuton = false;
     private boolean mIsAutonTurretZeroingEnabled = false;
     private boolean mDoesAutonNeedToIntake = false;
+    private boolean mDoesAutonNeedToOuttake = false;
     private boolean mDoesAutonNeedToShoot = false;
     private boolean mDoesAutonNeedToAlignTurretFieldRelative = false;
     private boolean mDoesAutonNeedToAlignTurret = false;
@@ -48,6 +49,14 @@ public class AutonFlags {
 
     public void setDoesAutonNeedToIntake(boolean doesAutonNeedToIntake) {
         this.mDoesAutonNeedToIntake = doesAutonNeedToIntake;
+    }
+
+    public boolean doesAutonNeedToOuttake() {
+        return mDoesAutonNeedToOuttake;
+    }
+
+    public void setDoesAutonNeedToOuttake(boolean doesAutonNeedToOuttake) {
+        this.mDoesAutonNeedToOuttake = doesAutonNeedToOuttake;
     }
 
     public void setDoesAutonNeedToShoot(boolean doesAutonNeedToShoot) {

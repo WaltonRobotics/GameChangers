@@ -17,7 +17,7 @@ public class ClimberCommand extends CommandBase {
 
     public ClimberCommand() {
         addRequirements(sClimber);
-        sLockClimberButton.whenPressed(() -> sClimber.setClimberUnlocked(false));
+        sToggleClimberLockButton.whenPressed(() -> sClimber.toggleClimberLock());
         sToggleClimberDeployButton.whenPressed(new ToggleClimberDeployCommand());
     }
 

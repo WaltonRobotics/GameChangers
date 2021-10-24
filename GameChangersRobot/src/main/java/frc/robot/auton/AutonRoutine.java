@@ -104,7 +104,7 @@ public enum AutonRoutine {
             new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new ResetPose(Paths.RoutineTwo.sPickupTwoFromEnemyTrenchCurveIn),
             new ParallelCommandGroup(
-                    new RamseteTrackingCommand(Paths.RoutineTwo.sPickupTwoFromEnemyTrenchCurveIn, true, false),
+                    new RamseteTrackingCommand(Paths.RoutineTwo.sPickupTwoFromEnemyTrench, true, false),
                     new SequentialCommandGroup(
                             new SetIntakeToggle(true),
                             new InstantCommand(() ->
@@ -112,12 +112,25 @@ public enum AutonRoutine {
                     )
             ),
             new SetIntakeToggle(false),
+            new InstantCommand(() ->
+                    AutonFlags.getInstance().setDoesAutonNeedToIntake(false)),
             new ParallelDeadlineGroup(
                     new RamseteTrackingCommand(Paths.RoutineTwo.sBackupToShootForSix, true, false),
-                    new SequentialCommandGroup(
-                            new WaitCommand(Paths.RoutineTwo.sBackupToShootForSix.getTotalTimeSeconds() * 0.5),
-                            new InstantCommand(()
-                                    -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(true))
+                    new ParallelCommandGroup(
+                            new SequentialCommandGroup(
+                                    new InstantCommand(() ->
+                                            AutonFlags.getInstance().setDoesAutonNeedToOuttake(true)),
+                                    new WaitCommand(1.5),
+                                    new InstantCommand(() ->
+                                            AutonFlags.getInstance().setDoesAutonNeedToOuttake(false)),
+                                    new InstantCommand(() ->
+                                            AutonFlags.getInstance().setDoesAutonNeedToIntake(true))
+                            ),
+                            new SequentialCommandGroup(
+                                    new WaitCommand(Paths.RoutineTwo.sBackupToShootForSix.getTotalTimeSeconds() * 0.5),
+                                    new InstantCommand(()
+                                            -> AutonFlags.getInstance().setDoesAutonNeedToAlignTurretFieldRelative(true))
+                            )
                     )
             ),
             new InstantCommand(() ->
