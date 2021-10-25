@@ -89,7 +89,7 @@ public class CompGameChangers extends WaltRobot {
         mConveyorConfig.kIsFrontConveyorControllerInverted = true;
         mConveyorConfig.kIsBackConveyorControllerInverted = true;
         mConveyorConfig.kIRSensorFlickeringTimeSeconds = 0.35;
-        mConveyorConfig.kNudgeTimeSeconds = 0.1;
+        mConveyorConfig.kNudgeTimeSeconds = 0.15;
         mConveyorConfig.kNudgingDownTimeSeconds = 0.1;
         mConveyorConfig.kFrontConveyorNudgeDutyCycle = 0.5;
         mConveyorConfig.kBackConveyorNudgeDutyCycle = 0.5;
