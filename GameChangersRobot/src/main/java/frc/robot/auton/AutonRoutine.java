@@ -38,9 +38,9 @@ public enum AutonRoutine {
             new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
             new WaitUntilCommand(() ->
-                    Math.abs(sTurret.getCurrentRobotRelativeHeading().minus(sDrivetrain.getHeading()).getDegrees()) < 8),
+                    Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 8),
             new AlignTurret(1.5),
-            new ShootAllBalls(3, 7.5),
+            new ShootAllBalls(3, 4),
             new ResetPose(Paths.RoutineZero.sForwards),
             new RamseteTrackingCommand(Paths.RoutineZero.sForwards, true, false)
     )),
@@ -49,9 +49,9 @@ public enum AutonRoutine {
             new InstantCommand(() -> AutonFlags.getInstance().setIsAutonTurretZeroingEnabled(true)),
             new WaitUntilCommand(() -> SubsystemFlags.getInstance().hasTurretZeroed()),
             new WaitUntilCommand(() ->
-                    Math.abs(sTurret.getCurrentRobotRelativeHeading().minus(sDrivetrain.getHeading()).getDegrees()) < 8),
+                    Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 8),
             new AlignTurret(1.5),
-            new ShootAllBalls(3, 7.5),
+            new ShootAllBalls(3, 4),
             new ResetPose(Paths.RoutineZero.sBackwards),
             new RamseteTrackingCommand(Paths.RoutineZero.sBackwards, true, false)
     )),
