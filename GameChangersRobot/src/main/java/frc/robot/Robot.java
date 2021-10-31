@@ -14,13 +14,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auton.AutonFlags;
 import frc.robot.auton.AutonRoutine;
 import frc.robot.commands.auton.SetIntakeToggle;
-import frc.robot.commands.auton.shootingChallenges.InterstellarAccuracyRoutine;
 import frc.robot.commands.auton.shootingChallenges.PowerPortRoutine;
 import frc.robot.commands.background.*;
-import frc.robot.commands.background.driveMode.ArcadeDrive;
 import frc.robot.commands.background.driveMode.CurvatureDrive;
 import frc.robot.commands.background.driveMode.DriveMode;
-import frc.robot.commands.background.driveMode.TankDrive;
 import frc.robot.commands.teleop.UnlockClimberCommand;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
@@ -41,8 +38,6 @@ import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Shooter.kDefaultVelocityRawUnits;
 import static frc.robot.Constants.SmartDashboardKeys.*;
 import static frc.robot.auton.AutonRoutine.DO_NOTHING;
-import static frc.robot.subsystems.ProMicro.LEDStripWriteMessage.*;
-import static frc.robot.subsystems.ProMicro.LEDStripWriteMessage.IDLE;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

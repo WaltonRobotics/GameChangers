@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.ConveyorConfig;
@@ -18,7 +17,6 @@ import frc.robot.utils.UtilMethods;
 import java.util.Arrays;
 import java.util.logging.Level;
 
-import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.CANBusIDs.kBackConveyorID;
 import static frc.robot.Constants.CANBusIDs.kFrontConveyorID;
 import static frc.robot.Constants.DioIDs.kConveyorBackSensorID;

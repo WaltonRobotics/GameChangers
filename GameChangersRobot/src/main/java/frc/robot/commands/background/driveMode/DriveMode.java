@@ -1,12 +1,6 @@
 package frc.robot.commands.background.driveMode;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import static frc.robot.Constants.DriverPreferences.*;
-import static frc.robot.Constants.SmartDashboardKeys.kNormalScaleFactorKey;
-import static frc.robot.Constants.SmartDashboardKeys.kTurboScaleFactorKey;
-import static frc.robot.OI.*;
-import static frc.robot.Robot.driveInputDeviceChooser;
+import static frc.robot.OI.sDriveGamepad;
 
 public abstract class DriveMode {
 

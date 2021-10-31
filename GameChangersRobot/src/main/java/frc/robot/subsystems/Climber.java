@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.CANBusIDs.kClimberID;
-import static frc.robot.Constants.PneumaticsIDs.kClimberLockSolenoidID;
 import static frc.robot.Constants.PneumaticsIDs.kClimberDeploySolenoidID;
+import static frc.robot.Constants.PneumaticsIDs.kClimberLockSolenoidID;
 import static frc.robot.Constants.SmartDashboardKeys.kClimberIsDeployedKey;
 import static frc.robot.Constants.SmartDashboardKeys.kClimberIsUnlockedKey;
 

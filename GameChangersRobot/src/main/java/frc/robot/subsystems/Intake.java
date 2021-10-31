@@ -9,14 +9,12 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.config.IntakeConfig;
-import frc.robot.robots.RobotIdentifier;
 import frc.robot.utils.DebuggingLog;
 
 import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.kIntakeID;
 import static frc.robot.Constants.PneumaticsIDs.kDeployIntakeSolenoidID;
-import static frc.robot.Constants.PneumaticsIDs.kRetractIntakeSolenoidID;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class Intake extends SubsystemBase {

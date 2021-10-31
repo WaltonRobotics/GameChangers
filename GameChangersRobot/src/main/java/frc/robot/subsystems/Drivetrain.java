@@ -5,7 +5,6 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
@@ -36,12 +35,10 @@ import java.util.logging.Level;
 
 import static frc.robot.Constants.CANBusIDs.*;
 import static frc.robot.Constants.ContextFlags.kIsInCompetition;
-import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVelocitySlot;
 import static frc.robot.Constants.PIDSlots.kDrivetrainVoltageSlot;
 import static frc.robot.Constants.PneumaticsIDs.kDrivetrainGearShiftSolenoidID;
 import static frc.robot.Constants.SmartDashboardKeys.*;
-import static frc.robot.Constants.Tuning.kDrivetrainTuningSettingsUpdateRateSeconds;
 import static frc.robot.Robot.sCurrentRobot;
 
 public class Drivetrain extends SubsystemBase {

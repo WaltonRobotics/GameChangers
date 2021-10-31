@@ -1,12 +1,9 @@
 package frc.robot.commands.background.driveMode;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
 import static frc.robot.Constants.DriverPreferences.*;
-import static frc.robot.Constants.SmartDashboardKeys.kCurvatureTurnSensitivityKey;
-import static frc.robot.Constants.SmartDashboardKeys.kTurboScaleFactorKey;
-import static frc.robot.OI.*;
+import static frc.robot.OI.sQuickTurnButton;
 import static frc.robot.Robot.sDrivetrain;
 
 public class CurvatureDrive extends DriveMode {

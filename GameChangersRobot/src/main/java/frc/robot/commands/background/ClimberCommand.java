@@ -5,7 +5,6 @@ import frc.robot.commands.teleop.ToggleClimberDeployCommand;
 import frc.robot.subsystems.SubsystemFlags;
 
 import static com.ctre.phoenix.motorcontrol.TalonFXControlMode.PercentOutput;
-
 import static frc.robot.OI.*;
 import static frc.robot.Robot.sClimber;
 

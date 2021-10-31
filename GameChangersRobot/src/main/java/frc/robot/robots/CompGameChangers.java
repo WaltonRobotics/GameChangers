@@ -8,17 +8,16 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.util.Units;
 
 import static frc.robot.Constants.Turret.kAlignedThresholdDegrees;
-import static frc.robot.Constants.Turret.kPositionClosedLoopErrorToleranceDegrees;
 
 public class CompGameChangers extends WaltRobot {
 
     private static final double[][] mShooterDistanceToVelocityTable = {
-            { 9.49, 12500 },
-            { 10.32, 11975 },
-            { 10.91, 11975 },
-            { 12.03, 11475 },
-            { 16.33, 11000 },
-            { 25.85, 11075 },
+            {9.49, 12500},
+            {10.32, 11975},
+            {10.91, 11975},
+            {12.03, 11475},
+            {16.33, 11000},
+            {25.85, 11075},
     };
 
     public CompGameChangers() {

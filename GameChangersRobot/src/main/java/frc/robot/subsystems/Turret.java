@@ -12,7 +12,6 @@ import frc.robot.config.TurretConfig;
 import frc.robot.utils.DebuggingLog;
 import frc.robot.utils.EnhancedBoolean;
 import frc.robot.utils.UtilMethods;
-import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 
 import java.util.logging.Level;
 

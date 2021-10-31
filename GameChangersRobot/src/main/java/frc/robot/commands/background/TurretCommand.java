@@ -1,6 +1,5 @@
 package frc.robot.commands.background;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,7 +11,6 @@ import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
 import frc.robot.subsystems.Turret;
 import frc.robot.utils.DebuggingLog;
-import frc.robot.utils.UtilMethods;
 import frc.robot.vision.LimelightHelper;
 
 import java.util.logging.Level;
@@ -31,8 +29,8 @@ import static frc.robot.Robot.sTurret;
 
 public class TurretCommand extends CommandBase {
 
+    private static boolean mHasZeroed;
     private final Rotation2d kHomeRobotRelativeHeading = Rotation2d.fromDegrees(0);
-
     private final IState mIdle;
     private final IState mZeroing;
     private final IState mHoming;
@@ -43,14 +41,7 @@ public class TurretCommand extends CommandBase {
     private final IState mAligningFieldRelative;
     private final IState mAutonAligningFieldRelative;
     private final IState mLockingSetpoint;
-
     private final StateMachine mStateMachine;
-
-    private static boolean mHasZeroed;
-
-    public static void setHasZeroed(boolean flag) {
-        mHasZeroed = flag;
-    }
 
     public TurretCommand() {
         addRequirements(sTurret);
@@ -549,6 +540,10 @@ public class TurretCommand extends CommandBase {
         mHasZeroed = false;
     }
 
+    public static void setHasZeroed(boolean flag) {
+        mHasZeroed = flag;
+    }
+
     private boolean isMasterOverride() {
         return Math.abs(sManipulationGamepad.getRightX()) > kTurretMasterOverrideDeadband;
     }
@@ -563,7 +558,7 @@ public class TurretCommand extends CommandBase {
                 sTurret.getCurrentRobotRelativeHeading()).getDegrees()) < kClimbingHomedToleranceDegrees;
 
         SubsystemFlags.getInstance().setIsTurretHomedForClimbing(isHomedForClimbing);
-        
+
         SmartDashboard.putBoolean(kTurretIsHomedForClimbingKey, isHomedForClimbing);
 
         mStateMachine.run();

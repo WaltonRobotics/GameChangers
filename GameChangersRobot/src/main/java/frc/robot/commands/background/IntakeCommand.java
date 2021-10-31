@@ -3,7 +3,6 @@ package frc.robot.commands.background;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.auton.AutonFlags;
-import frc.robot.robots.RobotIdentifier;
 import frc.robot.stateMachine.IState;
 import frc.robot.stateMachine.StateMachine;
 import frc.robot.subsystems.SubsystemFlags;
@@ -12,7 +11,6 @@ import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.SmartDashboardKeys.kIntakeIntakingDutyCycleKey;
 import static frc.robot.OI.*;
-import static frc.robot.Robot.sCurrentRobot;
 import static frc.robot.Robot.sIntake;
 
 public class IntakeCommand extends CommandBase {

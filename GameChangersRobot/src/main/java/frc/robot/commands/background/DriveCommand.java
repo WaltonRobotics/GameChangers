@@ -2,8 +2,7 @@ package frc.robot.commands.background;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.auton.AutoAlign;
-import frc.robot.commands.auton.shootingChallenges.*;
-import frc.robot.commands.tuning.BackUpTwoFeetForShooterCalibration;
+import frc.robot.commands.auton.shootingChallenges.AutoAssistDriveStraight;
 
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.ContextFlags.kIsInfiniteRecharge;

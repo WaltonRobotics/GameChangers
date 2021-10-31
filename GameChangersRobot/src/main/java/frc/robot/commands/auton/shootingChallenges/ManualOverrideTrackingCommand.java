@@ -8,7 +8,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import static frc.robot.Constants.DriverPreferences.kDriveDeadband;
-import static frc.robot.OI.*;
+import static frc.robot.OI.sDriveGamepad;
 
 public class ManualOverrideTrackingCommand extends SequentialCommandGroup {
 

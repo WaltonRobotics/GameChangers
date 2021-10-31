@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import static edu.wpi.first.wpilibj.Timer.getFPGATimestamp;
 import static frc.robot.Constants.ContextFlags.kIsInTuningMode;
 import static frc.robot.Constants.ContextFlags.kIsInfiniteRecharge;
-import static frc.robot.Constants.Field.kEndOfZoneOneFromTargetFeet;
 import static frc.robot.Constants.Limelight.kAlignmentPipeline;
 import static frc.robot.Constants.Limelight.kMaximumLEDWaitTimeSeconds;
 import static frc.robot.Constants.PIDSlots.kShooterShootingSlot;

@@ -161,7 +161,7 @@ public class Paths {
                     Arrays.asList(
                             new Pose2d(Units.feetToMeters(11.671), Units.feetToMeters(2.312), Rotation2d.fromDegrees(0)),
                             new Pose2d(Units.feetToMeters(19.364), Units.feetToMeters(2.357), Rotation2d.fromDegrees(20)),
-                            new Pose2d(Units.feetToMeters(21.064), Units.feetToMeters(2.745), Rotation2d.fromDegrees(19.914))),                    config
+                            new Pose2d(Units.feetToMeters(21.064), Units.feetToMeters(2.745), Rotation2d.fromDegrees(19.914))), config
             );
         }
 

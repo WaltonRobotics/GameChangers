@@ -1,10 +1,8 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.utils.EnhancedJoystickButton;
 import frc.robot.utils.Gamepad;
 
-import static frc.robot.Constants.InputDevices.*;
 import static frc.robot.utils.EnhancedJoystickButton.*;
 import static frc.robot.utils.Gamepad.Button.*;
 
