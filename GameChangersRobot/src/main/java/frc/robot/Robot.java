@@ -158,9 +158,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean(kClimberIsDeployedKey, false);
 
         sDriveModeChooser = new SendableChooser<>();
-        sDriveModeChooser.setDefaultOption("Tank", new TankDrive());
-        sDriveModeChooser.addOption("Curvature", new CurvatureDrive());
-        sDriveModeChooser.addOption("Arcade", new ArcadeDrive());
+        sDriveModeChooser.setDefaultOption("Curvature", new CurvatureDrive());
         SmartDashboard.putData("Drive Mode Selector", sDriveModeChooser);
     }
 

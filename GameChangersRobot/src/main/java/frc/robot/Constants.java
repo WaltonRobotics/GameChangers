@@ -9,7 +9,7 @@ public final class Constants {
     public static class ContextFlags {
 
         public static final int kTeamNumber = 2974;
-        public static final boolean kIsInCompetition = false;
+        public static final boolean kIsInCompetition = true;
         public static final boolean kIsInTuningMode = false;
         public static final boolean kIsInfiniteRecharge = true;
 

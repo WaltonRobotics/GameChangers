@@ -40,7 +40,7 @@ public enum AutonRoutine {
             new WaitUntilCommand(() ->
                     Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 8),
             new AlignTurret(1.5),
-            new ShootAllBalls(3, 4),
+            new ShootAllBalls(3, 2.5),
             new ResetPose(Paths.RoutineZero.sForwards),
             new RamseteTrackingCommand(Paths.RoutineZero.sForwards, true, false)
     )),
@@ -51,7 +51,7 @@ public enum AutonRoutine {
             new WaitUntilCommand(() ->
                     Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 8),
             new AlignTurret(1.5),
-            new ShootAllBalls(3, 4),
+            new ShootAllBalls(3, 2.5),
             new ResetPose(Paths.RoutineZero.sBackwards),
             new RamseteTrackingCommand(Paths.RoutineZero.sBackwards, true, false)
     )),
@@ -67,7 +67,7 @@ public enum AutonRoutine {
                             new WaitUntilCommand(() ->
                                     Math.abs(sTurret.getCurrentRobotRelativeHeading().getDegrees()) < 8),
                             new AlignTurret(0.8),
-                            new ShootAllBalls(3, 4)
+                            new ShootAllBalls(3, 2.5)
                     )
             ),
             new InstantCommand(() ->
@@ -97,7 +97,7 @@ public enum AutonRoutine {
                             ),
                             new AlignTurret(0.8)
                     ),
-                    new ShootAllBalls(3, 4)
+                    new ShootAllBalls(3, 2.5)
             )
     )),
 
@@ -145,7 +145,7 @@ public enum AutonRoutine {
                     ),
                     new AlignTurret(0.8)
             ),
-            new ShootAllBalls(5, 4)
+            new ShootAllBalls(5, 2.5)
     )),
 
     ROUTINE_TWO_B("Pickup 2 from Enemy Trench, Shoot 5 (4pt)", new SequentialCommandGroup(
@@ -192,7 +192,7 @@ public enum AutonRoutine {
                     ),
                     new AlignTurret(0.8)
             ),
-            new ShootAllBalls(5, 4)
+            new ShootAllBalls(5, 2.5)
     )),
 
     /*

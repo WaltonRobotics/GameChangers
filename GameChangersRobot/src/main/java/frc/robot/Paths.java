@@ -167,7 +167,7 @@ public class Paths {
 
         public static Trajectory generateBackupToShootForSix() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(7.0), Units.feetToMeters(3.0));
+                    Units.feetToMeters(8.0), Units.feetToMeters(4.0));
 
             config.setReversed(true);
             config.setKinematics(sDrivetrain.getDriveKinematics());
@@ -183,7 +183,7 @@ public class Paths {
 
         public static Trajectory generateBackupToShootForFour() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(6.5), Units.feetToMeters(3.0));
+                    Units.feetToMeters(8.0), Units.feetToMeters(4.0));
 
             config.setReversed(true);
             config.setKinematics(sDrivetrain.getDriveKinematics());
