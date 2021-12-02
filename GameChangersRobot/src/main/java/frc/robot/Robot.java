@@ -227,7 +227,8 @@ public class Robot extends TimedRobot {
         LimelightHelper.setPipeline(kAlignmentPipeline);
         LimelightHelper.setLEDMode(kIsInTuningMode);
 
-        CommandScheduler.getInstance().schedule(new UnlockClimberCommand());
+        //commented out for beta testing
+        // CommandScheduler.getInstance().schedule(new UnlockClimberCommand());
     }
 
     /**
