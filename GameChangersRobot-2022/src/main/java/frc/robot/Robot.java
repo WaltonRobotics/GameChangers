@@ -113,9 +113,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Shooting Challenge Selector", mShootingChallengeChooser);
 
         driveInputDeviceChooser = new SendableChooser<>();
-        driveInputDeviceChooser.setDefaultOption("Joysticks", "Joysticks");
+//        driveInputDeviceChooser.setDefaultOption("Joysticks", "Joysticks");
         driveInputDeviceChooser.setDefaultOption("Gamepad", "Gamepad");
-        driveInputDeviceChooser.setDefaultOption("Xbox", "Xbox");
+//        driveInputDeviceChooser.setDefaultOption("Xbox", "Xbox");
         SmartDashboard.putData("Drive Input Device Chooser", driveInputDeviceChooser);
 
         populateShuffleboard();
