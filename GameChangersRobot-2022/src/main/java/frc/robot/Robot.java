@@ -18,6 +18,7 @@ import frc.robot.commands.auton.shootingChallenges.PowerPortRoutine;
 import frc.robot.commands.background.*;
 import frc.robot.commands.background.driveMode.CurvatureDrive;
 import frc.robot.commands.background.driveMode.DriveMode;
+import frc.robot.commands.background.driveMode.TankDrive;
 import frc.robot.commands.teleop.UnlockClimberCommand;
 import frc.robot.robots.RobotIdentifier;
 import frc.robot.subsystems.*;
@@ -113,7 +114,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Shooting Challenge Selector", mShootingChallengeChooser);
 
         driveInputDeviceChooser = new SendableChooser<>();
-//        driveInputDeviceChooser.setDefaultOption("Joysticks", "Joysticks");
+        driveInputDeviceChooser.addOption("Joysticks", "Joysticks");
         driveInputDeviceChooser.setDefaultOption("Gamepad", "Gamepad");
 //        driveInputDeviceChooser.setDefaultOption("Xbox", "Xbox");
         SmartDashboard.putData("Drive Input Device Chooser", driveInputDeviceChooser);
@@ -154,6 +155,7 @@ public class Robot extends TimedRobot {
 
         sDriveModeChooser = new SendableChooser<>();
         sDriveModeChooser.setDefaultOption("Curvature", new CurvatureDrive());
+        sDriveModeChooser.addOption("Tank", new TankDrive());
         SmartDashboard.putData("Drive Mode Selector", sDriveModeChooser);
     }
 
