@@ -21,7 +21,7 @@ public class OI {
 //    public static EnhancedJoystickButton sTurboButton = new EnhancedJoystickButton(sDriveGamepad, 7);
 //    public static EnhancedJoystickButton sSecondaryTurboButton = new EnhancedJoystickButton(sDriveGamepad, 8);
 
-    public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sManipulationGamepad, RIGHT_TRIGGER.getIndex());
+    public static EnhancedJoystickButton sShootButton = new EnhancedJoystickButton(sManipulationGamepad, UNBOUND); //DISABLED SHOOT
     public static EnhancedJoystickButton sBarfButton = new EnhancedJoystickButton(sManipulationGamepad, RIGHT_BUMPER.getIndex());
     public static EnhancedJoystickButton sToggleLimelightLEDsButton = new EnhancedJoystickButton(sManipulationGamepad, POV_W);
 //    public static EnhancedJoystickButton sToggleShooterAdjustableHoodButton = new EnhancedJoystickButton(sManipulationGamepad, TOP_BUTTON.getIndex());
