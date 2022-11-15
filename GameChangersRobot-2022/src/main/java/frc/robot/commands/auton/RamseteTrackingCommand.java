@@ -231,6 +231,6 @@ public class RamseteTrackingCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return mTimer.hasPeriodPassed(mTrajectory.getTotalTimeSeconds());
+        return mTimer.hasElapsed(mTrajectory.getTotalTimeSeconds());
     }
 }

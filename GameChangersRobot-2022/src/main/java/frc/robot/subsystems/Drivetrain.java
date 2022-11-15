@@ -1,10 +1,7 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.ControlType;
+import com.revrobotics.*;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.controller.*;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -285,10 +282,10 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setVelocities(double leftVelocity, double leftFeedForward, double rightVelocity, double rightFeedForward) {
-        mLeftWheelsMaster.getPIDController().setReference(leftVelocity, ControlType.kVelocity, kDrivetrainVelocitySlot,
-                leftFeedForward, CANPIDController.ArbFFUnits.kVoltage);
-        mRightWheelsMaster.getPIDController().setReference(rightVelocity, ControlType.kVelocity, kDrivetrainVelocitySlot,
-                rightFeedForward, CANPIDController.ArbFFUnits.kVoltage);
+        mLeftWheelsMaster.getPIDController().setReference(leftVelocity, CANSparkMax.ControlType.kVelocity, kDrivetrainVelocitySlot,
+                leftFeedForward, SparkMaxPIDController.ArbFFUnits.kVoltage);
+        mRightWheelsMaster.getPIDController().setReference(rightVelocity, CANSparkMax.ControlType.kVelocity, kDrivetrainVelocitySlot,
+                rightFeedForward, SparkMaxPIDController.ArbFFUnits.kVoltage);
     }
 
     public void reset() {

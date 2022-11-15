@@ -333,8 +333,6 @@ public enum AutonRoutine {
     )),
      */
 
-    DRIVETRAIN_CHARACTERIZATION("Drivetrain Characterization", new DrivetrainCharacterizationRoutine()),
-
     FIND_MAX_LINEAR_VEL_ACCEL("Find Maximum Drivetrain Linear Velocity and Acceleration",
             new FindLinearMaxVelAccel(10.0)),
 
